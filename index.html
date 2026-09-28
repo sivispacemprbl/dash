@@ -135,7 +135,21 @@ main{padding:16px 16px 8px;min-width:0;display:flex;flex-direction:column;gap:12
 footer.bot{grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 20px;border-top:1px solid var(--line);color:#c9d6ea;font-size:13px;background:#051024}
 footer.bot b{font-weight:700}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;min-width:0}
-.panel h3{margin:0 0 10px;font-size:15.5px;font-weight:600;display:flex;justify-content:space-between;align-items:flex-start;gap:4px 10px;flex-wrap:wrap;line-height:1.3}
+.panel{--acc:#7cc7ff}
+.panel>h3{color:var(--acc)}
+.panel>h3::before{content:"";display:inline-block;width:4px;height:15px;border-radius:2px;background:var(--acc);margin-right:9px;vertical-align:-2px;box-shadow:0 0 10px var(--acc)}
+.panel>h3{border-bottom:1px solid color-mix(in srgb,var(--acc) 22%,transparent);padding-bottom:8px}
+.pulse .pb{--acc:#9fd0ff}.pulse .pt{color:var(--acc)}
+.pulse .pb{border-left:2px solid color-mix(in srgb,var(--acc) 55%,transparent)}
+.fillp{display:flex;flex-direction:column}
+.svcb.mini{margin-top:14px}
+.svcb.wide button{grid-template-columns:minmax(120px,170px) 1fr 44px 56px}
+.svcb.wide button>span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row2>.panel,.g2>.panel{display:flex;flex-direction:column}
+#pTop,#pPrim{display:flex;flex-direction:column}
+.pfoot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;margin-top:auto;padding-top:10px;border-top:1px solid var(--line);font-size:12px;color:var(--mut)}
+.pfoot b{color:#e8f0fb;margin-left:3px}
+.panel h3{margin:0 0 10px;font-size:15.5px;font-weight:600;display:flex;justify-content:flex-start;align-items:flex-start;gap:4px 10px;flex-wrap:wrap;line-height:1.3}
 .panel h3 small{color:var(--mut);font-weight:400;font-size:11.5px;margin-left:auto;text-align:right}
 /* filtros */
 .filters{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end}
@@ -158,6 +172,8 @@ footer.bot b{font-weight:700}
 .kpi .ico{position:absolute;right:12px;top:10px;width:26px;height:26px}
 .kpi .val{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-size:32px;font-weight:600;line-height:1.05}
 .kpi .dl{font-size:14px;font-weight:600}
+.kpi .kgo{font-size:11px;color:#9fd0ff;margin-top:2px;opacity:.75}
+.kpi:hover .kgo{opacity:1}
 .kpi .sub{font-size:12.5px;color:#c9d6ea;line-height:1.35}
 .kpi.g{background:linear-gradient(160deg,#0c3a2c,#0a2a26);border-color:#1f7a4a}
 .kpi.pg{background:linear-gradient(160deg,#0d3a33,#0b2a2c);border-color:#1a6b55}
@@ -204,6 +220,24 @@ footer.bot b{font-weight:700}
 .lk-forget{text-align:center;font-size:12.5px;color:#c9d6ea}.lk-forget>button{background:none;border:0;color:#9fd0ff;text-decoration:underline;cursor:pointer}
 .lk-forget div{margin-top:6px;display:flex;flex-direction:column;gap:6px;align-items:center}
 .lk-foot{text-align:center;margin-top:6px;line-height:1.4}
+.dsum{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center;font-size:12.5px;color:var(--mut);margin-bottom:12px}
+.dsum b{color:#e8f0fb;font-size:14px;margin-left:4px}
+.dleg2{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11.5px}
+.dleg2 i{width:10px;height:10px;border-radius:50%;display:inline-block;margin-left:6px}.dleg2 .g{background:#22c55e}.dleg2 .b{background:#3987e5}.dleg2 .r{width:3px;height:11px;border-radius:2px;background:#ef4444}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:10px}
+.dcard{position:relative;display:flex;flex-direction:column;gap:6px;padding:10px 12px 12px;border-radius:10px;border:1px solid var(--line2);background:linear-gradient(160deg,#10294f,#0b2043);color:inherit;text-align:left;cursor:pointer;transition:transform .15s,border-color .15s}
+.dcard:hover{transform:translateY(-2px);border-color:#3987e5}
+.dcard.ok{border-color:rgba(34,197,94,.55);background:linear-gradient(160deg,#0f3a2e,#0b2a26)}
+.dcard.best{box-shadow:0 0 0 1px rgba(124,199,255,.6),0 6px 20px rgba(57,135,229,.25)}
+.dcard.low{opacity:.55}
+.dh{display:flex;justify-content:space-between;align-items:baseline;font-size:12px}.dh b{font-size:13.5px}.dh em{font-style:normal;color:var(--mut);text-transform:uppercase;font-size:10.5px;letter-spacing:.6px}
+.dr{display:flex;align-items:center;gap:8px}.dr svg{flex:none}
+.dr>b{font-size:24px;font-weight:600;line-height:1}.dr small{font-size:13px;color:var(--mut);margin-left:1px}
+.dn2{font-size:11.5px;color:var(--mut)}.dn2 b{color:#dbe7f7;font-size:13px}
+.db{height:4px;border-radius:3px;background:rgba(160,190,230,.14);overflow:hidden}.db i{display:block;height:100%;background:#3987e5;border-radius:3px}
+.dcard.ok .db i{background:#22c55e}
+.dbadge{position:absolute;top:-8px;right:8px;font-size:9.5px;letter-spacing:.5px;text-transform:uppercase;background:#1b4a8c;border:1px solid #3987e5;color:#cfe6ff;padding:1px 6px;border-radius:10px}
+.dbadge.mut{background:#1c2c45;border-color:var(--line2);color:var(--mut)}
 .compbox{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
 .cstrip{display:flex;gap:2px;height:18px;border-radius:6px;overflow:hidden;margin:6px 0 10px}
 .cstrip button{border:0;padding:0;min-width:3px;cursor:pointer}.cstrip button:hover{filter:brightness(1.15)}
@@ -584,9 +618,9 @@ const SVGC=(function(){
     o.labels.forEach((l,i)=>{if(i%every===0||i===n-1&&n-1-(Math.floor((n-1)/every)*every)>every/2)g+=`<text x="${x(i)}" y="${H-6}" fill="${T.txt}" font-size="11" text-anchor="middle">${e(l)}</text>`});
     o.series.forEach(s=>{const pts=s.data.map((v,i)=>[x(i),y(v)]);const d=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join('');
       if(s.fill&&pts.length)g+=`<path d="${d}L${pts[pts.length-1][0]} ${y(yMin)}L${pts[0][0]} ${y(yMin)}Z" fill="${s.color}" opacity=".14"/>`;
-      g+=`<path d="${d}" fill="none" stroke="${s.color}" stroke-width="${s.dash?2:2.5}" ${s.dash?'stroke-dasharray="6 4"':''} stroke-linejoin="round"/>`;
-      if(!s.dash)pts.forEach((p,i)=>g+=`<circle cx="${p[0]}" cy="${p[1]}" r="${i===pts.length-1?4.5:3}" fill="${s.color}" stroke="#0d2244" stroke-width="1.5"/>`);
-      if(o.endLabel&&!s.dash&&pts.length){const p=pts[pts.length-1];g+=`<text x="${p[0]+7}" y="${p[1]+4}" fill="#e8f0fb" font-size="13" font-weight="600">${e(fmt(s.data[s.data.length-1]))}</text>`}});
+      g+=`<path d="${d}" fill="none" stroke="${s.color}" stroke-width="${s.thin?1.6:s.dash?2:2.5}" ${s.dash?'stroke-dasharray="6 4"':''} stroke-linejoin="round"/>`;
+      if(!s.dash&&!s.thin)pts.forEach((p,i)=>g+=`<circle cx="${p[0]}" cy="${p[1]}" r="${i===pts.length-1?4.5:3}" fill="${s.color}" stroke="#0d2244" stroke-width="1.5"/>`);
+      if(o.endLabel&&!s.dash&&!s.thin&&pts.length){const p=pts[pts.length-1];g+=`<text x="${p[0]+7}" y="${p[1]+4}" fill="#e8f0fb" font-size="13" font-weight="600">${e(fmt(s.data[s.data.length-1]))}</text>`}});
     const cw=n?pw/Math.max(1,n-1):pw;
     o.labels.forEach((l,i)=>{const tipTxt=`<b>${e(l)}</b><br>`+o.series.map(s=>`<i style="background:${s.color}"></i>${e(s.name)}: <b>${e(fmt(s.data[i]))}</b>`).join('<br>');
       g+=`<rect data-i="${i}" data-tip="${e(tipTxt)}" x="${x(i)-cw/2}" y="${mt}" width="${cw}" height="${ph}" fill="transparent"/>`});
@@ -1082,6 +1116,7 @@ function renderNotes(){
     <form id="pendF" class="pqr"><input id="pendI" placeholder="Nova pendência" maxlength="160" autocomplete="off"><button type="submit" aria-label="Adicionar">+</button></form></div>
    <div class="pb"><div class="pt">Anotações do líder</div><textarea id="ntT" rows="6" placeholder="Recados, combinados do dia, observações de campo…">${esc(NOTES.texto||'')}</textarea><p class="ps" id="ntSt">${NOTES.em?'Atualizado '+dayBRf(dayKey(Date.parse(NOTES.em)))+' '+hhmm(Date.parse(NOTES.em)):(DB?'Salvo no painel':'Salvo neste navegador')}</p></div>
    <div class="pb"><div class="pt">Referências</div><dl class="pref"><dt>Meta mensal</dt><dd>${META}% produtivos</dd><dt>Carga corte</dt><dd>${CARGA.CORTE} OS/dia por equipe</dd><dt>Carga supressão</dt><dd>${CARGA.SUPRESSAO} OS/dia por equipe</dd><dt>Baixa fora do local</dt><dd>outro bairro em até ${SUS_GAP} min</dd></dl></div>`;
+  setTimeout(paintTitles,0);
   $('#ntT').oninput=e=>{NOTES.texto=e.target.value;$('#ntSt').textContent='Salvando…';clearTimeout(_nt);_nt=setTimeout(saveNotes,900)};
   $('#pendF').onsubmit=e=>{e.preventDefault();const t=$('#pendI').value.trim();if(!t)return;(NOTES.itens=NOTES.itens||[]).unshift({t,ok:false});saveNotes();renderNotes();$('#pendI').focus()};
   el.querySelectorAll('[data-pi]').forEach(c=>c.onchange=()=>{NOTES.itens[+c.dataset.pi].ok=c.checked;saveNotes();renderNotes()});
@@ -1128,7 +1163,7 @@ function renderPulse(rows){
    </div>
    <div class="pb"><div class="pt">Produtividade por dia <span class="muted">últimos ${n}</span></div>${spark}</div>
    <div class="pb"><div class="pt">Último dia · ${dayBRf(ld)}</div>
-    <div class="pg4"><button type="button" data-dr='{"day":"${ld}"}'><b class="${D.pr>=META?'up':'dn'}">${pct(D.prod,D.den,0)}%</b><span>produtiv.</span></button><button type="button" data-dr='{"day":"${ld}","prod":1}'><b>${fmt(D.prod)}</b><span>produtivos</span></button>
+    <div class="pg4"><button type="button" data-dr='{"day":"${ld}"}'><b>${pct(D.prod,D.den,0)}%</b><span>produtiv. do dia</span></button><button type="button" data-dr='{"day":"${ld}","prod":1}'><b>${fmt(D.prod)}</b><span>produtivos</span></button>
     <button type="button" data-dr='{"day":"${ld}"}'><b>${fmt(D.trab)}</b><span>trabalhadas</span></button><button type="button" data-dr='{"day":"${ld}","pag":1}'><b>${fmt(D.pag)}</b><span>pagamentos</span></button></div></div>
    <div class="pb"><div class="pt">Destaques · ${dayBR(ld)}</div>${top3.length?`<ol class="ptop">${top3.map((c,i)=>`<li><button type="button" data-top="${esc(c.k)}"><span class="md m${i}">${i+1}</span><span class="nm">${esc(nomeDe(c.k))}</span><b>${c.a.prod}</b></button></li>`).join('')}</ol><p class="ps">produtivos no dia</p>`:'<p class="ps">Sem produtivos no dia.</p>'}</div>
    <div class="pb"><div class="pt">Atenção</div>${al.length?`<ul class="pal">${al.map((x,i)=>`<li><button type="button" class="${x.lv}" data-al="${i}"><i></i>${esc(x.t)}</button></li>`).join('')}</ul>`:'<p class="ps">Nada fora do normal no período.</p>'}</div>
@@ -1140,16 +1175,17 @@ function renderPulse(rows){
   el.querySelectorAll('[data-top]').forEach(b=>b.onclick=()=>drill({eqs:[b.dataset.top],day:ld,label:nomeDe(b.dataset.top)+' · '+dayBRf(ld)}));
   el.querySelectorAll('[data-fb]').forEach(b=>b.onclick=()=>drill({bai:b.dataset.fb,day:ld,fech:1,label:'Imóvel fechado · '+b.dataset.fb+' · '+dayBRf(ld)}));
   $('#pResumo').onclick=()=>{const rrDay=dayRows.filter(r=>isRR(r)&&r.cat==='RR');const all=[...groupBy(dayRows,r=>r.eq)].map(([k,rs])=>({k,a:agg(rs)})).sort((x,y)=>y.a.pr-x.a.pr);
-    const txt=[`*Resumo do dia ${dayBRf(ld)} – Corte, Negociação e Religação*`,``,`Produtividade: *${pct(D.prod,D.den)}%* (meta ${META}%) ${D.pr>=META?'✅':'⚠️'}`,`Produtivos: ${D.prod} de ${D.trab} OS trabalhadas`,
+    const txt=[`*Resumo do dia ${dayBRf(ld)} – Corte, Negociação e Religação*`,``,`Produtividade do dia: *${pct(D.prod,D.den)}%*`,`Produtivos: ${D.prod} de ${D.trab} OS trabalhadas`,
       `Pagamentos: ${D.pag} (${D.PAG_POS} via POS · ${D.PAG_FAT} faturas pagas)`,`Cortes: ${D.CORTE} · Supressões: ${D.SUP}`,`Restabelecimentos: ${rrDay.filter(r=>r.tipo==='RESTAB').length} · Religações: ${rrDay.filter(r=>r.tipo==='RELIG').length}`,`Impedimentos: ${D.IMPED} · Fim do Dia: ${D.FIMDIA}`,``,
       `*Por colaborador*`,...all.map(c=>`${nomeDe(c.k)}: ${c.a.prod}/${c.a.trab} (${pct(c.a.prod,c.a.den)}%)`),``,
-      `Acumulado do período: ${pct(A.prod,A.den)}%`+(A.pr<META?` – faltam ${fmt(falta)} produtivos para ${META}%`:' – meta atingida')].join('\n');
+      `*Acumulado do mês: ${pct(A.prod,A.den)}%* (meta mensal ${META}%)`+(A.pr<META?` – faltam ${fmt(falta)} produtivos`:' – meta atingida ✅')].join('\n');
     copyText(txt,'resumo do dia')};
   const sb=$('#sideBase');if(sb){const act=SHEETS.filter(s=>s.ativa);let i0='',f0='';act.forEach(s=>s.recs.forEach(r=>{if(!i0||r.day<i0)i0=r.day;if(r.day>f0)f0=r.day}));
     sb.innerHTML=`<div class="pb"><div class="pt">Base de dados <span class="muted">${DBSTATE==='ok'?'salva no painel':DBSTATE==='local'?'neste navegador':''}</span></div>
      <dl class="pref"><dt>Planilhas ativas</dt><dd>${act.length} de ${SHEETS.length}</dd><dt>Período coberto</dt><dd>${i0?dayBRf(i0)+' a '+dayBRf(f0):'—'}</dd><dt>Execuções somadas</dt><dd>${fmt(ROWS.length)}</dd><dt>Colaboradores</dt><dd>${fmt(Object.keys(REG).length)}</dd></dl>
      <div class="pg2"><button type="button" class="btn sm presumo" id="sbImp">Importar</button><button type="button" class="btn ghost sm" id="sbGo">Gerenciar</button></div></div>`;
     $('#sbImp').onclick=()=>$('#file').click();$('#sbGo').onclick=()=>go('planilhas')}
+  setTimeout(paintTitles,0);
   el.querySelectorAll('[data-al]').forEach(b=>b.onclick=()=>{const x=al[+b.dataset.al];x.dr?drill(x.dr):go(x.go)});
 }
 function lastDay(rows){let m='';for(const r of rows)if(r.day>m)m=r.day;return m}
@@ -1194,7 +1230,10 @@ const CP_ICON='<svg viewBox="0 0 24 24" width="13" height="13" fill="none" strok
 const cpBtn=(txt,lab)=>`<button type="button" class="cp" data-cp="${esc(txt)}" data-lab="${esc(lab||txt)}" title="Copiar ${esc(lab||txt)}" aria-label="Copiar ${esc(lab||txt)}">${CP_ICON}</button>`;
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.cp');if(!b)return;e.stopPropagation();e.preventDefault();copyText(b.dataset.cp,b.dataset.lab)},true);
 // Ajusta tabelas: sem rolagem lateral (vira cartão quando não cabe), limita linhas longas e põe botões de copiar
-function enhance(root){
+const ACC=['#7cc7ff','#5eead4','#c4b5fd','#fcd34d','#f9a8d4','#86efac','#fdba74'];
+function paintTitles(){document.querySelectorAll('#views .panel').forEach((p,i)=>p.style.setProperty('--acc',ACC[i%ACC.length]));
+  document.querySelectorAll('#sidein .pb').forEach((p,i)=>p.style.setProperty('--acc',ACC[(i+2)%ACC.length]))}
+function enhance(root){paintTitles();
   const names=new Set(Object.keys(REG).map(n=>nomeDe(n)));Object.keys(REG).forEach(n=>names.add(equipeDe(n)));
   root.querySelectorAll('.cpt').forEach(s=>{if(s.nextElementSibling&&s.nextElementSibling.classList.contains('cp'))return;s.insertAdjacentHTML('afterend',cpBtn(s.textContent,(s.dataset.lab?s.dataset.lab+' ':'')+s.textContent))});
   root.querySelectorAll('.panel').forEach(pn=>{const tw=pn.querySelector(':scope > .tw, :scope > div > .tw');const h=pn.querySelector(':scope > h3');if(!tw||!h||h.querySelector('.cptab'))return;
@@ -1227,13 +1266,13 @@ function vGeral(v,rows){
   const dSeries=[...groupBy(rows,r=>r.day)].sort((x,y)=>x[0]<y[0]?-1:1).map(([d,rs])=>[d,agg(rs)]).filter(x=>x[1].den>=20);
   const best=dSeries.reduce((m,x)=>!m||x[1].pr>m[1].pr?x:m,null),worst=dSeries.reduce((m,x)=>!m||x[1].pr<m[1].pr?x:m,null);
   const acima=dSeries.filter(x=>x[1].pr>=META).length,media=dSeries.length?dSeries.reduce((s,x)=>s+x[1].pr,0)/dSeries.length:0;
-  const evoStats=dSeries.length?`<div class="evs"><button type="button" data-day="${best[0]}"><span>Melhor dia</span><b class="up">${best[1].pr.toFixed(1).replace('.',',')}%</b><em>${dayBR(best[0])}</em></button><button type="button" data-day="${worst[0]}"><span>Pior dia</span><b class="dn">${worst[1].pr.toFixed(1).replace('.',',')}%</b><em>${dayBR(worst[0])}</em></button><div><span>Média diária</span><b>${media.toFixed(1).replace('.',',')}%</b><em>${dSeries.length} dias úteis</em></div><div><span>Dias na meta</span><b class="${acima?'up':'dn'}">${acima}</b><em>de ${dSeries.length}</em></div></div>`:'';
+  const evoStats=dSeries.length?`<div class="evs"><button type="button" data-day="${best[0]}"><span>Melhor dia</span><b class="up">${best[1].pr.toFixed(1).replace('.',',')}%</b><em>${dayBR(best[0])}</em></button><button type="button" data-day="${worst[0]}"><span>Pior dia</span><b class="dn">${worst[1].pr.toFixed(1).replace('.',',')}%</b><em>${dayBR(worst[0])}</em></button><div><span>Média diária</span><b>${media.toFixed(1).replace('.',',')}%</b><em>${dSeries.length} dias úteis</em></div><div><span>Acumulado no mês</span><b class="${A.pr>=META?'up':'dn'}">${pct(A.prod,A.den)}%</b><em>${A.pr>=META?'meta atingida':'faltam '+fmt(Math.max(0,Math.ceil(META/100*A.den-A.prod)))+' produtivos'}</em></div></div>`:'';
   const ok=A.pr>=META;
   const K=(cls,lab,ico,val,dl,sub,dr)=>`<button type="button" class="kpi ${cls}" data-dr='${dr}'>${ico}<span class="lab">${lab}</span><span class="val">${val}${dl}</span><span class="sub">${sub}</span></button>`;
   v.innerHTML=`
   <div class="kpis">
    ${K('g','Produtividade',svgI('<path d="M4 20h3V11H4zm6 0h3V7h-3zm6 0h3V3h-3z"/>','#22c55e'),pct(A.prod,A.den)+'%',deltaHTML(A.pr,P&&P.pr,true),
-      `Meta: ${META},0% &nbsp;<span class="${ok?'up':'dn'}">${ok?'↑':'↓'} ${Math.abs(A.pr-META).toFixed(1).replace('.',',')} p.p.</span><br><span class="pill ${ok?'ok':'bad'}" style="margin-top:6px">${ok?'✓ Meta atingida':'Abaixo da meta'}</span>`,'{"prod":1}')}
+      `Meta mensal: ${META},0% &nbsp;<span class="${ok?'up':'dn'}">${ok?'↑':'↓'} ${Math.abs(A.pr-META).toFixed(1).replace('.',',')} p.p.</span><br><span class="pill ${ok?'ok':'bad'}" style="margin-top:6px">${ok?'✓ Meta atingida':'Abaixo da meta'}</span>`,'{"prod":1}')}
    ${K('','Resultados Produtivos',svgI('<path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/>','#2f86f6'),fmt(A.prod),deltaHTML(A.prod,P&&P.prod),`de ${fmt(A.den)} OS ${BASE==='rec'?'recebidas':'trabalhadas'}`,'{"prod":1}')}
    ${K('pg','Pagamentos (POS)',svgI('<path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15.9V19h-2v-1.1c-1.7-.3-3-1.4-3.1-3h2c.1.8.9 1.4 2.1 1.4 1.3 0 1.9-.6 1.9-1.3 0-.9-.8-1.2-2.4-1.6-1.8-.4-3.3-1.1-3.3-3 0-1.4 1.2-2.5 2.8-2.8V6h2v1.1c1.6.3 2.6 1.5 2.7 2.9h-2c-.1-.8-.7-1.3-1.8-1.3-1.1 0-1.7.5-1.7 1.2 0 .7.7 1 2.3 1.4 1.8.4 3.4 1.1 3.4 3.1 0 1.5-1.1 2.6-2.9 2.9z"/>','#22c55e'),fmt(A.pag),deltaHTML(A.pag,P&&P.pag),`${pct(A.pag,A.prod)}% dos produtivos<br><span class="muted small">${fmt(A.PAG_POS)} via POS · ${fmt(A.PAG_FAT)} faturas pagas</span>`,'{"cats":["PAG_POS","PAG_FAT"]}')}
    ${K('ct','Cortes',svgI('<path d="M9.6 8.2A4 4 0 1 0 8 9.8L10.2 12 8 14.2a4 4 0 1 0 1.6 1.6L12 13.4l7 7h3v-1L9.6 8.2zM6 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 12a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm16-16h-3l-5 5 2 2z"/>','#ef4444'),fmt(A.CORTE),deltaHTML(A.CORTE,P&&P.CORTE),`${pct(A.CORTE,A.prod)}% dos produtivos`,'{"cats":["CORTE"]}')}
@@ -1241,10 +1280,10 @@ function vGeral(v,rows){
    ${K('rr','Restab. e Religação',svgI('<path d="M12 2C8 7 5 10.5 5 14a7 7 0 0 0 14 0c0-3.5-3-7-7-12zm-1 16.9A5 5 0 0 1 7 14h2a3 3 0 0 0 2 2.8z"/>','#38bdf8'),fmt(RRx.length),'',`${fmt(RRx.filter(r=>r.tipo==='RESTAB').length)} restabelecimentos · ${fmt(RRx.filter(r=>r.tipo==='RELIG').length)} religações<br><span class="muted small">executadas de ${fmt(RR.length)} OS${RR_PROD?' · '+pct(RRx.length,A.prod)+'% dos produtivos':' · fora da meta'}</span>`,'{"rr":1}')}
   </div>
   <div class="row3">
-   <div class="panel"><h3>Evolução da Produtividade <small>${BASE==='rec'?'produtivos ÷ recebidas':'produtivos ÷ trabalhadas'}</small></h3><div class="chartbox"><div id="cEvo" class="svgc"></div></div>${evoStats}</div>
+   <div class="panel"><h3>Evolução da Produtividade <small>acumulado do mês × meta mensal de ${META}%</small></h3><div class="chartbox"><div id="cEvo" class="svgc"></div></div>${evoStats}</div>
    <div class="panel"><h3>Resultados Produtivos</h3><div class="donutwrap"><div id="cDon" class="svgc donut"></div>
      <div class="dleg">${dAll.map(x=>`<button type="button" data-dc='${JSON.stringify(x[1])}'><i style="background:${x[3]}"></i><span>${x[2]}</span><b>${fmt(x[0])}</b><em>${pct(x[0],A.prod)}%</em></button>`).join('')}</div></div>
-     <div class="svcb"><div class="svct">Produtividade por serviço <span class="muted">meta ${META}%</span></div>${svc.map(s=>`<button type="button" data-tp="${s.k}"><span>${TIPO_LBL[s.k]}</span><div class="bar"><i style="width:${Math.min(100,s.pr)}%;background:${s.pr>=META?'var(--green)':'var(--orange)'}"></i><s style="left:${META}%"></s></div><b class="${s.pr>=META?'up':'dn'}">${pct(s.prod,s.den,0)}%</b><em>${fmt(s.prod)}/${fmt(s.den)}</em></button>`).join('')}</div></div>
+     <div class="svcb"><div class="svct">Produtividade por serviço no período <span class="muted">meta mensal ${META}%</span></div>${svc.map(s=>`<button type="button" data-tp="${s.k}"><span>${TIPO_LBL[s.k]}</span><div class="bar"><i style="width:${Math.min(100,s.pr)}%;background:${s.pr>=META?'var(--green)':'var(--orange)'}"></i><s style="left:${META}%"></s></div><b class="${s.pr>=META?'up':'dn'}">${pct(s.prod,s.den,0)}%</b><em>${fmt(s.prod)}/${fmt(s.den)}</em></button>`).join('')}</div></div>
    <div class="panel" id="pCarga"></div>
    <div class="panel fim">
      <h3>Fim do Dia</h3>
@@ -1255,7 +1294,7 @@ function vGeral(v,rows){
    </div>
   </div>
   <div class="row2">
-   <div class="panel"><h3>Equipes (Produtividade)</h3>${teamTable(rows,false)}</div>
+   <div class="panel fillp"><h3>Equipes (Produtividade)</h3>${teamTable(rows,false)}${(()=>{const g=[...groupBy(rows,r=>equipeDe(r.eq))].map(([k,rs])=>agg(rs));const ac=g.filter(x=>x.pr>=META).length;const med=g.length?g.reduce((s,x)=>s+x.pr,0)/g.length:0;return `<div class="pfoot"><span>No acumulado do mês: <b class="${ac?'up':'dn'}">${ac} de ${g.length}</b> equipes acima de ${META}%</span><span>Média entre equipes <b>${med.toFixed(1).replace('.',',')}%</b></span></div>`})()}</div>
    <div class="panel" id="pTop"></div>
    <div class="panel" id="pPrim"></div>
   </div>
@@ -1271,8 +1310,9 @@ function vGeral(v,rows){
   // evolução
   const byDay=[...groupBy(rows,r=>r.day)].sort((a,b)=>a[0]<b[0]?-1:1);
   const serie=byDay.map(([d,rs])=>{const a=agg(rs);return +a.pr.toFixed(1)});
+  let cp=0,cd=0;const acum=byDay.map(([d,rs])=>{const a=agg(rs);cp+=a.prod;cd+=a.den;return cd?+(cp/cd*100).toFixed(1):0});
   chart('cEvo','line',{labels:byDay.map(d=>dayBR(d[0])),height:230,endLabel:true,yMin:0,yMax:100,fmt:v=>String(v).replace('.',',')+'%',
-    series:[{name:'Produtividade',data:serie,color:COL.pag,fill:true},{name:`Meta (${META}%)`,data:byDay.map(()=>META),color:COL.meta,dash:true}],
+    series:[{name:'Acumulado no mês',data:acum,color:COL.pag,fill:true},{name:'Do dia',data:serie,color:'rgba(160,190,230,.55)',dash:false,thin:true},{name:`Meta mensal (${META}%)`,data:byDay.map(()=>META),color:COL.meta,dash:true}],
     onClick:i=>drill({day:byDay[i][0],label:'Dia '+dayBRf(byDay[i][0])})});
   // donut
   const dv=dAll.map(x=>x[0]),dc=dAll.map(x=>x[1]);
@@ -1293,11 +1333,11 @@ function vGeral(v,rows){
     </div>${posDay.length?`<p class="note" style="margin:8px 0 0">Em ${dayBRf(ld)} houve ${posDay.length} OS de negociação via POS (sem carga de referência). Execução = OS baixadas sem “Fim do Dia” ÷ carga × equipes.</p>`:''}`;
   // top colaboradores
   const top=[...groupBy(rows,r=>r.eq)].map(([k,rs])=>Object.assign({k},agg(rs))).sort((a,b)=>b.prod-a.prod||b.pr-a.pr).slice(0,10);
-  $('#pTop').innerHTML=`<h3>Top Colaboradores (Produtivos)</h3><div class="tw"><table><thead><tr><th>#</th><th>Colaborador</th><th class="n">Produtivos</th><th class="n">Produtividade</th></tr></thead><tbody>${top.map((a,i)=>`<tr data-c="${esc(a.k)}"><td>${i+1}</td><td class="nm">${esc(nomeDe(a.k))}</td><td class="n">${a.prod}</td><td class="n">${pct(a.prod,a.den)}%</td></tr>`).join('')}</tbody></table></div>`;
+  $('#pTop').innerHTML=`<h3>Top Colaboradores (Produtivos)</h3><div class="tw"><table><thead><tr><th>#</th><th>Colaborador</th><th class="n">Produtivos</th><th class="n">Produtividade</th></tr></thead><tbody>${top.map((a,i)=>`<tr data-c="${esc(a.k)}"><td>${i+1}</td><td class="nm">${esc(nomeDe(a.k))}</td><td class="n">${a.prod}</td><td class="n">${pct(a.prod,a.den)}%</td></tr>`).join('')}</tbody></table></div><div class="pfoot"><span>Média por colaborador <b>${fmt(Math.round(A.prod/Math.max(1,new Set(rows.map(r=>r.eq)).size)))}</b> produtivos</span><span>Líder em volume <b>${top[0]?esc(nomeDe(top[0].k)).split(' ')[0]:'—'}</b></span></div>`;
   $('#pTop').querySelectorAll('tr[data-c]').forEach(tr=>tr.onclick=()=>drill({eqs:[tr.dataset.c],cats:PROD_CATS,label:'Produtivos de '+nomeDe(tr.dataset.c)}));
   // primeira / última
   const pl=[...groupBy(dayRows.filter(isValida),r=>equipeDe(r.eq))].map(([k,rs])=>{rs.sort((x,y)=>x.fim-y.fim);const l=rs[rs.length-1];return {k,a:Math.min(...rs.map(r=>r.ini||r.fim)),b:l.fim,l,ex:rs.filter(r=>isProd(r.cat)).length,ne:rs.filter(r=>!isProd(r.cat)).length}}).sort((x,y)=>x.k<y.k?-1:1);
-  $('#pPrim').innerHTML=`<h3>Primeira OS e Última Baixa <small>${ld?dayBRf(ld):''}</small></h3><div class="tw"><table><thead><tr><th>Equipe</th><th class="n">Primeira OS</th><th class="n">Última Baixa</th><th>Última OS</th></tr></thead><tbody>${pl.map(x=>`<tr data-os="${esc(x.l.os)}" title="${esc(x.l.res)} · ${x.ex} executadas / ${x.ne} não executadas no dia"><td class="nm">${esc(x.k)}</td><td class="n">${hhmm(x.a)}</td><td class="n">${hhmm(x.b)}</td><td><span class="st ${isProd(x.l.cat)?'p':'i'}">${execLbl(x.l)}</span></td></tr>`).join('')||'<tr><td colspan="4" class="muted">Sem execuções</td></tr>'}</tbody></table></div><p class="note" style="margin:6px 0 0">Primeira OS = início do 1º serviço; última baixa = fim do último serviço válido. Não valem “Fim do Dia” nem baixas fora do local (veja a tela Jornada).</p>`;
+  $('#pPrim').innerHTML=`<h3>Primeira OS e Última Baixa <small>${ld?dayBRf(ld):''}</small></h3><div class="tw"><table><thead><tr><th>Equipe</th><th class="n">Primeira OS</th><th class="n">Última Baixa</th><th>Última OS</th></tr></thead><tbody>${pl.map(x=>`<tr data-os="${esc(x.l.os)}" title="${esc(x.l.res)} · ${x.ex} executadas / ${x.ne} não executadas no dia"><td class="nm">${esc(x.k)}</td><td class="n">${hhmm(x.a)}</td><td class="n">${hhmm(x.b)}</td><td><span class="st ${isProd(x.l.cat)?'p':'i'}">${execLbl(x.l)}</span></td></tr>`).join('')||'<tr><td colspan="4" class="muted">Sem execuções</td></tr>'}</tbody></table></div><p class="note" style="margin:6px 0 0">Primeira OS = início do 1º serviço; última baixa = fim do último serviço válido. Não valem “Fim do Dia” nem baixas fora do local (veja a tela Jornada).</p>${pl.length?`<div class="pfoot"><span>1ª OS média <b>${minToHM(pl.reduce((s,x)=>{const d=new Date(x.a);return s+d.getHours()*60+d.getMinutes()},0)/pl.length)}</b></span><span>Última baixa média <b>${minToHM(pl.reduce((s,x)=>{const d=new Date(x.b);return s+d.getHours()*60+d.getMinutes()},0)/pl.length)}</b></span></div>`:''}`;
   bindOsRows($('#pPrim'));
   const last=rows.filter(isBaixa).sort((a,b)=>b.fim-a.fim).slice(0,6);
   $('#lastOS').innerHTML=osTable(last);bindOsRows($('#lastOS'));
@@ -1377,34 +1417,43 @@ function vRanking(v,rows){
 }
 
 /* ---------- Produção ---------- */
+/* blocos compactos de apoio (preenchem espaços com informação útil) */
+const BANDS=[['Antes das 10h',0,10],['10h às 12h',10,12],['12h às 14h',12,14],['14h às 16h',14,16],['16h ou mais',16,24]];
+const hourOf=r=>new Date(r.fim).getHours();
+function miniBlock(title,sub,items,opt={}){
+  return `<div class="svcb mini ${opt.cls||''}"><div class="svct">${title} <span class="muted">${sub||''}</span></div>${items.map(x=>`<button type="button" ${x.attr||''}><span>${x.l}</span><div class="bar"><i style="width:${Math.min(100,x.w)}%;background:${x.c||'var(--blue)'}"></i>${opt.meta?`<s style="left:${META}%"></s>`:''}</div><b>${x.v}</b><em>${x.s||''}</em></button>`).join('')}</div>`}
+function weekdayBlock(rows){const DW=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];const g=groupBy(rows,r=>new Date(r.day+'T12:00').getDay());
+  const it=[1,2,3,4,5,6,0].filter(d=>g.has(d)&&agg(g.get(d)).den>=30).map(d=>{const rs=g.get(d),a=agg(rs),nd=new Set(rs.map(r=>r.day)).size;return {l:DW[d],w:a.pr,v:pct(a.prod,a.den,0)+'%',s:`${fmt(Math.round(a.den/nd))} OS/dia`,c:a.pr>=META?'var(--green)':'var(--blue)',attr:''}});
+  return miniBlock('Produtividade por dia da semana','média do período',it,{meta:true})}
+function hourBlock(rows){const b=rows.filter(isBaixa);const it=BANDS.map(([l,h0,h1])=>{const rs=b.filter(r=>{const h=hourOf(r);return h>=h0&&h<h1});const a=agg(rs);return {l,w:a.pr,v:rs.length?pct(a.prod,a.den,0)+'%':'—',s:`${fmt(rs.length)} baixas`,c:a.pr>=META?'var(--green)':'#7cc7ff'}});
+  return miniBlock('Produtividade por faixa horária','pelo horário da baixa',it,{meta:true})}
 function vProducao(v,rows){
   const byDay=[...groupBy(rows,r=>r.day)].sort((a,b)=>a[0]<b[0]?-1:1);
   const byT=[...groupBy(rows,r=>r.tipo)].map(([k,rs])=>Object.assign({k},agg(rs)));
   const byR=[...groupBy(rows,r=>r.res||'(sem resultado)')].map(([k,rs])=>({k,n:rs.length,cat:rs[0].cat})).sort((a,b)=>b.n-a.n);
   const A=agg(rows);
-  v.innerHTML=`<div class="panel"><h3>Produção diária <small>toque num dia para ver as OS</small></h3><div class="chartbox"><div id="cDia" class="svgc"></div></div><div class="compbox"><div class="svct">Composição do período <span class="muted">todas as OS recebidas</span></div><div id="cComp"></div></div></div>
+  v.innerHTML=`<div class="panel"><h3>Produção diária por resultado <small>clique numa barra para ver as OS do dia</small></h3><div class="chartbox tall"><div id="cDia" class="svgc"></div></div><div class="compbox"><div class="svct">Composição do período <span class="muted">todas as OS recebidas</span></div><div id="cComp"></div></div></div>
   <div class="g2">
-   <div class="panel"><h3>Por tipo de serviço</h3><div class="tw"><table><thead><tr><th>Serviço</th><th class="n">Recebidas</th><th class="n">Trabalhadas</th><th class="n">Produtivos</th><th class="n">Produtividade</th><th class="n">Fim do dia</th><th class="n">Impedim.</th></tr></thead><tbody>
+   <div class="panel fillp"><h3>Por tipo de serviço</h3><div class="tw"><table><thead><tr><th>Serviço</th><th class="n">Recebidas</th><th class="n">Trabalhadas</th><th class="n">Produtivos</th><th class="n">Produtividade</th><th class="n">Fim do dia</th><th class="n">Impedim.</th></tr></thead><tbody>
    ${byT.map(a=>`<tr data-t="${a.k}"><td>${TIPO_LBL[a.k]}</td><td class="n">${fmt(a.rec)}</td><td class="n">${fmt(a.trab)}</td><td class="n">${fmt(a.prod)}</td><td class="n">${pct(a.prod,a.den)}%</td><td class="n">${fmt(a.FIMDIA)}</td><td class="n">${fmt(a.IMPED)}</td></tr>`).join('')}
-   </tbody><tfoot><tr><td>Total</td><td class="n">${fmt(A.rec)}</td><td class="n">${fmt(A.trab)}</td><td class="n">${fmt(A.prod)}</td><td class="n">${pct(A.prod,A.den)}%</td><td class="n">${fmt(A.FIMDIA)}</td><td class="n">${fmt(A.IMPED)}</td></tr></tfoot></table></div></div>
-   <div class="panel"><h3>Resultados registrados <small>classificação usada no cálculo</small></h3><div class="tw"><table><thead><tr><th>Resultado original</th><th class="n">Qtd</th><th class="n">%</th><th>Classificação</th></tr></thead><tbody>
+   </tbody><tfoot><tr><td>Total</td><td class="n">${fmt(A.rec)}</td><td class="n">${fmt(A.trab)}</td><td class="n">${fmt(A.prod)}</td><td class="n">${pct(A.prod,A.den)}%</td><td class="n">${fmt(A.FIMDIA)}</td><td class="n">${fmt(A.IMPED)}</td></tr></tfoot></table></div>${weekdayBlock(rows)}${hourBlock(rows)}${(()=>{const bt=[...byT].filter(x=>x.den>=10).sort((x,y)=>y.pr-x.pr)[0],bv=[...byT].sort((x,y)=>y.rec-x.rec)[0];return `<div class="pfoot"><span>Melhor produtividade <b>${bt?TIPO_LBL[bt.k]+' · '+pct(bt.prod,bt.den,0)+'%':'—'}</b></span><span>Maior volume <b>${bv?TIPO_LBL[bv.k]+' · '+fmt(bv.rec):'—'}</b></span></div>`})()}</div>
+   <div class="panel fillp"><h3>Resultados registrados <small>classificação usada no cálculo</small></h3><div class="tw"><table><thead><tr><th>Resultado original</th><th class="n">Qtd</th><th class="n">%</th><th>Classificação</th></tr></thead><tbody>
    ${byR.map(x=>`<tr data-r="${esc(x.k)}"><td>${esc(x.k)}</td><td class="n">${fmt(x.n)}</td><td class="n">${pct(x.n,A.rec)}%</td><td><span class="st ${CAT_ST[x.cat]}">${isProd(x.cat)?'Produtivo · ':''}${CAT_LBL[x.cat]}</span></td></tr>`).join('')}
-   </tbody></table></div></div>
+   </tbody></table></div><div class="pfoot"><span><b>${byR.length}</b> resultados diferentes</span><span>Produtivos <b>${pct(A.prod,A.rec)}%</b> das recebidas</span><span>Impedimentos <b>${pct(A.IMPED,A.rec)}%</b></span></div></div>
   </div>
   <div class="panel"><h3>Regras de cálculo</h3><ul class="note rules">
    <li><b>Escopo:</b> Corte, Supressão, Negociação de débitos via POS, Restabelecimento e Religação.</li><li><b>Restabelecimento e religação na produtividade:</b> <label><input type="checkbox" id="rrProd" ${RR_PROD?'checked':''}> contar como produtivos (“Restabelecida ligação de água OP”, “Religação de água deb OP”, “Religação de água impedimento de leitura”)</label>. Desmarcado, esses serviços ficam fora da produtividade e da meta, mas continuam nas listas e no detalhamento.</li>
    <li><b>Produtivos (lista fechada):</b>  Cliente efetuou pgto via POS · Pagamento efetivado via POS · Cliente apresentou as faturas pagas · Cortada ligação de água por débito DIF/OP · Suprimida ligação de água por débito OP · Vistoriado local e identificada situação · Restabelecida ligação de água OP · Religação de água deb OP · Religação de água impedimento de leitura. “Cliente informou pagamento das faturas” não é produtivo.</li>
    <li><b>Cada linha da planilha é uma execução.</b> Uma OS reprogramada aparece mais de uma vez; cada visita conta como OS recebida no dia em que foi baixada.</li>
-   <li><b>Produtividade:</b> <label><input type="radio" name="base" value="trab" ${BASE==='trab'?'checked':''}> produtivos ÷ OS trabalhadas (recebidas menos “Fim do Dia”)</label> &nbsp; <label><input type="radio" name="base" value="rec" ${BASE==='rec'?'checked':''}> produtivos ÷ OS recebidas</label>. Meta mensal: ${META}%.</li>
+   <li><b>Produtividade:</b> <label><input type="radio" name="base" value="trab" ${BASE==='trab'?'checked':''}> produtivos ÷ OS trabalhadas (recebidas menos “Fim do Dia”)</label> &nbsp; <label><input type="radio" name="base" value="rec" ${BASE==='rec'?'checked':''}> produtivos ÷ OS recebidas</label>. Meta mensal: ${META}% por colaborador, apurada no acumulado do mês (não é meta diária).</li>
    <li><b>Carga diária:</b> ${CARGA.CORTE} OS/dia por equipe de corte e ${CARGA.SUPRESSAO} OS/dia por equipe de supressão (referência, não meta). O tipo da equipe no dia é o serviço que ela mais executou.</li>
   </ul></div>`;
   $('#rrProd').onchange=e=>{setRRProd(e.target.checked);render()};
   v.querySelectorAll('input[name=base]').forEach(i=>i.onchange=()=>{BASE=i.value;LS.set('sa_dash_base',BASE);render()});
   v.querySelectorAll('tr[data-t]').forEach(tr=>tr.onclick=()=>drill({tipo:tr.dataset.t,label:TIPO_LBL[tr.dataset.t]}));
   v.querySelectorAll('tr[data-r]').forEach(tr=>tr.onclick=()=>drill({res:tr.dataset.r,label:tr.dataset.r}));
-  const dA=byDay.map(([d,rs])=>agg(rs));
-  chart('cDia','daily',{labels:byDay.map(d=>dayBR(d[0])),tip:byDay.map(d=>dayBRf(d[0])),total:dA.map(x=>x.den),prod:dA.map(x=>x.prod),pct:dA.map(x=>x.den>=20?+x.pr.toFixed(1):null),meta:META,
-    color:'#3987e5',color2:'#6fb0f5',lineColor:'#7cc7ff',titleA:'OS TRABALHADAS × PRODUTIVAS',titleB:'PRODUTIVIDADE DO DIA',
+  const ds=(lab,cats,c)=>({name:lab,data:byDay.map(([d,rs])=>rs.filter(r=>cats.includes(r.cat)).length),color:c});
+  chart('cDia','bars',{labels:byDay.map(d=>dayBR(d[0])),height:300,series:[ds('Pagamento via POS',['PAG_POS'],COL.pag),ds('Faturas pagas',['PAG_FAT'],COL.fat),ds('Corte',['CORTE'],COL.corte),ds('Supressão',['SUP'],COL.sup),ds('Restab./Religação',['RR'],'#0ea5e9'),ds('Vistoria',['VIST'],COL.vist),ds('Impedimento',['IMPED'],'#b91c1c'),ds('Neg. infrutífera',['INFRUT'],'#7c3aed'),ds('Fim do dia',['FIMDIA'],'#78716c'),ds('Outros',['OUTROS'],'#475569')].filter(s=>s.data.some(Boolean)),
     onClick:i=>drill({day:byDay[i][0],label:'Dia '+dayBRf(byDay[i][0])})});
   // composição do período
   const comp=[['Pagamentos',['PAG_POS','PAG_FAT'],'#3987e5'],['Corte e supressão',['CORTE','SUP'],'#199e70'],['Restab./Religação',['RR','VIST'],'#9085e9'],['Impedimento',['IMPED'],'#d95926'],['Fim do dia',['FIMDIA'],'#5d6b80'],['Neg. infrutífera',['INFRUT'],'#c98500'],['Outros',['OUTROS'],'#3b475c']]
@@ -1434,14 +1483,18 @@ function vPOS(v,rows){
    ${K('Pagamentos no corte',fmt(pagCorte.length),`${fmt(pagCorte.filter(r=>r.cat==='PAG_POS').length)} via POS · ${fmt(pagCorte.filter(r=>r.cat==='PAG_FAT').length)} faturas`,'','{"corte":1}')}
   </div>
   <div class="g2">
-   <div class="panel"><h3>Pagamentos por dia <small>todos os serviços</small></h3><div class="chartbox tall"><div id="cPag" class="svgc"></div></div></div>
-   <div class="panel"><h3>Resultados das OS de negociação POS</h3><div class="chartbox tall"><div id="cPosR" class="svgc"></div></div></div>
+   <div class="panel fillp"><h3>Pagamentos por dia <small>todos os serviços</small></h3><div class="chartbox tall"><div id="cPag" class="svgc"></div></div>${(()=>{const DW=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];const pg=rows.filter(r=>r.cat==='PAG_POS'||r.cat==='PAG_FAT');const g=groupBy(pg,r=>new Date(r.day+'T12:00').getDay());const nd=groupBy(rows,r=>new Date(r.day+'T12:00').getDay());
+     const it=[1,2,3,4,5,6].filter(d=>g.has(d)&&g.get(d).length>=10).map(d=>{const days=new Set(nd.get(d).map(r=>r.day)).size;const m=g.get(d).length/days;return {d,m}});const mx=Math.max(1,...it.map(x=>x.m));
+     const byd=[...groupBy(pg,r=>r.day)].sort((x,y)=>y[1].length-x[1].length)[0];const nDays=new Set(rows.map(r=>r.day)).size;
+     return miniBlock('Pagamentos por dia da semana','média por dia',it.map(x=>({l:DW[x.d],w:x.m/mx*100,v:x.m.toFixed(0),s:'por dia',c:'#3a8bd6'})))+`<div class="pfoot"><span>Média <b>${(pg.length/Math.max(1,nDays)).toFixed(1).replace('.',',')}</b> pagamentos por dia</span><span>Melhor dia <b>${byd?dayBR(byd[0])+' · '+byd[1].length:'—'}</b></span></div>`})()}</div>
+   <div class="panel fillp"><h3>Resultados das OS de negociação POS</h3><div class="chartbox"><div id="cPosR" class="svgc"></div></div>${miniBlock('Conversão POS por colaborador','pagamentos + faturas ÷ POS trabalhadas',[...groupBy(pos,r=>r.eq)].map(([k,rs])=>{const a=agg(rs);const c=a.trab?(a.PAG_POS+a.PAG_FAT)/a.trab*100:0;return {k,c,a}}).filter(x=>x.a.trab>=5).sort((x,y)=>y.c-x.c).slice(0,6).map(x=>({l:esc(nomeDe(x.k)),w:x.c,v:x.c.toFixed(0)+'%',s:`${x.a.PAG_POS+x.a.PAG_FAT}/${x.a.trab}`,c:'#5eead4',attr:`data-c="${esc(x.k)}"`})),{cls:'wide'})}<div class="pfoot"><span>Conversão geral <b>${conv.toFixed(1).replace('.',',')}%</b></span><span>Infrutíferas <b>${pct(P.INFRUT,P.trab)}%</b> das trabalhadas</span></div></div>
   </div>
   <div class="panel"><h3>Comercial por colaborador</h3><div class="tw"><table><thead><tr><th>Colaborador</th><th class="n">OS POS recebidas</th><th class="n">POS trabalhadas</th><th class="n">Pag. efetivado (POS)</th><th class="n">Faturas (POS)</th><th class="n">Infrutíferas</th><th class="n">Conversão POS</th><th class="n">Pgto via POS no corte</th><th class="n">Faturas no corte</th><th class="n">Total pagamentos</th></tr></thead><tbody>
    ${byC.map(c=>`<tr data-c="${esc(c.k)}"><td>${esc(nomeDe(c.k))}</td><td class="n">${c.posRec}</td><td class="n">${c.posTrab}</td><td class="n">${c.posPag}</td><td class="n">${c.posFat}</td><td class="n">${c.inf}</td><td class="n">${c.posTrab?pct(c.posPag+c.posFat,c.posTrab)+'%':'—'}</td><td class="n">${c.cPag}</td><td class="n">${c.cFat}</td><td class="n"><b>${c.posPag+c.posFat+c.cPag+c.cFat}</b></td></tr>`).join('')}
   </tbody></table></div><p class="note">Valor recebido (R$) e forma de pagamento não constam nesta base, por isso não são exibidos.</p></div>`;
   v.querySelectorAll('.kpi').forEach(b=>b.onclick=()=>{const d=JSON.parse(b.dataset.dr);if(d.corte)drill({cats:['PAG_POS','PAG_FAT'],notPos:1,label:'Pagamentos em OS de corte/supressão'});else drill({tipo:d.tipo,cats:d.cats||null,label:'Negociação POS'+(d.cats?' · '+d.cats.map(c=>CAT_LBL[c]).join(' + '):'')})});
   v.querySelectorAll('tr[data-c]').forEach(tr=>tr.onclick=()=>drill({eqs:[tr.dataset.c],cats:['PAG_POS','PAG_FAT'],label:'Pagamentos de '+nomeDe(tr.dataset.c)}));
+  v.querySelectorAll('.svcb [data-c]').forEach(b=>b.onclick=()=>drill({eqs:[b.dataset.c],tipo:'POS',label:'POS · '+nomeDe(b.dataset.c)}));
   chart('cPag','bars',{labels:byDay.map(d=>dayBR(d[0])),height:300,valueLabels:true,series:[{name:'Pagamento via POS',data:byDay.map(([d,rs])=>rs.filter(r=>r.cat==='PAG_POS').length),color:COL.pag},{name:'Faturas pagas',data:byDay.map(([d,rs])=>rs.filter(r=>r.cat==='PAG_FAT').length),color:COL.fat}],
     onClick:i=>drill({day:byDay[i][0],cats:['PAG_POS','PAG_FAT'],label:'Pagamentos · '+dayBRf(byDay[i][0])})});
   chart('cPosR','hbars',{labels:byR.map(x=>x.k),data:byR.map(x=>x.n),colors:byR.map(x=>isProd(x.cat)?COL.corte:x.cat==='INFRUT'?COL.inf:x.cat==='FIMDIA'?COL.fim:COL.imp),fmt:fmt,
@@ -1526,16 +1579,18 @@ function vGargalos(v,rows){
   const fimC=[...groupBy(rows,r=>r.eq)].map(([k,rs])=>({k,f:rs.filter(r=>r.cat==='FIMDIA').length,t:rs.length})).sort((a,b)=>b.f-a.f);
   const reinc=[...groupBy(rows,r=>r.os)].map(([k,rs])=>({k,n:rs.length,prod:rs.some(r=>isProd(r.cat)),rs:rs.sort((a,b)=>a.fim-b.fim)})).filter(x=>x.n>1);
   const semSol=reinc.filter(x=>!x.prod).sort((a,b)=>b.n-a.n);
+  const fechHour=(()=>{const b=rows.filter(isBaixa);const it=BANDS.map(([l,h0,h1])=>{const rs=b.filter(r=>{const h=hourOf(r);return h>=h0&&h<h1});const f=rs.filter(r=>/^IMOVEL FECHADO/.test(norm(r.res))).length;const p=rs.length?f/rs.length*100:0;return {l,w:p,v:rs.length?p.toFixed(0)+'%':'—',s:`${fmt(f)} de ${fmt(rs.length)}`,c:'#f87171'}});
+    return miniBlock('Imóvel fechado por faixa horária','% das visitas encontradas fechadas',it)})();
   const fechB=[...groupBy(rows.filter(r=>/^IMOVEL FECHADO/.test(norm(r.res))),r=>r.bai||'(SEM BAIRRO)')].map(([k,rs])=>({k,n:rs.length,sf:[...new Set(rs.map(r=>r.sf))].sort().join(', ')})).sort((a,b)=>b.n-a.n).slice(0,10);
   const fech=rows.filter(r=>/^IMOVEL FECHADO/.test(norm(r.res))).length;
-  const K=(lab,val,sub,cls)=>`<div class="kpi ${cls||''}" style="cursor:default"><span class="lab">${lab}</span><span class="val">${val}</span><span class="sub">${sub}</span></div>`;
+  const K=(lab,val,sub,cls,dk)=>`<button type="button" class="kpi ${cls||''}" data-gk="${dk}" title="Ver a lista dessas OS"><span class="lab">${lab}</span><span class="val">${val}</span><span class="sub">${sub}</span><span class="kgo">Ver lista →</span></button>`;
   v.innerHTML=`<div class="kpis">
-   ${K('Não produtivos',fmt(nprod.length),`${pct(nprod.length,A.rec)}% das recebidas`,'sp')}
-   ${K('Impedimentos',fmt(A.IMPED),`${pct(A.IMPED,A.rec)}% das recebidas`,'ct')}
-   ${K('Imóvel fechado',fmt(fech),`${pct(fech,A.IMPED)}% dos impedimentos`,'ct')}
-   ${K('Fim do dia',fmt(A.FIMDIA),`${pct(A.FIMDIA,A.rec)}% das recebidas`)}
-   ${K('OS com reincidência',fmt(reinc.length),'OS visitadas mais de uma vez')}
-   ${K('Reincidentes sem solução',fmt(semSol.length),'nenhuma visita produtiva','sp')}
+   ${K('Não produtivos',fmt(nprod.length),`${pct(nprod.length,A.rec)}% das recebidas`,'sp','np')}
+   ${K('Impedimentos',fmt(A.IMPED),`${pct(A.IMPED,A.rec)}% das recebidas`,'ct','imp')}
+   ${K('Imóvel fechado',fmt(fech),`${pct(fech,A.IMPED)}% dos impedimentos`,'ct','fech')}
+   ${K('Fim do dia',fmt(A.FIMDIA),`${pct(A.FIMDIA,A.rec)}% das recebidas`,'','fim')}
+   ${K('OS com reincidência',fmt(reinc.length),'OS visitadas mais de uma vez','','reinc')}
+   ${K('Reincidentes sem solução',fmt(semSol.length),'nenhuma visita produtiva','sp','sem')}
   </div>
   <div class="g2">
    <div class="panel"><h3>Motivos de não produtividade</h3><div class="chartbox tall"><div id="cMot" class="svgc"></div></div></div>
@@ -1545,11 +1600,18 @@ function vGargalos(v,rows){
    <div class="panel"><h3>OS reincidentes sem solução <small>top 15</small></h3><div class="tw"><table><thead><tr><th>OS</th><th class="n">Visitas</th><th>Bairro</th><th>Último resultado</th><th>Última visita</th></tr></thead><tbody>
    ${semSol.slice(0,15).map(x=>{const l=x.rs[x.rs.length-1];return `<tr data-os="${esc(x.k)}"><td>${osn(x.k)}</td><td class="n">${x.n}</td><td>${esc(l.bai)}</td><td>${esc(l.res)}</td><td>${dayBRf(l.day)}</td></tr>`}).join('')||'<tr><td colspan="5" class="muted">Nenhuma</td></tr>'}
    </tbody></table></div></div>
-   <div class="panel"><h3>Imóvel fechado por bairro <small>top 10 · reprogramar + encerrada</small></h3><div class="tw"><table><thead><tr><th>Bairro</th><th>Setor</th><th class="n">Imóvel fechado</th><th></th></tr></thead><tbody>
+   <div class="panel fillp"><h3>Imóvel fechado por bairro <small>top 10 · reprogramar + encerrada</small></h3><div class="tw"><table><thead><tr><th>Bairro</th><th>Setor</th><th class="n">Imóvel fechado</th><th></th></tr></thead><tbody>
    ${fechB.map(b=>`<tr data-b="${esc(b.k)}"><td>${esc(b.k)}</td><td>${esc(b.sf)}</td><td class="n">${b.n}</td><td style="width:35%"><div class="bar"><i style="width:${b.n/fechB[0].n*100}%;background:var(--red)"></i></div></td></tr>`).join('')||'<tr><td colspan="4" class="muted">Nenhum</td></tr>'}
-   </tbody></table></div></div></div>
+   </tbody></table></div>${fechHour}<div class="pfoot"><span>Esses 10 bairros concentram <b>${pct(fechB.reduce((s,b)=>s+b.n,0),fech)}%</b> dos imóveis fechados</span></div></div></div>
   </div>
   <div class="panel" id="pBai"></div>`;
+  v.querySelectorAll('[data-gk]').forEach(b=>b.onclick=()=>{const k=b.dataset.gk;
+    if(k==='np')drill({nprod:1,label:'Não produtivos'});
+    else if(k==='imp')drill({cats:['IMPED'],label:'Impedimentos'});
+    else if(k==='fech')drill({fech:1,label:'Imóvel fechado'});
+    else if(k==='fim')drill({cats:['FIMDIA'],label:'Fim do dia'});
+    else if(k==='reinc')drill({oss:reinc.map(x=>x.k),byOs:1,label:`OS com reincidência · ${fmt(reinc.length)} OS (todas as visitas)`});
+    else if(k==='sem')drill({oss:semSol.map(x=>x.k),byOs:1,label:`Reincidentes sem solução · ${fmt(semSol.length)} OS (todas as visitas)`})});
   bindOsRows(v);
   v.querySelectorAll('tr[data-b]').forEach(tr=>tr.onclick=()=>drill({bai:tr.dataset.b,res:'',q:'',cats:null,naoExec:0,label:'Imóvel fechado · '+tr.dataset.b,fech:1}));
   bairroPanel(rows);
@@ -1642,10 +1704,11 @@ function vPlanilhas(v){
 /* ---------- Detalhamento ---------- */
 function vOS(v,rows){
   const D=DRILL;
-  let list=rows.filter(r=>(!D.rr||isRR(r))&&(!D.cats||D.cats.includes(r.cat))&&(!D.res||r.res===D.res)&&(!D.tipo||r.tipo===D.tipo)&&(!D.os||r.os===D.os)&&(!D.eqs||D.eqs.includes(r.eq))&&(!D.day||r.day===D.day)&&(!D.notPos||r.tipo!=='POS')&&(!D.bai||r.bai===D.bai)&&(!D.sf||r.sf===D.sf)&&(!D.fech||/^IMOVEL FECHADO/.test(norm(r.res)))&&(!D.naoExec||(!isProd(r.cat)&&r.cat!=='FIMDIA')));
+  let OSS=D.oss?new Set(D.oss):null;
+  let list=rows.filter(r=>(!D.rr||isRR(r))&&(!D.nprod||!isProd(r.cat))&&(!OSS||OSS.has(r.os))&&(!D.cats||D.cats.includes(r.cat))&&(!D.res||r.res===D.res)&&(!D.tipo||r.tipo===D.tipo)&&(!D.os||r.os===D.os)&&(!D.eqs||D.eqs.includes(r.eq))&&(!D.day||r.day===D.day)&&(!D.notPos||r.tipo!=='POS')&&(!D.bai||r.bai===D.bai)&&(!D.sf||r.sf===D.sf)&&(!D.fech||/^IMOVEL FECHADO/.test(norm(r.res)))&&(!D.naoExec||(!isProd(r.cat)&&r.cat!=='FIMDIA')));
   const q=norm(D.q||'');
   if(q)list=list.filter(r=>norm([r.os,r.pde,r.bai,r.sf,r.end,r.eq,r.res,r.nota,equipeDe(r.eq)].join(' ')).includes(q));
-  list.sort((a,b)=>b.fim-a.fim);
+  if(D.byOs){const last=new Map();list.forEach(r=>{if(!last.has(r.os)||r.fim>last.get(r.os))last.set(r.os,r.fim)});list.sort((a,b)=>last.get(b.os)-last.get(a.os)||(a.os<b.os?-1:a.os>b.os?1:b.fim-a.fim))}else list.sort((a,b)=>b.fim-a.fim);
   const PS=50,pages=Math.max(1,Math.ceil(list.length/PS));if(PAGE>=pages)PAGE=pages-1;
   const slice=list.slice(PAGE*PS,PAGE*PS+PS);
   const results=[...new Set(rows.map(r=>r.res))].sort();
