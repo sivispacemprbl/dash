@@ -651,7 +651,9 @@ td .rp,td .rn{font-weight:500;font-size:11.5px;letter-spacing:.01em}
 .rztabs>button[data-t]{border:0;background:transparent;color:#9fb3cf;font:inherit;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;cursor:pointer}
 .rztabs>button[data-t]:hover{color:#e6eefb;background:rgba(124,199,255,.08)}
 .rztabs>button.on{background:linear-gradient(160deg,#1d4e8f,#163d73);color:#fff;box-shadow:inset 0 0 0 1px rgba(124,199,255,.35)}
-.rztabs .rzpv{margin-left:auto}
+.rztabs .rzimp{margin-left:auto;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;border:1px solid transparent;background:transparent;color:#8aa0bf;cursor:pointer;transition:color .15s,background .15s,border-color .15s}
+.rztabs .rzimp:hover,.rztabs .rzimp:focus-visible{color:#e6eefb;background:rgba(124,199,255,.08);border-color:rgba(124,199,255,.3)}
+.rztabs .rzimp+.rzpv{margin-left:0}.rztabs .rzpv{margin-left:auto}
 .rzday{display:flex;align-items:center;gap:10px}.rzday>div{display:flex;flex-direction:column;min-width:0}.rzday b{font-size:17px;text-transform:capitalize}.rzday small{font-size:12px;color:#9fb3cf}
 .rzkt{font-size:15px;color:#9fb3cf;font-weight:500;margin-left:4px}
 .rzchip{display:inline-flex;align-items:center;justify-content:center;min-width:40px;padding:3px 8px;border-radius:7px;font-weight:700;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--t);background:color-mix(in srgb,var(--t) 16%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--t) 40%,transparent)}
@@ -2766,6 +2768,7 @@ function vRodizio(v,rows){
   const T={hoje:rzTelaHoje,analise:rzTelaAnalise,mapa:rzTelaMapa,semana:rzTelaSemana,equipe:rzTelaEquipe,setores:rzTelaSetores}[RZ.tab]||rzTelaHoje;
   let body='';try{body=T(rows,ST)}catch(e){console.error(e);body=`<div class="panel"><p class="note">Algo deu errado ao montar esta tela: ${esc(e.message)}</p></div>`}
   v.innerHTML=`<div class="rz ${RZ.priv?'priv':''}"><div class="rztabs" role="tablist">${RZ_TABS.map(([k,l])=>`<button type="button" role="tab" aria-selected="${RZ.tab===k}" class="${RZ.tab===k?'on':''}" data-rz="tab" data-t="${k}">${l}</button>`).join('')}
+    ${window.claude?'':`<button type="button" class="rzimp" data-rz="importar" aria-label="Atualizar dados do rodízio" data-tip="Atualizar dados do rodízio<br><span style='opacity:.75'>carregar o arquivo .json</span>"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 15.5v2.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2.5"/><path d="M12 15V4.5M8 8.5l4-4 4 4"/></svg></button>`}
     <button type="button" class="rk-btn rzpv ${RZ.priv?'on':''}" data-rz="priv" aria-pressed="${RZ.priv}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2">${RZ.priv?'<path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6 0 10 7 10 7a18 18 0 0 1-3.2 4M6.6 6.6C3.9 8.3 2 12 2 12s4 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/>':'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'}</svg>${RZ.priv?'Modo privado ligado':'Modo privado'}</button></div>${body}</div>`;
   rzBind(v);
 }
