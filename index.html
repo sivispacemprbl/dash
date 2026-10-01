@@ -768,6 +768,16 @@ td .rp,td .rn{font-weight:500;font-size:11.5px;letter-spacing:.01em}
 .lk-ic{align-self:center;width:62px;height:62px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(160deg,rgba(124,199,255,.18),rgba(124,199,255,.05));box-shadow:inset 0 0 0 1px rgba(124,199,255,.35),0 10px 30px rgba(47,134,246,.25);margin-bottom:6px}
 .app.locked{visibility:hidden}
 .lock{background:radial-gradient(120% 90% at 50% 0%,#0d2347 0%,#071228 55%,#040b1a 100%)}
+.rzmm{display:inline-flex;flex-wrap:wrap;gap:4px;padding:4px;border-radius:10px;background:rgba(8,20,42,.55);border:1px solid var(--line2);margin-bottom:12px}
+.rzmm button{border:0;background:none;color:#9fb3cf;font:inherit;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:7px;cursor:pointer}.rzmm button.on{background:#1d4e8f;color:#fff}
+.rzmap.rzvec{background:transparent;cursor:default;overflow:visible}
+.rzsvg{display:block;width:100%;height:auto;filter:drop-shadow(0 14px 28px rgba(0,0,0,.35))}
+.rzreg{stroke:#0a1730;stroke-width:3;stroke-linejoin:round;cursor:pointer;transition:fill-opacity .15s,filter .15s}
+.rzreg:hover{fill-opacity:.95!important;filter:brightness(1.12)}
+.rzreg.vazio{stroke:#0a1730}
+.rzlbl text{fill:#f1f6ff;text-anchor:middle;font-family:inherit;paint-order:stroke;stroke:rgba(5,14,32,.85);stroke-width:4px;stroke-linejoin:round}
+@media (max-width:760px){.rzmap.rzvec{min-width:620px}.panel:has(>.rzmap.rzvec){overflow-x:auto}}
+.rz.priv .rzsvg .rzlbl{filter:blur(6px)}
 </style>
 
 <div class="app">
@@ -2591,11 +2601,39 @@ function rzInsights(ST){
   const ord={alto:0,med:1,op:2,info:3};return out.sort((x,y)=>ord[x.lv]-ord[y.lv]||y.imp-x.imp)}
 
 /* ---------- mapa ---------- */
-function rzMapaHTML(d){const src=rzMapa();if(!src)return '<p class="muted">Mapa não carregado. Importe o pacote do rodízio em “Equipe e faltas”.</p>';
+const rzFormas=()=>(RZ.cfg&&RZ.cfg.formas)||window.RZ_FORMAS||null;
+const RZ_MM=[['escala','Escala do dia'],['prod','Produtividade'],['pot','Potencial'],['ruas','Mapa de ruas']];
+const rzProdCor=pr=>pr==null?null:pr>=META?'#22c55e':pr>=45?'#86efac':pr>=35?'#facc15':pr>=25?'#fb923c':'#ef4444';
+function rzMapaHTML(d,ST){
+  const mm=RZ.mm||'escala';const F=rzFormas();
   const dia=rzDia(d),it=dia?dia.itens:[],f=rzFeitos(d),quem={};it.forEach(i=>quem[i.setor]=i.unidade);
-  return `<div class="rzmap" id="rzMap"><img src="${src}" alt="Mapa dos setores" draggable="false" class="rzs">${RZ.cfg.setores.map(s=>{const p=MAPA_POS[s.codigo];if(!p)return '';const u=quem[s.codigo];
-    return `<button type="button" class="rzpin ${u?'on':'off'} ${u&&f[u]?'ok':''} ${RZ.sel===+s.codigo?'sel':''}" data-rz="setor" data-c="${s.codigo}" style="left:${(p[0]/16).toFixed(2)}%;top:${(p[1]/7.96).toFixed(2)}%;--t:${rzCol(s.potencial)}" aria-label="Setor ${s.codigo}"><b class="rzs">${s.codigo}</b>${u?`<span class="rzn">${esc(rzNome(u))}</span>`:''}</button>`}).join('')}</div>
-  <div class="rzleg">${RZ_TIERS.map(t=>`<span><i style="background:${rzCol(t)}"></i>${t}</span>`).join('')}<span><i class="o"></i>sem equipe</span><span><i class="k"></i>programado</span></div>`}
+  const bar=`<div class="rzmm" role="tablist">${RZ_MM.filter(m=>m[0]!=='ruas'||rzMapa()).map(([k,l])=>`<button type="button" class="${mm===k?'on':''}" data-rz="mm" data-m="${k}">${l}</button>`).join('')}</div>`;
+  if(mm==='ruas'||!F){const src=rzMapa();if(!src)return bar+'<p class="note">Mapa não carregado. Importe o pacote do rodízio em “Equipe e faltas”.</p>';
+    return bar+`<div class="rzmap" id="rzMap"><img src="${src}" alt="Mapa dos setores com ruas" draggable="false" class="rzs">${RZ.cfg.setores.map(s=>{const p=MAPA_POS[s.codigo];if(!p)return '';const u=quem[s.codigo];
+      return `<button type="button" class="rzpin ${u?'on':'off'} ${u&&f[u]?'ok':''} ${RZ.sel===+s.codigo?'sel':''}" data-rz="setor" data-c="${s.codigo}" style="left:${(p[0]/16).toFixed(2)}%;top:${(p[1]/7.96).toFixed(2)}%;--t:${rzCol(s.potencial)}" aria-label="Setor ${s.codigo}"><b class="rzs">${s.codigo}</b>${u?`<span class="rzn">${esc(rzNome(u))}</span>`:''}</button>`}).join('')}</div>
+      <div class="rzleg"><span>Mapa original com as ruas · toque num setor para ver os detalhes</span></div>`}
+  const st={};(ST?ST.setores:[]).forEach(x=>st[x.sf]=x);
+  const cell=s=>{const c=String(s.codigo),u=quem[s.codigo],x=st[c],pr=x&&x.a.den>=10?x.a.prod/x.a.den*100:null;
+    let fill,op,l2='';
+    if(mm==='escala'){fill=u?rzCol(s.potencial):'#1b3358';op=u?.85:1;l2=u?rzNome(u):''}
+    else if(mm==='prod'){fill=rzProdCor(pr)||'#1b3358';op=pr==null?1:.85;l2=pr==null?'sem dados':pr.toFixed(0)+'%'}
+    else{fill=rzCol(s.potencial);op=.85;l2=s.potencial}
+    return {c,u,fill,op,l2,pr,ok:u&&f[u]}};
+  const cells=RZ.cfg.setores.filter(s=>F.paths[String(s.codigo)]).map(s=>Object.assign(cell(s),{s}));
+  const tip=x=>{const s=x.s,a=st[x.c];return `<b>Setor ${x.c}</b> · ${esc(s.potencial||'')}<br>${esc(s.bairros||'')}<br>${x.u?'Hoje: <b>'+esc(rzNome(x.u))+'</b>'+(x.ok?' ✓':''):'Sem equipe neste dia'}${a?`<br>GeoCall: ${pct(a.a.prod,a.a.den)}% em ${fmt(a.a.den)} OS`:''}`.replace(/"/g,'&quot;')};
+  const svg=`<svg class="rzsvg" viewBox="0 0 ${F.w} ${F.h}" role="img" aria-label="Mapa esquemático dos setores">
+    <defs><filter id="rzGlow" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="14"/></filter></defs>
+    <path d="${F.outline}" fill="rgba(124,199,255,.16)" filter="url(#rzGlow)"/>
+    <path d="${F.outline}" fill="#0f2445" stroke="rgba(124,199,255,.45)" stroke-width="2"/>
+    ${cells.map(x=>`<path class="rzreg ${RZ.sel===+x.c?'sel':''} ${mm==='escala'&&!x.u?'vazio':''}" d="${F.paths[x.c]}" fill="${x.fill}" fill-opacity="${x.op}" data-rz="setor" data-c="${x.c}" data-tip="${tip(x)}"/>`).join('')}
+    ${cells.filter(x=>RZ.sel===+x.c).map(x=>`<path d="${F.paths[x.c]}" fill="none" stroke="#fff" stroke-width="4" pointer-events="none"/>`).join('')}
+    ${cells.map(x=>{const p=F.pole[x.c];if(!p)return '';const sm=p[2]<24;const dark=(mm!=='escala'||x.u)&&mm!=='pot'?'':'';
+      return `<g class="rzlbl" pointer-events="none" transform="translate(${p[0]} ${p[1]})"><text class="rzs" y="${sm?6:-4}" font-size="${sm?17:27}" font-weight="700">${x.c}${x.ok?' ✓':''}</text>${sm?'':`<text class="${mm==='escala'&&x.u?'rzn':''}" y="18" font-size="16.5" font-weight="600">${esc(x.l2)}</text>`}</g>`}).join('')}
+  </svg>`;
+  const leg=mm==='escala'?`${RZ_TIERS.map(t=>`<span><i style="background:${rzCol(t)}"></i>${t} com equipe</span>`).join('')}<span><i style="background:#1b3358;box-shadow:inset 0 0 0 1px #3b5a86"></i>sem equipe</span><span>✓ programado no GeoCall</span>`
+    :mm==='prod'?`<span><i style="background:#22c55e"></i>${META}% ou mais</span><span><i style="background:#86efac"></i>45–${META}%</span><span><i style="background:#facc15"></i>35–45%</span><span><i style="background:#fb923c"></i>25–35%</span><span><i style="background:#ef4444"></i>abaixo de 25%</span><span><i style="background:#1b3358"></i>menos de 10 OS</span><span class="muted">GeoCall · período filtrado</span>`
+    :RZ_TIERS.map(t=>`<span><i style="background:${rzCol(t)}"></i>${t}</span>`).join('')+'<span class="muted">potencial de arrecadação do setor</span>';
+  return bar+`<div class="rzmap rzvec" id="rzMap">${svg}</div><div class="rzleg">${leg}</div>`}
 function rzFicha(c,d,ST){const s=rzSetor(c);if(!s)return `<div class="rzf-vazia"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="#7cc7ff" stroke-width="1.6"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><b>Toque num setor do mapa</b><span>Veja bairros, quem está lá, próximas visitas e como o setor rende no GeoCall.</span></div>`;
   const dia=rzDia(d),it=dia&&dia.itens.find(i=>+i.setor===+c);let fim=d,k=0;while(k<9){fim=RM.proximoDiaUtil(RM.addDias(fim,1),rzFer());k++}
   const todos=rzEscalaAte(fim);const prox=todos.filter(x=>x.data>d&&x.itens.some(i=>+i.setor===+c)).slice(0,4);const ant=todos.filter(x=>x.data<d&&x.itens.some(i=>+i.setor===+c)).slice(-3).reverse();
@@ -2646,7 +2684,7 @@ function rzTelaHoje(rows,ST){const d=RZ.dia;const se=rzSemExp();if(se)return rzD
 
 function rzTelaMapa(rows,ST){const d=RZ.dia;const se=rzSemExp();if(se)return rzDayBar('Toque num setor')+se;
   const dia=rzDia(d),quem={};(dia?dia.itens:[]).forEach(i=>quem[i.setor]=i.unidade);
-  return rzDayBar('Toque num setor do mapa')+`<div class="rzmapg"><div class="panel"><h3>São Mateus · ${RZ.cfg.setores.length} setores <small>${dia?dia.itens.length:0} com equipe neste dia</small></h3>${rzMapaHTML(d)}</div>
+  return rzDayBar('Toque num setor do mapa')+`<div class="rzmapg"><div class="panel"><h3>São Mateus · ${RZ.cfg.setores.length} setores <small>${dia?dia.itens.length:0} com equipe neste dia</small></h3>${rzMapaHTML(d,ST)}</div>
    <div class="panel rzficha">${rzFicha(RZ.sel,d,ST)}</div></div>
    <div class="panel"><h3>Setores e bairros <small>digite um bairro para achar o setor</small></h3><input type="search" id="rzBusca" class="rzin" placeholder="Buscar bairro (ex.: Iguatemi)" value="${esc(RZ.q)}" autocomplete="off">
    <div class="rzidx">${RZ.cfg.setores.slice().sort((a,b)=>a.codigo-b.codigo).map(s=>{const u=quem[s.codigo];return `<button type="button" class="${RZ.sel===+s.codigo?'sel':''}" data-rz="setor" data-c="${s.codigo}" data-b="${esc(rzNorm(s.codigo+' '+s.bairros))}" style="--t:${rzCol(s.potencial)}">${rzChip(s.codigo)}<span class="rzs">${esc(s.bairros)}</span><em class="${u?'rzn':'muted'}">${u?esc(rzNome(u)):'—'}</em></button>`}).join('')}</div><p class="muted" id="rzBv" hidden>Nenhum setor com esse bairro.</p></div>`}
@@ -2734,12 +2772,13 @@ function vRodizio(v,rows){
 function rzFichaVer(){const f=document.querySelector('.rzficha');if(!f)return;const r=f.getBoundingClientRect();if(r.top>innerHeight-120)f.scrollIntoView({behavior:'smooth',block:'nearest'})}
 function rzBind(v){const root=v.querySelector('.rz');if(!root)return;
   root.onclick=async ev=>{
-    const mp=ev.target.closest('#rzMap');if(mp&&!ev.target.closest('[data-rz]')){const r=mp.getBoundingClientRect();const c=setorNoPonto((ev.clientX-r.left)/r.width*1600,(ev.clientY-r.top)/r.height*796);if(c){RZ.sel=c;rzRerender();rzFichaVer()}return}
+    const mp=ev.target.closest('#rzMap:not(.rzvec)');if(mp&&!ev.target.closest('[data-rz]')){const r=mp.getBoundingClientRect();const c=setorNoPonto((ev.clientX-r.left)/r.width*1600,(ev.clientY-r.top)/r.height*796);if(c){RZ.sel=c;rzRerender();rzFichaVer()}return}
     const b=ev.target.closest('[data-rz]');if(!b||b.tagName==='SELECT')return;const a=b.dataset.rz,d=RZ.dia;
     try{
       if(a==='tab'){RZ.tab=b.dataset.t;RZ.confirm=null;render();scrollTo({top:0})}
       else if(a==='priv'){RZ.priv=!RZ.priv;try{localStorage.setItem('sa_rz_priv',RZ.priv?'1':'0')}catch(e){}rzRerender()}
       else if(a==='setor'){RZ.sel=+b.dataset.c;if(RZ.tab!=='mapa'){RZ.tab='mapa';render();const f=document.querySelector('.rzficha');if(f)f.scrollIntoView({block:'start'})}else{rzRerender();if(b.closest('#rzMap'))rzFichaVer()}}
+      else if(a==='mm'){RZ.mm=b.dataset.m;rzRerender()}
       else if(a==='fechar'){RZ.sel=null;rzRerender()}
       else if(a==='dia'){const dir=+b.dataset.dir;let n=RM.addDias(d,dir),g=0;while(!RM.ehDiaUtil(n,rzFer())&&g++<30)n=RM.addDias(n,dir);RZ.dia=n;RZ.confirm=null;rzRerender()}
       else if(a==='hojeBtn'){RZ.dia=rzDiaInicial();rzRerender()}
@@ -2757,8 +2796,8 @@ function rzBind(v){const root=v.querySelector('.rz');if(!root)return;
       else if(a==='desligarOk'){RZ.confirm=null;const u=rzUni(b.dataset.u);u.status='inativo';u.desde=rzHoje();rzSave(rzNome(u.id)+' saiu do rodízio')}
       else if(a==='religar'){const u=rzUni(b.dataset.u);u.status='ativo';rzSave(rzNome(u.id)+' voltou ao rodízio')}
       else if(a==='feriados'){RZ.cfg.feriados=$('#rzFer').value.split(/\s+/).filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(x)).sort();rzSave(RZ.cfg.feriados.length+' feriados salvos')}
-      else if(a==='exportar'){const c=JSON.parse(JSON.stringify(RZ.cfg));c.mapa=rzMapa();const blob=new Blob([JSON.stringify({tipo:'rodizio-sabesp',v:1,cfg:c})],{type:'application/json'});const u=URL.createObjectURL(blob);const l=document.createElement('a');l.href=u;l.download='rodizio-sao-mateus.json';document.body.appendChild(l);l.click();setTimeout(()=>{URL.revokeObjectURL(u);l.remove()},1500);toast('Pacote exportado.')}
-      else if(a==='importar'){const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=async()=>{const f=i.files[0];if(!f)return;try{const p=JSON.parse(await f.text());const c=p&&p.cfg;if(!c||!Array.isArray(c.unidades)||!Array.isArray(c.setores))throw new Error('arquivo não é um pacote do rodízio');RZ.cfg=RM.migrar(c);RZ.cfg.feitos=RZ.cfg.feitos||{};RZ.dia=rzDiaInicial();rzSave('Rodízio importado: '+c.unidades.length+' colaboradores, '+c.setores.length+' setores.')}catch(e){toast('Não foi possível importar: '+e.message)}};i.click()}
+      else if(a==='exportar'){const c=JSON.parse(JSON.stringify(RZ.cfg));c.mapa=rzMapa();c.formas=rzFormas();const blob=new Blob([JSON.stringify({tipo:'rodizio-sabesp',v:1,cfg:c})],{type:'application/json'});const u=URL.createObjectURL(blob);const l=document.createElement('a');l.href=u;l.download='rodizio-sao-mateus.json';document.body.appendChild(l);l.click();setTimeout(()=>{URL.revokeObjectURL(u);l.remove()},1500);toast('Pacote exportado.')}
+      else if(a==='importar'){const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=async()=>{const f=i.files[0];if(!f)return;try{const p=JSON.parse(await f.text());const c=p&&p.cfg;if(!c||!Array.isArray(c.unidades)||!Array.isArray(c.setores))throw new Error('arquivo não é um pacote do rodízio');if(RZ.cfg&&RZ.cfg.unidades&&RZ.cfg.unidades.length){if(confirm('Você já tem um rodízio salvo. Manter a equipe, as faltas e os ajustes que você lançou e atualizar só o mapa?')){if(c.formas)RZ.cfg.formas=c.formas;if(c.mapa)RZ.cfg.mapa=c.mapa;rzSave('Mapa atualizado. Equipe, faltas e ajustes mantidos.');return}if(!confirm('Substituir tudo pelo conteúdo do arquivo?'))return}RZ.cfg=RM.migrar(c);RZ.cfg.feitos=RZ.cfg.feitos||{};RZ.dia=rzDiaInicial();rzSave('Rodízio importado: '+c.unidades.length+' colaboradores, '+c.setores.length+' setores.')}catch(e){toast('Não foi possível importar: '+e.message)}};i.click()}
     }catch(e){toast(e&&e.message||'Não foi possível')}};
   root.onchange=ev=>{const el=ev.target,a=el.dataset&&el.dataset.rz;if(!a)return;try{
     if(a==='troca'){const o=rzTroca(RZ.dia,el.dataset.u,+el.value);rzSave(o?'Trocado com '+o:'Setor alterado')}
