@@ -627,6 +627,16 @@ table.det td,table.det .muted{font-size:11.5px}
 .st.f,.st.i,.st.o,.st.n{background:rgba(239,68,68,.12);color:#f87171;border-color:rgba(239,68,68,.28)}
 input.cad{width:100%;min-width:220px}
 td.nw{white-space:nowrap}
+/* gráfico diário */
+.dleg2{display:flex;flex-wrap:wrap;gap:6px 16px;margin:-2px 0 8px;font-size:12px;color:var(--muted,#9fb3cf)}
+.dleg2 span{display:inline-flex;align-items:center;gap:6px}.dleg2 i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.dleg2 i.ln{width:14px;height:0;border-top:2px dashed #34d399;border-radius:0}
+.dchart{width:100%;min-height:250px}.dchart svg{display:block;width:100%;height:auto}
+.dchart .dax{fill:#8aa0bf;font-size:11px;font-family:inherit}
+.dchart .dpct{fill:#cbd5e1;font-size:10.5px;font-weight:600;font-family:inherit}.dchart .dpct.ok{fill:#4ade80}
+.dchart .dbar{cursor:pointer}.dchart .dbar:hover rect[fill=transparent]{fill:rgba(148,163,184,.07)}
+.dchart .dbar path,.dchart .dbar rect:not([fill=transparent]){transition:opacity .15s}
+.dchart svg:hover .dbar:not(:hover) path,.dchart svg:hover .dbar:not(:hover) rect:not([fill=transparent]){opacity:.55}
 /* KPIs sempre em grade completa: 6 | 3+3 | 2+2+2 (nunca 5+1) */
 #views{container-type:inline-size;container-name:vw}
 @container vw (max-width:1099px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
@@ -634,6 +644,127 @@ td.nw{white-space:nowrap}
 @container vw (min-width:1100px){.kpis{grid-template-columns:repeat(6,minmax(0,1fr))!important}}
 .kpis>*{min-width:0}
 td .rp,td .rn{font-weight:500;font-size:11.5px;letter-spacing:.01em}
+
+/* ===== Rodízio / Setores ===== */
+.rz{display:flex;flex-direction:column;gap:16px}
+.rztabs{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:6px;border:1px solid var(--line2);border-radius:12px;background:rgba(10,28,58,.6)}
+.rztabs>button[data-t]{border:0;background:transparent;color:#9fb3cf;font:inherit;font-size:13px;font-weight:600;padding:8px 14px;border-radius:9px;cursor:pointer}
+.rztabs>button[data-t]:hover{color:#e6eefb;background:rgba(124,199,255,.08)}
+.rztabs>button.on{background:linear-gradient(160deg,#1d4e8f,#163d73);color:#fff;box-shadow:inset 0 0 0 1px rgba(124,199,255,.35)}
+.rztabs .rzpv{margin-left:auto}
+.rzday{display:flex;align-items:center;gap:10px}.rzday>div{display:flex;flex-direction:column;min-width:0}.rzday b{font-size:17px;text-transform:capitalize}.rzday small{font-size:12px;color:#9fb3cf}
+.rzkt{font-size:15px;color:#9fb3cf;font-weight:500;margin-left:4px}
+.rzchip{display:inline-flex;align-items:center;justify-content:center;min-width:40px;padding:3px 8px;border-radius:7px;font-weight:700;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--t);background:color-mix(in srgb,var(--t) 16%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--t) 40%,transparent)}
+.rztier{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:5px;color:var(--t);background:color-mix(in srgb,var(--t) 14%,transparent);white-space:nowrap}
+.rzprog{display:flex;align-items:center;gap:10px;font-size:12.5px;color:#9fb3cf;margin-bottom:12px}.rzbar{flex:1 1 200px;max-width:340px;height:6px;border-radius:3px;background:rgba(148,163,184,.15);overflow:hidden}.rzbar i{display:block;height:100%;background:#22c55e;border-radius:3px}
+.rzcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:10px}
+.rzcard{position:relative;display:grid;grid-template-columns:18px 64px minmax(0,1fr) 42px;gap:4px 10px;align-items:start;padding:12px 12px 12px 14px;border-radius:12px;background:rgba(15,34,66,.7);border:1px solid var(--line2);overflow:hidden}
+.rzcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--t)}
+.rzcard.done{opacity:.55}.rzcard.done .rzwho b{text-decoration:line-through}
+.rzn0{font-size:11px;color:#8aa0bf;font-weight:700;padding-top:10px;text-align:center}
+.rzcode{font:inherit;font-size:26px;font-weight:700;color:var(--t);background:none;border:0;padding:2px 0;cursor:pointer;text-align:left;line-height:1.1}
+.rzbody{min-width:0;display:flex;flex-direction:column;gap:4px}
+.rzwho{display:flex;align-items:center;gap:6px}.rzwho b{font-size:14.5px}
+.rzwhere{font-size:12px;color:#9fb3cf;line-height:1.35}
+.rzmeta{display:flex;flex-wrap:wrap;align-items:center;gap:5px;font-size:11.5px}.rzm{background:rgba(148,163,184,.14);border-radius:5px;padding:2px 7px;font-weight:600}
+.rzplus{background:none;border:0;padding:0;cursor:pointer}.rzplus .rzchip{min-width:0;font-size:11px;padding:2px 6px}
+.rzhist{align-self:flex-start;background:none;border:0;padding:0;font:inherit;font-size:11.5px;color:#9fb3cf;cursor:pointer;text-align:left}.rzhist:hover{color:#e6eefb}
+.rzmore summary{font-size:11.5px;color:#7cc7ff;cursor:pointer;list-style:none;font-weight:600}.rzmore summary::-webkit-details-marker{display:none}
+.rzedit{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-top:6px}.rzedit label{display:flex;flex-direction:column;gap:3px;font-size:11px;color:#9fb3cf}
+.rzchk{width:40px;height:40px;border-radius:11px;border:1.5px solid var(--line2);background:rgba(8,20,42,.6);color:#fff;font-size:18px;font-weight:700;cursor:pointer;align-self:center}
+.rzchk:hover{border-color:#22c55e}.rzchk[aria-pressed=true]{background:#16a34a;border-color:#16a34a}
+.rzfora{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px;font-size:12.5px;color:#9fb3cf}.rzfora button{background:none;border:0;padding:0;cursor:pointer}
+.rzpill{background:rgba(148,163,184,.12);border-radius:999px;padding:3px 10px;font-size:12px;color:#c9d6ea}
+.rzact{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.rzmapg{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;align-items:start}
+@media (max-width:1680px){.rzmapg{grid-template-columns:1fr}.rzficha{position:static}.rzficha .rzf{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px 22px;align-items:start}.rzficha .rzf-top{grid-column:1/-1}}
+.rzmap{position:relative;line-height:0;border-radius:10px;overflow:hidden;background:#fff;cursor:crosshair;user-select:none}
+.rzmap img{width:100%;height:auto;display:block;filter:saturate(.8) brightness(.97)}
+.rzpin{position:absolute;transform:translate(-50%,-50%);display:inline-flex;flex-direction:column;align-items:center;line-height:1.1;cursor:pointer;font:inherit;background:#0f2242;color:#e6eefb;border:1.5px solid var(--t);border-radius:8px;padding:3px 7px;font-size:10.5px;font-weight:600;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,.35)}
+.rzpin b{font-size:11.5px;color:var(--t)}
+.rzpin.off{background:rgba(15,34,66,.78);padding:2px 5px;border-width:1px;border-style:dashed}
+.rzpin.ok{opacity:.55}.rzpin:hover{z-index:3;transform:translate(-50%,-50%) scale(1.08)}
+.rzpin.sel{z-index:4;background:var(--t);color:#0b1b33;box-shadow:0 0 0 4px color-mix(in srgb,var(--t) 35%,transparent)}.rzpin.sel b{color:#0b1b33}
+@media (max-width:760px){.rzmap{min-width:640px}.rzpin span{display:none}.rzpin{padding:1px 4px;font-size:9px}.rzpin b{font-size:9.5px}}
+.panel:has(>.rzmap){overflow-x:auto}
+.rzleg{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-size:11.5px;color:#9fb3cf}.rzleg span{display:inline-flex;align-items:center;gap:6px}
+.rzleg i{width:10px;height:10px;border-radius:3px;display:inline-block}.rzleg i.o{border:1px dashed #9fb3cf}.rzleg i.k{background:#22c55e;opacity:.55}
+.rzficha{position:sticky;top:12px}
+.rzf{display:flex;flex-direction:column;gap:14px}.rzf-top{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
+.rzf-top small{display:block;font-size:11.5px;color:#9fb3cf;margin-top:4px}.rzf-cod{font-size:38px;font-weight:700;color:var(--t);line-height:1}
+.rzx{width:32px;height:32px;border-radius:8px;border:1px solid var(--line2);background:none;color:#c9d6ea;font-size:18px;cursor:pointer}
+.rzl{display:block;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8aa0bf;margin-bottom:6px}
+.rzbai{display:flex;flex-wrap:wrap;gap:5px}.rzbai span{background:rgba(148,163,184,.12);border-radius:6px;padding:3px 8px;font-size:12px}
+.rzf-quem{font-size:17px}
+.rzf-k{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}.rzf-k div{background:rgba(8,20,42,.5);border-radius:8px;padding:7px 8px;display:flex;flex-direction:column}
+.rzf-k b{font-size:16px}.rzf-k span{font-size:10.5px;color:#9fb3cf}
+.rzf-best{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}.rzf-best button{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;background:rgba(8,20,42,.45);border:0;border-radius:7px;padding:6px 9px;color:inherit;font:inherit;font-size:12.5px;cursor:pointer;text-align:left}
+.rzf-best em{font-style:normal;color:#9fb3cf;font-size:11px}
+.rzviz{display:flex;flex-wrap:wrap;gap:6px}.rzviz button{display:inline-flex;align-items:center;gap:6px;background:rgba(8,20,42,.45);border:0;border-radius:8px;padding:4px 8px 4px 4px;color:#c9d6ea;font:inherit;font-size:12px;cursor:pointer}
+.rzf-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}.rzvis{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:12px}
+.rzvis li{display:flex;justify-content:space-between;gap:6px;border-bottom:1px dashed rgba(148,163,184,.2);padding-bottom:3px}.rzvis span{color:#9fb3cf}
+.rzf-vazia{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:30px 10px;color:#9fb3cf;font-size:13px}.rzf-vazia b{color:#e6eefb;font-size:15px}
+.rzin{width:100%;max-width:360px;background:rgba(8,20,42,.6);border:1px solid var(--line2);border-radius:9px;color:inherit;font:inherit;padding:9px 12px;margin-bottom:12px}textarea.rzin{max-width:none}
+.rzidx{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:6px}
+.rzidx button{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:10px;align-items:center;text-align:left;background:rgba(8,20,42,.45);border:1px solid transparent;border-radius:9px;padding:7px 10px;color:inherit;font:inherit;font-size:12.5px;cursor:pointer}
+.rzidx button:hover,.rzidx button.sel{border-color:var(--t)}.rzidx em{font-style:normal;font-weight:600;font-size:12px;white-space:nowrap}
+.rzsem td.c,.rzsem th.c,.rzhmt td.c,.rzhmt th.c{text-align:center}
+.rzdh{background:none;border:0;color:#7cc7ff;font:inherit;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;cursor:pointer;padding:2px 4px;white-space:nowrap}
+.rzins{display:flex;flex-direction:column;gap:8px}
+.rzi{display:grid;grid-template-columns:104px minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 14px;border-radius:10px;background:rgba(8,20,42,.45);border-left:3px solid #7aa2d6}
+.rzi.rz-alto{border-left-color:#f87171}.rzi.rz-med{border-left-color:#f5b73b}.rzi.rz-op{border-left-color:#34d399}
+.rzi b{font-size:13.5px;font-weight:600}.rzi p{margin:3px 0 0;font-size:12.5px;color:#9fb3cf;line-height:1.4}.rzi .st{justify-self:start}
+@media (max-width:700px){.rzi{grid-template-columns:1fr}.rzcards{grid-template-columns:1fr}.rzidx{grid-template-columns:1fr}.rzf-k{grid-template-columns:1fr 1fr}}
+.rztab tr[data-rz]{cursor:pointer}.rztab td{vertical-align:middle}
+.rzpb{position:relative;display:inline-block;width:90px;height:6px;border-radius:3px;background:rgba(148,163,184,.15);vertical-align:middle;margin-right:8px}
+.rzpb i{position:absolute;left:0;top:0;bottom:0;border-radius:3px}.rzpb s{position:absolute;top:-3px;bottom:-3px;width:2px;background:#f87171;opacity:.7}
+.rzpv{font-size:12.5px}
+.rzhm{display:inline-flex;align-items:center;justify-content:center;min-width:38px;padding:4px 6px;border-radius:6px;border:0;color:#e6eefb;font:inherit;font-size:12px;font-weight:600;cursor:pointer;font-variant-numeric:tabular-nums}
+.rzhmt th .rzchip{min-width:34px;font-size:11px}
+.rzform{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-top:6px}.rzform label{display:flex;flex-direction:column;gap:4px;font-size:11.5px;color:#9fb3cf;flex:1 1 150px}
+.rzform input,.rzform select,.rzedit select,.rzpesos select,.rzficha select{background:rgba(8,20,42,.6);border:1px solid var(--line2);border-radius:8px;color:inherit;font:inherit;font-size:13px;padding:8px 10px}
+.rzlist{display:flex;flex-direction:column;gap:6px}.rzlist>div{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:9px;background:rgba(8,20,42,.45)}
+.rzlist>div>span{flex:1;min-width:0;display:flex;flex-direction:column}.rzlist small{font-size:11.5px;color:#9fb3cf}
+.rzpesos{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:8px}
+.rzpesos>div{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 12px;border-radius:10px;background:rgba(8,20,42,.45);border-left:3px solid var(--t)}
+.rzpesos span{display:flex;flex-direction:column;min-width:0}.rzpesos b{font-size:12.5px;font-weight:600}.rzpesos small{font-size:11px;color:#9fb3cf}
+@media (max-width:700px){.rzpesos{grid-template-columns:1fr}}
+.st.n0{background:rgba(148,163,184,.14);color:#c9d6ea;border-color:rgba(148,163,184,.3)}
+.st.p0{background:rgba(34,197,94,.08);color:#86efac;border-color:rgba(34,197,94,.2)}
+.rz.priv .rzn,.rz.priv .rzs{filter:blur(7px);user-select:none}
+.rz.priv .rzmap img{filter:blur(10px) saturate(.5)}
+.rz .rzn,.rz .rzs{transition:filter .3s}
+
+/* bairros em 3 faixas */
+.btier{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@container vw (max-width:900px){.btier{grid-template-columns:1fr}}
+.btc{border-radius:11px;background:rgba(8,20,42,.45);border-top:3px solid var(--bt);padding:10px 10px 6px;min-width:0}
+.bt-ok{--bt:#22c55e}.bt-mid{--bt:#7cc7ff}.bt-bad{--bt:#f87171}
+.bth{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:2px 4px 8px}.bth b{font-size:13px;color:var(--bt);text-transform:uppercase;letter-spacing:.06em}.bth span{font-size:11.5px;color:#9fb3cf}
+.btl{display:flex;flex-direction:column;gap:3px;max-height:420px;overflow-y:auto}
+.btl button{display:grid;grid-template-columns:minmax(0,1fr) 70px 40px;gap:8px;align-items:center;background:none;border:0;border-radius:7px;padding:6px 6px;color:inherit;font:inherit;text-align:left;cursor:pointer}
+.btl button:hover{background:rgba(124,199,255,.08)}
+.btl span{display:flex;flex-direction:column;min-width:0}.btl b{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.btl small{font-size:10.5px;color:#8aa0bf;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btb{display:block;height:5px;border-radius:3px;background:rgba(148,163,184,.15);overflow:hidden}.btb i{display:block;height:100%;border-radius:3px}
+.btl em{font-style:normal;font-weight:700;font-size:12.5px;text-align:right;font-variant-numeric:tabular-nums}
+/* baixas fora do local: ordem × local da baixa */
+.susum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.susum div{background:rgba(8,20,42,.5);border-radius:9px;padding:10px 12px;display:flex;flex-direction:column}.susum b{font-size:20px}.susum span{font-size:11.5px;color:#9fb3cf}
+.sus-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(520px,1fr));gap:10px}
+@container vw (max-width:640px){.sus-list{grid-template-columns:1fr}}
+.sus-c{border-radius:11px;background:rgba(8,20,42,.45);border:1px solid var(--line2);padding:11px 13px;cursor:pointer;display:flex;flex-direction:column;gap:9px;min-width:0}
+.sus-c:hover{border-color:#7cc7ff}
+.sus-c header{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:12.5px}.sus-c header span:not(.st){color:#c9d6ea}.sus-c header em{margin-left:auto;font-style:normal;font-size:11.5px;color:#9fb3cf}
+.sus-g{display:grid;grid-template-columns:minmax(0,1fr) 58px minmax(0,1fr);gap:8px;align-items:stretch}
+.sus-a,.sus-b{border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.sus-a{background:rgba(124,199,255,.07);box-shadow:inset 0 0 0 1px rgba(124,199,255,.2)}.sus-b{background:rgba(148,163,184,.07);box-shadow:inset 0 0 0 1px rgba(148,163,184,.2)}
+.sus-b.bad{background:rgba(239,68,68,.08);box-shadow:inset 0 0 0 1px rgba(239,68,68,.35)}
+.sus-l{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8aa0bf}
+.sus-a b,.sus-b b{font-size:13px;font-weight:600;overflow-wrap:anywhere}.sus-a small,.sus-b small{font-size:11.5px;color:#9fb3cf}.sus-r{font-size:10.5px!important}
+.sus-arr{display:flex;flex-direction:column;align-items:center;justify-content:center;color:#f87171;font-size:10.5px}.sus-arr i{font-style:normal;color:#9fb3cf}
+.sus-c footer{font-size:11.5px}
+@container vw (max-width:560px){.sus-g{grid-template-columns:1fr}.sus-arr{flex-direction:row;gap:6px}.sus-arr svg{transform:rotate(90deg)}}
+.rt-sus{display:block;font-size:11px;color:#f87171;margin-top:2px}
+.bkp{margin-top:16px;padding-top:12px;border-top:1px solid var(--line2)}
 </style>
 
 <div class="app">
@@ -673,6 +804,207 @@ td .rp,td .rn{font-weight:500;font-size:11.5px;letter-spacing:.01em}
 <div class="toast" id="toast" hidden></div>
 
 <script>
+/* Motor do Rodízio Diário – São Mateus
+   Mesmo código roda no painel (navegador) e no agente automático (Node). */
+(function (root) {
+  "use strict";
+
+  function iso(d) {
+    var y = d.getFullYear(), m = d.getMonth() + 1, dd = d.getDate();
+    return y + "-" + (m < 10 ? "0" : "") + m + "-" + (dd < 10 ? "0" : "") + dd;
+  }
+  function parse(s) { var p = s.split("-"); return new Date(+p[0], +p[1] - 1, +p[2], 12); }
+  function addDias(s, n) { var d = parse(s); d.setDate(d.getDate() + n); return iso(d); }
+  function diasEntre(a, b) { return Math.round((parse(b) - parse(a)) / 86400000); }
+  function ehDiaUtil(s, feriados) {
+    var w = parse(s).getDay();
+    return w >= 1 && w <= 5 && !(feriados || []).includes(s);
+  }
+  function proximoDiaUtil(s, feriados) {
+    var d = s; while (!ehDiaUtil(d, feriados)) d = addDias(d, 1); return d;
+  }
+
+  /* Quem trabalha na data: cadastro ativo e sem ausência (férias, folga, falta...) cobrindo a data */
+  var _aus = [];
+  function ausenteEm(u, data, ausencias) {
+    return (ausencias || _aus).some(function (a) { return a.id === u.id && a.de <= data && data <= a.ate; });
+  }
+  function disponiveis(unidades, data, ausencias) {
+    return unidades.filter(function (u) {
+      if (u.status === "inativo") return false;
+      if (u.status === "ferias" || u.status === "afastado" || u.status === "folga") {
+        if (!(u.retorno && u.retorno <= data)) return false;
+      }
+      return !ausenteEm(u, data, ausencias);
+    }).sort(function (a, b) { return (a.ordem || 0) - (b.ordem || 0) || (a.id < b.id ? -1 : 1); });
+  }
+
+  /* Hungarian (custo mínimo), matriz quadrada */
+  function hungaro(c) {
+    var n = c.length, INF = 1e18, u = new Array(n + 1).fill(0), v = new Array(n + 1).fill(0),
+        p = new Array(n + 1).fill(0), way = new Array(n + 1).fill(0);
+    for (var i = 1; i <= n; i++) {
+      p[0] = i; var j0 = 0, minv = new Array(n + 1).fill(INF), used = new Array(n + 1).fill(false);
+      do {
+        used[j0] = true; var i0 = p[j0], delta = INF, j1 = 0;
+        for (var j = 1; j <= n; j++) if (!used[j]) {
+          var cur = c[i0 - 1][j - 1] - u[i0] - v[j];
+          if (cur < minv[j]) { minv[j] = cur; way[j] = j0; }
+          if (minv[j] < delta) { delta = minv[j]; j1 = j; }
+        }
+        for (j = 0; j <= n; j++) { if (used[j]) { u[p[j]] += delta; v[j] -= delta; } else minv[j] -= delta; }
+        j0 = j1;
+      } while (p[j0] !== 0);
+      do { var jj = way[j0]; p[j0] = p[jj]; j0 = jj; } while (j0);
+    }
+    var res = new Array(n);
+    for (j = 1; j <= n; j++) if (p[j]) res[p[j] - 1] = j - 1;
+    return res;
+  }
+
+  /*
+   gerarEscala(data, unidades, setores, historico)
+   - unidades: [{id, nome, status, retorno, ordem}]
+   - setores:  [{codigo, peso, ativo}]  peso 1..5 (potencial de arrecadação)
+   - historico: [{data, itens:[{unidade, setor}]}] dias ANTERIORES a `data`
+   Retorna [{unidade, setor}]
+   Regras:
+   1) Escolhe os setores do dia: prioridade = peso × (dias desde a última visita + 1).
+      Setores fortes voltam quase todo dia; os fracos entram de tempos em tempos.
+   2) Distribui as pessoas nesses setores sem repetir quem esteve lá há pouco
+      e dando os setores mais fortes a quem acumulou menos "pontos" de potencial.
+  */
+  function gerarEscala(data, unidades, setores, historico, ausencias) {
+    var equipe = disponiveis(unidades, data, ausencias);
+    var ativos = setores.filter(function (s) { return s.ativo !== false && (s.peso || 0) > 0; })
+      .sort(function (a, b) { return a.codigo - b.codigo; });
+    var hist = (historico || []).filter(function (h) { return h.data < data; })
+      .sort(function (a, b) { return a.data < b.data ? -1 : 1; });
+    var n = Math.min(equipe.length, ativos.length);
+    if (!n) return [];
+
+    // dias úteis corridos (contagem por escala registrada) desde a última visita
+    var ultimaSetor = {}, ultimaUS = {}, pontos = {}, pesoDe = {};
+    ativos.forEach(function (s) { pesoDe[s.codigo] = s.peso; });
+    equipe.forEach(function (u) { pontos[u.id] = 0; });
+    var janela = hist.slice(-20); // últimas 20 escalas (~4 semanas)
+    hist.forEach(function (h, idx) {
+      (h.itens || []).forEach(function (it) {
+        ultimaSetor[it.setor] = idx;
+        ultimaUS[it.unidade + "|" + it.setor] = idx;
+      });
+    });
+    var base = hist.length - janela.length;
+    janela.forEach(function (h) {
+      (h.itens || []).forEach(function (it) {
+        if (pontos[it.unidade] !== undefined) pontos[it.unidade] += (pesoDe[it.setor] || 0);
+      });
+    });
+    // normaliza pontos por dias trabalhados (quem voltou de férias não é "punido")
+    var diasTrab = {};
+    janela.forEach(function (h) { (h.itens || []).forEach(function (it) { diasTrab[it.unidade] = (diasTrab[it.unidade] || 0) + 1; }); });
+    var media = {};
+    equipe.forEach(function (u) { media[u.id] = diasTrab[u.id] ? pontos[u.id] / diasTrab[u.id] : null; });
+    var vals = equipe.map(function (u) { return media[u.id]; }).filter(function (x) { return x !== null; });
+    var mediaGeral = vals.length ? vals.reduce(function (a, b) { return a + b; }, 0) / vals.length : 0;
+    equipe.forEach(function (u) { if (media[u.id] === null) media[u.id] = mediaGeral; });
+
+    var H = hist.length;
+    var prioridade = ativos.map(function (s, i) {
+      var dias = ultimaSetor[s.codigo] === undefined ? H + 1 : (H - ultimaSetor[s.codigo]);
+      return { s: s, pri: s.peso * (dias + 1), i: i };
+    }).sort(function (a, b) { return b.pri - a.pri || b.s.peso - a.s.peso || a.i - b.i; });
+    var escolhidos = prioridade.slice(0, n).map(function (x) { return x.s; });
+    var pessoas = equipe.slice(0, n);
+
+    var custo = pessoas.map(function (u) {
+      return escolhidos.map(function (s) {
+        var k = ultimaUS[u.id + "|" + s.codigo];
+        var rep = 0;
+        if (k !== undefined) { var atras = H - k; rep = atras <= 1 ? 1000 : atras <= 5 ? 200 / atras : 20 / atras; }
+        var justica = (media[u.id] - mediaGeral) * s.peso * 10; // quem tem mais pontos vai para setor mais fraco
+        return rep + justica;
+      });
+    });
+    var a = hungaro(custo);
+    return pessoas.map(function (u, i) { return { unidade: u.id, setor: escolhidos[a[i]].codigo }; })
+      .sort(function (x, y) { return (pesoDe[y.setor] - pesoDe[x.setor]) || (x.setor - y.setor); });
+  }
+
+  /* Gera vários dias em sequência (prévia da semana), reaproveitando escalas já salvas */
+  function gerarPeriodo(inicio, qtdDias, unidades, setores, historico, feriados) {
+    var hist = (historico || []).slice().sort(function (a, b) { return a.data < b.data ? -1 : 1; });
+    var out = [], d = proximoDiaUtil(inicio, feriados);
+    while (out.length < qtdDias) {
+      var salvo = hist.find(function (h) { return h.data === d; });
+      var itens = salvo ? salvo.itens : gerarEscala(d, unidades, setores, hist.filter(function (h) { return h.data < d; }));
+      var dia = { data: d, itens: itens, salvo: !!salvo };
+      out.push(dia);
+      if (!salvo) hist.push({ data: d, itens: itens });
+      d = proximoDiaUtil(addDias(d, 1), feriados);
+    }
+    return out;
+  }
+
+
+  /* ---------- Configuração padrão (equipe e setores da planilha) ---------- */
+  var PADRAO = (typeof window!=="undefined"&&window.RZ_SEED)||{versao:3,inicio:"2026-09-28",unidades:[],setores:[],ausencias:[],ajustes:{},feriados:[]};
+  /* Atualiza configurações antigas salvas no aparelho (mantém pesos, faltas e ajustes) */
+  function migrar(c) {
+    if (!c || (c.versao || 2) >= PADRAO.versao) return c;
+    PADRAO.setores.forEach(function (p) {
+      var s = (c.setores || []).find(function (x) { return +x.codigo === p.codigo; });
+      if (s) s.bairros = p.bairros; else c.setores.push(JSON.parse(JSON.stringify(p)));
+    });
+    c.versao = PADRAO.versao; return c;
+  }
+  function configPadrao() { return JSON.parse(JSON.stringify(PADRAO)); }
+
+  /*
+   simular(config, ate): refaz o rodízio dia útil a dia útil, desde config.inicio até `ate`.
+   Mesmo resultado em qualquer aparelho e no agente de e-mail: depende só da configuração.
+   Ajustes manuais (config.ajustes[data] = [{unidade, setor}]) substituem o dia gerado
+   e entram no histórico, então os dias seguintes levam a troca em conta.
+  */
+  function simular(config, ate) {
+    var fer = config.feriados || [], out = [], hist = [];
+    var d = proximoDiaUtil(config.inicio, fer);
+    var guard = 0;
+    while (d <= ate && guard++ < 3000) {
+      var itens = (config.ajustes && config.ajustes[d]) ||
+        gerarEscala(d, config.unidades, config.setores, hist, config.ausencias || []);
+      var dia = { data: d, itens: itens, ajustado: !!(config.ajustes && config.ajustes[d]) };
+      out.push(dia); hist.push(dia);
+      d = proximoDiaUtil(addDias(d, 1), fer);
+    }
+    return out;
+  }
+
+  /* Setores vizinhos (pelo mapa) — usados para completar a meta quando o setor tem poucas ordens */
+  var VIZINHOS = {118:[156,117,155,154],156:[118],117:[155,118,148,149],155:[117,118,154,149],154:[155,149,153,152,150],
+    148:[149,117],149:[148,150,154,155],150:[149,151,242,153,152],153:[154,152,150],151:[150,242,194,248,152,252],
+    242:[151,194,150],194:[242,151,248,247],247:[194,248,249],248:[194,151,247,249,251,252,195],249:[247,248,250,251],
+    250:[249,251],251:[195,248,249,250],195:[252,251,248],252:[152,195,151,253,248],152:[153,151,252,253,154],253:[152,252]};
+  /* Para cada pessoa do dia, até 2 vizinhos livres (sem ninguém escalado), sem repetir entre pessoas */
+  function complementos(itens, setores) {
+    var ocupado = {}, usados = {}, out = {};
+    var ativo = {}; (setores || []).forEach(function (s) { if ((s.peso || 0) > 0 || true) ativo[s.codigo] = s; });
+    itens.forEach(function (i) { ocupado[i.setor] = 1; });
+    itens.forEach(function (i) {
+      var lst = (VIZINHOS[i.setor] || []).filter(function (c) { return !ocupado[c] && !usados[c] && ativo[c]; }).slice(0, 2);
+      lst.forEach(function (c) { usados[c] = 1; });
+      out[i.unidade] = lst;
+    });
+    return out;
+  }
+
+  var API = { gerarEscala: gerarEscala, gerarPeriodo: gerarPeriodo, disponiveis: disponiveis,
+    ehDiaUtil: ehDiaUtil, simular: simular, complementos: complementos, VIZINHOS: VIZINHOS, configPadrao: configPadrao, migrar: migrar, ausenteEm: ausenteEm, proximoDiaUtil: proximoDiaUtil, addDias: addDias, iso: iso, diasEntre: diasEntre };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  root.MotorRodizio = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+
 /* Gráficos SVG próprios: sem biblioteca externa, funcionam offline e no celular */
 const SVGC=(function(){
   const NS='http://www.w3.org/2000/svg';
@@ -963,7 +1295,7 @@ const MESES=['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOS
 const DIAS=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
 /* ============ cofre (versão segura): dados do navegador cifrados com AES-256-GCM ============ */
 const SECURE=!!window.SECURE_BUILD;
-const SEC_KEYS=['sa_dash_planilhas_v2','sa_dash_notas','sa_dash_colab_v1','sa_dash_agenda'];
+const SEC_KEYS=['sa_dash_planilhas_v2','sa_dash_notas','sa_dash_colab_v1','sa_dash_agenda','sa_rodizio_v1'];
 const VAULT='sa_vault_v1',PBKDF2_IT=600000;
 let SEC_CACHE={},SEC_KEY=null,_sp=0;
 const b64=u=>btoa(String.fromCharCode(...new Uint8Array(u))),ub64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
@@ -1056,14 +1388,14 @@ const CFG=window.CONFIG||{};
 const SUS_GAP=CFG.baixaForaDoLocalMinutos!=null?+CFG.baixaForaDoLocalMinutos:1;
 const streetOf=r=>norm(r.end).replace(/\s+\d+\S*$/,'');
 function markSuspects(){
-  for(const r of ROWS){r.sus=false;r.susPrev=null;r.susGap=null;r.susWhy=''}
+  for(const r of ROWS){r.sus=false;r.susPrev=null;r.susAnc=null;r.susGap=null;r.susWhy=''}
   const g=groupBy(ROWS.filter(isBaixa),r=>r.eq+'|'+r.day);
   for(const rs of g.values()){rs.sort((x,y)=>x.fim-y.fim||(x.ini||0)-(y.ini||0));let prev=null;
-    for(const r of rs){const f=new Date(r.fim);if(f.getHours()===23&&f.getMinutes()===59){r.sus=true;r.susWhy='Baixa lançada às 23:59, fora do horário de campo';continue}
+    for(const r of rs){const f=new Date(r.fim);if(f.getHours()===23&&f.getMinutes()===59){r.sus=true;r.susAnc=prev?(prev.sus?(prev.susAnc||prev):prev):null;r.susGap=prev?Math.max(0,Math.round((r.fim-prev.fim)/6e4)):null;r.susWhy='Baixa lançada às 23:59, fora do horário de campo';continue}
       if(prev){const gap=Math.round(((r.ini||r.fim)-prev.fim)/6e4);
       // 1) outro bairro a até SUS_GAP min da baixa anterior; 2) continuação da mesma sequência em outra rua
       const outroBairro=norm(r.bai)!==norm(prev.bai),outraRua=streetOf(r)!==streetOf(prev);
-      if(gap<=SUS_GAP&&(outroBairro||(prev.sus&&outraRua))){r.sus=true;r.susPrev=prev;r.susGap=Math.max(0,gap);
+      if(gap<=SUS_GAP&&(outroBairro||(prev.sus&&outraRua))){r.sus=true;r.susPrev=prev;r.susAnc=prev.sus?(prev.susAnc||prev):prev;r.susGap=Math.max(0,gap);
         r.susWhy=outroBairro?`Baixa em ${r.bai} ${Math.max(0,gap)} min após baixa em ${prev.bai}`:`Sequência de baixas sem deslocamento: ${Math.max(0,gap)} min após ${prev.end}`}}prev=r}}
 }
 const isValida=r=>isBaixa(r)&&!r.sus;
@@ -1151,7 +1483,7 @@ async function saveReg(){LS.set(REG_KEY,REG);if(DB){try{await DB.doc('config/cad
 async function initStore(){
   lsLoad();refreshAll();
   let db=null;try{db=window.claude&&window.claude.use?await window.claude.use('db'):null}catch(e){db=null}
-  if(!db){DBSTATE='local';info();loadNotes();loadAgenda();if(VIEW==='planilhas')render();return}
+  if(!db){DBSTATE='local';info();loadNotes();loadAgenda();loadRodizio();if(VIEW==='planilhas')render();return}
   DB=db;
   try{
     // leva para o banco o que estava só neste navegador
@@ -1159,7 +1491,7 @@ async function initStore(){
     await dbLoad();DBSTATE='ok';
   }catch(e){console.error(e);DBSTATE='erro'}
   SHEETS.sort((x,y)=>(x.builtin?-1:0)-(y.builtin?-1:0)||String(x.importadaEm).localeCompare(String(y.importadaEm)));
-  lsSave();refreshAll();loadNotes();loadAgenda();
+  lsSave();refreshAll();loadNotes();loadAgenda();loadRodizio();
 }
 async function importFiles(files){
   let tn=0,td=0,bad=[],same=[],lastMonth='';const btn=$('#btnFile');btn.disabled=true;btn.textContent='Importando…';
@@ -1225,7 +1557,7 @@ IC.sheets='<path d="M4 3h11l5 5v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1
 IC.trophy='<path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 16.9V19h3v2H8v-2h3v-2.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4zm0 4H5v1a3 3 0 0 0 2 2.8zm10 0v3.8A3 3 0 0 0 19 8V7z"/>';
 IC.route='<path d="M6 3a3 3 0 0 1 3 3c0 2.2-3 5.5-3 5.5S3 8.2 3 6a3 3 0 0 1 3-3zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm12 7a3 3 0 0 1 3 3c0 2.2-3 5.5-3 5.5S15 17.2 15 15a3 3 0 0 1 3-3zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM6 13h5a3 3 0 0 1 0 6H9v-2h2a1 1 0 0 0 0-2H6a3 3 0 0 1 0-6h2v2H6a1 1 0 0 0 0 2z" transform="translate(0 -1)"/>';
 IC.cal='<path d="M7 2h2v2h6V2h2v2h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3zm12 8H5v9h14zM7 12h3v3H7z"/>';
-const VIEWS=[['geral','Visão Geral','home'],['ranking','Ranking','trophy'],['producao','Produção','prod'],['pos','Comercial / POS','cart'],['jornada','Jornada','clock'],['equipes','Equipes','team'],['colab','Colaboradores','user'],['gargalos','Gargalos','warn'],['bairros','Telemetria / Bairros','route'],['agenda','Agenda','cal'],['os','Detalhamento das OS','list'],['planilhas','Planilhas','sheets']];
+const VIEWS=[['geral','Visão Geral','home'],['ranking','Ranking','trophy'],['producao','Produção','prod'],['pos','Comercial / POS','cart'],['jornada','Jornada','clock'],['equipes','Equipes','team'],['colab','Colaboradores','user'],['gargalos','Gargalos','warn'],['bairros','Telemetria / Bairros','route'],['rodizio','Rodízio / Setores','map'],['agenda','Agenda','cal'],['os','Detalhamento das OS','list'],['planilhas','Planilhas','sheets']];
 let VIEW=(location.hash||'').slice(1); if(!VIEWS.some(v=>v[0]===VIEW))VIEW=LS.get('sa_dash_view','geral');
 function buildNav(){
   $('#nav').innerHTML=`<div class="sidein" id="sidein">`+VIEWS.map(v=>`<button type="button" data-v="${v[0]}" class="${v[0]===VIEW?'on':''}"><svg viewBox="0 0 24 24">${IC[v[2]]}</svg>${v[1]}</button>`).join('')+
@@ -1238,7 +1570,7 @@ function pushHist(){const s=snap();const cur=HIST[HI];if(cur&&cur.v===s.v&&JSON.
 function updHist(){const b=$('#hBack'),f=$('#hFwd');if(!b)return;b.disabled=HI<=0;f.disabled=HI>=HIST.length-1;
   const nm=(VIEWS.find(x=>x[0]===VIEW)||[,''])[1];$('#crumb').innerHTML=`<b>${esc(nm)}</b>${VIEW==='os'&&DRILL.label?` <span>›</span> ${esc(DRILL.label)}`:''}`}
 function histGo(k){const s=HIST[k];if(!s)return;HI=k;VIEW=s.v;DRILL=s.d;PAGE=s.p||0;document.querySelectorAll('#nav button[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===VIEW));render();updHist();window.scrollTo({top:0})}
-function go(v){VIEW=v;LS.set('sa_dash_view',v);document.querySelectorAll('#nav button[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v));render();pushHist();window.scrollTo({top:0})}
+function go(v){if(AG_PEND){clearTimeout(_ag);saveAgenda()}VIEW=v;LS.set('sa_dash_view',v);document.querySelectorAll('#nav button[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v));render();pushHist();window.scrollTo({top:0})}
 
 /* ============ gráficos ============ */
 let CHARTS=[];
@@ -1270,8 +1602,8 @@ function render(){
   killCharts();
   const rows=applyF(scope());
   const v=$('#views');
-  const fn={bairros:vBairros,agenda:vAgenda,ranking:vRanking,planilhas:vPlanilhas,geral:vGeral,producao:vProducao,pos:vPOS,jornada:vJornada,equipes:vEquipes,colab:vColab,gargalos:vGargalos,os:vOS}[VIEW];
-  if(!ROWS.length&&VIEW!=='planilhas'&&VIEW!=='agenda'){v.innerHTML=`<div class="panel empty"><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#7cc7ff" stroke-width="1.6"><path d="M4 3h11l5 5v13H4z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg><h3>Nenhuma planilha carregada</h3><p>Importe o export do GeoCall (Excel ou CSV). As planilhas ficam guardadas${SECURE?' e cifradas neste navegador':''} e são somadas automaticamente.</p><button class="btn" type="button" id="emImp">Importar planilhas</button></div>`;$('#emImp').onclick=()=>$('#file').click();const pl=$('#pulse');if(pl)pl.innerHTML='';const sb=$('#sideBase');if(sb)sb.innerHTML='';return}
+  const fn={rodizio:vRodizio,bairros:vBairros,agenda:vAgenda,ranking:vRanking,planilhas:vPlanilhas,geral:vGeral,producao:vProducao,pos:vPOS,jornada:vJornada,equipes:vEquipes,colab:vColab,gargalos:vGargalos,os:vOS}[VIEW];
+  if(!ROWS.length&&VIEW!=='planilhas'&&VIEW!=='agenda'&&VIEW!=='rodizio'){v.innerHTML=`<div class="panel empty"><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#7cc7ff" stroke-width="1.6"><path d="M4 3h11l5 5v13H4z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg><h3>Nenhuma planilha carregada</h3><p>Importe o export do GeoCall (Excel ou CSV). As planilhas ficam guardadas${SECURE?' e cifradas neste navegador':''} e são somadas automaticamente.</p><button class="btn" type="button" id="emImp">Importar planilhas</button></div>`;$('#emImp').onclick=()=>$('#file').click();const pl=$('#pulse');if(pl)pl.innerHTML='';const sb=$('#sideBase');if(sb)sb.innerHTML='';return}
   v.innerHTML='';fn(v,rows);drawCharts();enhance(v);renderPulse(rows);requestAnimationFrame(fitSide);updHist();
 }
 
@@ -1432,6 +1764,29 @@ let _fw=0;window.addEventListener('resize',()=>{clearTimeout(_fw);_fw=setTimeout
 function markWide(root){requestAnimationFrame(()=>root.querySelectorAll('.tw').forEach(tw=>{const prev=tw.previousElementSibling;const has=prev&&prev.classList.contains('swipe');
   if(tw.scrollWidth>tw.clientWidth+4&&!has)tw.insertAdjacentHTML('beforebegin','<p class="swipe">Arraste a tabela para o lado para ver todas as colunas →</p>');else if(has&&tw.scrollWidth<=tw.clientWidth+4)prev.remove()}))}
 /* ---------- Visão Geral ---------- */
+/* baixa fora do local: endereço da ordem × onde o colaborador estava na hora da baixa */
+function susLocHTML(L){
+  const card=r=>{const a=r.susAnc;const ob=a&&norm(a.bai)!==norm(r.bai);
+    return `<article class="sus-c" data-os="${esc(r.os)}"><header><b>${dayBRf(r.day)} · ${hhmm(r.fim)}</b><span>${esc(nomeDe(r.eq))}</span><span class="st ${isProd(r.cat)?'p':'i'}">${isProd(r.cat)?'Executada':esc(CAT_LBL[r.cat]||'')}</span><em>OS ${osn(r.os)}</em></header>
+     <div class="sus-g"><div class="sus-a"><span class="sus-l">Endereço da ordem</span><b>${esc(r.end)||'—'}</b><small>${esc(r.bai)||'—'}${r.sf?' · setor '+esc(r.sf):''}</small><small class="sus-r">${resH(r.res,r.cat)}</small></div>
+      <div class="sus-arr" aria-hidden="true"><i>${r.susGap!=null?r.susGap+' min':''}</i><svg viewBox="0 0 40 12" width="40" height="12"><path d="M0 6h34M28 1l6 5-6 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><i>depois</i></div>
+      <div class="sus-b ${ob?'bad':''}"><span class="sus-l">Onde estava na hora da baixa</span>${a?`<b>${esc(a.end)||'—'}</b><small>${esc(a.bai)||'—'}${a.sf?' · setor '+esc(a.sf):''}</small><small>última baixa válida às ${hhmm(a.fim)} · OS ${esc(a.os)}</small>`:'<b>—</b><small>sem baixa anterior no dia</small>'}</div></div>
+     <footer>${ob?`<span class="rn">Outro bairro: ${esc(a.bai)} → ${esc(r.bai)}</span>`:`<span class="muted">${esc(r.susWhy)}</span>`}</footer></article>`};
+  return `<div class="panel"><h3>Baixas fora do local · endereço da ordem × onde foi feita a baixa <small>${fmt(L.length)} baixas · toque num cartão para ver a OS</small></h3>
+   <p class="note">A planilha do GeoCall não traz GPS. O “onde estava” é o endereço da última baixa válida do colaborador antes desta: como a baixa veio poucos minutos depois, sem tempo de deslocamento, ela foi lançada de lá.</p>
+   <div class="sus-list">${L.slice(0,SUS_SHOW).map(card).join('')}</div>${L.length>SUS_SHOW?`<div class="rzact"><button type="button" class="btn ghost sm" id="susMore">Mostrar mais ${Math.min(30,L.length-SUS_SHOW)} de ${fmt(L.length-SUS_SHOW)} restantes</button></div>`:''}</div>`}
+let SUS_SHOW=30;
+/* ---------- bairros: melhores, intermediários e piores (sempre visível) ---------- */
+function bairroTiersHTML(rows,opt={}){const min=opt.min||20;
+  const L=[...groupBy(rows.filter(r=>r.bai),r=>r.bai)].map(([k,rs])=>{const a=agg(rs);return {k,a,sf:[...new Set(rs.map(r=>r.sf).filter(Boolean))].slice(0,3).join(', '),f:rs.filter(r=>/^IMOVEL FECHADO/.test(norm(r.res))).length}}).filter(x=>x.a.den>=min).sort((x,y)=>y.a.pr-x.a.pr||y.a.den-x.a.den);
+  const n=L.length;if(!n)return `<div class="panel"><h3>Bairros: melhores, intermediários e piores</h3><p class="note">Nenhum bairro com pelo menos ${min} OS trabalhadas no período.</p></div>`;
+  const t1=Math.ceil(n/3),t2=Math.ceil(2*n/3);const G=[['Melhores','bt-ok',L.slice(0,t1)],['Intermediários','bt-mid',L.slice(t1,t2)],['Piores','bt-bad',L.slice(t2).reverse()]];
+  const col=pr=>pr>=META?'var(--green)':pr>=35?'#7cc7ff':pr>=25?'#f5b73b':'#f87171';
+  return `<div class="panel"><h3>Bairros: melhores, intermediários e piores <small>produtividade no período · ${n} bairros com ${min}+ OS trabalhadas · toque para ver as OS</small></h3>
+   <div class="btier">${G.map(([t,c,l])=>`<div class="btc ${c}"><div class="bth"><b>${t}</b><span>${l.length} bairro${l.length>1?'s':''}${l.length?` · ${pct(l.reduce((s,x)=>s+x.a.prod,0),l.reduce((s,x)=>s+x.a.den,0),0)}% no grupo`:''}</span></div>
+     <div class="btl">${l.map(x=>`<button type="button" data-tb="${esc(x.k)}"><span><b>${esc(x.k)}</b><small>${x.sf?'setor '+esc(x.sf)+' · ':''}${fmt(x.a.den)} OS · ${pct(x.f,x.a.den,0)}% fechado</small></span><i class="btb"><i style="width:${Math.min(100,x.a.pr)}%;background:${col(x.a.pr)}"></i></i><em style="color:${col(x.a.pr)}">${pct(x.a.prod,x.a.den,0)}%</em></button>`).join('')}</div></div>`).join('')}</div>
+   <p class="note">Divide os bairros em três grupos iguais pela produtividade (produtivos ÷ OS ${BASE==='rec'?'recebidas':'trabalhadas'}). Bairros com menos de ${min} OS ficam de fora para não distorcer.</p></div>`}
+function bindTiers(v){v.querySelectorAll('[data-tb]').forEach(b=>b.onclick=()=>drill({bai:b.dataset.tb,label:'Bairro: '+b.dataset.tb}))}
 function vGeral(v,rows){
   const A=agg(rows), prev=prevPeriod(), P=prev.length?agg(prev):null;
   const RR=rows.filter(isRR),RRx=RR.filter(r=>r.cat==='RR');
@@ -1474,8 +1829,10 @@ function vGeral(v,rows){
    <div class="panel ${BLUR.top?'blurred':''}" id="pTop"></div>
    <div class="panel ${BLUR.prim?'blurred':''}" id="pPrim"></div>
   </div>
+  ${bairroTiersHTML(rows)}
   <div class="panel"><h3>Últimas OS Trabalhadas <button class="btn sm" type="button" id="btnAll">Ver todas as OS →</button></h3><div id="lastOS"></div></div>`;
   v.querySelectorAll('.kpi').forEach(b=>b.onclick=()=>{const d=JSON.parse(b.dataset.dr);drill(d.rr?{rr:1,label:'Restabelecimento e religação'}:d.prod?{cats:PROD_CATS,label:'Resultados produtivos'}:{cats:d.cats,label:d.cats.map(c=>CAT_LBL[c]).join(' + ')})});
+  bindTiers(v);
   v.querySelectorAll('.fim .blk').forEach(b=>b.onclick=()=>drill({cats:[b.dataset.c],label:CAT_LBL[b.dataset.c]}));
   v.querySelectorAll('.dleg [data-dc]').forEach(b=>b.onclick=()=>{const cs=JSON.parse(b.dataset.dc);drill({cats:cs,label:cs.map(c=>CAT_LBL[c]).join(' + ')})});
   v.querySelectorAll('.svcb [data-tp]').forEach(b=>b.onclick=()=>drill({tipo:b.dataset.tp,label:TIPO_LBL[b.dataset.tp]}));
@@ -1557,7 +1914,7 @@ function vRanking(v,rows){
   const trend=t=>t==null?'<span class="rk-tr">—</span>':`<span class="rk-tr ${t>=0?'up':'dn'}">${t>=0?'▲':'▼'} ${Math.abs(t).toFixed(1).replace('.',',')} p.p.</span>`;
   const medal=['ouro','prata','bronze'];
   const podOrder=[1,0,2].filter(i=>top[i]);
-  v.innerHTML=`<section class="rk ${RK_PRIV?'priv':''} ${RK_PRIV&&RK_NOMES?'privn':''}" id="rk">
+  v.innerHTML=`<section class="rk ${RK_PRIV?'priv privn':''}" id="rk">
    <div class="rk-bg" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
    <div class="rk-in">
     <header class="rk-hero glass">
@@ -1566,8 +1923,7 @@ function vRanking(v,rows){
       <button type="button" class="rk-btn ${RK_PRIV?'on':''}" id="rkPriv" aria-pressed="${RK_PRIV}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2">${RK_PRIV?'<path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6 0 10 7 10 7a18 18 0 0 1-3.2 4M6.6 6.6C3.9 8.3 2 12 2 12s4 7 10 7a9.7 9.7 0 0 0 5.4-1.6M9.9 9.9a3 3 0 0 0 4.2 4.2"/>':'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'}</svg>${RK_PRIV?'Modo privado ligado':'Modo privado'}</button>
       <button type="button" class="rk-btn" id="rkFull"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Tela cheia</button></div>
     </header>
-    ${RK_PRIV?`<div class="glass rk-pbar"><span class="rk-lock">🔒</span><label for="rkShow">Mostrar os números de</label><select id="rkShow"><option value="">Ninguém (tudo protegido)</option>${[...list].sort((x,y)=>nomeDe(x.k).localeCompare(nomeDe(y.k))).map(x=>`<option value="${esc(x.k)}" ${x.k===RK_SHOW?'selected':''}>${esc(nomeDe(x.k))}</option>`).join('')}</select>
-      <label class="rk-chk"><input type="checkbox" id="rkNomes" ${RK_NOMES?'checked':''}> ocultar também os nomes</label><span class="rk-hint">Toque num colaborador para revelar só os números dele.</span></div>`:''}
+    ${RK_PRIV?`<div class="glass rk-pbar"><span class="rk-lock">🔒</span><span><b>Modo privado:</b> nomes e números protegidos. Toque num quadro para revelar só aquela pessoa; toque de novo para esconder.</span>${RK_SHOW?'<button type="button" class="rk-btn" id="rkHide">Esconder de novo</button>':''}</div>`:''}
     <div class="rk-pod">${podOrder.map(i=>{const x=top[i];return `<article class="glass rk-p rk-${medal[i]} ${x.k===RK_SHOW?'show':''}" data-c="${esc(x.k)}">
       <div class="rk-med">${i+1}º</div><h3 class="pvn">${esc(nomeDe(x.k))}</h3><div class="rk-big"><span class="pv">${cFmt(x)}</span><small>${cLbl}</small></div>
       <div class="rk-kv pv"><span><b>${pct(x.a.prod,x.a.den)}%</b>produtividade</span><span><b>${fmt(x.a.prod)}</b>produtivos</span><span><b>${fmt(x.a.pag)}</b>pagamentos</span></div>
@@ -1593,10 +1949,10 @@ function vRanking(v,rows){
    </div></section>`;
   $('#rkBy').onchange=e=>{RK_BY=e.target.value;render()};
   $('#rkFull').onclick=()=>{const el=$('#rk');try{if(document.fullscreenElement)document.exitFullscreen();else if(el.requestFullscreen)el.requestFullscreen().catch(()=>{el.classList.toggle('rk-max')});else el.classList.toggle('rk-max')}catch(e){el.classList.toggle('rk-max')}};
-  v.querySelectorAll('[data-c]').forEach(r=>r.onclick=()=>{if(RK_PRIV){RK_SHOW=RK_SHOW===r.dataset.c?'':r.dataset.c;applyPriv();const s=$('#rkShow');if(s)s.value=RK_SHOW;return}drill({eqs:[r.dataset.c],label:'Colaborador: '+nomeDe(r.dataset.c)})});
+  v.querySelectorAll('[data-c]').forEach(r=>r.onclick=()=>{if(RK_PRIV){RK_SHOW=RK_SHOW===r.dataset.c?'':r.dataset.c;applyPriv();hb();return}drill({eqs:[r.dataset.c],label:'Colaborador: '+nomeDe(r.dataset.c)})});
   const applyPriv=()=>v.querySelectorAll('[data-c]').forEach(r=>r.classList.toggle('show',r.dataset.c===RK_SHOW));
   $('#rkPriv').onclick=()=>{RK_PRIV=!RK_PRIV;if(!RK_PRIV)RK_SHOW='';render()};
-  if($('#rkShow')){$('#rkShow').onchange=e=>{RK_SHOW=e.target.value;applyPriv()};$('#rkNomes').onchange=e=>{RK_NOMES=e.target.checked;$('#rk').classList.toggle('privn',RK_NOMES)}}
+  const hb=()=>{const pb=v.querySelector('.rk-pbar');if(!pb)return;let b=$('#rkHide');if(RK_SHOW&&!b){pb.insertAdjacentHTML('beforeend','<button type="button" class="rk-btn" id="rkHide">Esconder de novo</button>');b=$('#rkHide')}else if(!RK_SHOW&&b){b.remove();b=null}if(b)b.onclick=()=>{RK_SHOW='';applyPriv();hb()}};hb();
 }
 
 /* ---------- Produção ---------- */
@@ -1623,12 +1979,40 @@ function bindResProd(root){
   root.querySelectorAll('.svcb [data-tp]').forEach(b=>b.onclick=()=>drill({tipo:b.dataset.tp,label:TIPO_LBL[b.dataset.tp]}));
   root.querySelectorAll('.svcb [data-pc]').forEach(b=>b.onclick=()=>drill({eqs:[b.dataset.pc],label:'Colaborador: '+nomeDe(b.dataset.pc)}));
 }
+/* gráfico diário moderno: 4 grupos, cores suaves, produtividade do dia no topo */
+const DGRP=[{n:'Produtivos',cs:['PAG_POS','PAG_FAT','CORTE','SUP','RR','VIST'],c:'#34d399'},{n:'Fim do dia',cs:['FIMDIA','OUTROS'],c:'#94a3b8'},{n:'Neg. infrutífera',cs:['INFRUT'],c:'#fbbf24'},{n:'Impedimento',cs:['IMPED'],c:'#f87171'}];
+function drawDaily(el,byDay){
+  if(!el)return;
+  const paint=()=>{
+    const W=Math.max(320,el.clientWidth),H=W<600?250:300,pl=34,pr=8,pt=26,pb=28,ih=H-pt-pb,iw=W-pl-pr;
+    const days=byDay.map(([d,rs])=>{const g=DGRP.map(x=>rs.filter(r=>x.cs.includes(r.cat)).length);const a=agg(rs);return {d,g,t:rs.length,a,rs}});
+    const mx=Math.max(10,...days.map(x=>x.t));const step=mx>200?100:mx>80?50:mx>40?20:10;const top=Math.ceil(mx*1.08/step)*step;
+    const n=days.length||1,slot=iw/n,bw=Math.max(6,Math.min(34,slot*.62)),y=v=>pt+ih-v/top*ih;
+    let h=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Produção diária por resultado">`;
+    for(let v=0;v<=top;v+=step)h+=`<line x1="${pl}" x2="${W-pr}" y1="${y(v)}" y2="${y(v)}" stroke="rgba(148,163,184,${v?'.10':'.28'})"/><text x="${pl-8}" y="${y(v)+4}" text-anchor="end" class="dax">${v}</text>`;
+    const every=Math.ceil(n/(iw/46));
+    days.forEach((x,i)=>{const cx=pl+slot*i+slot/2,x0=cx-bw/2;let acc=0;const segs=[];
+      x.g.forEach((v,k)=>{if(!v)return;segs.push({k,y0:y(acc),y1:y(acc+v),v});acc+=v});
+      const tip=`<b>${dayBRf(x.d)}</b><br>`+DGRP.map((g,k)=>x.g[k]?`<i style='display:inline-block;width:8px;height:8px;border-radius:2px;background:${g.c};margin-right:5px'></i>${g.n}: <b>${fmt(x.g[k])}</b>`:'').filter(Boolean).join('<br>')+`<br>Total: <b>${fmt(x.t)}</b> · produtividade <b>${pct(x.a.prod,x.a.den)}%</b>`;
+      h+=`<g class="dbar" data-i="${i}" data-tip="${tip.replace(/"/g,'&quot;')}"><rect x="${cx-slot/2}" y="${pt}" width="${slot}" height="${ih}" fill="transparent"/>`;
+      segs.forEach((sg,j)=>{const last=j===segs.length-1,hh=Math.max(0,sg.y0-sg.y1-(last?0:2)),yy=sg.y1+(last?0:2);
+        if(hh<=0)return;const r=last?Math.min(5,bw/2,hh):0;
+        h+=r?`<path d="M${x0} ${yy+hh}V${yy+r}Q${x0} ${yy} ${x0+r} ${yy}H${x0+bw-r}Q${x0+bw} ${yy} ${x0+bw} ${yy+r}V${yy+hh}Z" fill="${DGRP[sg.k].c}"/>`:`<rect x="${x0}" y="${yy}" width="${bw}" height="${hh}" fill="${DGRP[sg.k].c}"/>`});
+      if(x.a.den&&bw>=14)h+=`<text x="${cx}" y="${y(x.t)-7}" text-anchor="middle" class="dpct ${x.a.pr>=META?'ok':''}">${pct(x.a.prod,x.a.den,0)}%</text>`;
+      if(i%every===0)h+=`<text x="${cx}" y="${H-9}" text-anchor="middle" class="dax">${dayBR(x.d)}</text>`;
+      h+='</g>'});
+    h+='</svg>';el.innerHTML=h;
+    el.querySelectorAll('.dbar').forEach(g=>g.onclick=()=>{const d=days[+g.dataset.i].d;drill({day:d,label:'Dia '+dayBRf(d)})});
+  };
+  paint();
+  if(window.ResizeObserver){let lw=el.clientWidth;const ro=new ResizeObserver(()=>{if(!el.isConnected){ro.disconnect();return}if(Math.abs(el.clientWidth-lw)>8){lw=el.clientWidth;paint()}});ro.observe(el)}
+}
 function vProducao(v,rows){
   const byDay=[...groupBy(rows,r=>r.day)].sort((a,b)=>a[0]<b[0]?-1:1);
   const byT=[...groupBy(rows,r=>r.tipo)].map(([k,rs])=>Object.assign({k},agg(rs)));
   const byR=[...groupBy(rows,r=>r.res||'(sem resultado)')].map(([k,rs])=>({k,n:rs.length,cat:rs[0].cat})).sort((a,b)=>b.n-a.n);
   const A=agg(rows);
-  v.innerHTML=`<div class="panel"><h3>Produção diária por resultado <small>clique numa barra para ver as OS do dia</small></h3><div class="chartbox tall"><div id="cDia" class="svgc"></div></div><div class="compbox"><div class="svct">Composição do período <span class="muted">todas as OS recebidas</span></div><div id="cComp"></div></div></div>
+  v.innerHTML=`<div class="panel"><h3>Produção diária por resultado <small>clique numa barra para ver as OS do dia</small></h3><div class="dleg2">${DGRP.map(g=>`<span><i style="background:${g.c}"></i>${g.n}</span>`).join('')}<span class="dnote">% no topo em <b style="color:#4ade80">verde</b> = dia com produtividade ≥ ${META}%</span></div><div id="cDia" class="dchart"></div><div class="compbox"><div class="svct">Composição do período <span class="muted">todas as OS recebidas</span></div><div id="cComp"></div></div></div>
   <div class="g2 g2b">
    <div class="panel fillp"><h3>Produtividade por colaborador <small>acumulado do período · meta mensal ${META}% · toque para ver as OS</small></h3>
      <div class="svcb pcol">${[...groupBy(rows,r=>r.eq)].map(([k,rs])=>Object.assign({k},agg(rs))).sort((x,y)=>y.pr-x.pr).map(s=>`<button type="button" data-pc="${esc(s.k)}"><span>${esc(nomeDe(s.k))}</span><div class="bar"><i style="width:${Math.min(100,s.pr)}%;background:${s.pr>=META?'var(--green)':'var(--orange)'}"></i><s style="left:${META}%"></s></div><b class="${s.pr>=META?'up':'dn'}">${pct(s.prod,s.den,0)}%</b><em>${fmt(s.prod)}/${fmt(s.den)}</em></button>`).join('')}</div>
@@ -1655,12 +2039,9 @@ function vProducao(v,rows){
   v.querySelectorAll('tr[data-t]').forEach(tr=>tr.onclick=()=>drill({tipo:tr.dataset.t,label:TIPO_LBL[tr.dataset.t]}));
   v.querySelectorAll('tr[data-r]').forEach(tr=>tr.onclick=()=>drill({res:tr.dataset.r,label:tr.dataset.r}));
   bindResProd(v);
-  const ds=(lab,cats,c)=>({name:lab,data:byDay.map(([d,rs])=>rs.filter(r=>cats.includes(r.cat)).length),color:c});
-  chart('cDia','bars',{labels:byDay.map(d=>dayBR(d[0])),height:300,series:[ds('Pagamento via POS',['PAG_POS'],'#15803d'),ds('Faturas pagas',['PAG_FAT'],'#22c55e'),ds('Corte',['CORTE'],'#4ade80'),ds('Supressão',['SUP'],'#86efac'),ds('Restab./Religação',['RR'],'#10b981'),ds('Vistoria',['VIST'],'#a7f3d0'),ds('Impedimento',['IMPED'],'#dc2626'),ds('Neg. infrutífera',['INFRUT'],'#f87171'),ds('Fim do dia',['FIMDIA'],'#d97706'),ds('Outros',['OUTROS'],'#78716c')].filter(s=>s.data.some(Boolean)),
-    onClick:i=>drill({day:byDay[i][0],label:'Dia '+dayBRf(byDay[i][0])})});
-  // composição do período
-  const comp=[['Pagamentos',['PAG_POS','PAG_FAT'],'#16a34a'],['Corte e supressão',['CORTE','SUP'],'#4ade80'],['Restab./Religação',['RR','VIST'],'#a7f3d0'],['Impedimento',['IMPED'],'#dc2626'],['Neg. infrutífera',['INFRUT'],'#f87171'],['Fim do dia',['FIMDIA'],'#d97706'],['Outros',['OUTROS'],'#78716c']]
-    .map(([n,cs,col])=>({n,cs,col,v:rows.filter(r=>cs.includes(r.cat)).length})).filter(x=>x.v);
+  drawDaily($('#cDia'),byDay);
+  // composição do período (mesmas cores do gráfico)
+  const comp=DGRP.map(g=>({n:g.n,cs:g.cs,col:g.c,v:rows.filter(r=>g.cs.includes(r.cat)).length})).filter(x=>x.v);
   const ct=comp.reduce((s,x)=>s+x.v,0)||1;
   $('#cComp').innerHTML=`<div class="cstrip">${comp.map(x=>`<button type="button" data-cs='${JSON.stringify(x.cs)}' style="flex:${x.v};background:${x.col}" data-tip="<b>${x.n}</b><br>${fmt(x.v)} OS · ${pct(x.v,ct)}%"></button>`).join('')}</div>
     <div class="clegs">${comp.map(x=>`<button type="button" data-cs='${JSON.stringify(x.cs)}'><i style="background:${x.col}"></i><span>${x.n}</span><b>${pct(x.v,ct,0)}%</b><em>${fmt(x.v)}</em></button>`).join('')}</div>`;
@@ -1906,7 +2287,7 @@ function vPlanilhas(v){
 }
 
 /* ---------- Telemetria / Bairros ---------- */
-let TL={eq:'',day:'',sort:'os',tab:'bairros'};
+let TL={eq:'',day:'',sort:'os',tab:'bairros',susEq:''};
 function vBairros(v,rows){
   const base=rows.filter(isBaixa);
   const med=a=>{if(!a.length)return null;const s=[...a].sort((x,y)=>x-y);return s[Math.floor(s.length/2)]};
@@ -1937,8 +2318,9 @@ function vBairros(v,rows){
     det=`<h3>${T==='same'?'Tempo entre OS no mesmo bairro':'Tempo ao trocar de bairro'} por colaborador <small>mediana · toque para ver a rota</small></h3>`+miniBlock('',(T==='same'?'equipe: ':'equipe: ')+(T==='same'?mSame:mTroca)+' min',L.map(x=>({l:esc(nomeDe(x.k)),w:x[key]/mx*100,v:x[key]+' min',s:x.dias+' dias',c:T==='same'?'#7cc7ff':'#c4b5fd',attr:`data-tq="${esc(x.k)}"`})),{cls:'wide'})+
       (T==='troca'?`<div class="svct" style="margin-top:14px">Trocas mais demoradas <span class="muted">acima de 45 min</span></div>`+tbl('<th>Colaborador</th><th>De → Para</th><th class="n">Dia</th><th class="n">Tempo</th>',trocasOk.filter(m=>m.gap>45).sort((x,y)=>y.gap-x.gap).slice(0,10).map(m=>`<tr data-os="${esc(m.c.os)}"><td>${esc(nomeDe(m.eq))}</td><td>${esc(m.from)} → ${esc(m.to)}</td><td class="n">${dayBR(m.day)}</td><td class="n rn">${m.gap} min</td></tr>`).join('')||'<tr><td colspan="4" class="muted">Nenhuma</td></tr>'):'')}
   else if(T==='sus'){const pe=[...groupBy(sus,r=>r.eq)].map(([k,rs])=>({k,n:rs.length})).sort((x,y)=>y.n-x.n);
-    det=`<h3>Baixas fora do local <small><button type="button" class="cptab" id="tlSusAll">Ver todas no Detalhamento →</button></small></h3>`+miniBlock('Por colaborador','toque para ver as OS',pe.map(x=>({l:esc(nomeDe(x.k)),w:x.n/Math.max(1,pe[0].n)*100,v:x.n,s:'baixas',c:'#f87171',attr:`data-su="${esc(x.k)}"`})),{cls:'wide'})+
-      `<div class="svct" style="margin-top:14px">Mais recentes</div>`+tbl('<th>Quando</th><th>Colaborador</th><th>Motivo</th>',sus.slice(0,12).map(r=>`<tr data-os="${esc(r.os)}"><td>${dayBR(r.day)} ${hhmm(r.fim)}</td><td>${esc(nomeDe(r.eq))}</td><td class="rn">${esc(r.susWhy)}</td></tr>`).join(''))}
+    const outroB=sus.filter(r=>r.susAnc&&norm(r.susAnc.bai)!==norm(r.bai)).length;
+    det=`<h3>Baixas fora do local <small><button type="button" class="cptab" id="tlSusAll">Ver todas no Detalhamento →</button></small></h3>`+miniBlock('Por colaborador',TL.susEq?'filtrando '+esc(nomeDe(TL.susEq))+' · toque de novo para limpar':'toque para filtrar a lista abaixo',pe.map(x=>({l:esc(nomeDe(x.k)),w:x.n/Math.max(1,pe[0].n)*100,v:x.n,s:'baixas',c:x.k===TL.susEq?'#fca5a5':'#f87171',attr:`data-su="${esc(x.k)}"`})),{cls:'wide'})+
+      `<div class="susum"><div><b>${fmt(sus.length)}</b><span>baixas fora do local</span></div><div><b>${fmt(outroB)}</b><span>em outro bairro</span></div><div><b>${fmt(sus.length-outroB)}</b><span>outra rua / 23:59</span></div></div><p class="note">A lista completa, com o endereço da ordem e onde o colaborador estava na hora da baixa, está logo abaixo.</p>`}
   else if(T==='top'){det=`<h3>Trocas de bairro por colaborador <small>toque para ver a rota</small></h3>`+tbl('<th>Colaborador</th><th class="n">Trocas</th><th class="n">Por dia</th><th class="n">Tempo ao trocar</th>',byTroca.map(x=>`<tr data-tq="${esc(x.k)}"><td>${esc(nomeDe(x.k))}</td><td class="n">${x.n}</td><td class="n">${(x.n/Math.max(1,x.dias)).toFixed(1).replace('.',',')}</td><td class="n">${x.tr==null?'—':x.tr+' min'}</td></tr>`).join(''))}
   v.innerHTML=`<div class="kpis tl-k">${tiles.map(([k,l,val,s,cls])=>`<button type="button" class="kpi ${cls} ${T===k?'on':''}" data-tt="${k}"><span class="lab">${l}</span><span class="val">${val}</span><span class="sub">${s}</span></button>`).join('')}</div>
    <div class="g2 tl-g">
@@ -1947,23 +2329,49 @@ function vBairros(v,rows){
      <div class="filters" style="margin-bottom:8px"><div class="fgroup" style="flex:1 1 180px"><label for="tlEq">Colaborador</label><select id="tlEq">${eqs.map(k=>`<option value="${esc(k)}" ${k===TL.eq?'selected':''}>${esc(nomeDe(k))}</option>`).join('')}</select></div>
       <div class="fgroup"><label for="tlDay">Dia</label><select id="tlDay">${dias.map(d=>`<option value="${d}" ${d===TL.day?'selected':''}>${dayBRf(d)}</option>`).join('')}</select></div></div>
      <ol class="rota">${rota.map((r,i)=>{const p=rota[i-1];const troca=p&&norm(p.bai)!==norm(r.bai);const gap=p?Math.max(0,Math.round(((r.ini||r.fim)-p.fim)/6e4)):null;
-       return `${troca?`<li class="rt-move ${r.sus?'bad':''}"><span>${esc(p.bai)} → ${esc(r.bai)}</span><em>${gap} min${r.sus?' · fora do local':''}</em></li>`:''}<li class="rt ${isProd(r.cat)?'ok':'no'} ${r.sus?'sus':''}" data-os="${esc(r.os)}"><b>${hhmm(r.ini)}–${hhmm(r.fim)}</b><span class="rt-a">${esc(r.end)} <em>· ${esc(r.bai)}</em></span><span class="st ${isProd(r.cat)?'p':'i'}">${isProd(r.cat)?'Executada':CAT_LBL[r.cat]}</span></li>`}).join('')||'<li class="muted">Sem baixas nesse dia.</li>'}</ol>
+       return `${troca?`<li class="rt-move ${r.sus?'bad':''}"><span>${esc(p.bai)} → ${esc(r.bai)}</span><em>${gap} min${r.sus?' · fora do local':''}</em></li>`:''}<li class="rt ${isProd(r.cat)?'ok':'no'} ${r.sus?'sus':''}" data-os="${esc(r.os)}"><b>${hhmm(r.ini)}–${hhmm(r.fim)}</b><span class="rt-a">${esc(r.end)} <em>· ${esc(r.bai)}</em>${r.sus&&r.susAnc?`<small class="rt-sus">baixa feita provavelmente em ${esc(r.susAnc.end)} · ${esc(r.susAnc.bai)}</small>`:''}</span><span class="st ${isProd(r.cat)?'p':'i'}">${isProd(r.cat)?'Executada':CAT_LBL[r.cat]}</span></li>`}).join('')||'<li class="muted">Sem baixas nesse dia.</li>'}</ol>
      <div class="pfoot"><span><b>${rota.length}</b> baixas</span><span class="rp"><b>${rota.filter(r=>isProd(r.cat)).length}</b> executadas</span><span><b>${new Set(rota.map(r=>norm(r.bai))).size}</b> bairros</span><span class="rn"><b>${rota.filter(r=>r.sus).length}</b> fora do local</span></div></div>
-   </div>`;
+   </div>${T==='sus'?susLocHTML(TL.susEq?sus.filter(r=>r.eq===TL.susEq):sus):''}${bairroTiersHTML(rows)}`;
+  bindTiers(v);
   v.querySelectorAll('[data-tt]').forEach(b=>b.onclick=()=>{TL.tab=b.dataset.tt;render()});
+  if($('#susMore'))$('#susMore').onclick=()=>{SUS_SHOW+=30;const y=scrollY;render();scrollTo(0,y)};
   if($('#tlSort')){$('#tlSort').value=TL.sort;$('#tlSort').onchange=e=>{TL.sort=e.target.value;render()}}
   $('#tlEq').onchange=e=>{TL.eq=e.target.value;TL.day='';render()};$('#tlDay').onchange=e=>{TL.day=e.target.value;render()};
   v.querySelectorAll('tr[data-b]').forEach(tr=>tr.onclick=()=>drill({bai:tr.dataset.b,label:'Bairro: '+tr.dataset.b}));
   v.querySelectorAll('[data-tq]').forEach(b=>b.onclick=()=>{TL.eq=b.dataset.tq;TL.day='';render();setTimeout(()=>{const r=$('#tlRota');if(r&&innerWidth<1100)r.scrollIntoView({behavior:'smooth'})},50)});
-  v.querySelectorAll('[data-su]').forEach(b=>b.onclick=()=>drill({sus:1,eqs:[b.dataset.su],label:'Fora do local · '+nomeDe(b.dataset.su)}));
+  v.querySelectorAll('[data-su]').forEach(b=>b.onclick=()=>{TL.susEq=TL.susEq===b.dataset.su?'':b.dataset.su;SUS_SHOW=30;const y=scrollY;render();scrollTo(0,y)});
   if($('#tlSusAll'))$('#tlSusAll').onclick=()=>drill({sus:1,label:'Baixas fora do local'});
+  v.querySelectorAll('.sus-c[data-os]').forEach(c=>c.onclick=()=>drill({os:c.dataset.os,label:'OS '+c.dataset.os}));
   bindOsRows(v);
 }
 
 /* ---------- Agenda ---------- */
 let AG={}, AG_M='', AG_D='';let _ag=0;
-async function loadAgenda(){const l=LS.get('sa_dash_agenda',null);if(l)AG=l;if(DB){try{const d=await DB.doc('config/agenda').get();if(d.exists)AG=Object.assign({},d.data().dias||{},AG)}catch(e){}}if(VIEW==='agenda')render()}
-async function saveAgenda(){LS.set('sa_dash_agenda',AG);const s=$('#agSt');if(DB){try{await DB.doc('config/agenda').set({dias:AG});if(s)s.textContent='Salvo '+hhmm(Date.now())}catch(e){if(s)s.textContent='Não foi possível salvar agora'}}else if(s)s.textContent='Salvo'}
+let AG_EM='',AG_PEND=false;
+async function loadAgenda(){const l=LS.get('sa_dash_agenda',null);if(l)AG=l;AG_EM=LS.get('sa_dash_agenda_em','')||'';
+  if(DB){try{const d=await DB.doc('config/agenda').get();if(d.exists){const r=d.data()||{};const dd=r.dias||{},de=r.em||'';
+    // o mais recente vence; nada é perdido: dias que só existem na outra cópia são mantidos
+    AG=de>AG_EM?Object.assign({},AG,dd):Object.assign({},dd,AG);if(de>AG_EM)AG_EM=de}}catch(e){}}
+  if(VIEW==='agenda')render()}
+async function saveAgenda(){AG_PEND=false;AG_EM=new Date().toISOString();LS.set('sa_dash_agenda',AG);LS.set('sa_dash_agenda_em',AG_EM);const s=$('#agSt');
+  if(DB){try{await DB.doc('config/agenda').set({dias:AG,em:AG_EM});if(s)s.innerHTML='✓ Salvo às '+hhmm(Date.now())}catch(e){if(s)s.textContent='Salvo neste navegador · sem conexão com o painel agora'}}
+  else{if(SECURE){clearTimeout(_sp);await vaultWrite()}if(s)s.innerHTML='✓ Salvo às '+hhmm(Date.now())+(SECURE?' · protegido pela senha':'')}}
+/* garante que nada fica sem salvar ao trocar de aba, bloquear ou fechar */
+async function flushSaves(){try{if(AG_PEND){clearTimeout(_ag);await saveAgenda()}if(SECURE&&SEC_KEY&&_sp){clearTimeout(_sp);_sp=0;await vaultWrite()}}catch(e){}}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushSaves()});
+addEventListener('pagehide',()=>{flushSaves()});
+/* cópia de segurança (versão protegida): o arquivo sai cifrado com a mesma senha */
+function backupHTML(){if(!SECURE||window.claude)return '';return `<div class="bkp"><div class="svct">Cópia de segurança <span class="muted">agenda, anotações, cadastro, rodízio e planilhas</span></div>
+  <p class="note">Guarde uma cópia no seu computador de vez em quando. O arquivo sai <b>cifrado com a sua senha</b>: sem ela ninguém consegue ler.</p>
+  <div class="rzact" style="margin-top:6px"><button type="button" class="btn ghost sm" id="bkDown">Baixar cópia de segurança</button><button type="button" class="btn ghost sm" id="bkUp">Restaurar cópia</button></div></div>`}
+function bindBackup(v){const d=v.querySelector('#bkDown'),u=v.querySelector('#bkUp');if(!d)return;
+  d.onclick=async()=>{await flushSaves();const raw=localStorage.getItem(VAULT);if(!raw){toast('Nada para copiar ainda.');return}
+    const blob=new Blob([JSON.stringify({tipo:'backup-painel-santo-andre',v:1,em:new Date().toISOString(),vault:JSON.parse(raw)})],{type:'application/json'});
+    const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='copia-painel-'+dayKey(Date.now())+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(url);a.remove()},1500);toast('Cópia baixada. Guarde no seu computador.')};
+  u.onclick=()=>{const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=async()=>{const f=i.files[0];if(!f)return;
+    try{const p=JSON.parse(await f.text());const vv=p&&p.vault;if(!p||p.tipo!=='backup-painel-santo-andre'||!vv||!vv.salt||!vv.iv||!vv.ct)throw new Error('este arquivo não é uma cópia do painel');
+      if(!confirm('Restaurar a cópia de '+(p.em?dayBRf(dayKey(Date.parse(p.em)))+' ':'')+'? Os dados atuais deste navegador serão trocados pelos da cópia. Depois é só digitar a senha da cópia.'))return;
+      localStorage.setItem(VAULT,JSON.stringify(vv));location.reload()}catch(e){toast('Não foi possível restaurar: '+e.message)}};i.click()}}
 function vAgenda(v,rows){
   const today=dayKey(Date.now());if(!AG_M)AG_M=(lastDay(rows)||today).slice(0,7);if(!AG_D)AG_D=lastDay(rows)||today;
   const [Y,M]=AG_M.split('-').map(Number);const first=new Date(Y,M-1,1),dim=new Date(Y,M,0).getDate();const off=(first.getDay()+6)%7;
@@ -1981,13 +2389,14 @@ function vAgenda(v,rows){
     ${sa?`<div class="ag-sum"><button type="button" data-go="all"><b>${fmt(sa.trab)}</b><span>OS trabalhadas</span></button><button type="button" data-go="prod"><b class="${sa.pr>=META?'up':''}">${pct(sa.prod,sa.den)}%</b><span>produtividade do dia</span></button><button type="button" data-go="pag"><b>${fmt(sa.pag)}</b><span>pagamentos</span></button><button type="button" data-go="imp"><b>${fmt(sa.IMPED)}</b><span>impedimentos</span></button></div>`:'<p class="muted small">Sem OS registradas neste dia.</p>'}
     <label for="agT" class="svct" style="margin-top:12px">Anotações do dia</label>
     <textarea id="agT" rows="9" placeholder="Reunião, escala, ocorrências, combinados com a equipe…">${esc(AG[AG_D]||'')}</textarea>
-    <p class="ps small muted" id="agSt">${DB?'Salvo no painel':'Salvo neste navegador'}</p>
+    <p class="ps small muted" id="agSt">${DB?'✓ Tudo o que você escreve é salvo sozinho no painel':SECURE?'✓ Salvo sozinho neste navegador, protegido pela senha':'✓ Salvo sozinho neste navegador'}</p>
     <div class="svct" style="margin-top:10px">Anotações do mês <span class="muted">${withNotes.length}</span></div>
-    <ul class="ag-list">${withNotes.map(k=>`<li><button type="button" data-d="${k}"><b>${dayBR(k)}</b><span>${esc(AG[k].trim().split('\n')[0].slice(0,70))}</span></button></li>`).join('')||'<li class="muted small">Nenhuma anotação neste mês.</li>'}</ul></div></div>`;
+    <ul class="ag-list">${withNotes.map(k=>`<li><button type="button" data-d="${k}"><b>${dayBR(k)}</b><span>${esc(AG[k].trim().split('\n')[0].slice(0,70))}</span></button></li>`).join('')||'<li class="muted small">Nenhuma anotação neste mês.</li>'}</ul>${backupHTML()}</div></div>`;
   const mv=n=>{const d=new Date(Y,M-1+n,1);AG_M=d.getFullYear()+'-'+pad(d.getMonth()+1);AG_D=AG_M+'-01';render()};
   $('#agPrev').onclick=()=>mv(-1);$('#agNext').onclick=()=>mv(1);$('#agHoje').onclick=()=>{AG_M=today.slice(0,7);AG_D=today;render()};
-  v.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{AG_D=b.dataset.d;render();setTimeout(()=>{const t=$('#agT');if(t)t.focus()},30)});
-  $('#agT').oninput=e=>{AG[AG_D]=e.target.value;if(!AG[AG_D].trim())delete AG[AG_D];$('#agSt').textContent='Salvando…';clearTimeout(_ag);_ag=setTimeout(saveAgenda,700)};
+  v.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{if(AG_PEND){clearTimeout(_ag);saveAgenda()}AG_D=b.dataset.d;render();setTimeout(()=>{const t=$('#agT');if(t)t.focus()},30)});
+  $('#agT').oninput=e=>{AG[AG_D]=e.target.value;if(!AG[AG_D].trim())delete AG[AG_D];AG_PEND=true;$('#agSt').textContent='Salvando…';clearTimeout(_ag);_ag=setTimeout(saveAgenda,500)};
+  $('#agT').onblur=()=>{if(AG_PEND){clearTimeout(_ag);saveAgenda()}};bindBackup(v);
   v.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{const g=b.dataset.go;drill({day:AG_D,cats:g==='prod'?PROD_CATS:g==='pag'?['PAG_POS','PAG_FAT']:g==='imp'?['IMPED']:null,label:'Dia '+dayBRf(AG_D)})});
 }
 
@@ -2068,11 +2477,301 @@ function applyCfgText(){try{if(CFG.titulo)document.querySelector('.title h1').te
 applyCfgText();
 function tick(){const d=new Date();$('#clock').innerHTML=`<b>${DIAS[d.getDay()]}, ${d.getDate()} de ${MESES[d.getMonth()].charAt(0)+MESES[d.getMonth()].slice(1).toLowerCase()} de ${d.getFullYear()}</b>${pad(d.getHours())}:${pad(d.getMinutes())}`}
 
+var MAPA_POS={148:[330,52],149:[440,165],150:[690,250],117:[178,206],118:[98,292],156:[48,374],155:[232,300],154:[350,372],153:[545,486],
+  151:[790,372],242:[852,258],194:[1030,288],247:[1350,350],248:[1082,462],249:[1422,526],250:[1322,652],251:[1135,652],195:[1038,626],252:[922,596],152:[790,544],253:[737,688]};
+var MAPA_ANC={148:[[360,22],[360,60],[318,135],[330,95]],149:[[425,68],[470,75],[428,115],[436,140],[404,210],[504,299],[480,250],[380,180]],
+  150:[[726,227],[617,306],[690,250],[600,200],[650,380],[560,150],[760,230]],117:[[178,206],[165,172],[186,150],[150,220]],
+  155:[[243,237],[191,305],[145,366],[230,280],[290,200],[190,338],[120,260]],118:[[62,322],[84,341],[40,296],[110,300],[70,370]],156:[[30,346],[15,330]],
+  154:[[389,321],[352,372],[252,390],[300,330],[420,370],[476,415],[210,430],[300,420]],153:[[543,486],[390,540],[560,420],[460,470],[330,470],[500,540]],
+  151:[[797,325],[738,413],[823,413],[868,476],[791,369],[770,280],[900,380]],242:[[853,256],[875,236]],
+  194:[[1070,227],[1070,277],[1027,285],[1113,317],[910,315],[960,260],[1150,300]],247:[[1206,227],[1330,290],[1350,350],[1210,310],[1535,445],[1450,400],[1260,240]],
+  248:[[1087,385],[1021,460],[1082,462],[960,430],[1180,470],[1000,380]],249:[[1296,413],[1422,526],[1330,480],[1480,560],[1380,600]],
+  250:[[1322,652],[1300,560],[1300,720],[1350,730]],251:[[1135,652],[1233,630],[1048,550],[1060,700],[1200,720],[1180,560]],195:[[1038,626],[1010,600],[1020,660]],
+  252:[[922,596],[911,660],[900,700],[950,560]],152:[[792,541],[760,468],[625,470],[737,570],[700,520],[830,600]],253:[[737,688],[690,640],[835,725],[780,700]]};
+function setorNoPonto(x,y){ var best=null,bd=1e12; Object.keys(MAPA_ANC).forEach(function(c){ MAPA_ANC[c].forEach(function(p){ var dd=(p[0]-x)*(p[0]-x)+(p[1]-y)*(p[1]-y); if(dd<bd){bd=dd;best=+c;} }); }); return best; }
+
+/* ================= Rodízio de setores (São Mateus) · interligado às OS do GeoCall ================= */
+IC.map='<path d="M9 3 3 5.5v15.5l6-2.5 6 2.5 6-2.5V3l-6 2.5zm0 2.2 6 2.5v11.1l-6-2.5z"/>';
+const RM=window.MotorRodizio;
+const RZ_KEY='sa_rodizio_v1';
+const RZ_TIERS=['ALTO','MÉDIO-ALTO','MÉDIO','MÉDIO-BAIXO'];
+const RZ_TC={'ALTO':'#f5b73b','MEDIO-ALTO':'#2dd4bf','MEDIO':'#7aa2d6','MEDIO-BAIXO':'#8193a8'};
+const RZ_DS=['domingo','segunda','terça','quarta','quinta','sexta','sábado'],RZ_MS=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const RZ_TABS=[['hoje','Escala do dia'],['analise','Setores × Produção'],['mapa','Mapa'],['semana','Semana'],['equipe','Equipe e faltas'],['setores','Pesos dos setores']];
+let RZ={tab:'hoje',dia:null,cfg:null,sel:null,confirm:null,cache:null,priv:false,loaded:false,q:''};
+try{RZ.priv=localStorage.getItem('sa_rz_priv')==='1'}catch(e){}
+const rzTK=p=>String(p||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase();
+const rzCol=p=>RZ_TC[rzTK(p)]||'#7aa2d6';
+const rzNorm=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase().replace(/\s+/g,' ').trim();
+const rzHoje=()=>RM.iso(new Date());
+function rzFmt(s,long){const d=new Date(s+'T12:00:00');return (long?RZ_DS[d.getDay()]+', ':RZ_DS[d.getDay()].slice(0,3)+' ')+d.getDate()+' '+RZ_MS[d.getMonth()]}
+const rzBR=s=>s?s.slice(8,10)+'/'+s.slice(5,7):'';
+const rzFer=()=>RZ.cfg.feriados||[];
+const rzSetor=c=>RZ.cfg.setores.find(s=>+s.codigo===+c);
+const rzUni=id=>RZ.cfg.unidades.find(u=>u.id===id);
+const rzNome=id=>{const u=rzUni(id);return u?(u.curto||u.nome):id};
+const rzAtivos=()=>RZ.cfg.unidades.filter(u=>u.status!=='inativo').sort((a,b)=>(a.ordem||0)-(b.ordem||0));
+const rzOrdem=()=>RZ.cfg.setores.slice().sort((a,b)=>(b.peso-a.peso)||(a.codigo-b.codigo));
+const rzMapa=()=>(RZ.cfg&&RZ.cfg.mapa)||window.RZ_MAPA||'';
+const rzChip=(c,extra='')=>{const s=rzSetor(c)||{};return `<span class="rzchip rzs" style="--t:${rzCol(s.potencial)}" ${extra}>${esc(c)}</span>`};
+const rzTier=p=>`<span class="rztier" style="--t:${rzCol(p)}">${esc(p||'—')}</span>`;
+
+/* ---------- guardar / carregar ---------- */
+function rzLoadLocal(){const c=LS.get(RZ_KEY,null);if(c&&c.unidades&&c.setores){RM.migrar(c);return c}
+  if(window.RZ_SEED){const p=RM.configPadrao();p.feitos={};p.atualizadoEm='2026-09-27T00:00:00.000Z';return p}return null}
+async function loadRodizio(){RZ.cfg=rzLoadLocal();
+  if(DB){try{const d=await DB.doc('config/rodizio').get();if(d.exists){const r=d.data();if(r&&r.cfg&&r.cfg.unidades&&(!RZ.cfg||String(r.cfg.atualizadoEm||'')>String(RZ.cfg.atualizadoEm||''))){const m=RZ.cfg&&RZ.cfg.mapa;RZ.cfg=RM.migrar(r.cfg);if(m&&!RZ.cfg.mapa)RZ.cfg.mapa=m}}}catch(e){}}
+  RZ.cache=null;RZ.loaded=true;RZ.dia=rzDiaInicial();if(VIEW==='rodizio')render()}
+function rzDiaInicial(){if(!RZ.cfg)return rzHoje();let d=rzHoje();if(d<RZ.cfg.inicio)d=RZ.cfg.inicio;return RM.proximoDiaUtil(d,rzFer())}
+let _rzs=0;
+function rzSave(msg){RZ.cfg.atualizadoEm=new Date().toISOString();RZ.cache=null;LS.set(RZ_KEY,RZ.cfg);
+  if(DB){clearTimeout(_rzs);_rzs=setTimeout(()=>{const c=Object.assign({},RZ.cfg);delete c.mapa;DB.doc('config/rodizio').set({cfg:JSON.parse(JSON.stringify(c)),em:RZ.cfg.atualizadoEm}).catch(()=>{})},600)}
+  if(msg)toast(msg);rzRerender()}
+function rzRerender(){const y=scrollY;render();scrollTo(0,y)}
+
+/* ---------- escala ---------- */
+function rzAlvoMin(){let d=rzHoje(),k=0;while(k<15){d=RM.proximoDiaUtil(RM.addDias(d,1),rzFer());k++}return d}
+function rzEscalaAte(d){const m=rzAlvoMin(),ate=d>m?d:m;if(RZ.cache&&RZ.cache.ate>=ate)return RZ.cache.dias;const dias=RM.simular(RZ.cfg,ate);RZ.cache={ate,dias};return dias}
+const rzDia=d=>rzEscalaAte(d).find(x=>x.data===d);
+const rzMeta=u=>{const m=RZ.cfg.metas||{moto:25,carro:10};return u&&u.tipo==='carro'?m.carro:m.moto};
+function rzFeitos(d){RZ.cfg.feitos=RZ.cfg.feitos||{};return RZ.cfg.feitos[d]||{}}
+function rzFora(d){return rzAtivos().filter(u=>!RM.disponiveis([u],d,RZ.cfg.ausencias).length).map(u=>({u,a:(RZ.cfg.ausencias||[]).find(x=>x.id===u.id&&x.de<=d&&d<=x.ate)}))}
+function rzAusencia(id,de,ate,motivo){RZ.cfg.ausencias=RZ.cfg.ausencias||[];let d=de,g=0;const fim=ate||de;
+  while(d<=fim&&g++<400){if(Object.keys(rzFeitos(d)).length){const dia=rzDia(d);if(dia){RZ.cfg.ajustes=RZ.cfg.ajustes||{};RZ.cfg.ajustes[d]=dia.itens.filter(i=>i.unidade!==id)}}d=RM.addDias(d,1)}
+  RZ.cfg.ausencias.push({id,de,ate:fim,motivo:motivo||'Falta'});RZ.cache=null}
+function rzTroca(d,id,novo){const dia=rzDia(d);if(!dia)throw new Error('Sem escala nesse dia');const it=dia.itens.map(x=>({unidade:x.unidade,setor:x.setor}));
+  const meu=it.find(x=>x.unidade===id);if(!meu)throw new Error(rzNome(id)+' não está escalado nesse dia');const outro=it.find(x=>+x.setor===+novo&&x.unidade!==id);
+  if(outro)outro.setor=meu.setor;meu.setor=+novo;RZ.cfg.ajustes=RZ.cfg.ajustes||{};RZ.cfg.ajustes[d]=it;return outro?rzNome(outro.unidade):null}
+function rzWhats(d){const dia=rzDia(d);if(!dia)return '';let t='*Escala '+rzFmt(d,true)+'* – Corte e Cobrança São Mateus\n\n';
+  dia.itens.forEach(it=>{const s=rzSetor(it.setor)||{};t+='• '+rzNome(it.unidade)+' → Setor '+it.setor+' ('+(s.bairros||'')+')\n'});
+  const f=rzFora(d);if(f.length)t+='\nFora: '+f.map(x=>rzNome(x.u.id)+(x.a?' ('+x.a.motivo+')':'')).join(', ');return t}
+
+/* ---------- ligação com o GeoCall ---------- */
+function rzEqDe(u){if(!u)return null;const base=rzNorm(String(u.nome).split('+')[0]);const ks=Object.keys(REG);const b=base.split(' ');
+  return ks.find(k=>rzNorm(k)===base)||ks.find(k=>{const a=rzNorm(k).split(' ');return a[0]===b[0]&&a[1]===b[1]})||ks.find(k=>rzNorm(k).split(' ')[0]===b[0]&&b.length<3)||null}
+function rzUniDeEq(eq){return RZ.cfg.unidades.find(u=>rzEqDe(u)===eq)||null}
+/* estatísticas de produção por setor (SF) e por colaborador × setor, no período filtrado */
+function rzStats(rows){
+  const bySf=groupBy(rows.filter(r=>r.sf),r=>String(r.sf));const A=agg(rows);
+  const setores=[...bySf].map(([sf,rs])=>{const a=agg(rs);const fech=rs.filter(r=>/IM[OÓ]VEL FECHADO/.test(r.res||'')).length;
+    const bands=BANDS.map(([l,h0,h1])=>{const b=rs.filter(r=>isBaixa(r)&&hourOf(r)>=h0&&hourOf(r)<h1);const x=agg(b);return {l,n:b.length,pr:x.den?x.prod/x.den*100:null}});
+    return {sf,rs,a,fech,fechP:a.den?fech/a.den*100:0,fimP:a.rec?a.FIMDIA/a.rec*100:0,dias:new Set(rs.map(r=>r.day)).size,cols:new Set(rs.map(r=>r.eq)).size,bands,bai:[...new Set(rs.map(r=>r.bai))]}});
+  const cross={};rows.forEach(r=>{if(!r.sf)return;const k=r.eq+'|'+r.sf;(cross[k]=cross[k]||[]).push(r)});
+  const cx={};Object.entries(cross).forEach(([k,rs])=>cx[k]=agg(rs));
+  const tf=setores.reduce((q,x)=>q+x.fech,0),td=setores.reduce((q,x)=>q+x.a.den,0),tfim=setores.reduce((q,x)=>q+x.a.FIMDIA,0),trec=setores.reduce((q,x)=>q+x.a.rec,0);
+  const fechAvg=td?tf/td*100:0,fimAvg=trec?tfim/trec*100:0;
+  return {A,setores,cx,avg:A.den?A.prod/A.den*100:0,fechAvg,fimAvg,fechLim:Math.max(40,fechAvg+8),fimLim:Math.max(15,fimAvg+7)}}
+function rzFreq(janela){const v={};janela.forEach(x=>x.itens.forEach(i=>v[i.setor]=(v[i.setor]||0)+1));return v}
+function rzJanela(){const d=RZ.dia;let fim=d,k=0;while(k<9){fim=RM.proximoDiaUtil(RM.addDias(fim,1),rzFer());k++}return rzEscalaAte(fim).filter(x=>x.data<=fim).slice(-20)}
+function rzJustica(jan){const p={};jan.forEach(z=>z.itens.forEach(i=>{const s=rzSetor(i.setor)||{peso:0,potencial:''};const r=p[i.unidade]||(p[i.unidade]={dias:0,pts:0,alto:0});r.dias++;r.pts+=+s.peso||0;if(rzTK(s.potencial)==='ALTO')r.alto++}));return p}
+
+/* pontos de melhoria: cruza potencial do setor, frequência no rodízio e o resultado real das OS */
+function rzInsights(ST){
+  const out=[];const avg=ST.avg;const noRod=RZ.cfg.setores.filter(s=>s.peso>0);const jan=rzJanela();const fq=rzFreq(jan);
+  const bySf=Object.fromEntries(ST.setores.map(s=>[s.sf,s]));const f1=x=>x.toFixed(0);
+  ST.setores.filter(s=>s.a.den>=20).forEach(s=>{const cfg=rzSetor(s.sf);const pr=s.a.prod/s.a.den*100;
+    if(cfg&&(rzTK(cfg.potencial)==='ALTO'||cfg.peso>=4)&&pr<avg-5)out.push({lv:'alto',sf:s.sf,imp:(avg-pr)*s.a.den,t:`Setor ${s.sf} é potencial ${cfg.potencial}, mas rende ${f1(pr)}% (média da equipe ${f1(avg)}%)`,d:`${fmt(s.a.den)} OS trabalhadas. Revisar a qualidade das ordens programadas ou reduzir o peso para liberar a equipe para setores que rendem mais.`,a:'Ver OS do setor'});
+    if(cfg&&cfg.peso<=2&&cfg.peso>0&&pr>avg+5)out.push({lv:'op',sf:s.sf,imp:(pr-avg)*s.a.den,t:`Setor ${s.sf} rende ${f1(pr)}%, acima da média, mas tem peso ${cfg.peso}`,d:`Subir o peso faz a equipe voltar lá com mais frequência (hoje aparece ${fq[s.sf]||0} vez(es) em ${jan.length} dias úteis).`,a:'Ajustar peso',peso:true});
+    if(s.fechP>=ST.fechLim)out.push({lv:'med',sf:s.sf,imp:s.fech,t:`Muito imóvel fechado no setor ${s.sf}: ${f1(s.fechP)}% das OS trabalhadas (média ${f1(ST.fechAvg)}%)`,d:(()=>{const b=s.bands.filter(x=>x.n>=10&&x.pr!=null).sort((x,y)=>y.pr-x.pr);return b.length>1?`Melhor faixa: ${b[0].l} (${f1(b[0].pr)}%) · pior: ${b[b.length-1].l} (${f1(b[b.length-1].pr)}%). Programar esse setor para começar na melhor faixa.`:'Tentar outro horário de visita ou reprogramar em lote.'})(),a:'Ver OS do setor'});
+    if(s.fimP>=ST.fimLim)out.push({lv:'med',sf:s.sf,imp:s.a.FIMDIA,t:`Setor ${s.sf} deixa ${f1(s.fimP)}% das OS em “Fim do Dia”`,d:'Sinal de carga acima do que cabe no dia ou deslocamento longo. Mandar menos ordens ou usar os setores vizinhos para completar a meta.',a:'Ver OS do setor'});
+  });
+  noRod.forEach(s=>{if(!bySf[String(s.codigo)]&&(fq[s.codigo]||0)>0)out.push({lv:'info',sf:String(s.codigo),imp:1,t:`Setor ${s.codigo} está no rodízio, mas não tem OS no período filtrado`,d:'Confirmar no GeoCall se há ordens para esse setor. Se não houver, baixe o peso para não mandar ninguém à toa.',a:'Ajustar peso',peso:true})});
+  ST.setores.forEach(s=>{const cfg=rzSetor(s.sf);if(s.a.rec>=20&&(!cfg||!(cfg.peso>0)))out.push({lv:'op',sf:s.sf,imp:s.a.rec,t:`Setor ${s.sf} tem ${fmt(s.a.rec)} OS no GeoCall, mas está fora do rodízio`,d:cfg?'Está com peso 0. Coloque um peso para ele entrar na escala.':'Não está cadastrado no rodízio. Se for da área, cadastre em Pesos dos setores.',a:'Ver OS do setor'})});
+  // colaborador: onde rende mais × menos
+  const byEq={};Object.entries(ST.cx).forEach(([k,a])=>{const [eq,sf]=k.split('|');if(a.den<15)return;(byEq[eq]=byEq[eq]||[]).push({sf,pr:a.prod/a.den*100,n:a.den})});
+  Object.entries(byEq).forEach(([eq,l])=>{if(l.length<2)return;l.sort((x,y)=>y.pr-x.pr);const b=l[0],w=l[l.length-1];if(b.pr-w.pr>=20)out.push({lv:'op',eq,sf:b.sf,imp:(b.pr-w.pr)*5,t:`<span class="rzn">${esc(nomeDe(eq))}</span> rende ${f1(b.pr)}% no setor ${b.sf} e ${f1(w.pr)}% no ${w.sf}`,d:'Vale entender o que muda entre os dois setores (tipo de ordem, horário, trajeto). Quando precisar trocar alguém, prefira mandar essa pessoa para onde ela rende mais.',a:'Ver OS dele'})});
+  // justiça do rodízio
+  const J=rzJustica(jan);const vals=rzAtivos().map(u=>J[u.id]?J[u.id].pts/J[u.id].dias:null).filter(x=>x!=null);const m=vals.reduce((s,x)=>s+x,0)/(vals.length||1);
+  rzAtivos().forEach(u=>{const r=J[u.id];if(!r)return;const v=r.pts/r.dias;if(Math.abs(v-m)>=.8)out.push({lv:v<m?'med':'info',tab:'semana',imp:.5,t:`<span class="rzn">${esc(u.curto||u.nome)}</span> está com setores ${v<m?'mais fracos':'mais fortes'} que a média (${v.toFixed(1).replace('.',',')} × ${m.toFixed(1).replace('.',',')})`,d:'O rodízio corrige isso sozinho nos próximos dias; se persistir, confira faltas e ajustes manuais.',a:'Ver semana'})});
+  // cobertura dos setores ALTO
+  const altos=noRod.filter(s=>rzTK(s.potencial)==='ALTO');altos.forEach(s=>{const v=fq[s.codigo]||0;if(jan.length>=10&&v<jan.length*.5)out.push({lv:'med',sf:String(s.codigo),imp:2,t:`Setor ${s.codigo} (ALTO) recebe equipe só ${v} vez(es) em ${jan.length} dias úteis`,d:'Setor de maior arrecadação deveria ter equipe quase todo dia. Suba o peso ou confira se há faltas seguidas.',a:'Ajustar peso',peso:true})});
+  const ord={alto:0,med:1,op:2,info:3};return out.sort((x,y)=>ord[x.lv]-ord[y.lv]||y.imp-x.imp)}
+
+/* ---------- mapa ---------- */
+function rzMapaHTML(d){const src=rzMapa();if(!src)return '<p class="muted">Mapa não carregado. Importe o pacote do rodízio em “Equipe e faltas”.</p>';
+  const dia=rzDia(d),it=dia?dia.itens:[],f=rzFeitos(d),quem={};it.forEach(i=>quem[i.setor]=i.unidade);
+  return `<div class="rzmap" id="rzMap"><img src="${src}" alt="Mapa dos setores" draggable="false" class="rzs">${RZ.cfg.setores.map(s=>{const p=MAPA_POS[s.codigo];if(!p)return '';const u=quem[s.codigo];
+    return `<button type="button" class="rzpin ${u?'on':'off'} ${u&&f[u]?'ok':''} ${RZ.sel===+s.codigo?'sel':''}" data-rz="setor" data-c="${s.codigo}" style="left:${(p[0]/16).toFixed(2)}%;top:${(p[1]/7.96).toFixed(2)}%;--t:${rzCol(s.potencial)}" aria-label="Setor ${s.codigo}"><b class="rzs">${s.codigo}</b>${u?`<span class="rzn">${esc(rzNome(u))}</span>`:''}</button>`}).join('')}</div>
+  <div class="rzleg">${RZ_TIERS.map(t=>`<span><i style="background:${rzCol(t)}"></i>${t}</span>`).join('')}<span><i class="o"></i>sem equipe</span><span><i class="k"></i>programado</span></div>`}
+function rzFicha(c,d,ST){const s=rzSetor(c);if(!s)return `<div class="rzf-vazia"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="#7cc7ff" stroke-width="1.6"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><b>Toque num setor do mapa</b><span>Veja bairros, quem está lá, próximas visitas e como o setor rende no GeoCall.</span></div>`;
+  const dia=rzDia(d),it=dia&&dia.itens.find(i=>+i.setor===+c);let fim=d,k=0;while(k<9){fim=RM.proximoDiaUtil(RM.addDias(fim,1),rzFer());k++}
+  const todos=rzEscalaAte(fim);const prox=todos.filter(x=>x.data>d&&x.itens.some(i=>+i.setor===+c)).slice(0,4);const ant=todos.filter(x=>x.data<d&&x.itens.some(i=>+i.setor===+c)).slice(-3).reverse();
+  const lin=x=>{const i=x.itens.find(y=>+y.setor===+c);return `<li><span>${rzFmt(x.data)}</span><b class="rzn">${esc(rzNome(i.unidade))}</b></li>`};
+  const st=ST.setores.find(x=>x.sf===String(c));const pr=st&&st.a.den?st.a.prod/st.a.den*100:null;
+  const best=st?Object.entries(ST.cx).filter(([k,a])=>k.endsWith('|'+c)&&a.den>=8).map(([k,a])=>({eq:k.split('|')[0],pr:a.prod/a.den*100,n:a.den})).sort((x,y)=>y.pr-x.pr).slice(0,3):[];
+  return `<div class="rzf" style="--t:${rzCol(s.potencial)}"><div class="rzf-top"><span class="rzf-cod rzs">${s.codigo}</span><div>${rzTier(s.potencial)}<small>Grupo ${esc(s.grupo||'—')} · peso ${s.peso}</small></div><button type="button" class="rzx" data-rz="fechar" aria-label="Fechar">×</button></div>
+   <div class="rzf-sec"><span class="rzl">Bairros</span><div class="rzbai rzs">${String(s.bairros||'').split(' / ').map(b=>`<span>${esc(b)}</span>`).join('')}</div></div>
+   <div class="rzf-sec"><span class="rzl">${rzFmt(d,true)}</span>${it?`<b class="rzf-quem rzn">${esc(rzNome(it.unidade))}</b>${rzFeitos(d)[it.unidade]?' <span class="st p">programado</span>':''}`:'<span class="muted">Sem equipe neste dia</span>'}</div>
+   <div class="rzf-sec"><span class="rzl">No GeoCall (período filtrado)</span>${st?`<div class="rzf-k"><div><b class="${pr>=META?'up':'dn'}">${pct(st.a.prod,st.a.den)}%</b><span>produtividade</span></div><div><b>${fmt(st.a.rec)}</b><span>OS</span></div><div><b>${fmt(st.a.pag)}</b><span>pagamentos</span></div><div><b>${st.fechP.toFixed(0)}%</b><span>imóvel fechado</span></div></div>
+     ${best.length?`<div class="rzf-best">${best.map(b=>`<button type="button" data-rz="drill" data-sf="${c}" data-eq="${esc(b.eq)}"><span class="rzn">${esc(nomeDe(b.eq))}</span><b>${b.pr.toFixed(0)}%</b><em>${b.n} OS</em></button>`).join('')}</div>`:''}
+     <button type="button" class="btn sm ghost" data-rz="drill" data-sf="${c}">Ver as ${fmt(st.a.rec)} OS do setor →</button>`:'<span class="muted">Sem OS deste setor nas planilhas do período.</span>'}</div>
+   <div class="rzf-sec"><span class="rzl">Vizinhos</span><div class="rzviz">${(RM.VIZINHOS[c]||[]).map(v=>{const q=dia&&dia.itens.find(i=>+i.setor===+v);return `<button type="button" data-rz="setor" data-c="${v}">${rzChip(v)}<span class="${q?'rzn':''}">${q?esc(rzNome(q.unidade)):'livre'}</span></button>`}).join('')}</div></div>
+   <div class="rzf-cols"><div><span class="rzl">Próximas visitas</span>${prox.length?`<ul class="rzvis">${prox.map(lin).join('')}</ul>`:'<span class="muted">—</span>'}</div><div><span class="rzl">Últimas visitas</span>${ant.length?`<ul class="rzvis">${ant.map(lin).join('')}</ul>`:'<span class="muted">—</span>'}</div></div>
+   <div class="rzf-sec"><label class="rzl" for="rzPesoF">Prioridade no rodízio (peso)</label><select id="rzPesoF" data-rz="peso" data-c="${s.codigo}">${[0,1,2,3,3.5,4,5].map(p=>`<option value="${p}" ${+s.peso===p?'selected':''}>Peso ${p}</option>`).join('')}</select></div></div>`}
+
+/* ---------- telas ---------- */
+function rzDayBar(sub){const d=RZ.dia,h=rzHoje();return `<div class="rzday"><button type="button" class="btn ghost sm" data-rz="dia" data-dir="-1" aria-label="Dia anterior">‹</button><div><b>${rzFmt(d,true)}${d===h?' · hoje':''}</b><small>${sub}</small></div><button type="button" class="btn ghost sm" data-rz="dia" data-dir="1" aria-label="Próximo dia">›</button>${d!==rzDiaInicial()?'<button type="button" class="btn ghost sm" data-rz="hojeBtn">Hoje</button>':''}</div>`}
+function rzSemExp(){const d=RZ.dia;return d<RZ.cfg.inicio?`<div class="panel"><p class="note">O rodízio começa em ${rzFmt(RZ.cfg.inicio,true)}.</p></div>`:!RM.ehDiaUtil(d,rzFer())?'<div class="panel"><p class="note">Dia sem expediente (fim de semana ou feriado).</p></div>':''}
+function rzKpi(lab,val,tot,sub,cls,attr){return `<button type="button" class="kpi ${cls||''}" ${attr||''}><span class="lab">${lab}</span><span class="val">${val}${tot!=null?`<small class="rzkt">/ ${tot}</small>`:''}</span><span class="sub">${sub}</span></button>`}
+
+function rzTelaHoje(rows,ST){const d=RZ.dia;const se=rzSemExp();if(se)return rzDayBar('Programação no GeoCall')+se;
+  const dia=rzDia(d),it=dia?dia.itens:[],f=rzFeitos(d),feitos=it.filter(i=>f[i.unidade]).length,comp=RM.complementos(it,RZ.cfg.setores);
+  const noRod=RZ.cfg.setores.filter(s=>s.peso>0),altos=noRod.filter(s=>rzTK(s.potencial)==='ALTO'),altC=altos.filter(s=>it.some(i=>+i.setor===+s.codigo)).length;
+  const fora=rzFora(d),cob={};it.forEach(i=>cob[i.setor]=1);const sem=rzOrdem().filter(s=>s.peso>0&&!cob[s.codigo]);
+  const aj=!!(dia&&dia.ajustado);
+  let h=rzDayBar('Programação no GeoCall')+`<div class="kpis">
+   ${rzKpi('Em campo',it.length,rzAtivos().length,fora.length?fora.length+' fora de campo':'equipe completa','rr')}
+   ${rzKpi('Setores ALTO cobertos',altC,altos.length,'maior arrecadação',altC===altos.length?'g':'sp')}
+   ${rzKpi('Setores com equipe',it.length,noRod.length,sem.length+' sem equipe hoje','')}
+   ${rzKpi('Programados no GeoCall',feitos,it.length,feitos===it.length&&it.length?'tudo lançado':'falta '+(it.length-feitos),feitos===it.length&&it.length?'g':'')}
+   ${rzKpi('Meta do dia',fmt(it.reduce((s,i)=>s+rzMeta(rzUni(i.unidade)),0)),null,'ordens somando a equipe','pg')}
+   ${rzKpi('Produtividade da equipe',pct(ST.A.prod,ST.A.den)+'%',null,'GeoCall · período filtrado',ST.avg>=META?'g':'ct','data-rz="tab" data-t="analise"')}</div>`;
+  h+=`<div class="panel"><h3>Escala do dia <small>em ordem de prioridade · marque ✓ ao lançar no GeoCall</small></h3>
+   <div class="rzprog"><div class="rzbar"><i style="width:${it.length?feitos/it.length*100:0}%"></i></div><span>${feitos} de ${it.length} programados</span>${aj?'<span class="st o">ajustado</span>':''}</div>
+   <div class="rzcards">${it.map((x,i)=>{const s=rzSetor(x.setor)||{codigo:x.setor,bairros:'',potencial:''},u=rzUni(x.unidade)||{},ok=!!f[x.unidade];
+     const eq=rzEqDe(u),a=eq&&ST.cx[eq+'|'+x.setor];const hist=a&&a.den?`<button type="button" class="rzhist" data-rz="drill" data-sf="${x.setor}" data-eq="${esc(eq)}" title="Histórico dessa pessoa neste setor no GeoCall">neste setor: <b class="${a.prod/a.den*100>=META?'up':'dn'}">${pct(a.prod,a.den,0)}%</b> em ${fmt(a.den)} OS</button>`:(eq?'<span class="rzhist muted">primeira vez neste setor no período</span>':'');
+     return `<article class="rzcard ${ok?'done':''}" style="--t:${rzCol(s.potencial)}"><span class="rzn0">${i+1}</span><button type="button" class="rzcode rzs" data-rz="setor" data-c="${s.codigo}" title="Ver no mapa">${esc(s.codigo)}</button>
+      <div class="rzbody"><div class="rzwho"><b class="rzn">${esc(u.curto||u.nome||x.unidade)}</b>${u.tipo==='carro'?'<span class="st n0">carro</span>':''}</div><div class="rzwhere rzs">${esc(s.bairros)}</div>
+       <div class="rzmeta">${rzTier(s.potencial)}<span class="rzm">meta ${rzMeta(u)}</span>${(comp[x.unidade]||[]).length?'<span class="muted">se faltar:</span>'+comp[x.unidade].map(c=>`<button type="button" data-rz="setor" data-c="${c}" class="rzplus"><span class="rzchip rzs" style="--t:${rzCol((rzSetor(c)||{}).potencial)}">+${c}</span></button>`).join(''):''}</div>${hist}
+       <details class="rzmore"><summary>Trocar setor ou marcar falta</summary><div class="rzedit"><label>Mandar para o setor<select data-rz="troca" data-u="${esc(x.unidade)}">${rzOrdem().filter(z=>z.peso>0).map(z=>`<option value="${z.codigo}" ${+z.codigo===+x.setor?'selected':''}>${z.codigo} · ${esc(z.potencial)}</option>`).join('')}</select></label><button type="button" class="btn sm ghost" data-rz="falta" data-u="${esc(x.unidade)}">Faltou hoje</button></div></details></div>
+      <button type="button" class="rzchk" data-rz="feito" data-u="${esc(x.unidade)}" aria-pressed="${ok}" aria-label="Marcar como programado">${ok?'✓':''}</button></article>`}).join('')}</div>
+   ${sem.length?`<div class="rzfora"><span>Sem equipe hoje:</span>${sem.map(s=>`<button type="button" data-rz="setor" data-c="${s.codigo}">${rzChip(s.codigo)}</button>`).join('')}</div>`:''}
+   ${fora.length?`<div class="rzfora"><span>Fora de campo:</span>${fora.map(x=>`<span class="rzpill"><span class="rzn">${esc(x.u.curto||x.u.nome)}</span>${x.a?' · '+esc(x.a.motivo||'')+' até '+rzBR(x.a.ate):''}</span>`).join('')}</div>`:''}
+   <div class="rzact"><button type="button" class="btn" data-rz="copiar">Copiar escala para o WhatsApp</button>${aj?(RZ.confirm==='desfazer'?'<button type="button" class="btn danger sm" data-rz="desfazerOk">Confirmar: voltar ao automático</button><button type="button" class="btn ghost sm" data-rz="cancelar">Cancelar</button>':'<button type="button" class="btn ghost sm" data-rz="desfazer">Desfazer ajustes do dia</button>'):''}</div>
+   <p class="note">No GeoCall: busque o setor, arraste as ordens para o nome indicado e marque ✓. Se o setor tiver menos ordens que a meta, complete com os vizinhos indicados (estão sem ninguém no dia).</p></div>`;
+  return h}
+
+function rzTelaMapa(rows,ST){const d=RZ.dia;const se=rzSemExp();if(se)return rzDayBar('Toque num setor')+se;
+  const dia=rzDia(d),quem={};(dia?dia.itens:[]).forEach(i=>quem[i.setor]=i.unidade);
+  return rzDayBar('Toque num setor do mapa')+`<div class="rzmapg"><div class="panel"><h3>São Mateus · ${RZ.cfg.setores.length} setores <small>${dia?dia.itens.length:0} com equipe neste dia</small></h3>${rzMapaHTML(d)}</div>
+   <div class="panel rzficha">${rzFicha(RZ.sel,d,ST)}</div></div>
+   <div class="panel"><h3>Setores e bairros <small>digite um bairro para achar o setor</small></h3><input type="search" id="rzBusca" class="rzin" placeholder="Buscar bairro (ex.: Iguatemi)" value="${esc(RZ.q)}" autocomplete="off">
+   <div class="rzidx">${RZ.cfg.setores.slice().sort((a,b)=>a.codigo-b.codigo).map(s=>{const u=quem[s.codigo];return `<button type="button" class="${RZ.sel===+s.codigo?'sel':''}" data-rz="setor" data-c="${s.codigo}" data-b="${esc(rzNorm(s.codigo+' '+s.bairros))}" style="--t:${rzCol(s.potencial)}">${rzChip(s.codigo)}<span class="rzs">${esc(s.bairros)}</span><em class="${u?'rzn':'muted'}">${u?esc(rzNome(u)):'—'}</em></button>`}).join('')}</div><p class="muted" id="rzBv" hidden>Nenhum setor com esse bairro.</p></div>`}
+
+function rzTelaSemana(){const ini=RM.proximoDiaUtil(RZ.dia,rzFer());const ds=[];let d=ini;while(ds.length<10){ds.push(d);d=RM.proximoDiaUtil(RM.addDias(d,1),rzFer())}rzEscalaAte(ds[ds.length-1]);
+  const jan=rzJanela(),J=rzJustica(jan),mx=5;
+  return rzDayBar('Próximos 10 dias úteis a partir deste dia')+`<div class="panel"><h3>Escala dos próximos 10 dias úteis <small>toque num dia para abrir a escala dele</small></h3><div class="tw"><table class="rzsem"><thead><tr><th>Colaborador</th>${ds.map(x=>`<th class="c"><button type="button" class="rzdh" data-rz="abrir" data-d="${x}">${rzFmt(x)}</button></th>`).join('')}</tr></thead><tbody>
+   ${rzAtivos().map(u=>`<tr><td class="nw"><span class="rzn">${esc(u.curto||u.nome)}</span></td>${ds.map(x=>{const dz=rzDia(x),i=dz&&dz.itens.find(y=>y.unidade===u.id);return `<td class="c">${i?rzChip(i.setor):'<span class="muted">—</span>'}</td>`}).join('')}</tr>`).join('')}</tbody></table></div>
+   <div class="rzleg">${RZ_TIERS.map(t=>`<span><i style="background:${rzCol(t)}"></i>${t}</span>`).join('')}</div></div>
+   <div class="panel"><h3>Justiça do rodízio <small>potencial médio dos setores de cada um em ${jan.length} dias úteis (1 = fraco, 5 = forte)</small></h3><div class="svcb">
+   ${rzAtivos().map(u=>{const r=J[u.id],v=r?r.pts/r.dias:0;return `<button type="button" tabindex="-1"><span class="rzn">${esc(u.curto||u.nome)}</span><div class="bar"><i style="width:${v/mx*100}%;background:#2dd4bf"></i></div><b>${r?v.toFixed(1).replace('.',','):'—'}</b><em>${r?r.alto+' em ALTO':''}</em></button>`}).join('')}</div><p class="note">Barras parecidas = divisão justa dos setores fortes entre a equipe.</p></div>`}
+
+function rzTelaAnalise(rows,ST){
+  const ins=rzInsights(ST);const jan=rzJanela(),fq=rzFreq(jan);
+  const S=ST.setores.slice().sort((a,b)=>b.a.rec-a.a.rec);const avg=ST.avg;
+  const sig=s=>s.a.den>=20;const prs=S.filter(sig).map(s=>({s,pr:s.a.prod/s.a.den*100}));
+  const best=prs.slice().sort((a,b)=>b.pr-a.pr)[0],worst=prs.slice().sort((a,b)=>a.pr-b.pr)[0],fech=S.filter(sig).slice().sort((a,b)=>b.fechP-a.fechP)[0];
+  const altoBaixo=prs.filter(x=>{const c=rzSetor(x.s.sf);return c&&rzTK(c.potencial)==='ALTO'&&x.pr<avg}).length;
+  const rec=s=>{const c=rzSetor(s.sf);const pr=s.a.den?s.a.prod/s.a.den*100:0;if(!c)return ['Fora do rodízio','o'];if(!sig(s))return ['Pouca amostra','n0'];
+    if(s.fechP>=ST.fechLim)return ['Mudar horário','f'];if(c.peso>=4&&pr<avg-5)return ['Revisar / baixar peso','i'];if(c.peso<=2&&pr>avg+5)return ['Subir peso','p'];if(s.fimP>=ST.fimLim)return ['Reduzir carga','f'];return ['Manter','p0']};
+  let h=`<div class="kpis">
+   ${rzKpi('Setores com OS',fmt(S.length),RZ.cfg.setores.length,'no período filtrado','rr')}
+   ${rzKpi('Melhor setor',best?best.s.sf:'—',null,best?best.pr.toFixed(0)+'% de produtividade':'sem amostra','g',best?`data-rz="drill" data-sf="${best.s.sf}"`:'')}
+   ${rzKpi('Pior setor',worst?worst.s.sf:'—',null,worst?worst.pr.toFixed(0)+'% de produtividade':'sem amostra','sp',worst?`data-rz="drill" data-sf="${worst.s.sf}"`:'')}
+   ${rzKpi('Mais imóvel fechado',fech?fech.sf:'—',null,fech?fech.fechP.toFixed(0)+'% das OS trabalhadas':'—','ct',fech?`data-rz="drill" data-sf="${fech.sf}"`:'')}
+   ${rzKpi('ALTO abaixo da média',altoBaixo,null,`média da equipe ${avg.toFixed(0)}%`,altoBaixo?'sp':'g')}
+   ${rzKpi('Pontos de melhoria',ins.length,null,'ver lista abaixo',ins.length?'ct':'g')}</div>`;
+  const LV={alto:['Crítico','i'],med:['Atenção','f'],op:['Oportunidade','p'],info:['Info','n0']};
+  h+=`<div class="panel"><h3>Pontos de melhoria da equipe e dos setores <small>gerados cruzando o rodízio com as OS do GeoCall · toque para agir</small></h3>
+   ${ins.length?`<div class="rzins">${ins.slice(0,14).map(x=>`<div class="rzi rz-${x.lv}"><span class="st ${LV[x.lv][1]}">${LV[x.lv][0]}</span><div><b>${x.t}</b><p>${x.d}</p></div>
+     <button type="button" class="btn sm ghost" ${x.tab?`data-rz="tab" data-t="${x.tab}"`:x.peso?`data-rz="setor" data-c="${x.sf}" data-go="mapa"`:`data-rz="drill" data-sf="${x.sf||''}" data-eq="${esc(x.eq||'')}"`}>${x.a} →</button></div>`).join('')}</div>${ins.length>14?`<p class="note">+ ${ins.length-14} pontos menores.</p>`:''}`:'<p class="note">Nenhum ponto de atenção no período. Setores e equipe estão equilibrados.</p>'}</div>`;
+  h+=`<div class="panel"><h3>Desempenho por setor <small>potencial do rodízio × resultado real no GeoCall · toque na linha para ver as OS</small></h3><div class="tw"><table class="rztab"><thead><tr><th>Setor</th><th>Potencial</th><th class="n">Peso</th><th class="n">Equipe no rodízio</th><th class="n">OS</th><th>Produtividade</th><th class="n">Pagam.</th><th class="n">Imóvel fechado</th><th class="n">Fim do dia</th><th class="n">Colab.</th><th>Recomendação</th></tr></thead><tbody>
+   ${S.map(s=>{const c=rzSetor(s.sf);const pr=s.a.den?s.a.prod/s.a.den*100:0;const [rt,rc]=rec(s);return `<tr data-rz="drill" data-sf="${esc(s.sf)}"><td>${rzChip(s.sf)}</td><td>${c?rzTier(c.potencial):'<span class="muted">fora</span>'}</td><td class="n">${c?c.peso:'—'}</td><td class="n">${fq[s.sf]||0}/${jan.length}</td><td class="n">${fmt(s.a.rec)}</td>
+     <td><span class="rzpb"><i style="width:${Math.min(100,pr)}%;background:${pr>=META?'var(--green)':pr>=avg?'#7cc7ff':'#f87171'}"></i><s style="left:${META}%"></s></span><b class="rzpv">${pct(s.a.prod,s.a.den,0)}%</b></td><td class="n">${fmt(s.a.pag)}</td><td class="n">${s.fechP.toFixed(0)}%</td><td class="n">${s.fimP.toFixed(0)}%</td><td class="n">${s.cols}</td><td><span class="st ${rc}">${rt}</span></td></tr>`}).join('')}</tbody></table></div>
+   <p class="note">Recomendação: <b>Subir peso</b> = rende acima da média e aparece pouco no rodízio · <b>Revisar / baixar peso</b> = setor forte no papel mas abaixo da média · <b>Mudar horário</b> = imóvel fechado bem acima da média da equipe (${ST.fechAvg.toFixed(0)}%) · <b>Reduzir carga</b> = muitas OS sobrando em “Fim do Dia” (média ${ST.fimAvg.toFixed(0)}%).</p></div>`;
+  h+=bairroTiersHTML(rows);
+  // colaborador × setor
+  const eqs=[...new Set(rows.filter(r=>r.sf).map(r=>r.eq))].sort((a,b)=>nomeDe(a).localeCompare(nomeDe(b)));const cols=S.slice(0,14).map(s=>s.sf);
+  const cell=(eq,sf)=>{const a=ST.cx[eq+'|'+sf];if(!a||a.den<5)return '<td class="c"><span class="muted">·</span></td>';const pr=a.prod/a.den*100;const t=Math.max(-1,Math.min(1,(pr-avg)/25));
+    const bg=t>=0?`rgba(34,197,94,${(.12+t*.5).toFixed(2)})`:`rgba(239,68,68,${(.12-t*.5).toFixed(2)})`;
+    return `<td class="c"><button type="button" class="rzhm" style="background:${bg}" data-rz="drill" data-sf="${sf}" data-eq="${esc(eq)}" data-tip="<b>${esc(nomeDe(eq))}</b> no setor ${sf}<br>${pct(a.prod,a.den)}% de produtividade<br>${fmt(a.prod)} produtivos em ${fmt(a.den)} OS">${pr.toFixed(0)}</button></td>`};
+  h+=`<div class="panel"><h3>Colaborador × setor <small>produtividade (%) de cada um em cada setor · verde acima da média da equipe, vermelho abaixo · mín. 5 OS</small></h3><div class="tw"><table class="rzhmt"><thead><tr><th>Colaborador</th>${cols.map(c=>`<th class="c">${rzChip(c)}</th>`).join('')}</tr></thead><tbody>
+   ${eqs.map(eq=>`<tr><td class="nw"><span class="rzn">${esc(nomeDe(eq))}</span></td>${cols.map(sf=>cell(eq,sf)).join('')}</tr>`).join('')}</tbody></table></div>
+   <p class="note">Mostra os ${cols.length} setores com mais OS no período. Use para decidir trocas: quando alguém faltar, mande para o setor vago quem tem o melhor número nele.</p></div>`;
+  // conexões: setores vizinhos atendidos na mesma rota do dia
+  const pares={};groupBy(rows.filter(r=>r.sf),r=>r.eq+'|'+r.day).forEach(rs=>{const ss=[...new Set(rs.sort((a,b)=>a.fim-b.fim).map(r=>r.sf))];for(let i=1;i<ss.length;i++){const k=[ss[i-1],ss[i]].sort().join('↔');pares[k]=(pares[k]||0)+1}});
+  const pl=Object.entries(pares).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const viz=(a,b)=>(RM.VIZINHOS[a]||[]).includes(+b)||(RM.VIZINHOS[b]||[]).includes(+a);
+  h+=`<div class="g2"><div class="panel"><h3>Ligações entre setores <small>trocas de setor dentro da mesma rota do dia (GeoCall)</small></h3>${pl.length?`<div class="svcb">${pl.map(([k,n])=>{const [a,b]=k.split('↔');const vz=viz(a,b);return `<button type="button" data-rz="drill" data-sf="${a}"><span>${rzChip(a)} ↔ ${rzChip(b)}</span><div class="bar"><i style="width:${n/pl[0][1]*100}%;background:${vz?'#2dd4bf':'#f5b73b'}"></i></div><b>${n}</b><em>${vz?'vizinhos':'<span style="color:#f5b73b">não vizinhos</span>'}</em></button>`}).join('')}</div><p class="note">Troca entre setores <b style="color:#f5b73b">não vizinhos</b> na mesma rota = deslocamento longo. Vale concentrar as ordens do dia no setor escalado e nos vizinhos indicados.</p>`:'<p class="note">Sem trocas de setor no período.</p>'}</div>
+   <div class="panel"><h3>Faixa horária por setor <small>produtividade das baixas em cada faixa · top 8 setores</small></h3><div class="tw"><table class="rzhmt"><thead><tr><th>Setor</th>${BANDS.map(b=>`<th class="c">${b[0].replace(' ou mais','+').replace('Antes das ','< ')}</th>`).join('')}</tr></thead><tbody>
+   ${S.slice(0,8).map(s=>`<tr><td>${rzChip(s.sf)}</td>${s.bands.map(b=>{if(b.n<8||b.pr==null)return '<td class="c"><span class="muted">·</span></td>';const t=Math.max(-1,Math.min(1,(b.pr-avg)/25));return `<td class="c"><span class="rzhm" style="background:${t>=0?`rgba(34,197,94,${(.12+t*.5).toFixed(2)})`:`rgba(239,68,68,${(.12-t*.5).toFixed(2)})`}" data-tip="${b.n} baixas">${b.pr.toFixed(0)}</span></td>`}).join('')}</tr>`).join('')}</tbody></table></div><p class="note">Ajuda a decidir em que horário atacar cada setor (ex.: setores com muito imóvel fechado rendem mais cedo).</p></div></div>`;
+  return h}
+
+function rzTelaEquipe(){const hoje=rzHoje();const lst=(RZ.cfg.ausencias||[]).map((a,i)=>({a,i})).filter(x=>x.a.ate>=RM.addDias(hoje,-7)).sort((x,y)=>x.a.de<y.a.de?-1:1);
+  return `<div class="g2"><div class="panel"><h3>Lançar falta, folga ou férias <small>a pessoa sai da escala e volta sozinha no dia seguinte ao fim</small></h3><form class="rzform" id="rzAus">
+   <label>Colaborador<select id="rzAp">${rzAtivos().map(u=>`<option value="${esc(u.id)}">${esc(u.curto||u.nome)}</option>`).join('')}</select></label>
+   <label>Motivo<select id="rzAm"><option>Falta</option><option>Folga</option><option>Férias</option><option>Atestado</option><option>Afastamento</option><option>Treinamento</option></select></label>
+   <label>De<input type="date" id="rzAd" value="${RZ.dia}"></label><label>Até<input type="date" id="rzAa" value="${RZ.dia}"></label><button type="submit" class="btn">Lançar</button></form></div>
+   <div class="panel"><h3>Ausências lançadas</h3>${lst.length?`<div class="rzlist">${lst.map(x=>`<div><span><b class="rzn">${esc(rzNome(x.a.id))}</b><small>${esc(x.a.motivo||'')} · ${x.a.de===x.a.ate?rzFmt(x.a.de,true):rzBR(x.a.de)+' a '+rzBR(x.a.ate)}</small></span>${RZ.confirm==='aus'+x.i?`<button type="button" class="btn danger sm" data-rz="ausDelOk" data-i="${x.i}">Confirmar</button><button type="button" class="btn ghost sm" data-rz="cancelar">Cancelar</button>`:`<button type="button" class="btn ghost sm" data-rz="ausDel" data-i="${x.i}">Apagar</button>`}</div>`).join('')}</div>`:'<p class="note">Nenhuma ausência lançada.</p>'}</div></div>
+  <div class="g2"><div class="panel"><h3>Equipe do rodízio <small>“Desligar” tira a pessoa da escala (o histórico fica)</small></h3><div class="rzlist">${RZ.cfg.unidades.slice().sort((a,b)=>(a.ordem||0)-(b.ordem||0)).map(u=>{const off=u.status==='inativo';const eq=rzEqDe(u);
+     return `<div><span><b class="rzn">${esc(u.nome)}</b><small>${u.tipo==='carro'?'Carro · supressão no passeio':'Moto · corte / negociação'} · ${eq?'ligado ao GeoCall':'<span style="color:#f5b73b">sem OS no GeoCall</span>'}${off?' · desligado':''}</small></span>${off?`<button type="button" class="btn ghost sm" data-rz="religar" data-u="${esc(u.id)}">Voltar ao rodízio</button>`:RZ.confirm==='desl'+u.id?`<button type="button" class="btn danger sm" data-rz="desligarOk" data-u="${esc(u.id)}">Confirmar</button><button type="button" class="btn ghost sm" data-rz="cancelar">Cancelar</button>`:`<button type="button" class="btn ghost sm" data-rz="desligar" data-u="${esc(u.id)}">Desligar</button>`}</div>`}).join('')}</div>
+   <form class="rzform" id="rzAdd"><label>Novo colaborador<input id="rzNn" placeholder="Nome completo" autocomplete="off"></label><label>Veículo<select id="rzNt"><option value="moto">Moto</option><option value="carro">Carro</option></select></label><button type="submit" class="btn">Adicionar</button></form></div>
+   <div class="panel"><h3>Metas diárias e feriados</h3><form class="rzform" id="rzMetas"><label>Meta moto (ordens/dia)<input type="number" min="1" id="rzMm" value="${(RZ.cfg.metas||{}).moto||25}"></label><label>Meta carro (supressão)<input type="number" min="1" id="rzMc" value="${(RZ.cfg.metas||{}).carro||10}"></label><button type="submit" class="btn">Salvar metas</button></form>
+   <label class="rzl" for="rzFer">Feriados (um por linha, AAAA-MM-DD)</label><textarea id="rzFer" rows="5" class="rzin">${esc(rzFer().join('\n'))}</textarea><div class="rzact"><button type="button" class="btn ghost sm" data-rz="feriados">Salvar feriados</button></div>
+   <h3 style="margin-top:14px">Pacote do rodízio</h3><p class="note">Leve a equipe, os setores e o mapa para a versão protegida do GitHub: importe lá, nesta mesma aba, o arquivo <b>rodizio-sao-mateus.json</b>. O arquivo tem nomes: guarde só no seu computador, não suba para o GitHub.</p>
+   <div class="rzact">${window.claude?'':'<button type="button" class="btn ghost sm" data-rz="exportar">Exportar pacote (.json)</button>'}<button type="button" class="btn ghost sm" data-rz="importar">Importar pacote</button></div></div></div>`}
+
+function rzTelaSetores(){return `<div class="panel"><h3>Pesos dos setores <small>5 = quase todo dia · 1 = de vez em quando · 0 = fora do rodízio</small></h3><div class="rzpesos">${rzOrdem().map(s=>`<div style="--t:${rzCol(s.potencial)}">${rzChip(s.codigo)}<span><b class="rzs">${esc(s.bairros)}</b><small>Grupo ${esc(s.grupo||'—')} · ${esc(s.potencial)}</small></span><select data-rz="peso" data-c="${s.codigo}" aria-label="Peso do setor ${s.codigo}">${[0,1,2,3,3.5,4,5].map(p=>`<option value="${p}" ${+s.peso===p?'selected':''}>Peso ${p}</option>`).join('')}</select></div>`).join('')}</div>
+  <p class="note">Se um setor render mais ou menos do que o esperado, ajuste o peso aqui. A aba <b>Setores × Produção</b> sugere quais mexer.</p></div>`}
+
+function rzTelaImport(){return `<div class="panel empty"><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#7cc7ff" stroke-width="1.6"><path d="M9 3 3 5.5v15.5l6-2.5 6 2.5 6-2.5V3l-6 2.5zm0 2.2 6 2.5v11.1l-6-2.5z"/></svg><h3>Rodízio ainda não carregado</h3>
+  <p>Por segurança, esta versão não traz nomes, setores nem mapa dentro do arquivo. Importe o <b>pacote do rodízio (.json)</b> que está no seu computador: ele fica guardado ${SECURE?'cifrado ':''}neste navegador.</p><button type="button" class="btn" data-rz="importar">Importar pacote do rodízio</button></div>`}
+
+function vRodizio(v,rows){
+  if(!RZ.loaded){RZ.cfg=rzLoadLocal();RZ.loaded=true;RZ.dia=rzDiaInicial()}
+  if(!RZ.cfg){v.innerHTML=`<div class="rz">${rzTelaImport()}</div>`;rzBind(v);return}
+  if(!RZ.dia)RZ.dia=rzDiaInicial();
+  const ST=rzStats(rows);
+  const T={hoje:rzTelaHoje,analise:rzTelaAnalise,mapa:rzTelaMapa,semana:rzTelaSemana,equipe:rzTelaEquipe,setores:rzTelaSetores}[RZ.tab]||rzTelaHoje;
+  let body='';try{body=T(rows,ST)}catch(e){console.error(e);body=`<div class="panel"><p class="note">Algo deu errado ao montar esta tela: ${esc(e.message)}</p></div>`}
+  v.innerHTML=`<div class="rz ${RZ.priv?'priv':''}"><div class="rztabs" role="tablist">${RZ_TABS.map(([k,l])=>`<button type="button" role="tab" aria-selected="${RZ.tab===k}" class="${RZ.tab===k?'on':''}" data-rz="tab" data-t="${k}">${l}</button>`).join('')}
+    <button type="button" class="rk-btn rzpv ${RZ.priv?'on':''}" data-rz="priv" aria-pressed="${RZ.priv}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2">${RZ.priv?'<path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6 0 10 7 10 7a18 18 0 0 1-3.2 4M6.6 6.6C3.9 8.3 2 12 2 12s4 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/>':'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'}</svg>${RZ.priv?'Modo privado ligado':'Modo privado'}</button></div>${body}</div>`;
+  rzBind(v);
+}
+function rzFichaVer(){const f=document.querySelector('.rzficha');if(!f)return;const r=f.getBoundingClientRect();if(r.top>innerHeight-120)f.scrollIntoView({behavior:'smooth',block:'nearest'})}
+function rzBind(v){const root=v.querySelector('.rz');if(!root)return;
+  root.onclick=async ev=>{
+    const mp=ev.target.closest('#rzMap');if(mp&&!ev.target.closest('[data-rz]')){const r=mp.getBoundingClientRect();const c=setorNoPonto((ev.clientX-r.left)/r.width*1600,(ev.clientY-r.top)/r.height*796);if(c){RZ.sel=c;rzRerender();rzFichaVer()}return}
+    const b=ev.target.closest('[data-rz]');if(!b||b.tagName==='SELECT')return;const a=b.dataset.rz,d=RZ.dia;
+    try{
+      if(a==='tab'){RZ.tab=b.dataset.t;RZ.confirm=null;render();scrollTo({top:0})}
+      else if(a==='priv'){RZ.priv=!RZ.priv;try{localStorage.setItem('sa_rz_priv',RZ.priv?'1':'0')}catch(e){}rzRerender()}
+      else if(a==='setor'){RZ.sel=+b.dataset.c;if(RZ.tab!=='mapa'){RZ.tab='mapa';render();const f=document.querySelector('.rzficha');if(f)f.scrollIntoView({block:'start'})}else{rzRerender();if(b.closest('#rzMap'))rzFichaVer()}}
+      else if(a==='fechar'){RZ.sel=null;rzRerender()}
+      else if(a==='dia'){const dir=+b.dataset.dir;let n=RM.addDias(d,dir),g=0;while(!RM.ehDiaUtil(n,rzFer())&&g++<30)n=RM.addDias(n,dir);RZ.dia=n;RZ.confirm=null;rzRerender()}
+      else if(a==='hojeBtn'){RZ.dia=rzDiaInicial();rzRerender()}
+      else if(a==='abrir'){RZ.dia=b.dataset.d;RZ.tab='hoje';render();scrollTo({top:0})}
+      else if(a==='drill'){const o={label:''};if(b.dataset.sf)o.sf=b.dataset.sf;if(b.dataset.eq)o.eqs=[b.dataset.eq];o.label=(b.dataset.eq?nomeDe(b.dataset.eq)+' · ':'')+(b.dataset.sf?'Setor '+b.dataset.sf:'');drill(o)}
+      else if(a==='feito'){RZ.cfg.feitos=RZ.cfg.feitos||{};const f=RZ.cfg.feitos[d]=RZ.cfg.feitos[d]||{};if(f[b.dataset.u])delete f[b.dataset.u];else f[b.dataset.u]=1;rzSave()}
+      else if(a==='falta'){rzAusencia(b.dataset.u,d,d,'Falta');rzSave(rzNome(b.dataset.u)+' marcado com falta')}
+      else if(a==='desfazer'){RZ.confirm='desfazer';rzRerender()}
+      else if(a==='desfazerOk'){RZ.confirm=null;const pa=window.RZ_SEED&&RZ_SEED.ajustes&&RZ_SEED.ajustes[d];if(RZ.cfg.ajustes){if(pa)RZ.cfg.ajustes[d]=JSON.parse(JSON.stringify(pa));else delete RZ.cfg.ajustes[d]}rzSave('Dia voltou ao automático')}
+      else if(a==='cancelar'){RZ.confirm=null;rzRerender()}
+      else if(a==='copiar'){const t=rzWhats(d);try{await navigator.clipboard.writeText(t);toast('Escala copiada. Cole no grupo do WhatsApp.')}catch(e){const ta=document.createElement('textarea');ta.value=t;ta.rows=9;ta.className='rzin';b.parentNode.after(ta);ta.select();toast('Selecione e copie o texto abaixo')}}
+      else if(a==='ausDel'){RZ.confirm='aus'+b.dataset.i;rzRerender()}
+      else if(a==='ausDelOk'){RZ.confirm=null;RZ.cfg.ausencias.splice(+b.dataset.i,1);rzSave('Ausência apagada')}
+      else if(a==='desligar'){RZ.confirm='desl'+b.dataset.u;rzRerender()}
+      else if(a==='desligarOk'){RZ.confirm=null;const u=rzUni(b.dataset.u);u.status='inativo';u.desde=rzHoje();rzSave(rzNome(u.id)+' saiu do rodízio')}
+      else if(a==='religar'){const u=rzUni(b.dataset.u);u.status='ativo';rzSave(rzNome(u.id)+' voltou ao rodízio')}
+      else if(a==='feriados'){RZ.cfg.feriados=$('#rzFer').value.split(/\s+/).filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(x)).sort();rzSave(RZ.cfg.feriados.length+' feriados salvos')}
+      else if(a==='exportar'){const c=JSON.parse(JSON.stringify(RZ.cfg));c.mapa=rzMapa();const blob=new Blob([JSON.stringify({tipo:'rodizio-sabesp',v:1,cfg:c})],{type:'application/json'});const u=URL.createObjectURL(blob);const l=document.createElement('a');l.href=u;l.download='rodizio-sao-mateus.json';document.body.appendChild(l);l.click();setTimeout(()=>{URL.revokeObjectURL(u);l.remove()},1500);toast('Pacote exportado.')}
+      else if(a==='importar'){const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=async()=>{const f=i.files[0];if(!f)return;try{const p=JSON.parse(await f.text());const c=p&&p.cfg;if(!c||!Array.isArray(c.unidades)||!Array.isArray(c.setores))throw new Error('arquivo não é um pacote do rodízio');RZ.cfg=RM.migrar(c);RZ.cfg.feitos=RZ.cfg.feitos||{};RZ.dia=rzDiaInicial();rzSave('Rodízio importado: '+c.unidades.length+' colaboradores, '+c.setores.length+' setores.')}catch(e){toast('Não foi possível importar: '+e.message)}};i.click()}
+    }catch(e){toast(e&&e.message||'Não foi possível')}};
+  root.onchange=ev=>{const el=ev.target,a=el.dataset&&el.dataset.rz;if(!a)return;try{
+    if(a==='troca'){const o=rzTroca(RZ.dia,el.dataset.u,+el.value);rzSave(o?'Trocado com '+o:'Setor alterado')}
+    else if(a==='peso'){const s=rzSetor(el.dataset.c);s.peso=+el.value;rzSave('Peso do setor '+s.codigo+' salvo')}}catch(e){toast(e.message)}};
+  const bq=root.querySelector('#rzBusca');if(bq){const f=()=>{RZ.q=bq.value;const t=rzNorm(bq.value);let n=0;root.querySelectorAll('.rzidx [data-b]').forEach(r=>{const ok=!t||r.dataset.b.includes(t);r.hidden=!ok;if(ok)n++});$('#rzBv').hidden=n>0};bq.oninput=f;if(RZ.q)f()}
+  const fa=root.querySelector('#rzAus');if(fa)fa.onsubmit=e=>{e.preventDefault();const de=$('#rzAd').value,ate=$('#rzAa').value||de;if(!de||ate<de){toast('Confira as datas.');return}const id=$('#rzAp').value;rzAusencia(id,de,ate,$('#rzAm').value);rzSave(rzNome(id)+': '+$('#rzAm').value+' lançado')};
+  const fn=root.querySelector('#rzAdd');if(fn)fn.onsubmit=e=>{e.preventDefault();const n=$('#rzNn').value.trim();if(!n)return;const id=rzNorm(n).toLowerCase().replace(/[^a-z]/g,'').slice(0,12)+Date.now().toString(36).slice(-3);
+    RZ.cfg.unidades.push({id,nome:n,curto:n.split(' ')[0],tipo:$('#rzNt').value,ordem:RZ.cfg.unidades.length+1});rzSave(n+' entrou no rodízio')};
+  const fm=root.querySelector('#rzMetas');if(fm)fm.onsubmit=e=>{e.preventDefault();RZ.cfg.metas={moto:Math.max(1,+$('#rzMm').value||25),carro:Math.max(1,+$('#rzMc').value||10)};rzSave('Metas salvas')};
+}
+
 /* ============ início ============ */
 function startApp(){REG=LS.get(REG_KEY,{});loadSeed();rebuild();buildNav();fillSelects();setPeriod();readF();bindFilters();info();tick();setInterval(tick,20000);render();pushHist();initStore();
   $('#hBack').onclick=()=>histGo(HI-1);$('#hFwd').onclick=()=>histGo(HI+1);addEventListener('keydown',e=>{if(e.altKey&&e.key==='ArrowLeft'){e.preventDefault();histGo(HI-1)}if(e.altKey&&e.key==='ArrowRight'){e.preventDefault();histGo(HI+1)}});
-  if(SECURE){const b=document.createElement('button');b.type='button';b.className='btn ghost sm lockbtn';b.innerHTML='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Bloquear';b.onclick=()=>location.reload();const c=$('.clock');if(c)c.appendChild(b);
-    let idle=0;const reset=()=>{clearTimeout(idle);idle=setTimeout(()=>location.reload(),(+CFG.bloquearAposMinutos||15)*60000)};['pointerdown','keydown','scroll','touchstart'].forEach(ev=>addEventListener(ev,reset,{passive:true}));reset()}}
+  if(SECURE){const b=document.createElement('button');b.type='button';b.className='btn ghost sm lockbtn';b.innerHTML='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Bloquear';b.onclick=async()=>{await flushSaves();location.reload()};const c=$('.clock');if(c)c.appendChild(b);
+    let idle=0;const reset=()=>{clearTimeout(idle);idle=setTimeout(async()=>{await flushSaves();location.reload()},(+CFG.bloquearAposMinutos||15)*60000)};['pointerdown','keydown','scroll','touchstart'].forEach(ev=>addEventListener(ev,reset,{passive:true}));reset()}}
 function lockScreen(){
   const has=vaultExists();const ov=document.createElement('div');ov.className='lock';
   const logo=document.querySelector('.slogo');
@@ -2083,12 +2782,14 @@ function lockScreen(){
     <label for="lkP">Senha</label><input type="password" id="lkP" autocomplete="${has?'current-password':'new-password'}" required minlength="${has?1:12}" autofocus>
     ${has?'':`<div class="lk-meter"><i id="lkM"></i></div><small id="lkMs">Mínimo de 12 caracteres</small><label for="lkP2">Repita a senha</label><input type="password" id="lkP2" autocomplete="new-password" required>`}
     <button class="btn" type="button" id="lkB">${has?'Desbloquear':'Criar senha e entrar'}</button><p class="lk-err" id="lkE" role="alert"></p>
+    ${has?'':`<div class="lk-forget"><button type="button" id="lkRest">Já tenho uma cópia de segurança</button></div>`}
     ${has?`<div class="lk-forget"><button type="button" id="lkF1">Esqueci a senha</button><div id="lkF2" hidden>Sem a senha não há como recuperar os dados. Apagar tudo deste navegador e começar de novo? <button type="button" class="btn sm danger" id="lkF3">Apagar e recomeçar</button></div></div>`:''}
     <small class="lk-foot">Cifragem AES-256-GCM · chave derivada da senha com PBKDF2-SHA256 (${(PBKDF2_IT/1000).toFixed(0)} mil iterações) · nada sai deste navegador</small></form>`;
   document.body.appendChild(ov);document.querySelector('.app').setAttribute('aria-hidden','true');document.querySelector('.app').classList.add('locked');
   const P=$('#lkP'),E=$('#lkE');setTimeout(()=>P.focus(),50);
   if(!has){P.oninput=()=>{const s=P.value;let sc=Math.min(4,Math.floor(s.length/5))+(/[A-Z]/.test(s)&&/[a-z]/.test(s)?1:0)+(/\d/.test(s)?1:0)+(/[^\w\s]/.test(s)||/\s/.test(s)?1:0);sc=Math.min(6,sc);
     $('#lkM').style.width=(sc/6*100)+'%';$('#lkM').style.background=sc<3?'#ef4444':sc<5?'#f5b73b':'#22c55e';$('#lkMs').textContent=s.length<12?'Mínimo de 12 caracteres':sc<3?'Fraca':sc<5?'Razoável':'Forte'}}
+  if(!has)$('#lkRest').onclick=()=>{const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=async()=>{try{const p=JSON.parse(await i.files[0].text());const vv=p&&p.vault;if(!vv||!vv.salt||!vv.iv||!vv.ct)throw 0;localStorage.setItem(VAULT,JSON.stringify(vv));location.reload()}catch(e){E.textContent='Esse arquivo não é uma cópia de segurança do painel.'}};i.click()};
   if(has){$('#lkF1').onclick=()=>{$('#lkF2').hidden=false};$('#lkF3').onclick=()=>{[VAULT,...SEC_KEYS].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});location.reload()}}
   let tries=0;
   let busy=false;
