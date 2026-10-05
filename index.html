@@ -845,6 +845,11 @@ td .rp,td .rn{font-weight:500;font-size:11.5px;letter-spacing:.01em}
 @media (max-width:560px){.rrcfg{grid-template-columns:1fr}.rrd{grid-template-columns:56px minmax(0,1fr) auto}.rrs{display:none}}
 .svcb.rrp{margin-top:8px!important;flex:none}
 .rrkv{font-size:22px;line-height:1.2}
+.ac-nm{color:#c9d6ea;font-size:12.5px}
+.rulesd>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;cursor:pointer}.rulesd>summary::-webkit-details-marker{display:none}.rulesd>summary h3{margin:0}.rulesd[open]>summary{margin-bottom:10px}.rulesd>summary .muted{font-size:12px}
+.row2.r2b{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}.row2.r2b>:first-child{grid-column:auto}
+@media (max-width:1250px){.row2.r2b{grid-template-columns:1fr}.row2.r2b>:first-child{grid-column:auto}}
+.info-i{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;border:1px solid #5b7397;color:#9fb3cf;font-size:10px;font-weight:700;font-style:normal;margin-left:6px;cursor:help;vertical-align:middle}
 </style>
 
 <div class="app">
@@ -1603,6 +1608,7 @@ let REG=LS.get(REG_KEY,{});
 function syncReg(){let ch=false;for(const s of SHEETS)for(const r of s.recs){if(r.eq&&!REG[r.eq]){REG[r.eq]={equipe:title(r.eq),ativo:true,desde:r.day};ch=true}}if(ch)saveReg()}
 const equipeDe=n=>(REG[n]&&REG[n].equipe)||title(n);
 const nomeDe=n=>title(n);
+const temEquipes=()=>Object.keys(REG).some(n=>norm(equipeDe(n))!==norm(nomeDe(n))); // equipes de verdade cadastradas (senão, equipe = colaborador)
 
 /* ============ filtros ============ */
 const F={ini:'',fim:'',eq:'',col:'',tipo:''};
@@ -1641,7 +1647,8 @@ IC.cal='<path d="M7 2h2v2h6V2h2v2h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H4a1 1 0 0 1-1
 const VIEWS=[['geral','Visão Geral','home'],['ranking','Ranking','trophy'],['producao','Produção','prod'],['pos','Comercial / POS','cart'],['jornada','Jornada','clock'],['equipes','Equipes','team'],['colab','Colaboradores','user'],['gargalos','Gargalos','warn'],['bairros','Telemetria / Bairros','route'],['rodizio','Rodízio / Setores','map'],['agenda','Agenda','cal'],['os','Detalhamento das OS','list'],['planilhas','Planilhas','sheets']];
 let VIEW=(location.hash||'').slice(1); if(!VIEWS.some(v=>v[0]===VIEW))VIEW=LS.get('sa_dash_view','geral');
 function buildNav(){
-  $('#nav').innerHTML=`<div class="sidein" id="sidein">`+VIEWS.map(v=>`<button type="button" data-v="${v[0]}" class="${v[0]===VIEW?'on':''}"><svg viewBox="0 0 24 24">${IC[v[2]]}</svg>${v[1]}</button>`).join('')+
+  if(VIEW==='equipes'&&!temEquipes())VIEW='colab';
+  $('#nav').innerHTML=`<div class="sidein" id="sidein">`+VIEWS.filter(v=>v[0]!=='equipes'||temEquipes()).map(v=>`<button type="button" data-v="${v[0]}" class="${v[0]===VIEW?'on':''}"><svg viewBox="0 0 24 24">${IC[v[2]]}</svg>${v[1]}</button>`).join('')+
   `<div class="pulse" id="pulse" aria-label="Painel rápido"></div><div class="pulse" id="notes" aria-label="Pendências e anotações"></div><div class="pulse" id="sideBase" aria-label="Base de dados"></div></div>`;
   $('#nav').querySelectorAll('button[data-v]').forEach(b=>b.onclick=()=>go(b.dataset.v));
 }
@@ -1783,11 +1790,11 @@ function teamTable(rows,full){
   const extra=full?'<th class="n">Impedim.</th><th class="n">Pagam.</th><th class="n">Cortes</th><th class="n">Supress.</th><th>vs meta</th>':'';
   const row=a=>`<td class="n">${fmt(a.trab)}</td><td class="n">${fmt(a.prod)}</td><td class="n" style="color:${a.pr>=META?'var(--green)':'#fca5a5'}">${pct(a.prod,a.den)}%</td>`+
     (full?`<td class="n">${fmt(a.IMPED)}</td><td class="n">${fmt(a.pag)}</td><td class="n">${fmt(a.CORTE)}</td><td class="n">${fmt(a.SUP)}</td><td><div class="bar" title="${pct(a.prod,a.den)}% de ${META}%"><i style="width:${Math.min(100,a.pr/META*100)}%;background:${a.pr>=META?'var(--green)':'var(--orange)'}"></i></div></td>`:'');
-  return `<div class="tw"><table><thead><tr><th>Equipe</th><th class="n">OS Trabalhadas</th><th class="n">Produtivos</th><th class="n">Produtividade</th>${extra}</tr></thead><tbody>`+
+  return `<div class="tw"><table><thead><tr><th>${temEquipes()?'Equipe':'Colaborador'}</th><th class="n">OS Trabalhadas</th><th class="n">Produtivos</th><th class="n">Produtividade</th>${extra}</tr></thead><tbody>`+
    list.map(a=>`<tr data-eq="${esc(a.k)}"><td class="nm" title="${esc(a.k)}">${esc(a.k)}</td>${row(a)}</tr>`).join('')+
    `</tbody><tfoot><tr><td>Total</td>${row(T)}</tr></tfoot></table></div>`;
 }
-function bindTeamRows(root){root.querySelectorAll('tr[data-eq]').forEach(tr=>tr.onclick=()=>{const eqName=tr.dataset.eq;const names=Object.keys(REG).filter(n=>equipeDe(n)===eqName);drill({eqs:names,label:'Equipe: '+eqName})})}
+function bindTeamRows(root){root.querySelectorAll('tr[data-eq]').forEach(tr=>tr.onclick=()=>{const eqName=tr.dataset.eq;const names=Object.keys(REG).filter(n=>equipeDe(n)===eqName);drill({eqs:names,label:(temEquipes()?'Equipe: ':'Colaborador: ')+eqName})})}
 function osCards(list,full){
   return `<div class="oscards">`+list.map(r=>`<div class="osc" data-os="${esc(r.os)}"><span class="h">OS ${osn(r.os)}</span><span class="st ${isProd(r.cat)?'p':r.cat==='FIMDIA'?'f':'i'}">${full?(isProd(r.cat)?'Produtivo':CAT_LBL[r.cat]):execLbl(r)}</span>
    <span class="r">${resH(r.res,r.cat)}</span>
@@ -1853,8 +1860,8 @@ function susLocHTML(L){
       <div class="sus-arr" aria-hidden="true"><i>${r.susGap!=null?r.susGap+' min':''}</i><svg viewBox="0 0 40 12" width="40" height="12"><path d="M0 6h34M28 1l6 5-6 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><i>depois</i></div>
       <div class="sus-b ${ob?'bad':''}"><span class="sus-l">Onde estava na hora da baixa</span>${a?`<b>${esc(a.end)||'—'}</b><small>${esc(a.bai)||'—'}${a.sf?' · setor '+esc(a.sf):''}</small><small>última baixa válida às ${hhmm(a.fim)} · OS ${esc(a.os)}</small>`:'<b>—</b><small>sem baixa anterior no dia</small>'}</div></div>
      <footer>${ob?`<span class="rn">Outro bairro: ${esc(a.bai)} → ${esc(r.bai)}</span>`:`<span class="muted">${esc(r.susWhy)}</span>`}</footer></article>`};
-  return `<div class="panel"><h3>Baixas fora do local · endereço da ordem × onde foi feita a baixa <small>${fmt(L.length)} baixas · toque num cartão para ver a OS</small></h3>
-   <p class="note">A planilha do GeoCall não traz GPS. O “onde estava” é o endereço da última baixa válida do colaborador antes desta: como a baixa veio poucos minutos depois, sem tempo de deslocamento, ela foi lançada de lá.</p>
+  return `<div class="panel"><h3>Baixas fora do local · endereço da ordem × onde foi feita a baixa <small>${fmt(L.length)} baixas · toque num cartão para ver a OS <span class="info-i" data-tip="A planilha do GeoCall não traz GPS. O “onde estava” é o endereço da última baixa válida do colaborador antes desta: como a baixa veio poucos minutos depois, sem tempo de deslocamento, ela foi lançada de lá.">i</span></small></h3>
+   
    <div class="sus-list">${L.slice(0,SUS_SHOW).map(card).join('')}</div>${L.length>SUS_SHOW?`<div class="rzact"><button type="button" class="btn ghost sm" id="susMore">Mostrar mais ${Math.min(30,L.length-SUS_SHOW)} de ${fmt(L.length-SUS_SHOW)} restantes</button></div>`:''}</div>`}
 let SUS_SHOW=30;
 /* ---------- bairros: melhores, intermediários e piores (sempre visível) ---------- */
@@ -1866,7 +1873,7 @@ function bairroTiersHTML(rows,opt={}){const min=opt.min||20;
   return `<div class="panel"><h3>Bairros: melhores, intermediários e piores <small>produtividade no período · ${n} bairros com ${min}+ OS trabalhadas · toque para ver as OS</small></h3>
    <div class="btier">${G.map(([t,c,l])=>`<div class="btc ${c}"><div class="bth"><b>${t}</b><span>${l.length} bairro${l.length>1?'s':''}${l.length?` · ${pct(l.reduce((s,x)=>s+x.a.prod,0),l.reduce((s,x)=>s+x.a.den,0),0)}% no grupo`:''}</span></div>
      <div class="btl">${l.map(x=>`<button type="button" data-tb="${esc(x.k)}"><span><b>${esc(x.k)}</b><small>${x.sf?'setor '+esc(x.sf)+' · ':''}${fmt(x.a.den)} OS · ${pct(x.f,x.a.den,0)}% fechado</small></span><i class="btb"><i style="width:${Math.min(100,x.a.pr)}%;background:${col(x.a.pr)}"></i></i><em style="color:${col(x.a.pr)}">${pct(x.a.prod,x.a.den,0)}%</em></button>`).join('')}</div></div>`).join('')}</div>
-   <p class="note">Divide os bairros em três grupos iguais pela produtividade (produtivos ÷ OS ${BASE==='rec'?'recebidas':'trabalhadas'}). Bairros com menos de ${min} OS ficam de fora para não distorcer.</p></div>`}
+   </div>`}
 function bindTiers(v){v.querySelectorAll('[data-tb]').forEach(b=>b.onclick=()=>drill({bai:b.dataset.tb,label:'Bairro: '+b.dataset.tb}))}
 function vGeral(v,rows){
   const A=agg(rows), prev=prevPeriod(), P=prev.length?agg(prev):null;
@@ -1904,13 +1911,12 @@ function vGeral(v,rows){
      <div class="impl"><div class="svct">Principais impedimentos</div>${topImp.map(x=>`<button type="button" data-res="${esc(x.k)}"><span>${esc(x.lbl)}</span><b>${fmt(x.n)}</b></button>`).join('')}</div>
    </div>
   </div>
-  <div class="row2">
-   <div class="panel fillp ${BLUR.eq?'blurred':''}"><h3>Equipes (Produtividade) <small>${blurBtn('eq')}</small></h3>${teamTable(rows,false)}${(()=>{const g=[...groupBy(rows,r=>equipeDe(r.eq))].map(([k,rs])=>agg(rs));const ac=g.filter(x=>x.pr>=META).length;const med=g.length?g.reduce((s,x)=>s+x.pr,0)/g.length:0;return `<div class="pfoot"><span>No acumulado do mês: <b class="${ac?'up':'dn'}">${ac} de ${g.length}</b> equipes acima de ${META}%</span><span>Média entre equipes <b>${med.toFixed(1).replace('.',',')}%</b></span></div>`})()}</div>
-   <div class="panel ${BLUR.top?'blurred':''}" id="pTop"></div>
+  <div class="row2 r2b">
+   <div class="panel fillp ${BLUR.eq?'blurred':''}"><h3>${temEquipes()?'Equipes':'Colaboradores'} (Produtividade) <small>${blurBtn('eq')}</small></h3>${teamTable(rows,false)}${(()=>{const g=[...groupBy(rows,r=>equipeDe(r.eq))].map(([k,rs])=>agg(rs));const ac=g.filter(x=>x.pr>=META).length;const med=g.length?g.reduce((s,x)=>s+x.pr,0)/g.length:0;return `<div class="pfoot"><span>No acumulado do mês: <b class="${ac?'up':'dn'}">${ac} de ${g.length}</b> ${temEquipes()?'equipes':'colaboradores'} acima de ${META}%</span><span>Média entre ${temEquipes()?'equipes':'colaboradores'} <b>${med.toFixed(1).replace('.',',')}%</b></span></div>`})()}</div>
    <div class="panel ${BLUR.prim?'blurred':''}" id="pPrim"></div>
   </div>
   ${bairroTiersHTML(rows)}
-  <div class="panel"><h3>Últimas OS Trabalhadas <button class="btn sm" type="button" id="btnAll">Ver todas as OS →</button></h3><div id="lastOS"></div></div>`;
+  `;
   v.querySelectorAll('.kpi').forEach(b=>b.onclick=()=>{const d=JSON.parse(b.dataset.dr);drill(d.rr?{rr:1,label:'Restabelecimento e religação'}:d.prod?{cats:PROD_CATS,label:'Resultados produtivos'}:{cats:d.cats,label:d.cats.map(c=>CAT_LBL[c]).join(' + ')})});
   bindTiers(v);
   v.querySelectorAll('.fim .blk').forEach(b=>b.onclick=()=>drill({cats:[b.dataset.c],label:CAT_LBL[b.dataset.c]}));
@@ -1943,22 +1949,15 @@ function vGeral(v,rows){
     <div class="gauges">
      <div class="gclick" data-gt="CORTE" data-gd="${lc.d}">${gauge(lc.ref?lc.done/lc.ref*100:0,'#2f86f6')}<div class="gl">Corte · ${dayBR(lc.d)}<br><b>${lc.done} / ${lc.ref}</b><br><span class="muted small">${lc.teams} equipe(s)</span></div></div>
      <div class="gclick" data-gt="SUPRESSAO" data-gd="${ls.d}">${gauge(ls.ref?ls.done/ls.ref*100:0,'#22c55e')}<div class="gl">Supressão · ${dayBR(ls.d)}<br><b>${ls.done} / ${ls.ref}</b><br><span class="muted small">${ls.teams} equipe(s)</span></div></div>
-    </div>${posDay.length?`<p class="note" style="margin:8px 0 0">Em ${dayBRf(ld)} houve ${posDay.length} OS de negociação via POS (sem carga de referência). Execução = OS baixadas ÷ carga × equipes.</p>`:''}`;
+    </div>${posDay.length?``:''}`;
   $('#pCarga').querySelectorAll('.gclick').forEach(g=>g.onclick=()=>drill({tipo:g.dataset.gt,day:g.dataset.gd,label:TIPO_LBL[g.dataset.gt]+' · '+dayBRf(g.dataset.gd)}));
   $('#pCarga').querySelectorAll('.cbox').forEach((b,i)=>b.onclick=()=>drill({tipo:i?'SUPRESSAO':'CORTE',label:i?'Supressão':'Corte'}));
-  // top colaboradores
-  const top=[...groupBy(rows,r=>r.eq)].map(([k,rs])=>Object.assign({k},agg(rs))).sort((a,b)=>b.prod-a.prod||b.pr-a.pr).slice(0,10);
-  $('#pTop').innerHTML=`<h3>Top Colaboradores (Produtivos) <small>${blurBtn('top')}</small></h3><div class="tw"><table><thead><tr><th>#</th><th>Colaborador</th><th class="n">Produtivos</th><th class="n">Produtividade</th></tr></thead><tbody>${top.map((a,i)=>`<tr data-c="${esc(a.k)}"><td>${i+1}</td><td class="nm">${esc(nomeDe(a.k))}</td><td class="n">${a.prod}</td><td class="n">${pct(a.prod,a.den)}%</td></tr>`).join('')}</tbody></table></div><div class="pfoot"><span>Média por colaborador <b>${fmt(Math.round(A.prod/Math.max(1,new Set(rows.map(r=>r.eq)).size)))}</b> produtivos</span><span>Líder em volume <b>${top[0]?esc(nomeDe(top[0].k)).split(' ')[0]:'—'}</b></span></div>`;
-  $('#pTop').querySelectorAll('tr[data-c]').forEach(tr=>tr.onclick=()=>drill({eqs:[tr.dataset.c],cats:PROD_CATS,label:'Produtivos de '+nomeDe(tr.dataset.c)}));
   // primeira / última
   const pdays=[...new Set(rows.filter(isValida).map(r=>r.day))].sort().reverse();if(!pdays.includes(PRIM_DAY))PRIM_DAY=pdays[0]||'';
   const primRows=rows.filter(r=>r.day===PRIM_DAY);
   const pl=[...groupBy(primRows.filter(isValida),r=>equipeDe(r.eq))].map(([k,rs])=>{rs.sort((x,y)=>x.fim-y.fim);const l=rs[rs.length-1];return {k,a:Math.min(...rs.map(r=>r.ini||r.fim)),b:l.fim,l,ex:rs.filter(r=>isProd(r.cat)).length,ne:rs.filter(r=>!isProd(r.cat)).length}}).sort((x,y)=>x.k<y.k?-1:1);
-  $('#pPrim').innerHTML=`<h3>Primeira OS e Última Baixa <small><select id="primDay" class="daysel" aria-label="Dia">${pdays.map(d=>`<option value="${d}" ${d===PRIM_DAY?'selected':''}>${dayBRf(d)}</option>`).join('')}</select>${blurBtn('prim')}</small></h3><div class="tw"><table><thead><tr><th>Equipe</th><th class="n">Primeira OS</th><th class="n">Última Baixa</th><th>Última OS</th></tr></thead><tbody>${pl.map(x=>`<tr data-os="${esc(x.l.os)}" title="${esc(x.l.res)} · ${x.ex} executadas / ${x.ne} não executadas no dia"><td class="nm">${esc(x.k)}</td><td class="n">${hhmm(x.a)}</td><td class="n">${hhmm(x.b)}</td><td><span class="st ${isProd(x.l.cat)?'p':'i'}">${execLbl(x.l)}</span></td></tr>`).join('')||'<tr><td colspan="4" class="muted">Sem execuções</td></tr>'}</tbody></table></div><p class="note" style="margin:6px 0 0">Primeira OS = início do 1º serviço; última baixa = fim do último serviço válido. Baixas fora do local não contam (veja a tela Jornada).</p>${pl.length?`<div class="pfoot"><span>1ª OS média <b>${minToHM(pl.reduce((s,x)=>{const d=new Date(x.a);return s+d.getHours()*60+d.getMinutes()},0)/pl.length)}</b></span><span>Última baixa média <b>${minToHM(pl.reduce((s,x)=>{const d=new Date(x.b);return s+d.getHours()*60+d.getMinutes()},0)/pl.length)}</b></span></div>`:''}`;
+  $('#pPrim').innerHTML=`<h3>Primeira OS e Última Baixa <small><select id="primDay" class="daysel" aria-label="Dia">${pdays.map(d=>`<option value="${d}" ${d===PRIM_DAY?'selected':''}>${dayBRf(d)}</option>`).join('')}</select>${blurBtn('prim')}</small></h3><div class="tw"><table><thead><tr><th>${temEquipes()?'Equipe':'Colaborador'}</th><th class="n">Primeira OS</th><th class="n">Última Baixa</th><th>Última OS</th></tr></thead><tbody>${pl.map(x=>`<tr data-os="${esc(x.l.os)}" title="${esc(x.l.res)} · ${x.ex} executadas / ${x.ne} não executadas no dia"><td class="nm">${esc(x.k)}</td><td class="n">${hhmm(x.a)}</td><td class="n">${hhmm(x.b)}</td><td><span class="st ${isProd(x.l.cat)?'p':'i'}">${execLbl(x.l)}</span></td></tr>`).join('')||'<tr><td colspan="4" class="muted">Sem execuções</td></tr>'}</tbody></table></div>${pl.length?`<div class="pfoot"><span>1ª OS média <b>${minToHM(pl.reduce((s,x)=>{const d=new Date(x.a);return s+d.getHours()*60+d.getMinutes()},0)/pl.length)}</b></span><span>Última baixa média <b>${minToHM(pl.reduce((s,x)=>{const d=new Date(x.b);return s+d.getHours()*60+d.getMinutes()},0)/pl.length)}</b></span></div>`:''}`;
   bindOsRows($('#pPrim'));$('#primDay').onchange=e=>{PRIM_DAY=e.target.value;render()};bindBlur(v);
-  const last=rows.filter(isBaixa).sort((a,b)=>b.fim-a.fim).slice(0,6);
-  $('#lastOS').innerHTML=osTable(last);bindOsRows($('#lastOS'));
-  $('#btnAll').onclick=()=>drill({});
 }
 
 /* ---------- Ranking (apresentação) ---------- */
@@ -2025,7 +2024,7 @@ function vRanking(v,rows){
        <span class="rk-spk pv">${spark(x.spark)}${trend(x.trend)}</span>
        <span class="rk-score pv">${cFmt(x)}</span></div>`).join('')}
     </div>
-    <p class="rk-note glass">Índice geral (0 a 100) = 50% produtividade frente à meta de ${META}% (atingir a meta vale 100) + 30% volume de produtivos (o maior volume da equipe vale 100) + 20% qualidade (100 menos o % de baixas fora do local). “Amostra pequena” = menos de 100 OS trabalhadas no período. Tendência = produtividade dos últimos 7 dias com serviço contra os 7 anteriores.</p>
+    
    </div></section>`;
   $('#rkBy').onchange=e=>{RK_BY=e.target.value;render()};
   $('#rkFull').onclick=()=>{const el=$('#rk');try{if(document.fullscreenElement)document.exitFullscreen();else if(el.requestFullscreen)el.requestFullscreen().catch(()=>{el.classList.toggle('rk-max')});else el.classList.toggle('rk-max')}catch(e){el.classList.toggle('rk-max')}};
@@ -2105,19 +2104,10 @@ const acTot=a=>{let r=0,p=0;(a.itens||[]).forEach(i=>{r+=+i.real||0;p+=(i.prod==
 const acProd=i=>i.prod===''||i.prod==null?+i.real||0:+i.prod||0;
 function acoesFiltradas(){return ACOES.filter(a=>(!F.ini||a.data>=F.ini)&&(!F.fim||a.data<=F.fim)).map(a=>{const it=(a.itens||[]).filter(i=>(!F.col||i.eq===F.col)&&(!F.eq||equipeDe(i.eq)===F.eq));return Object.assign({},a,{itens:it})}).filter(a=>a.itens.length||(!F.col&&!F.eq)).sort((x,y)=>y.data.localeCompare(x.data))}
 function acoesHTML(){const L=acoesFiltradas();
-  const T=L.reduce((s,a)=>{const t=acTot(a);s.r+=t.r;s.p+=t.p;return s},{r:0,p:0});
-  const porTipo=[...groupBy(L,a=>a.tipo)].map(([k,as])=>{const t=as.reduce((s,a)=>{const x=acTot(a);s.r+=x.r;s.p+=x.p;return s},{r:0,p:0});return {k,n:as.length,...t}}).sort((x,y)=>y.r-x.r);
-  const porCol={};L.forEach(a=>a.itens.forEach(i=>{const c=porCol[i.eq]||(porCol[i.eq]={r:0,p:0,n:0});c.r+=+i.real||0;c.p+=acProd(i);c.n++}));
-  const pc=Object.entries(porCol).sort((x,y)=>y[1].r-x[1].r);const mx=Math.max(1,...pc.map(x=>x[1].r));
-  const head=`<h3>Ações especiais <small>lançamento manual · serviços fora do GeoCall</small>${window.claude?'':'<button type="button" class="rzimp acimp" id="acImp" aria-label="Importar ações de um arquivo" data-tip="Importar ações de um arquivo .json"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 15.5v2.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2.5"/><path d="M12 15V4.5M8 8.5l4-4 4 4"/></svg></button>'}<button type="button" class="btn sm" id="acNova" ${window.claude?'style="margin-left:auto"':''}>+ Lançar ação</button></h3>`;
-  if(!L.length)return `<div class="panel acp">${head}<div class="ac-empty"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#7cc7ff" stroke-width="1.6" stroke-linecap="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg><div><b>Nenhuma ação especial no período</b><span>Quando a equipe fizer uma ação de sexta-feira (leitura, vistoria, ação 40+…), lance aqui a produção de cada colaborador.</span></div></div></div>`;
-  return `<div class="panel acp">${head}
-   <div class="ac-k"><div><b>${fmt(L.length)}</b><span>ações no período</span></div><div><b>${fmt(T.r)}</b><span>serviços realizados</span></div><div><b>${fmt(T.p)}</b><span>produtivos</span></div><div><b class="${T.r&&T.p/T.r*100>=META?'up':''}">${pct(T.p,T.r,0)}%</b><span>produtividade das ações</span></div></div>
-   <div class="ac-g"><div><div class="svct">Ações lançadas <span class="muted">toque para ver ou editar</span></div><div class="tw"><table class="ac-t"><thead><tr><th>Data</th><th>Ação</th><th class="n">Colab.</th><th class="n">Realizadas</th><th class="n">Produtivas</th><th class="n">Produtividade</th></tr></thead><tbody>
-     ${L.map(a=>{const t=acTot(a);return `<tr data-ac="${esc(a.id)}"><td class="nw">${dayBRf(a.data)}<br><span class="muted small">${['dom','seg','ter','qua','qui','sex','sáb'][new Date(a.data+'T12:00').getDay()]}</span></td><td><span class="ac-tag">${esc(a.tipo)}</span>${a.desc?`<br><span class="muted small">${esc(a.desc.length>70?a.desc.slice(0,70)+'…':a.desc)}</span>`:''}</td><td class="n">${a.itens.length}</td><td class="n">${fmt(t.r)}</td><td class="n">${fmt(t.p)}</td><td class="n ${t.r&&t.p/t.r*100>=META?'rp':''}">${pct(t.p,t.r,0)}%</td></tr>`}).join('')}</tbody></table></div></div>
-    <div>${porTipo.length>1?`<div class="svct">Por tipo de ação</div><div class="ac-chips">${porTipo.map(x=>`<span><b>${esc(x.k)}</b>${x.n} ação${x.n>1?'ões':''} · ${fmt(x.r)} serviços</span>`).join('')}</div>`:''}
-     <div class="svct" style="margin-top:${porTipo.length>1?12:0}px">Por colaborador <span class="muted">soma das ações do período</span></div><div class="svcb ac-pc">${pc.map(([k,c])=>`<button type="button" tabindex="-1"><span>${esc(nomeDe(k))}</span><div class="bar"><i style="width:${c.r/mx*100}%;background:#a78bfa"></i></div><b>${fmt(c.r)}</b><em>${pct(c.p,c.r,0)}% prod.</em></button>`).join('')}</div></div></div>
-   <p class="note">Os serviços das ações especiais <b>entram na produtividade e na meta mensal de ${META}%</b> de cada colaborador, somados às OS do GeoCall.</p></div>`}
+  const head=`<h3>Ações especiais <small>lançamento manual · somam na produtividade e na meta de ${META}%</small>${window.claude?'':'<button type="button" class="rzimp acimp" id="acImp" aria-label="Importar ações de um arquivo" data-tip="Importar ações de um arquivo .json"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 15.5v2.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2.5"/><path d="M12 15V4.5M8 8.5l4-4 4 4"/></svg></button>'}<button type="button" class="btn sm" id="acNova" ${window.claude?'style="margin-left:auto"':''}>+ Lançar ação</button></h3>`;
+  if(!L.length)return `<div class="panel acp">${head}<div class="ac-empty"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#7cc7ff" stroke-width="1.6" stroke-linecap="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg><div><b>Nenhuma ação especial no período</b><span>Leitura, vistoria, ação 40+ e outras ações de sexta-feira entram aqui.</span></div></div></div>`;
+  return `<div class="panel acp">${head}<div class="tw"><table class="ac-t"><thead><tr><th>Data</th><th>Ação</th><th>Colaboradores</th><th class="n">Realizadas</th><th class="n">Produtivas</th></tr></thead><tbody>
+   ${L.map(a=>{const t=acTot(a);const nm=a.itens.map(i=>nomeDe(i.eq).split(' ')[0]);return `<tr data-ac="${esc(a.id)}"><td class="nw">${dayBRf(a.data)}</td><td><span class="ac-tag">${esc(a.tipo)}</span></td><td class="ac-nm">${esc(nm.slice(0,6).join(', '))}${nm.length>6?' +'+(nm.length-6):''}</td><td class="n">${fmt(t.r)}</td><td class="n">${fmt(t.p)}</td></tr>`}).join('')}</tbody></table></div></div>`}
 function acModal(id,d0){const a=id?ACOES.find(x=>x.id===id):null;const hoje=dayKey(Date.now());
   const cols=Object.keys(REG).filter(n=>REG[n].ativo!==false||(a&&a.itens.some(i=>i.eq===n))).sort((x,y)=>nomeDe(x).localeCompare(nomeDe(y)));
   const it={};(a?a.itens:[]).forEach(i=>it[i.eq]=i);const tipoOutro=a&&!AC_TIPOS.includes(a.tipo);
@@ -2158,12 +2148,6 @@ function vProducao(v,rows){
   const A=agg(rows);
   v.innerHTML=`<div class="panel"><h3>Produção diária por resultado <small>clique numa barra para ver as OS do dia</small></h3><div class="dleg2">${DGRP.map(g=>`<span><i style="background:${g.c}"></i>${g.n}</span>`).join('')}<span class="dnote">% no topo em <b style="color:#4ade80">verde</b> = dia com produtividade ≥ ${META}%</span></div><div id="cDia" class="dchart"></div><div class="compbox"><div class="svct">Composição do período <span class="muted">todas as OS trabalhadas</span></div><div id="cComp"></div></div></div>
   ${acoesHTML()}
-  <div class="g2 g2b">
-   <div class="panel fillp"><h3>Produtividade por colaborador <small>acumulado do período · meta mensal ${META}% · toque para ver as OS</small></h3>
-     <div class="svcb pcol">${[...groupBy(rows,r=>r.eq)].map(([k,rs])=>Object.assign({k},agg(rs))).sort((x,y)=>y.pr-x.pr).map(s=>`<button type="button" data-pc="${esc(s.k)}"><span>${esc(nomeDe(s.k))}</span><div class="bar"><i style="width:${Math.min(100,s.pr)}%;background:${s.pr>=META?'var(--green)':'var(--orange)'}"></i><s style="left:${META}%"></s></div><b class="${s.pr>=META?'up':'dn'}">${pct(s.prod,s.den,0)}%</b><em>${fmt(s.prod)}/${fmt(s.den)}</em></button>`).join('')}</div>
-     <div class="pfoot"><span>Equipe <b class="${A.pr>=META?'up':'dn'}">${pct(A.prod,A.den)}%</b></span><span>Acima de ${META}%: <b>${[...groupBy(rows,r=>r.eq)].filter(([k,rs])=>agg(rs).pr>=META).length}</b> de ${new Set(rows.map(r=>r.eq)).size}</span></div></div>
-   <div class="panel">${resProdHTML(rows,A,'cDon2')}</div>
-  </div>
   <div class="g2">
    <div class="panel fillp"><h3>Por tipo de serviço</h3><div class="tw"><table><thead><tr><th>Serviço</th><th class="n">OS trabalhadas</th><th class="n">Produtivos</th><th class="n">Produtividade</th><th class="n">Impedim.</th></tr></thead><tbody>
    ${byT.map(a=>`<tr data-t="${a.k}"><td>${TIPO_LBL[a.k]}</td><td class="n">${fmt(a.trab)}</td><td class="n">${fmt(a.prod)}</td><td class="n">${pct(a.prod,a.den)}%</td><td class="n">${fmt(a.IMPED)}</td></tr>`).join('')}
@@ -2172,13 +2156,13 @@ function vProducao(v,rows){
    ${byR.map(x=>`<tr data-r="${esc(x.k)}"><td>${resH(x.k,x.cat)}</td><td class="n">${fmt(x.n)}</td><td class="n">${pct(x.n,A.trab)}%</td><td><span class="st ${CAT_ST[x.cat]}">${isProd(x.cat)?'Produtivo · ':''}${CAT_LBL[x.cat]}</span></td></tr>`).join('')}
    </tbody></table></div><div class="pfoot"><span><b>${byR.length}</b> resultados diferentes</span><span>Produtivos <b>${pct(A.prod,A.trab)}%</b> das trabalhadas</span><span>Impedimentos <b>${pct(A.IMPED,A.trab)}%</b></span></div></div>
   </div>
-  <div class="panel"><h3>Regras de cálculo</h3><ul class="note rules">
+  <details class="panel rulesd"><summary><h3>Regras de cálculo</h3><span class="muted">toque para ver</span></summary><ul class="note rules">
    <li><b>Escopo:</b> Corte, Supressão, Negociação de débitos via POS, Restabelecimento e Religação.</li><li><b>Restabelecimento e religação na produtividade:</b> <label><input type="checkbox" id="rrProd" ${RR_PROD?'checked':''}> contar como produtivos (“Restabelecida ligação de água OP”, “Religação de água deb OP”, “Religação de água impedimento de leitura”)</label>. Desmarcado, esses serviços ficam fora da produtividade e da meta, mas continuam nas listas e no detalhamento.</li>
    <li><b>Produtivos (lista fechada):</b>  Cliente efetuou pgto via POS · Pagamento efetivado via POS · Cliente apresentou as faturas pagas · Cortada ligação de água por débito DIF/OP · Suprimida ligação de água por débito OP · Vistoriado local e identificada situação · Restabelecida ligação de água OP · Religação de água deb OP · Religação de água impedimento de leitura. “Cliente informou pagamento das faturas” não é produtivo.</li>
    <li><b>Cada linha da planilha é uma execução.</b> Uma OS reprogramada aparece mais de uma vez; cada visita conta como OS recebida no dia em que foi baixada.</li>
    <li><b>Produtividade:</b> produtivos ÷ OS trabalhadas (inclui as ações especiais lançadas manualmente). Meta mensal: ${META}% por colaborador, apurada no acumulado do mês (não é meta diária).</li>
    <li><b>Carga diária:</b> ${CARGA.CORTE} OS/dia por equipe de corte e ${CARGA.SUPRESSAO} OS/dia por equipe de supressão (referência, não meta). O tipo da equipe no dia é o serviço que ela mais executou.</li>
-  </ul></div>`;
+  </ul></details>`;
   $('#rrProd').onchange=e=>{setRRProd(e.target.checked);render()};
   v.querySelectorAll('input[name=base]').forEach(i=>i.onchange=()=>{BASE=i.value;LS.set('sa_dash_base',BASE);render()});
   v.querySelectorAll('tr[data-t]').forEach(tr=>tr.onclick=()=>drill({tipo:tr.dataset.t,label:TIPO_LBL[tr.dataset.t]}));
@@ -2220,7 +2204,7 @@ function vPOS(v,rows){
   </div>
   <div class="panel"><h3>Comercial por colaborador</h3><div class="tw"><table><thead><tr><th>Colaborador</th><th class="n">OS POS trabalhadas</th><th class="n">Pag. efetivado (POS)</th><th class="n">Faturas (POS)</th><th class="n">Infrutíferas</th><th class="n">Conversão POS</th><th class="n">Pgto via POS no corte</th><th class="n">Faturas no corte</th><th class="n">Total pagamentos</th></tr></thead><tbody>
    ${byC.map(c=>`<tr data-c="${esc(c.k)}"><td>${esc(nomeDe(c.k))}</td><td class="n">${c.posTrab}</td><td class="n">${c.posPag}</td><td class="n">${c.posFat}</td><td class="n">${c.inf}</td><td class="n">${c.posTrab?pct(c.posPag+c.posFat,c.posTrab)+'%':'—'}</td><td class="n">${c.cPag}</td><td class="n">${c.cFat}</td><td class="n"><b>${c.posPag+c.posFat+c.cPag+c.cFat}</b></td></tr>`).join('')}
-  </tbody></table></div><p class="note">Valor recebido (R$) e forma de pagamento não constam nesta base, por isso não são exibidos.</p></div>`;
+  </tbody></table></div></div>`;
   v.querySelectorAll('.kpi').forEach(b=>b.onclick=()=>{const d=JSON.parse(b.dataset.dr);if(d.corte)drill({cats:['PAG_POS','PAG_FAT'],notPos:1,label:'Pagamentos em OS de corte/supressão'});else drill({tipo:d.tipo,cats:d.cats||null,label:'Negociação POS'+(d.cats?' · '+d.cats.map(c=>CAT_LBL[c]).join(' + '):'')})});
   v.querySelectorAll('tr[data-c]').forEach(tr=>tr.onclick=()=>drill({eqs:[tr.dataset.c],cats:['PAG_POS','PAG_FAT'],label:'Pagamentos de '+nomeDe(tr.dataset.c)}));
   v.querySelectorAll('.svcb [data-c]').forEach(b=>b.onclick=()=>drill({eqs:[b.dataset.c],tipo:'POS',label:'POS · '+nomeDe(b.dataset.c)}));
@@ -2246,13 +2230,13 @@ function vJornada(v,rows){rows=rows.filter(r=>!r.man);
   const ld=lastDay(base);const today=cd.filter(x=>x.day===ld).sort((a,b)=>a.m0-b.m0);
   const susList=rows.filter(r=>r.sus).sort((a,b)=>b.fim-a.fim);
   v.innerHTML=`<div class="panel"><h3>Janela de trabalho por colaborador <small>${ld?dayBRf(ld):''} · chegada na 1ª OS até a última baixa válida</small></h3><div id="cJan" class="svgc"></div></div>
-  <div class="panel rules-box"><h3>Como a jornada é calculada</h3><ul class="note rules">
+  <details class="panel rulesd"><summary><h3>Como a jornada é calculada</h3><span class="muted">toque para ver</span></summary><ul class="note rules">
    <li><b>1ª OS</b> = horário de <b>início</b> do primeiro serviço do dia (chegada no local).</li>
    <li><b>Última baixa</b> = horário de <b>fim</b> do último serviço válido do dia.</li>
    <li><b>Tempo em serviço</b> = soma de (fim − início) de cada OS. Aparece à parte e não altera a 1ª OS nem a última baixa.</li>
    <li>Não valem como 1ª OS ou última baixa: <b>baixas fora do local</b>.</li>
    <li><b>Baixa fora do local</b>: chegada numa OS de <b>outro bairro</b> até <b>${SUS_GAP} min</b> depois da baixa anterior (não dá tempo de se deslocar), e as baixas seguintes da mesma sequência feitas em outra rua dentro do mesmo intervalo. Baixas vizinhas na mesma rua não entram. Também entram aqui as baixas lançadas às 23:59. A planilha do GeoCall não traz GPS; por isso a checagem usa o bairro e o horário de cada OS.</li>
-  </ul></div>
+  </ul></details>
   <div class="panel"><h3>Resumo da jornada no período <small>médias por dia trabalhado</small></h3><div class="tw"><table><thead><tr><th>Colaborador</th><th class="n">Dias</th><th class="n">1ª OS (média)</th><th class="n">Última baixa (média)</th><th class="n">Janela média</th><th class="n">Tempo em serviço/dia</th><th class="n">Min. por OS</th><th class="n">OS válidas/dia</th><th class="n">Dias com 1ª OS após 09:00</th><th class="n">Baixas fora do local</th></tr></thead><tbody>
   ${byC.map(c=>`<tr data-c="${esc(c.k)}"><td>${esc(nomeDe(c.k))}</td><td class="n">${c.dias}</td><td class="n">${minToHM(c.ini)}</td><td class="n">${minToHM(c.fim)}</td><td class="n">${minToHM(c.span)}</td><td class="n">${minToHM(c.exec)}</td><td class="n">${c.porOS.toFixed(1).replace('.',',')}</td><td class="n">${c.n.toFixed(1).replace('.',',')}</td><td class="n" style="color:${c.tarde?'var(--amber)':'inherit'}">${c.tarde}</td><td class="n" style="color:${c.sus?'var(--amber)':'inherit'}">${c.sus}</td></tr>`).join('')}
   </tbody></table></div></div>
@@ -2298,7 +2282,7 @@ function vColab(v,rows){
   </tbody></table></div><div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="button" id="cadSave">Salvar cadastro</button><span class="note">Colaboradores novos entram automaticamente ao importar planilhas e nunca são removidos.</span></div></div>`;
   v.querySelectorAll('tr[data-c]').forEach(tr=>tr.onclick=()=>drill({eqs:[tr.dataset.c],label:'Colaborador: '+nomeDe(tr.dataset.c)}));
   $('#cadSave').onclick=()=>{v.querySelectorAll('input.cad').forEach(i=>{REG[i.dataset.n].equipe=i.value.trim()||title(i.dataset.n)});v.querySelectorAll('input[type=checkbox][data-n]').forEach(i=>REG[i.dataset.n].ativo=i.checked);
-    saveReg();toast('Cadastro salvo.');fillSelects();render()};
+    saveReg();toast('Cadastro salvo.');fillSelects();buildNav();renderNotes();render()};
 }
 
 /* ---------- Gargalos ---------- */
@@ -2393,7 +2377,7 @@ function bairroPanel(rows){
    </div>
    <div class="tw"><table class="bt" data-limit="60"><thead><tr><th>Setor</th><th>Bairro</th><th class="n">OS</th><th class="n rp">Executadas</th><th class="n rn">Não exec.</th><th class="n">% não exec.</th><th class="n rn">Imóvel fechado</th><th class="n rn">Cliente não permitiu</th><th class="n rn">Neg. infrutífera</th><th class="n rn">Outros motivos</th></tr></thead>
    <tbody>${body||'<tr><td colspan="10" class="muted">Nenhum bairro encontrado.</td></tr>'}</tbody><tfoot>${line(tot,'','<b>Total</b>').replace(/<td class="n c"[^>]*>/g,'<td class="n">')}</tfoot></table></div>
-   <p class="note">Executadas = resultados produtivos. Não executadas = todos os outros resultados, separados por motivo.</p>`;
+   `;
   enhance(p);
   $('#baiSort').value=BAI.sort;
   $('#baiSf').onchange=e=>{BAI.sf=e.target.value;bairroPanel(rows)};
@@ -2466,7 +2450,7 @@ function vBairros(v,rows){rows=rows.filter(r=>!r.man);
   else if(T==='sus'){const pe=[...groupBy(sus,r=>r.eq)].map(([k,rs])=>({k,n:rs.length})).sort((x,y)=>y.n-x.n);
     const outroB=sus.filter(r=>r.susAnc&&norm(r.susAnc.bai)!==norm(r.bai)).length;
     det=`<h3>Baixas fora do local <small><button type="button" class="cptab" id="tlSusAll">Ver todas no Detalhamento →</button></small></h3>`+miniBlock('Por colaborador',TL.susEq?'filtrando '+esc(nomeDe(TL.susEq))+' · toque de novo para limpar':'toque para filtrar a lista abaixo',pe.map(x=>({l:esc(nomeDe(x.k)),w:x.n/Math.max(1,pe[0].n)*100,v:x.n,s:'baixas',c:x.k===TL.susEq?'#fca5a5':'#f87171',attr:`data-su="${esc(x.k)}"`})),{cls:'wide'})+
-      `<div class="susum"><div><b>${fmt(sus.length)}</b><span>baixas fora do local</span></div><div><b>${fmt(outroB)}</b><span>em outro bairro</span></div><div><b>${fmt(sus.length-outroB)}</b><span>outra rua / 23:59</span></div></div><p class="note">A lista completa, com o endereço da ordem e onde o colaborador estava na hora da baixa, está logo abaixo.</p>`}
+      `<div class="susum"><div><b>${fmt(sus.length)}</b><span>baixas fora do local</span></div><div><b>${fmt(outroB)}</b><span>em outro bairro</span></div><div><b>${fmt(sus.length-outroB)}</b><span>outra rua / 23:59</span></div></div>`}
   else if(T==='top'){det=`<h3>Trocas de bairro por colaborador <small>toque para ver a rota</small></h3>`+tbl('<th>Colaborador</th><th class="n">Trocas</th><th class="n">Por dia</th><th class="n">Tempo ao trocar</th>',byTroca.map(x=>`<tr data-tq="${esc(x.k)}"><td>${esc(nomeDe(x.k))}</td><td class="n">${x.n}</td><td class="n">${(x.n/Math.max(1,x.dias)).toFixed(1).replace('.',',')}</td><td class="n">${x.tr==null?'—':x.tr+' min'}</td></tr>`).join(''))}
   v.innerHTML=`<div class="kpis tl-k">${tiles.map(([k,l,val,s,cls])=>`<button type="button" class="kpi ${cls} ${T===k?'on':''}" data-tt="${k}"><span class="lab">${l}</span><span class="val">${val}</span><span class="sub">${s}</span></button>`).join('')}</div>
    <div class="g2 tl-g">
@@ -2477,8 +2461,7 @@ function vBairros(v,rows){rows=rows.filter(r=>!r.man);
      <ol class="rota">${rota.map((r,i)=>{const p=rota[i-1];const troca=p&&norm(p.bai)!==norm(r.bai);const gap=p?Math.max(0,Math.round(((r.ini||r.fim)-p.fim)/6e4)):null;
        return `${troca?`<li class="rt-move ${r.sus?'bad':''}"><span>${esc(p.bai)} → ${esc(r.bai)}</span><em>${gap} min${r.sus?' · fora do local':''}</em></li>`:''}<li class="rt ${isProd(r.cat)?'ok':'no'} ${r.sus?'sus':''}" data-os="${esc(r.os)}"><b>${hhmm(r.ini)}–${hhmm(r.fim)}</b><span class="rt-a">${esc(r.end)} <em>· ${esc(r.bai)}</em>${r.sus&&r.susAnc?`<small class="rt-sus">baixa feita provavelmente em ${esc(r.susAnc.end)} · ${esc(r.susAnc.bai)}</small>`:''}</span><span class="st ${isProd(r.cat)?'p':'i'}">${isProd(r.cat)?'Executada':CAT_LBL[r.cat]}</span></li>`}).join('')||'<li class="muted">Sem baixas nesse dia.</li>'}</ol>
      <div class="pfoot"><span><b>${rota.length}</b> baixas</span><span class="rp"><b>${rota.filter(r=>isProd(r.cat)).length}</b> executadas</span><span><b>${new Set(rota.map(r=>norm(r.bai))).size}</b> bairros</span><span class="rn"><b>${rota.filter(r=>r.sus).length}</b> fora do local</span></div></div>
-   </div>${T==='sus'?susLocHTML(TL.susEq?sus.filter(r=>r.eq===TL.susEq):sus):''}${bairroTiersHTML(rows)}`;
-  bindTiers(v);
+   </div>${T==='sus'?susLocHTML(TL.susEq?sus.filter(r=>r.eq===TL.susEq):sus):''}`;
   v.querySelectorAll('[data-tt]').forEach(b=>b.onclick=()=>{TL.tab=b.dataset.tt;render()});
   if($('#susMore'))$('#susMore').onclick=()=>{SUS_SHOW+=30;const y=scrollY;render();scrollTo(0,y)};
   if($('#tlSort')){$('#tlSort').value=TL.sort;$('#tlSort').onchange=e=>{TL.sort=e.target.value;render()}}
@@ -2531,7 +2514,7 @@ function vAgenda(v,rows){
   v.innerHTML=`<div class="ag-wrap">
    <div class="panel ag-cal"><h3>${MESES[M-1].charAt(0)+MESES[M-1].slice(1).toLowerCase()} de ${Y} <small><button type="button" class="cptab" id="agPrev">‹ Mês anterior</button><button type="button" class="cptab" id="agHoje">Hoje</button><button type="button" class="cptab" id="agNext">Próximo mês ›</button></small></h3>
     <div class="ag-grid">${['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'].map(x=>`<div class="ag-h">${x}</div>`).join('')}${cells.join('')}</div>
-    <p class="note">Cada dia mostra a produtividade e as OS trabalhadas (quando há planilha) e o começo da anotação. Toque num dia para escrever.</p></div>
+    </div>
    <div class="panel ag-side fillp"><h3>${DW[dt.getDay()]}, ${dayBRf(AG_D)}</h3>
     ${sa?`<div class="ag-sum"><button type="button" data-go="all"><b>${fmt(sa.trab)}</b><span>OS trabalhadas</span></button><button type="button" data-go="prod"><b class="${sa.pr>=META?'up':''}">${pct(sa.prod,sa.den)}%</b><span>produtividade do dia</span></button><button type="button" data-go="pag"><b>${fmt(sa.pag)}</b><span>pagamentos</span></button><button type="button" data-go="imp"><b>${fmt(sa.IMPED)}</b><span>impedimentos</span></button></div>`:'<p class="muted small">Sem OS registradas neste dia.</p>'}
     ${agRR(AG_D,1)}<div class="ag-acs">${acDia(AG_D).map(a=>{const t=acTot(a);return `<button type="button" data-acd="${esc(a.id)}"><span class="ac-tag">★ ${esc(a.tipo)}</span><span>${a.itens.length} colab. · ${fmt(t.r)} serviços · ${pct(t.p,t.r,0)}% prod.</span></button>`}).join('')}<button type="button" class="btn ghost sm" id="agAc">+ Lançar ação especial neste dia</button></div>
@@ -2848,8 +2831,8 @@ function rzTelaHoje(rows,ST){const d=RZ.dia;const se=rzSemExp();if(se)return rzD
    ${rzKpi('Setores com equipe',it.length,noRod.length,sem.length+' sem equipe hoje','')}
    ${rzKpi('Programados no GeoCall',feitos,it.length,feitos===it.length&&it.length?'tudo lançado':'falta '+(it.length-feitos),feitos===it.length&&it.length?'g':'')}
    ${rzKpi('Meta do dia',fmt(it.reduce((s,i)=>s+rzMeta(rzUni(i.unidade)),0)),null,'ordens somando a equipe','pg')}
-   ${rzKpi('Produtividade da equipe',pct(ST.A.prod,ST.A.den)+'%',null,'GeoCall · período filtrado',ST.avg>=META?'g':'ct','data-rz="tab" data-t="analise"')}</div>`;
-  h+=rrBanner(d);const rrHoje=rrDoDia(d),rrSet=new Set(rrHoje?rrHoje.quem:[]);
+   ${(()=>{const x=rrDoDia(d),p=x?null:rrProximos(d,1)[0];return rzKpi('Religação',x?`<span class="rrkv rzn">${rrNomes(x)}</span>`:`<span class="rrkv">${p?rzFmt(p.d):'—'}</span>`,null,x?(d===rzHoje()?'responsável hoje':'responsável neste dia'):(p?'próximo · '+p.quem.map(rzNome).join(' e '):'sem escala'),'rr','data-rz="tab" data-t="rr"')})()}</div>`;
+  const rrHoje=rrDoDia(d),rrSet=new Set(rrHoje?rrHoje.quem:[]);
   h+=`<div class="panel"><h3>Escala do dia <small>em ordem de prioridade · marque ✓ ao lançar no GeoCall</small></h3>
    <div class="rzprog"><div class="rzbar"><i style="width:${it.length?feitos/it.length*100:0}%"></i></div><span>${feitos} de ${it.length} programados</span>${aj?'<span class="st o">ajustado</span>':''}</div>
    <div class="rzcards">${it.map((x,i)=>{const s=rzSetor(x.setor)||{codigo:x.setor,bairros:'',potencial:''},u=rzUni(x.unidade)||{},ok=!!f[x.unidade];
@@ -2862,7 +2845,7 @@ function rzTelaHoje(rows,ST){const d=RZ.dia;const se=rzSemExp();if(se)return rzD
    ${sem.length?`<div class="rzfora"><span>Sem equipe hoje:</span>${sem.map(s=>`<button type="button" data-rz="setor" data-c="${s.codigo}">${rzChip(s.codigo)}</button>`).join('')}</div>`:''}
    ${fora.length?`<div class="rzfora"><span>Fora de campo:</span>${fora.map(x=>`<span class="rzpill"><span class="rzn">${esc(x.u.curto||x.u.nome)}</span>${x.a?' · '+esc(x.a.motivo||'')+' até '+rzBR(x.a.ate):''}</span>`).join('')}</div>`:''}
    <div class="rzact"><button type="button" class="btn" data-rz="copiar">Copiar escala para o WhatsApp</button>${aj?(RZ.confirm==='desfazer'?'<button type="button" class="btn danger sm" data-rz="desfazerOk">Confirmar: voltar ao automático</button><button type="button" class="btn ghost sm" data-rz="cancelar">Cancelar</button>':'<button type="button" class="btn ghost sm" data-rz="desfazer">Desfazer ajustes do dia</button>'):''}</div>
-   <p class="note">No GeoCall: busque o setor, arraste as ordens para o nome indicado e marque ✓. Se o setor tiver menos ordens que a meta, complete com os vizinhos indicados (estão sem ninguém no dia).</p></div>`;
+   </div>`;
   return h}
 
 function rzTelaMapa(rows,ST){const d=RZ.dia;const se=rzSemExp();if(se)return rzDayBar('Toque num setor')+se;
@@ -2878,7 +2861,7 @@ function rzTelaSemana(){const ini=RM.proximoDiaUtil(RZ.dia,rzFer());const ds=[];
    ${rzAtivos().map(u=>`<tr><td class="nw"><span class="rzn">${esc(u.curto||u.nome)}</span></td>${ds.map(x=>{const dz=rzDia(x),i=dz&&dz.itens.find(y=>y.unidade===u.id);return `<td class="c">${i?rzChip(i.setor):'<span class="muted">—</span>'}</td>`}).join('')}</tr>`).join('')}</tbody></table></div>
    <div class="rzleg">${RZ_TIERS.map(t=>`<span><i style="background:${rzCol(t)}"></i>${t}</span>`).join('')}</div></div>
    <div class="panel"><h3>Justiça do rodízio <small>potencial médio dos setores de cada um em ${jan.length} dias úteis (1 = fraco, 5 = forte)</small></h3><div class="svcb">
-   ${rzAtivos().map(u=>{const r=J[u.id],v=r?r.pts/r.dias:0;return `<button type="button" tabindex="-1"><span class="rzn">${esc(u.curto||u.nome)}</span><div class="bar"><i style="width:${v/mx*100}%;background:#2dd4bf"></i></div><b>${r?v.toFixed(1).replace('.',','):'—'}</b><em>${r?r.alto+' em ALTO':''}</em></button>`}).join('')}</div><p class="note">Barras parecidas = divisão justa dos setores fortes entre a equipe.</p></div>`}
+   ${rzAtivos().map(u=>{const r=J[u.id],v=r?r.pts/r.dias:0;return `<button type="button" tabindex="-1"><span class="rzn">${esc(u.curto||u.nome)}</span><div class="bar"><i style="width:${v/mx*100}%;background:#2dd4bf"></i></div><b>${r?v.toFixed(1).replace('.',','):'—'}</b><em>${r?r.alto+' em ALTO':''}</em></button>`}).join('')}</div></div>`}
 
 function rzTelaAnalise(rows,ST){
   const ins=rzInsights(ST);const jan=rzJanela(),fq=rzFreq(jan);
@@ -2902,8 +2885,7 @@ function rzTelaAnalise(rows,ST){
   h+=`<div class="panel"><h3>Desempenho por setor <small>potencial do rodízio × resultado real no GeoCall · toque na linha para ver as OS</small></h3><div class="tw"><table class="rztab"><thead><tr><th>Setor</th><th>Potencial</th><th class="n">Peso</th><th class="n">Equipe no rodízio</th><th class="n">OS</th><th>Produtividade</th><th class="n">Pagam.</th><th class="n">Imóvel fechado</th><th class="n">Colab.</th><th>Recomendação</th></tr></thead><tbody>
    ${S.map(s=>{const c=rzSetor(s.sf);const pr=s.a.den?s.a.prod/s.a.den*100:0;const [rt,rc]=rec(s);return `<tr data-rz="drill" data-sf="${esc(s.sf)}"><td>${rzChip(s.sf)}</td><td>${c?rzTier(c.potencial):'<span class="muted">fora</span>'}</td><td class="n">${c?c.peso:'—'}</td><td class="n">${fq[s.sf]||0}/${jan.length}</td><td class="n">${fmt(s.a.rec)}</td>
      <td><span class="rzpb"><i style="width:${Math.min(100,pr)}%;background:${pr>=META?'var(--green)':pr>=avg?'#7cc7ff':'#f87171'}"></i><s style="left:${META}%"></s></span><b class="rzpv">${pct(s.a.prod,s.a.den,0)}%</b></td><td class="n">${fmt(s.a.pag)}</td><td class="n">${s.fechP.toFixed(0)}%</td><td class="n">${s.cols}</td><td><span class="st ${rc}">${rt}</span></td></tr>`}).join('')}</tbody></table></div>
-   <p class="note">Recomendação: <b>Subir peso</b> = rende acima da média e aparece pouco no rodízio · <b>Revisar / baixar peso</b> = setor forte no papel mas abaixo da média · <b>Mudar horário</b> = imóvel fechado bem acima da média da equipe (${ST.fechAvg.toFixed(0)}%).</p></div>`;
-  h+=bairroTiersHTML(rows);
+   </div>`;
   // colaborador × setor
   const eqs=[...new Set(rows.filter(r=>r.sf).map(r=>r.eq))].sort((a,b)=>nomeDe(a).localeCompare(nomeDe(b)));const cols=S.slice(0,14).map(s=>s.sf);
   const cell=(eq,sf)=>{const a=ST.cx[eq+'|'+sf];if(!a||a.den<5)return '<td class="c"><span class="muted">·</span></td>';const pr=a.prod/a.den*100;const t=Math.max(-1,Math.min(1,(pr-avg)/25));
@@ -2911,14 +2893,14 @@ function rzTelaAnalise(rows,ST){
     return `<td class="c"><button type="button" class="rzhm" style="background:${bg}" data-rz="drill" data-sf="${sf}" data-eq="${esc(eq)}" data-tip="<b>${esc(nomeDe(eq))}</b> no setor ${sf}<br>${pct(a.prod,a.den)}% de produtividade<br>${fmt(a.prod)} produtivos em ${fmt(a.den)} OS">${pr.toFixed(0)}</button></td>`};
   h+=`<div class="panel"><h3>Colaborador × setor <small>produtividade (%) de cada um em cada setor · verde acima da média da equipe, vermelho abaixo · mín. 5 OS</small></h3><div class="tw"><table class="rzhmt"><thead><tr><th>Colaborador</th>${cols.map(c=>`<th class="c">${rzChip(c)}</th>`).join('')}</tr></thead><tbody>
    ${eqs.map(eq=>`<tr><td class="nw"><span class="rzn">${esc(nomeDe(eq))}</span></td>${cols.map(sf=>cell(eq,sf)).join('')}</tr>`).join('')}</tbody></table></div>
-   <p class="note">Mostra os ${cols.length} setores com mais OS no período. Use para decidir trocas: quando alguém faltar, mande para o setor vago quem tem o melhor número nele.</p></div>`;
+   </div>`;
   // conexões: setores vizinhos atendidos na mesma rota do dia
   const pares={};groupBy(rows.filter(r=>r.sf),r=>r.eq+'|'+r.day).forEach(rs=>{const ss=[...new Set(rs.sort((a,b)=>a.fim-b.fim).map(r=>r.sf))];for(let i=1;i<ss.length;i++){const k=[ss[i-1],ss[i]].sort().join('↔');pares[k]=(pares[k]||0)+1}});
   const pl=Object.entries(pares).sort((a,b)=>b[1]-a[1]).slice(0,10);
   const viz=(a,b)=>(RM.VIZINHOS[a]||[]).includes(+b)||(RM.VIZINHOS[b]||[]).includes(+a);
-  h+=`<div class="g2"><div class="panel"><h3>Ligações entre setores <small>trocas de setor dentro da mesma rota do dia (GeoCall)</small></h3>${pl.length?`<div class="svcb">${pl.map(([k,n])=>{const [a,b]=k.split('↔');const vz=viz(a,b);return `<button type="button" data-rz="drill" data-sf="${a}"><span>${rzChip(a)} ↔ ${rzChip(b)}</span><div class="bar"><i style="width:${n/pl[0][1]*100}%;background:${vz?'#2dd4bf':'#f5b73b'}"></i></div><b>${n}</b><em>${vz?'vizinhos':'<span style="color:#f5b73b">não vizinhos</span>'}</em></button>`}).join('')}</div><p class="note">Troca entre setores <b style="color:#f5b73b">não vizinhos</b> na mesma rota = deslocamento longo. Vale concentrar as ordens do dia no setor escalado e nos vizinhos indicados.</p>`:'<p class="note">Sem trocas de setor no período.</p>'}</div>
+  h+=`<div class="g2"><div class="panel"><h3>Ligações entre setores <small>trocas de setor dentro da mesma rota do dia (GeoCall)</small></h3>${pl.length?`<div class="svcb">${pl.map(([k,n])=>{const [a,b]=k.split('↔');const vz=viz(a,b);return `<button type="button" data-rz="drill" data-sf="${a}"><span>${rzChip(a)} ↔ ${rzChip(b)}</span><div class="bar"><i style="width:${n/pl[0][1]*100}%;background:${vz?'#2dd4bf':'#f5b73b'}"></i></div><b>${n}</b><em>${vz?'vizinhos':'<span style="color:#f5b73b">não vizinhos</span>'}</em></button>`}).join('')}</div>`:'<p class="note">Sem trocas de setor no período.</p>'}</div>
    <div class="panel"><h3>Faixa horária por setor <small>produtividade das baixas em cada faixa · top 8 setores</small></h3><div class="tw"><table class="rzhmt"><thead><tr><th>Setor</th>${BANDS.map(b=>`<th class="c">${b[0].replace(' ou mais','+').replace('Antes das ','< ')}</th>`).join('')}</tr></thead><tbody>
-   ${S.slice(0,8).map(s=>`<tr><td>${rzChip(s.sf)}</td>${s.bands.map(b=>{if(b.n<8||b.pr==null)return '<td class="c"><span class="muted">·</span></td>';const t=Math.max(-1,Math.min(1,(b.pr-avg)/25));return `<td class="c"><span class="rzhm" style="background:${t>=0?`rgba(34,197,94,${(.12+t*.5).toFixed(2)})`:`rgba(239,68,68,${(.12-t*.5).toFixed(2)})`}" data-tip="${b.n} baixas">${b.pr.toFixed(0)}</span></td>`}).join('')}</tr>`).join('')}</tbody></table></div><p class="note">Ajuda a decidir em que horário atacar cada setor (ex.: setores com muito imóvel fechado rendem mais cedo).</p></div></div>`;
+   ${S.slice(0,8).map(s=>`<tr><td>${rzChip(s.sf)}</td>${s.bands.map(b=>{if(b.n<8||b.pr==null)return '<td class="c"><span class="muted">·</span></td>';const t=Math.max(-1,Math.min(1,(b.pr-avg)/25));return `<td class="c"><span class="rzhm" style="background:${t>=0?`rgba(34,197,94,${(.12+t*.5).toFixed(2)})`:`rgba(239,68,68,${(.12-t*.5).toFixed(2)})`}" data-tip="${b.n} baixas">${b.pr.toFixed(0)}</span></td>`}).join('')}</tr>`).join('')}</tbody></table></div></div></div>`;
   return h}
 
 function rzTelaEquipe(){const hoje=rzHoje();const lst=(RZ.cfg.ausencias||[]).map((a,i)=>({a,i})).filter(x=>x.a.ate>=RM.addDias(hoje,-7)).sort((x,y)=>x.a.de<y.a.de?-1:1);
