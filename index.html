@@ -1493,7 +1493,8 @@ function rebuild(){
   for(const s of SHEETS){if(!s.ativa)continue;addRows(s.recs);SOURCES.push(s.nome)}
   markSuspects();syncReg();
 }
-function refreshAll(forcePer){const keepPer=forcePer||$('#fPer').value;rebuild();fillSelects();if(keepPer&&[...$('#fPer').options].some(o=>o.value===keepPer))$('#fPer').value=keepPer;if($('#fPer').value!=='CUSTOM')setPeriod();readF();info();render()}
+let PER_USER=false; // o período só fica fixo quando o usuário escolhe; senão acompanha o mês mais recente
+function refreshAll(forcePer){const keepPer=forcePer||(PER_USER?$('#fPer').value:'');rebuild();fillSelects();if(keepPer&&[...$('#fPer').options].some(o=>o.value===keepPer))$('#fPer').value=keepPer;if($('#fPer').value!=='CUSTOM')setPeriod();readF();info();render()}
 function rowsFromSheet(aoa,src){
   let h=-1;for(let i=0;i<Math.min(aoa.length,15);i++){if((aoa[i]||[]).some(c=>norm(c)==='NUMERO OS')){h=i;break}}
   if(h<0)return null;
@@ -2062,7 +2063,7 @@ const AC_TIPOS=['Leitura','Ação 40+','Vistoria','Fiscalização','Recadastrame
 let ACOES=[],AC_EM='';
 async function loadAcoes(){const l=LS.get('sa_dash_acoes',null);if(l&&Array.isArray(l.lista)){ACOES=l.lista;AC_EM=l.em||''}
   if(DB){try{const d=await DB.doc('config/acoes').get();if(d.exists){const r=d.data()||{};if(Array.isArray(r.lista)&&String(r.em||'')>AC_EM){const ids=new Set(r.lista.map(a=>a.id));ACOES=r.lista.concat(ACOES.filter(a=>!ids.has(a.id)));AC_EM=r.em||''}}}catch(e){}}
-  acRebuild();render()}
+  acRebuild();if(!PER_USER&&$('#fPer')){fillSelects();if($('#fPer').value!=='CUSTOM')setPeriod();readF()}render()}
 async function saveAcoes(msg){acRebuild();AC_EM=new Date().toISOString();LS.set('sa_dash_acoes',{lista:ACOES,em:AC_EM});
   if(DB){try{await DB.doc('config/acoes').set({lista:JSON.parse(JSON.stringify(ACOES)),em:AC_EM})}catch(e){}}else if(SECURE){clearTimeout(_sp);await vaultWrite()}
   if(msg)toast(msg)}
@@ -2561,7 +2562,7 @@ function fillSelects(){
   const months=[...new Set(sc.map(r=>r.day.slice(0,7)))].sort().reverse();
   const per=$('#fPer');const cur=per.value;
   per.innerHTML=months.map(m=>`<option value="${m}">${MESES[+m.slice(5)-1]}/${m.slice(0,4)}</option>`).join('')+'<option value="ALL">Todo o período</option><option value="CUSTOM">Personalizado</option>';
-  per.value=cur&&[...per.options].some(o=>o.value===cur)?cur:(months[0]||'ALL');
+  per.value=(PER_USER||!months.length)&&cur&&[...per.options].some(o=>o.value===cur)?cur:(months[0]||'ALL');
   const eqs=[...new Set(Object.keys(REG).map(equipeDe))].sort();
   const e=$('#fEq'),c=$('#fCol');const ev=e.value,cv=c.value;
   e.innerHTML='<option value="">Todas</option>'+eqs.map(x=>`<option>${esc(x)}</option>`).join('');e.value=eqs.includes(ev)?ev:'';
@@ -2582,8 +2583,8 @@ function info(){
   $('#srcInfo').textContent='Fonte: GeoCall WFM · '+(SOURCES.length?SOURCES.join(', '):'nenhuma planilha ativa');
 }
 function bindFilters(){
-  $('#fPer').onchange=()=>{setPeriod();readF();render()};
-  ['#fIni','#fFim'].forEach(s=>$(s).onchange=()=>{$('#fPer').value='CUSTOM';readF();render()});
+  $('#fPer').onchange=()=>{PER_USER=true;setPeriod();readF();render()};
+  ['#fIni','#fFim'].forEach(s=>$(s).onchange=()=>{PER_USER=true;$('#fPer').value='CUSTOM';readF();render()});
   $('#fEq').onchange=()=>{fillSelects();readF();render()};
   $('#fCol').onchange=$('#fTipo').onchange=()=>{readF();render()};
   $('#btnUpd').onclick=()=>{readF();render();toast('Indicadores atualizados.')};
