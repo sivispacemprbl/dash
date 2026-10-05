@@ -817,6 +817,34 @@ td .rp,td .rn{font-weight:500;font-size:11.5px;letter-spacing:.01em}
 .ag-acs{display:flex;flex-direction:column;gap:6px;margin-top:12px}.ag-acs>button[data-acd]{display:flex;flex-direction:column;gap:3px;align-items:flex-start;text-align:left;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.3);border-radius:9px;padding:8px 10px;color:inherit;font:inherit;font-size:12px;cursor:pointer}
 .ag-acs>.btn{align-self:flex-start}
 .ac-os{margin:0 0 14px;padding:12px 14px;border-radius:10px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.25)}
+.acp h3 .acimp{margin-left:auto;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;border:1px solid transparent;background:transparent;color:#8aa0bf;cursor:pointer}
+.acp h3 .acimp:hover{color:#e6eefb;background:rgba(124,199,255,.08);border-color:rgba(124,199,255,.3)}
+
+/* rodízio de religação */
+.rrb{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:12px;background:linear-gradient(135deg,rgba(56,189,248,.16),rgba(56,189,248,.05));border:1px solid rgba(56,189,248,.45)}
+.rrb.off{background:rgba(8,20,42,.45);border-color:var(--line2)}
+.rrb>div{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}.rrb>div>b{font-size:14px}.rrb>div>span{font-size:12.5px;color:#c9d6ea}
+.rrb-ic{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:20px;font-weight:700;color:#38bdf8;background:rgba(56,189,248,.14);flex:none}
+.rrb.off .rrb-ic{color:#8aa0bf;background:rgba(148,163,184,.12)}
+.rrtag{font-size:10.5px;font-weight:700;color:#38bdf8;background:rgba(56,189,248,.14);border-radius:6px;padding:2px 7px;white-space:nowrap}
+.rrl{display:flex;flex-direction:column;gap:6px}
+.rrd{display:grid;grid-template-columns:64px 56px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 10px;border-radius:9px;background:rgba(8,20,42,.45);border:1px solid transparent}
+.rrd.hoje{border-color:rgba(56,189,248,.55);background:rgba(56,189,248,.08)}
+.rrdw{display:flex;flex-direction:column;font-size:12px;color:#9fb3cf;line-height:1.2}.rrdw b{font-size:14px;color:#e6eefb}
+.rrs{font-size:11px;color:#8aa0bf}
+.rrd select,.rrcfg select{background:rgba(5,13,29,.6);border:1px solid var(--line2);border-radius:8px;color:inherit;font:inherit;font-size:13px;padding:7px 9px;min-width:0}
+.rrcfg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 18px}
+.rrw{display:flex;flex-wrap:wrap;gap:6px}.rrw label{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;padding:5px 9px;border-radius:7px;background:rgba(8,20,42,.5);cursor:pointer}
+.rrw input{accent-color:#38bdf8}
+.rrp button.off{opacity:.5}.rrp button>span{display:flex;align-items:center;gap:6px;min-width:0}
+.rrck{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:4px;border:1px solid #38bdf8;font-style:normal;font-size:11px;color:#38bdf8;flex:none}
+.rrp button.off .rrck{border-color:#5b7397}
+.ag-rr{display:block;font-size:10px;font-weight:700;color:#38bdf8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ag-rrb{display:flex;flex-direction:column;gap:2px;align-items:flex-start;width:100%;margin-top:12px;padding:9px 12px;border-radius:9px;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.35);color:inherit;font:inherit;text-align:left;cursor:pointer}
+.ag-rrb span{font-size:11px;font-weight:700;color:#38bdf8;text-transform:uppercase;letter-spacing:.05em}.ag-rrb b{font-size:13.5px}
+@media (max-width:560px){.rrcfg{grid-template-columns:1fr}.rrd{grid-template-columns:56px minmax(0,1fr) auto}.rrs{display:none}}
+.svcb.rrp{margin-top:8px!important;flex:none}
+.rrkv{font-size:22px;line-height:1.2}
 </style>
 
 <div class="app">
@@ -1707,7 +1735,8 @@ function renderPulse(rows){
     abaixo&&{lv:'bad',t:`${abaixo} colaborador${abaixo>1?'es':''} abaixo da meta`,go:'colab'},
     susDia&&{lv:'warn',t:`${susDia} baixa${susDia>1?'s':''} fora do local em ${dayBR(ld)}`,go:'jornada'},
     reinc&&{lv:'info',t:`${reinc} OS reincidentes sem solução`,go:'gargalos'},
-    semBaixa&&{lv:'warn',t:`${semBaixa} colaborador${semBaixa>1?'es':''} sem baixa válida em ${dayBR(ld)}`,go:'jornada'}
+    semBaixa&&{lv:'warn',t:`${semBaixa} colaborador${semBaixa>1?'es':''} sem baixa válida em ${dayBR(ld)}`,go:'jornada'},
+    (()=>{try{if(typeof RZ==='undefined'||!RZ.cfg)return null;const h=rzHoje(),x=rrDoDia(h);if(x)return {lv:'info',t:`Hoje é dia de religação: ${x.quem.map(rzNome).join(' e ')}`,go:'rodizio',rr:1};const p=rrProximos(h,1)[0];return p?{lv:'info',t:`Próxima religação: ${dayBR(p.d)} · ${p.quem.map(rzNome).join(' e ')}`,go:'rodizio',rr:1}:null}catch(e){return null}})()
   ].filter(Boolean);
   const dayRows=rows.filter(r=>r.day===ld);
   const top3=[...groupBy(dayRows,r=>r.eq)].map(([k,rs])=>({k,a:agg(rs)})).filter(c=>c.a.prod>0).sort((x,y)=>y.a.prod-x.a.prod||y.a.pr-x.a.pr).slice(0,3);
@@ -1745,7 +1774,7 @@ function renderPulse(rows){
      <div class="pg2"><button type="button" class="btn sm presumo" id="sbImp">Importar</button><button type="button" class="btn ghost sm" id="sbGo">Gerenciar</button></div></div>`;
     $('#sbImp').onclick=()=>$('#file').click();$('#sbGo').onclick=()=>go('planilhas')}
   setTimeout(paintTitles,0);
-  el.querySelectorAll('[data-al]').forEach(b=>b.onclick=()=>{const x=al[+b.dataset.al];x.dr?drill(x.dr):go(x.go)});
+  el.querySelectorAll('[data-al]').forEach(b=>b.onclick=()=>{const x=al[+b.dataset.al];if(x.rr)RZ.tab='rr';x.dr?drill(x.dr):go(x.go)});
 }
 function lastDay(rows){let m='';for(const r of rows)if(r.day>m)m=r.day;return m}
 function teamTable(rows,full){
@@ -2064,7 +2093,7 @@ let ACOES=[],AC_EM='';
 async function loadAcoes(){const l=LS.get('sa_dash_acoes',null);if(l&&Array.isArray(l.lista)){ACOES=l.lista;AC_EM=l.em||''}
   if(DB){try{const d=await DB.doc('config/acoes').get();if(d.exists){const r=d.data()||{};if(Array.isArray(r.lista)&&String(r.em||'')>AC_EM){const ids=new Set(r.lista.map(a=>a.id));ACOES=r.lista.concat(ACOES.filter(a=>!ids.has(a.id)));AC_EM=r.em||''}}}catch(e){}}
   acRebuild();if(!PER_USER&&$('#fPer')){fillSelects();if($('#fPer').value!=='CUSTOM')setPeriod();readF()}render()}
-async function saveAcoes(msg){acRebuild();AC_EM=new Date().toISOString();LS.set('sa_dash_acoes',{lista:ACOES,em:AC_EM});
+async function saveAcoes(msg){acRebuild();if($('#fPer')){const pv=$('#fPer').value,fi=$('#fIni').value,ff=$('#fFim').value;fillSelects();if(PER_USER&&pv==='CUSTOM'){$('#fPer').value='CUSTOM';$('#fIni').value=fi;$('#fFim').value=ff}else setPeriod();readF()}AC_EM=new Date().toISOString();LS.set('sa_dash_acoes',{lista:ACOES,em:AC_EM});
   if(DB){try{await DB.doc('config/acoes').set({lista:JSON.parse(JSON.stringify(ACOES)),em:AC_EM})}catch(e){}}else if(SECURE){clearTimeout(_sp);await vaultWrite()}
   if(msg)toast(msg)}
 const acDia=k=>ACOES.filter(a=>a.data===k);
@@ -2080,7 +2109,7 @@ function acoesHTML(){const L=acoesFiltradas();
   const porTipo=[...groupBy(L,a=>a.tipo)].map(([k,as])=>{const t=as.reduce((s,a)=>{const x=acTot(a);s.r+=x.r;s.p+=x.p;return s},{r:0,p:0});return {k,n:as.length,...t}}).sort((x,y)=>y.r-x.r);
   const porCol={};L.forEach(a=>a.itens.forEach(i=>{const c=porCol[i.eq]||(porCol[i.eq]={r:0,p:0,n:0});c.r+=+i.real||0;c.p+=acProd(i);c.n++}));
   const pc=Object.entries(porCol).sort((x,y)=>y[1].r-x[1].r);const mx=Math.max(1,...pc.map(x=>x[1].r));
-  const head=`<h3>Ações especiais <small>lançamento manual · serviços fora do GeoCall</small><button type="button" class="btn sm" id="acNova" style="margin-left:auto">+ Lançar ação</button></h3>`;
+  const head=`<h3>Ações especiais <small>lançamento manual · serviços fora do GeoCall</small>${window.claude?'':'<button type="button" class="rzimp acimp" id="acImp" aria-label="Importar ações de um arquivo" data-tip="Importar ações de um arquivo .json"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 15.5v2.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2.5"/><path d="M12 15V4.5M8 8.5l4-4 4 4"/></svg></button>'}<button type="button" class="btn sm" id="acNova" ${window.claude?'style="margin-left:auto"':''}>+ Lançar ação</button></h3>`;
   if(!L.length)return `<div class="panel acp">${head}<div class="ac-empty"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#7cc7ff" stroke-width="1.6" stroke-linecap="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg><div><b>Nenhuma ação especial no período</b><span>Quando a equipe fizer uma ação de sexta-feira (leitura, vistoria, ação 40+…), lance aqui a produção de cada colaborador.</span></div></div></div>`;
   return `<div class="panel acp">${head}
    <div class="ac-k"><div><b>${fmt(L.length)}</b><span>ações no período</span></div><div><b>${fmt(T.r)}</b><span>serviços realizados</span></div><div><b>${fmt(T.p)}</b><span>produtivos</span></div><div><b class="${T.r&&T.p/T.r*100>=META?'up':''}">${pct(T.p,T.r,0)}%</b><span>produtividade das ações</span></div></div>
@@ -2117,7 +2146,10 @@ function acModal(id,d0){const a=id?ACOES.find(x=>x.id===id):null;const hoje=dayK
     if(a)ACOES=ACOES.map(x=>x.id===a.id?reg:x);else ACOES.push(reg);
     await saveAcoes(a?'Ação atualizada.':'Ação lançada: '+tipo+' · '+dayBRf(data));close();render()};
   setTimeout(()=>{const f=ov.querySelector(a?'#acDs':'#acT');if(f)f.focus()},40)}
-function bindAcoes(v){const n=v.querySelector('#acNova');if(n)n.onclick=()=>acModal(null);v.querySelectorAll('tr[data-ac]').forEach(tr=>tr.onclick=()=>acModal(tr.dataset.ac))}
+function bindAcoes(v){const n=v.querySelector('#acNova');if(n)n.onclick=()=>acModal(null);
+  const im=v.querySelector('#acImp');if(im)im.onclick=()=>{const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=async()=>{try{const p=JSON.parse(await i.files[0].text());const L=p&&p.tipo==='acoes-especiais'&&Array.isArray(p.lista)?p.lista:null;if(!L)throw new Error('o arquivo não é de ações especiais');
+    let novas=0;L.forEach(a=>{if(!a||!a.id||!a.data||!Array.isArray(a.itens))return;const k=ACOES.findIndex(x=>x.id===a.id);if(k>=0)ACOES[k]=a;else{ACOES.push(a);novas++}});
+    await saveAcoes(novas?novas+' ação(ões) importada(s).':'Ações atualizadas.');render()}catch(e){toast('Não foi possível importar: '+e.message)}};i.click()};v.querySelectorAll('tr[data-ac]').forEach(tr=>tr.onclick=()=>acModal(tr.dataset.ac))}
 
 function vProducao(v,rows){
   const byDay=[...groupBy(rows,r=>r.day)].sort((a,b)=>a[0]<b[0]?-1:1);
@@ -2486,13 +2518,14 @@ function bindBackup(v){const d=v.querySelector('#bkDown'),u=v.querySelector('#bk
     try{const p=JSON.parse(await f.text());const vv=p&&p.vault;if(!p||p.tipo!=='backup-painel-santo-andre'||!vv||!vv.salt||!vv.iv||!vv.ct)throw new Error('este arquivo não é uma cópia do painel');
       if(!confirm('Restaurar a cópia de '+(p.em?dayBRf(dayKey(Date.parse(p.em)))+' ':'')+'? Os dados atuais deste navegador serão trocados pelos da cópia. Depois é só digitar a senha da cópia.'))return;
       localStorage.setItem(VAULT,JSON.stringify(vv));location.reload()}catch(e){toast('Não foi possível restaurar: '+e.message)}};i.click()}}
+function agRR(k,full){try{if(typeof RZ==='undefined'||!RZ.cfg)return '';const x=rrDoDia(k);if(!x)return '';const n=x.quem.map(rzNome).join(' e ');return full?`<button type="button" class="ag-rrb" id="agRR"><span>↻ Restabelecimento e religação</span><b>${esc(n)}</b></button>`:`<span class="ag-rr">↻ ${esc(n)}</span>`}catch(e){return ''}}
 function vAgenda(v,rows){
   const today=dayKey(Date.now());if(!AG_M)AG_M=(lastDay(rows)||today).slice(0,7);if(!AG_D)AG_D=lastDay(rows)||today;
   const [Y,M]=AG_M.split('-').map(Number);const first=new Date(Y,M-1,1),dim=new Date(Y,M,0).getDate();const off=(first.getDay()+6)%7;
   const byD=groupBy(applyF(scope()).length?scope().filter(r=>r.day.startsWith(AG_M)):[],r=>r.day);
   const cells=[];for(let i=0;i<off;i++)cells.push('<div class="ag-c empty"></div>');
   for(let d=1;d<=dim;d++){const k=AG_M+'-'+pad(d);const rs=byD.get(k)||[];const a=rs.length?agg(rs):null;const note=(AG[k]||'').trim();
-    cells.push(`<button type="button" class="ag-c ${k===AG_D?'sel':''} ${k===today?'hoje':''} ${note?'hasn':''}" data-d="${k}"><span class="ag-n">${d}</span>${a?`<span class="ag-p ${a.pr>=META?'up':''}">${pct(a.prod,a.den,0)}%</span><span class="ag-o">${fmt(a.trab)} OS</span>`:''}${acDia(k).length?`<span class="ag-ac">★ ${esc(acDia(k)[0].tipo)}</span>`:''}${note?`<span class="ag-t">${esc(note.split('\n')[0].slice(0,40))}</span>`:''}</button>`)}
+    cells.push(`<button type="button" class="ag-c ${k===AG_D?'sel':''} ${k===today?'hoje':''} ${note?'hasn':''}" data-d="${k}"><span class="ag-n">${d}</span>${a?`<span class="ag-p ${a.pr>=META?'up':''}">${pct(a.prod,a.den,0)}%</span><span class="ag-o">${fmt(a.trab)} OS</span>`:''}${acDia(k).length?`<span class="ag-ac">★ ${esc(acDia(k)[0].tipo)}</span>`:''}${agRR(k)}${note?`<span class="ag-t">${esc(note.split('\n')[0].slice(0,40))}</span>`:''}</button>`)}
   const sel=byD.get(AG_D)||[];const sa=sel.length?agg(sel):null;const dt=new Date(AG_D+'T12:00');const DW=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
   const withNotes=Object.keys(AG).filter(k=>AG[k]&&AG[k].trim()&&k.startsWith(AG_M)).sort();
   v.innerHTML=`<div class="ag-wrap">
@@ -2501,7 +2534,7 @@ function vAgenda(v,rows){
     <p class="note">Cada dia mostra a produtividade e as OS trabalhadas (quando há planilha) e o começo da anotação. Toque num dia para escrever.</p></div>
    <div class="panel ag-side fillp"><h3>${DW[dt.getDay()]}, ${dayBRf(AG_D)}</h3>
     ${sa?`<div class="ag-sum"><button type="button" data-go="all"><b>${fmt(sa.trab)}</b><span>OS trabalhadas</span></button><button type="button" data-go="prod"><b class="${sa.pr>=META?'up':''}">${pct(sa.prod,sa.den)}%</b><span>produtividade do dia</span></button><button type="button" data-go="pag"><b>${fmt(sa.pag)}</b><span>pagamentos</span></button><button type="button" data-go="imp"><b>${fmt(sa.IMPED)}</b><span>impedimentos</span></button></div>`:'<p class="muted small">Sem OS registradas neste dia.</p>'}
-    <div class="ag-acs">${acDia(AG_D).map(a=>{const t=acTot(a);return `<button type="button" data-acd="${esc(a.id)}"><span class="ac-tag">★ ${esc(a.tipo)}</span><span>${a.itens.length} colab. · ${fmt(t.r)} serviços · ${pct(t.p,t.r,0)}% prod.</span></button>`}).join('')}<button type="button" class="btn ghost sm" id="agAc">+ Lançar ação especial neste dia</button></div>
+    ${agRR(AG_D,1)}<div class="ag-acs">${acDia(AG_D).map(a=>{const t=acTot(a);return `<button type="button" data-acd="${esc(a.id)}"><span class="ac-tag">★ ${esc(a.tipo)}</span><span>${a.itens.length} colab. · ${fmt(t.r)} serviços · ${pct(t.p,t.r,0)}% prod.</span></button>`}).join('')}<button type="button" class="btn ghost sm" id="agAc">+ Lançar ação especial neste dia</button></div>
     <label for="agT" class="svct" style="margin-top:12px">Anotações do dia</label>
     <textarea id="agT" rows="9" placeholder="Reunião, escala, ocorrências, combinados com a equipe…">${esc(AG[AG_D]||'')}</textarea>
     <p class="ps small muted" id="agSt">${DB?'✓ Tudo o que você escreve é salvo sozinho no painel':SECURE?'✓ Salvo sozinho neste navegador, protegido pela senha':'✓ Salvo sozinho neste navegador'}</p>
@@ -2511,7 +2544,7 @@ function vAgenda(v,rows){
   $('#agPrev').onclick=()=>mv(-1);$('#agNext').onclick=()=>mv(1);$('#agHoje').onclick=()=>{AG_M=today.slice(0,7);AG_D=today;render()};
   v.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{if(AG_PEND){clearTimeout(_ag);saveAgenda()}AG_D=b.dataset.d;render();setTimeout(()=>{const t=$('#agT');if(t)t.focus()},30)});
   $('#agT').oninput=e=>{AG[AG_D]=e.target.value;if(!AG[AG_D].trim())delete AG[AG_D];AG_PEND=true;$('#agSt').textContent='Salvando…';clearTimeout(_ag);_ag=setTimeout(saveAgenda,500)};
-  $('#agT').onblur=()=>{if(AG_PEND){clearTimeout(_ag);saveAgenda()}};bindBackup(v);if($('#agAc'))$('#agAc').onclick=()=>acModal(null,AG_D);v.querySelectorAll('[data-acd]').forEach(b=>b.onclick=()=>acModal(b.dataset.acd));
+  $('#agT').onblur=()=>{if(AG_PEND){clearTimeout(_ag);saveAgenda()}};bindBackup(v);if($('#agRR'))$('#agRR').onclick=()=>{RZ.tab='rr';go('rodizio')};if($('#agAc'))$('#agAc').onclick=()=>acModal(null,AG_D);v.querySelectorAll('[data-acd]').forEach(b=>b.onclick=()=>acModal(b.dataset.acd));
   v.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{const g=b.dataset.go;drill({day:AG_D,cats:g==='prod'?PROD_CATS:g==='pag'?['PAG_POS','PAG_FAT']:g==='imp'?['IMPED']:null,label:'Dia '+dayBRf(AG_D)})});
 }
 
@@ -2562,7 +2595,8 @@ function fillSelects(){
   const months=[...new Set(sc.map(r=>r.day.slice(0,7)))].sort().reverse();
   const per=$('#fPer');const cur=per.value;
   per.innerHTML=months.map(m=>`<option value="${m}">${MESES[+m.slice(5)-1]}/${m.slice(0,4)}</option>`).join('')+'<option value="ALL">Todo o período</option><option value="CUSTOM">Personalizado</option>';
-  per.value=(PER_USER||!months.length)&&cur&&[...per.options].some(o=>o.value===cur)?cur:(months[0]||'ALL');
+  const mGeo=[...new Set(sc.filter(r=>!r.man).map(r=>r.day.slice(0,7)))].sort().reverse(); // padrão: último mês com planilha do GeoCall
+  per.value=(PER_USER||!months.length)&&cur&&[...per.options].some(o=>o.value===cur)?cur:(mGeo[0]||months[0]||'ALL');
   const eqs=[...new Set(Object.keys(REG).map(equipeDe))].sort();
   const e=$('#fEq'),c=$('#fCol');const ev=e.value,cv=c.value;
   e.innerHTML='<option value="">Todas</option>'+eqs.map(x=>`<option>${esc(x)}</option>`).join('');e.value=eqs.includes(ev)?ev:'';
@@ -2615,7 +2649,7 @@ const RZ_KEY='sa_rodizio_v1';
 const RZ_TIERS=['ALTO','MÉDIO-ALTO','MÉDIO','MÉDIO-BAIXO'];
 const RZ_TC={'ALTO':'#f5b73b','MEDIO-ALTO':'#2dd4bf','MEDIO':'#7aa2d6','MEDIO-BAIXO':'#8193a8'};
 const RZ_DS=['domingo','segunda','terça','quarta','quinta','sexta','sábado'],RZ_MS=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
-const RZ_TABS=[['hoje','Escala do dia'],['analise','Setores × Produção'],['mapa','Mapa'],['semana','Semana'],['equipe','Equipe e faltas'],['setores','Pesos dos setores']];
+const RZ_TABS=[['hoje','Escala do dia'],['rr','Religação'],['analise','Setores × Produção'],['mapa','Mapa'],['semana','Semana'],['equipe','Equipe e faltas'],['setores','Pesos dos setores']];
 let RZ={tab:'hoje',dia:null,cfg:null,sel:null,confirm:null,cache:null,priv:false,loaded:false,q:''};
 try{RZ.priv=localStorage.getItem('sa_rz_priv')==='1'}catch(e){}
 const rzTK=p=>String(p||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase();
@@ -2759,6 +2793,50 @@ function rzDayBar(sub){const d=RZ.dia,h=rzHoje();return `<div class="rzday"><but
 function rzSemExp(){const d=RZ.dia;return d<RZ.cfg.inicio?`<div class="panel"><p class="note">O rodízio começa em ${rzFmt(RZ.cfg.inicio,true)}.</p></div>`:!RM.ehDiaUtil(d,rzFer())?'<div class="panel"><p class="note">Dia sem expediente (fim de semana ou feriado).</p></div>':''}
 function rzKpi(lab,val,tot,sub,cls,attr){return `<button type="button" class="kpi ${cls||''}" ${attr||''}><span class="lab">${lab}</span><span class="val">${val}${tot!=null?`<small class="rzkt">/ ${tot}</small>`:''}</span><span class="sub">${sub}</span></button>`}
 
+/* ---------- Rodízio de Restabelecimento e Religação (semanas alternadas) ---------- */
+const RR_DW=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+function rrCfg(){if(!RZ.cfg)return null;if(!RZ.cfg.rr){RZ.cfg.rr={ativo:true,ancora:'2026-10-05',semA:[1,3,5],semB:[2,4],porDia:1,part:RZ.cfg.unidades.filter(u=>u.tipo!=='carro').map(u=>u.id),ajustes:{}}}return RZ.cfg.rr}
+function rrSegunda(d){const x=new Date(d+'T12:00:00');const w=(x.getDay()+6)%7;x.setDate(x.getDate()-w);return RM.iso(x)}
+function rrSemana(d){const c=rrCfg();const n=Math.floor(RM.diasEntre(rrSegunda(c.ancora),rrSegunda(d))/7);return ((n%2)+2)%2===0?'A':'B'}
+function rrEhDia(d){const c=rrCfg();if(!c||!c.ativo)return false;if((RZ.cfg.feriados||[]).includes(d))return false;const w=new Date(d+'T12:00:00').getDay();return (rrSemana(d)==='A'?c.semA:c.semB).includes(w)}
+/* escala: quem ficou mais tempo sem fazer religação vai primeiro; faltas, férias e desligados ficam de fora */
+function rrEscalaAte(fim){const c=rrCfg();if(!c)return [];const out=[];const ult={};let d=rrSegunda(c.ancora),g=0;
+  const ordem=id=>{const u=rzUni(id);return u?(u.ordem||0):99};
+  while(d<=fim&&g++<800){if(rrEhDia(d)){let quem;
+      if(c.ajustes&&c.ajustes[d])quem=c.ajustes[d].slice();
+      else{const disp=c.part.filter(id=>{const u=rzUni(id);return u&&RM.disponiveis([u],d,RZ.cfg.ausencias).length});
+        disp.sort((a,b)=>(ult[a]||'')<(ult[b]||'')?-1:(ult[a]||'')>(ult[b]||'')?1:ordem(a)-ordem(b));quem=disp.slice(0,Math.max(1,+c.porDia||1))}
+      quem.forEach(id=>ult[id]=d);out.push({d,quem,aj:!!(c.ajustes&&c.ajustes[d])})}
+    d=RM.addDias(d,1)}return out}
+function rrDoDia(d){if(!rrEhDia(d))return null;return rrEscalaAte(d).find(x=>x.d===d)||null}
+function rrProximos(de,n){const c=rrCfg();let fim=de,k=0;while(k<60){fim=RM.addDias(fim,1);k++}return rrEscalaAte(fim).filter(x=>x.d>=de).slice(0,n)}
+const rrNomes=x=>x.quem.map(id=>esc(rzNome(id))).join(' e ');
+function rrBanner(d){const x=rrDoDia(d);if(!x){const p=rrProximos(d,1)[0];return p?`<div class="rrb off"><span class="rrb-ic">↻</span><div><b>Sem religação ${d===rzHoje()?'hoje':'neste dia'}</b><span>Próxima: ${rzFmt(p.d,true)} · <span class="rzn">${rrNomes(p)}</span></span></div><button type="button" class="btn ghost sm" data-rz="tab" data-t="rr">Ver escala</button></div>`:''}
+  return `<div class="rrb"><span class="rrb-ic">↻</span><div><b>${d===rzHoje()?'Hoje é':'Neste dia é'} dia de restabelecimento e religação</b><span>Responsável: <b class="rzn">${rrNomes(x)}</b>${x.aj?' · ajustado':''}</span></div><button type="button" class="btn ghost sm" data-rz="tab" data-t="rr">Ver escala</button></div>`}
+function rzTelaRR(){const c=rrCfg();const hoje=RZ.dia;const L=rrProximos(rzHoje()<RZ.cfg.inicio?RZ.cfg.inicio:RM.addDias(rzHoje(),-0),12);
+  const semAt=rrSemana(hoje),dias=s=>(s==='A'?c.semA:c.semB).map(w=>RR_DW[w]).join(' · ')||'—';
+  const hist=rrEscalaAte(RM.addDias(rzHoje(),28));const cont={};hist.forEach(x=>x.quem.forEach(id=>cont[id]=(cont[id]||0)+1));const mx=Math.max(1,...Object.values(cont));
+  const part=new Set(c.part);
+  return `<div class="kpis">
+   ${rzKpi('Esta semana',`<span class="rrkv">${dias(semAt)}</span>`,null,'semana '+semAt+' do revezamento','rr')}
+   ${rzKpi('Semana que vem',`<span class="rrkv">${dias(semAt==='A'?'B':'A')}</span>`,null,'semana '+(semAt==='A'?'B':'A'),'')}
+   ${rzKpi('Próximo dia',`<span class="rrkv">${L[0]?rzFmt(L[0].d):'—'}</span>`,null,L[0]?`<span class="rzn">${rrNomes(L[0])}</span>`:'','g')}
+   ${rzKpi('Na escala',fmt(c.part.length),RZ.cfg.unidades.length,c.porDia+' por dia','')}
+   ${rzKpi('Dias de religação',fmt(hist.filter(x=>x.d>=rzHoje()&&x.d<=RM.addDias(rzHoje(),27)).length),null,'nas próximas 4 semanas','pg')}
+   ${rzKpi('Faltas no período',fmt((RZ.cfg.ausencias||[]).filter(a=>a.ate>=rzHoje()).length),null,'pulam a vez automaticamente','ct','data-rz="tab" data-t="equipe"')}</div>
+  <div class="g2"><div class="panel"><h3>Próximos dias de religação <small>troque o responsável se precisar</small></h3><div class="rrl">${L.map(x=>{const w=new Date(x.d+'T12:00:00').getDay();return `<div class="rrd ${x.d===rzHoje()?'hoje':''}"><span class="rrdw"><b>${RR_DW[w]}</b>${x.d.slice(8,10)}/${x.d.slice(5,7)}</span><span class="rrs">sem. ${rrSemana(x.d)}</span>
+     <select data-rz="rrTroca" data-d="${x.d}" aria-label="Responsável em ${x.d}">${c.part.map(id=>`<option value="${esc(id)}" ${x.quem[0]===id?'selected':''}>${esc(rzNome(id))}</option>`).join('')}</select>${x.aj?`<button type="button" class="btn ghost sm" data-rz="rrDesf" data-d="${x.d}">Automático</button>`:''}</div>`}).join('')||'<p class="note">Nenhum dia configurado.</p>'}</div>
+   <div class="rzact"><button type="button" class="btn" data-rz="rrCopiar">Copiar escala para o WhatsApp</button></div></div>
+   <div class="panel"><h3>Como funciona <small>revezamento automático</small></h3>
+    <div class="rrcfg"><div><span class="rzl">Semana A</span><div class="rrw">${[1,2,3,4,5,6].map(w=>`<label><input type="checkbox" data-rz="rrDia" data-s="A" value="${w}" ${c.semA.includes(w)?'checked':''}>${RR_DW[w]}</label>`).join('')}</div></div>
+     <div><span class="rzl">Semana B</span><div class="rrw">${[1,2,3,4,5,6].map(w=>`<label><input type="checkbox" data-rz="rrDia" data-s="B" value="${w}" ${c.semB.includes(w)?'checked':''}>${RR_DW[w]}</label>`).join('')}</div></div>
+     <div><span class="rzl">Esta semana é</span><div class="rrw"><label><input type="radio" name="rrAt" data-rz="rrAt" value="A" ${semAt==='A'?'checked':''}>Semana A</label><label><input type="radio" name="rrAt" data-rz="rrAt" value="B" ${semAt==='B'?'checked':''}>Semana B</label></div></div>
+     <div><span class="rzl">Pessoas por dia</span><select data-rz="rrPor">${[1,2,3].map(n=>`<option ${+c.porDia===n?'selected':''}>${n}</option>`).join('')}</select></div></div>
+    <span class="rzl" style="margin-top:12px">Quem entra no revezamento <span class="muted" style="text-transform:none;letter-spacing:0">· contagem das próximas 4 semanas</span></span>
+    <div class="svcb rrp">${RZ.cfg.unidades.filter(u=>u.status!=='inativo').map(u=>`<button type="button" data-rz="rrPart" data-u="${esc(u.id)}" class="${part.has(u.id)?'':'off'}"><span><i class="rrck">${part.has(u.id)?'✓':''}</i><span class="rzn">${esc(u.curto||u.nome)}</span></span><div class="bar"><i style="width:${(cont[u.id]||0)/mx*100}%;background:#38bdf8"></i></div><b>${cont[u.id]||0}</b><em>${part.has(u.id)?'dias':'fora'}</em></button>`).join('')}</div>
+    <p class="note">Quem está há mais tempo sem fazer religação é o próximo. Faltas e férias lançadas em “Equipe e faltas” pulam a pessoa naquele dia, e ela entra na próxima vez. Feriados não têm religação.</p></div></div>`}
+function rrWhats(){const L=rrProximos(rzHoje(),8);return '*Restabelecimento e religação* – próximos dias\n\n'+L.map(x=>'• '+rzFmt(x.d,true)+' → '+x.quem.map(rzNome).join(' e ')).join('\n')}
+
 function rzTelaHoje(rows,ST){const d=RZ.dia;const se=rzSemExp();if(se)return rzDayBar('Programação no GeoCall')+se;
   const dia=rzDia(d),it=dia?dia.itens:[],f=rzFeitos(d),feitos=it.filter(i=>f[i.unidade]).length,comp=RM.complementos(it,RZ.cfg.setores);
   const noRod=RZ.cfg.setores.filter(s=>s.peso>0),altos=noRod.filter(s=>rzTK(s.potencial)==='ALTO'),altC=altos.filter(s=>it.some(i=>+i.setor===+s.codigo)).length;
@@ -2771,12 +2849,13 @@ function rzTelaHoje(rows,ST){const d=RZ.dia;const se=rzSemExp();if(se)return rzD
    ${rzKpi('Programados no GeoCall',feitos,it.length,feitos===it.length&&it.length?'tudo lançado':'falta '+(it.length-feitos),feitos===it.length&&it.length?'g':'')}
    ${rzKpi('Meta do dia',fmt(it.reduce((s,i)=>s+rzMeta(rzUni(i.unidade)),0)),null,'ordens somando a equipe','pg')}
    ${rzKpi('Produtividade da equipe',pct(ST.A.prod,ST.A.den)+'%',null,'GeoCall · período filtrado',ST.avg>=META?'g':'ct','data-rz="tab" data-t="analise"')}</div>`;
+  h+=rrBanner(d);const rrHoje=rrDoDia(d),rrSet=new Set(rrHoje?rrHoje.quem:[]);
   h+=`<div class="panel"><h3>Escala do dia <small>em ordem de prioridade · marque ✓ ao lançar no GeoCall</small></h3>
    <div class="rzprog"><div class="rzbar"><i style="width:${it.length?feitos/it.length*100:0}%"></i></div><span>${feitos} de ${it.length} programados</span>${aj?'<span class="st o">ajustado</span>':''}</div>
    <div class="rzcards">${it.map((x,i)=>{const s=rzSetor(x.setor)||{codigo:x.setor,bairros:'',potencial:''},u=rzUni(x.unidade)||{},ok=!!f[x.unidade];
      const eq=rzEqDe(u),a=eq&&ST.cx[eq+'|'+x.setor];const hist=a&&a.den?`<button type="button" class="rzhist" data-rz="drill" data-sf="${x.setor}" data-eq="${esc(eq)}" title="Histórico dessa pessoa neste setor no GeoCall">neste setor: <b class="${a.prod/a.den*100>=META?'up':'dn'}">${pct(a.prod,a.den,0)}%</b> em ${fmt(a.den)} OS</button>`:(eq?'<span class="rzhist muted">primeira vez neste setor no período</span>':'');
      return `<article class="rzcard ${ok?'done':''}" style="--t:${rzCol(s.potencial)}"><span class="rzn0">${i+1}</span><button type="button" class="rzcode rzs" data-rz="setor" data-c="${s.codigo}" title="Ver no mapa">${esc(s.codigo)}</button>
-      <div class="rzbody"><div class="rzwho"><b class="rzn">${esc(u.curto||u.nome||x.unidade)}</b>${u.tipo==='carro'?'<span class="st n0">carro</span>':''}</div><div class="rzwhere rzs">${esc(s.bairros)}</div>
+      <div class="rzbody"><div class="rzwho"><b class="rzn">${esc(u.curto||u.nome||x.unidade)}</b>${u.tipo==='carro'?'<span class="st n0">carro</span>':''}${rrSet.has(x.unidade)?'<span class="rrtag">↻ religação</span>':''}</div><div class="rzwhere rzs">${esc(s.bairros)}</div>
        <div class="rzmeta">${rzTier(s.potencial)}<span class="rzm">meta ${rzMeta(u)}</span>${(comp[x.unidade]||[]).length?'<span class="muted">se faltar:</span>'+comp[x.unidade].map(c=>`<button type="button" data-rz="setor" data-c="${c}" class="rzplus"><span class="rzchip rzs" style="--t:${rzCol((rzSetor(c)||{}).potencial)}">+${c}</span></button>`).join(''):''}</div>${hist}
        <details class="rzmore"><summary>Trocar setor ou marcar falta</summary><div class="rzedit"><label>Mandar para o setor<select data-rz="troca" data-u="${esc(x.unidade)}">${rzOrdem().filter(z=>z.peso>0).map(z=>`<option value="${z.codigo}" ${+z.codigo===+x.setor?'selected':''}>${z.codigo} · ${esc(z.potencial)}</option>`).join('')}</select></label><button type="button" class="btn sm ghost" data-rz="falta" data-u="${esc(x.unidade)}">Faltou hoje</button></div></details></div>
       <button type="button" class="rzchk" data-rz="feito" data-u="${esc(x.unidade)}" aria-pressed="${ok}" aria-label="Marcar como programado">${ok?'✓':''}</button></article>`}).join('')}</div>
@@ -2867,7 +2946,7 @@ function vRodizio(v,rows){
   if(!RZ.cfg){v.innerHTML=`<div class="rz">${rzTelaImport()}</div>`;rzBind(v);return}
   if(!RZ.dia)RZ.dia=rzDiaInicial();
   const ST=rzStats(rows);
-  const T={hoje:rzTelaHoje,analise:rzTelaAnalise,mapa:rzTelaMapa,semana:rzTelaSemana,equipe:rzTelaEquipe,setores:rzTelaSetores}[RZ.tab]||rzTelaHoje;
+  const T={rr:rzTelaRR,hoje:rzTelaHoje,analise:rzTelaAnalise,mapa:rzTelaMapa,semana:rzTelaSemana,equipe:rzTelaEquipe,setores:rzTelaSetores}[RZ.tab]||rzTelaHoje;
   let body='';try{body=T(rows,ST)}catch(e){console.error(e);body=`<div class="panel"><p class="note">Algo deu errado ao montar esta tela: ${esc(e.message)}</p></div>`}
   v.innerHTML=`<div class="rz ${RZ.priv?'priv':''}"><div class="rztabs" role="tablist">${RZ_TABS.map(([k,l])=>`<button type="button" role="tab" aria-selected="${RZ.tab===k}" class="${RZ.tab===k?'on':''}" data-rz="tab" data-t="${k}">${l}</button>`).join('')}
     ${window.claude?'':`<button type="button" class="rzimp" data-rz="importar" aria-label="Atualizar dados do rodízio" data-tip="Atualizar dados do rodízio<br><span style='opacity:.75'>carregar o arquivo .json</span>"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 15.5v2.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2.5"/><path d="M12 15V4.5M8 8.5l4-4 4 4"/></svg></button>`}
@@ -2883,6 +2962,9 @@ function rzBind(v){const root=v.querySelector('.rz');if(!root)return;
       if(a==='tab'){RZ.tab=b.dataset.t;RZ.confirm=null;render();scrollTo({top:0})}
       else if(a==='priv'){RZ.priv=!RZ.priv;try{localStorage.setItem('sa_rz_priv',RZ.priv?'1':'0')}catch(e){}rzRerender()}
       else if(a==='setor'){RZ.sel=+b.dataset.c;if(RZ.tab!=='mapa'){RZ.tab='mapa';render();const f=document.querySelector('.rzficha');if(f)f.scrollIntoView({block:'start'})}else{rzRerender();if(b.closest('#rzMap'))rzFichaVer()}}
+      else if(a==='rrPart'){const c=rrCfg(),id=b.dataset.u;c.part=c.part.includes(id)?c.part.filter(x=>x!==id):c.part.concat(id);rzSave()}
+      else if(a==='rrDesf'){const c=rrCfg();delete c.ajustes[b.dataset.d];rzSave('Dia voltou ao automático')}
+      else if(a==='rrCopiar'){const t=rrWhats();try{await navigator.clipboard.writeText(t);toast('Escala de religação copiada.')}catch(e){toast('Não foi possível copiar')}}
       else if(a==='mm'){RZ.mm=b.dataset.m;rzRerender()}
       else if(a==='fechar'){RZ.sel=null;rzRerender()}
       else if(a==='dia'){const dir=+b.dataset.dir;let n=RM.addDias(d,dir),g=0;while(!RM.ehDiaUtil(n,rzFer())&&g++<30)n=RM.addDias(n,dir);RZ.dia=n;RZ.confirm=null;rzRerender()}
@@ -2905,7 +2987,11 @@ function rzBind(v){const root=v.querySelector('.rz');if(!root)return;
       else if(a==='importar'){const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=async()=>{const f=i.files[0];if(!f)return;try{const p=JSON.parse(await f.text());const c=p&&p.cfg;if(!c||!Array.isArray(c.unidades)||!Array.isArray(c.setores))throw new Error('arquivo não é um pacote do rodízio');if(RZ.cfg&&RZ.cfg.unidades&&RZ.cfg.unidades.length){if(confirm('Você já tem um rodízio salvo. Manter a equipe, as faltas e os ajustes que você lançou e atualizar só o mapa?')){if(c.formas)RZ.cfg.formas=c.formas;if(c.mapa)RZ.cfg.mapa=c.mapa;rzSave('Mapa atualizado. Equipe, faltas e ajustes mantidos.');return}if(!confirm('Substituir tudo pelo conteúdo do arquivo?'))return}RZ.cfg=RM.migrar(c);RZ.cfg.feitos=RZ.cfg.feitos||{};RZ.dia=rzDiaInicial();rzSave('Rodízio importado: '+c.unidades.length+' colaboradores, '+c.setores.length+' setores.')}catch(e){toast('Não foi possível importar: '+e.message)}};i.click()}
     }catch(e){toast(e&&e.message||'Não foi possível')}};
   root.onchange=ev=>{const el=ev.target,a=el.dataset&&el.dataset.rz;if(!a)return;try{
-    if(a==='troca'){const o=rzTroca(RZ.dia,el.dataset.u,+el.value);rzSave(o?'Trocado com '+o:'Setor alterado')}
+    if(a==='rrTroca'){const c=rrCfg();c.ajustes=c.ajustes||{};c.ajustes[el.dataset.d]=[el.value];rzSave('Responsável trocado')}
+    else if(a==='rrDia'){const c=rrCfg(),k=el.dataset.s==='A'?'semA':'semB',w=+el.value;c[k]=el.checked?[...new Set(c[k].concat(w))].sort():c[k].filter(x=>x!==w);rzSave()}
+    else if(a==='rrPor'){rrCfg().porDia=+el.value;rzSave()}
+    else if(a==='rrAt'){const c=rrCfg();const seg=rrSegunda(RZ.dia);c.ancora=el.value==='A'?seg:RM.addDias(seg,-7);rzSave('Semana ajustada')}
+    else if(a==='troca'){const o=rzTroca(RZ.dia,el.dataset.u,+el.value);rzSave(o?'Trocado com '+o:'Setor alterado')}
     else if(a==='peso'){const s=rzSetor(el.dataset.c);s.peso=+el.value;rzSave('Peso do setor '+s.codigo+' salvo')}}catch(e){toast(e.message)}};
   const bq=root.querySelector('#rzBusca');if(bq){const f=()=>{RZ.q=bq.value;const t=rzNorm(bq.value);let n=0;root.querySelectorAll('.rzidx [data-b]').forEach(r=>{const ok=!t||r.dataset.b.includes(t);r.hidden=!ok;if(ok)n++});$('#rzBv').hidden=n>0};bq.oninput=f;if(RZ.q)f()}
   const fa=root.querySelector('#rzAus');if(fa)fa.onsubmit=e=>{e.preventDefault();const de=$('#rzAd').value,ate=$('#rzAa').value||de;if(!de||ate<de){toast('Confira as datas.');return}const id=$('#rzAp').value;rzAusencia(id,de,ate,$('#rzAm').value);rzSave(rzNome(id)+': '+$('#rzAm').value+' lançado')};
