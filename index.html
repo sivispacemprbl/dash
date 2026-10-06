@@ -850,6 +850,8 @@ td .rp,td .rn{font-weight:500;font-size:11.5px;letter-spacing:.01em}
 .row2.r2b{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}.row2.r2b>:first-child{grid-column:auto}
 @media (max-width:1250px){.row2.r2b{grid-template-columns:1fr}.row2.r2b>:first-child{grid-column:auto}}
 .info-i{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;border:1px solid #5b7397;color:#9fb3cf;font-size:10px;font-weight:700;font-style:normal;margin-left:6px;cursor:help;vertical-align:middle}
+#agSt.agerr{color:#f87171;font-weight:600}
+.ag-sum.semos button{cursor:default}
 </style>
 
 <div class="app">
@@ -1380,25 +1382,35 @@ const MESES=['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOS
 const DIAS=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
 /* ============ cofre (versão segura): dados do navegador cifrados com AES-256-GCM ============ */
 const SECURE=!!window.SECURE_BUILD;
-const SEC_KEYS=['sa_dash_planilhas_v2','sa_dash_notas','sa_dash_colab_v1','sa_dash_agenda','sa_rodizio_v1','sa_dash_acoes'];
+const SEC_KEYS=['sa_dash_planilhas_v2','sa_dash_notas','sa_dash_colab_v1','sa_dash_agenda','sa_dash_agenda_em','sa_rodizio_v1','sa_dash_acoes','sa_dash_resumo'];
+const VAULT_P='sa_vault_plan_v1',PLAN_KEY='sa_dash_planilhas_v2';let PLAN_DIRTY=false,VAULT_OK=true;
 const VAULT='sa_vault_v1',PBKDF2_IT=600000;
 let SEC_CACHE={},SEC_KEY=null,_sp=0;
 const b64=u=>btoa(String.fromCharCode(...new Uint8Array(u))),ub64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 function b64big(u){u=new Uint8Array(u);let s='';for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode.apply(null,u.subarray(i,i+32768));return btoa(s)}
 async function deriveKey(pw,salt,it){const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
   return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:it,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
-async function vaultWrite(){if(!SEC_KEY)return;const v=JSON.parse(localStorage.getItem(VAULT)||'{}');const iv=crypto.getRandomValues(new Uint8Array(12));
-  const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},SEC_KEY,new TextEncoder().encode(JSON.stringify(SEC_CACHE)));
-  try{localStorage.setItem(VAULT,JSON.stringify({v:1,it:v.it||PBKDF2_IT,salt:v.salt,iv:b64(iv),ct:b64big(ct)}))}catch(e){toast('O navegador não tem espaço para guardar tudo. Remova planilhas antigas na aba Planilhas.')}}
+async function encBlob(obj){const iv=crypto.getRandomValues(new Uint8Array(12));const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},SEC_KEY,new TextEncoder().encode(JSON.stringify(obj===undefined?null:obj)));return {iv:b64(iv),ct:b64big(ct)}}
+/* As anotações (agenda, pendências, ações, rodízio, cadastro e resumo diário) ficam num cofre próprio e pequeno.
+   As planilhas ficam em outro. Se o espaço das planilhas acabar, as anotações continuam sendo salvas. */
+async function vaultWrite(){if(!SEC_KEY)return true;const v=JSON.parse(localStorage.getItem(VAULT)||'{}');
+  const pes=Object.assign({},SEC_CACHE);delete pes[PLAN_KEY];let ok=true;
+  try{const b=await encBlob(pes);localStorage.setItem(VAULT,JSON.stringify({v:2,split:1,it:v.it||PBKDF2_IT,salt:v.salt,iv:b.iv,ct:b.ct}))}
+  catch(e){ok=false;toast('Não foi possível salvar as anotações neste navegador. Baixe uma cópia de segurança na Agenda.')}
+  if(ok&&(PLAN_DIRTY||v.split!==1)){try{const b=await encBlob(SEC_CACHE[PLAN_KEY]);localStorage.setItem(VAULT_P,JSON.stringify({v:2,iv:b.iv,ct:b.ct}));PLAN_DIRTY=false}
+    catch(e){toast('O navegador não tem espaço para guardar todas as planilhas. Suas anotações continuam salvas. Remova planilhas antigas na aba Planilhas.')}}
+  VAULT_OK=ok;return ok}
 async function vaultCreate(pw){const salt=crypto.getRandomValues(new Uint8Array(16));const key=await deriveKey(pw,salt,PBKDF2_IT);
   const iv=crypto.getRandomValues(new Uint8Array(12));const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode('{}'));
-  try{localStorage.setItem(VAULT,JSON.stringify({v:1,it:PBKDF2_IT,salt:b64(salt),iv:b64(iv),ct:b64big(ct)}))}catch(e){try{localStorage.removeItem(VAULT)}catch(_){}throw e}
+  try{localStorage.removeItem(VAULT_P);localStorage.setItem(VAULT,JSON.stringify({v:2,split:1,it:PBKDF2_IT,salt:b64(salt),iv:b64(iv),ct:b64big(ct)}))}catch(e){try{localStorage.removeItem(VAULT)}catch(_){}throw e}
   SEC_KEY=key;SEC_CACHE={}}
 function vaultExists(){try{const v=JSON.parse(localStorage.getItem(VAULT)||'null');if(v&&v.salt&&v.iv&&v.ct)return true;if(v)localStorage.removeItem(VAULT);return false}catch(e){return false}}
 async function vaultOpen(pw){const v=JSON.parse(localStorage.getItem(VAULT));const key=await deriveKey(pw,ub64(v.salt),v.it||PBKDF2_IT);
-  const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:ub64(v.iv)},key,ub64(v.ct));SEC_KEY=key;SEC_CACHE=JSON.parse(new TextDecoder().decode(pt))}
+  const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:ub64(v.iv)},key,ub64(v.ct));const cache=JSON.parse(new TextDecoder().decode(pt))||{};
+  if(v.split){try{const w=JSON.parse(localStorage.getItem(VAULT_P)||'null');if(w&&w.ct){const pp=await crypto.subtle.decrypt({name:'AES-GCM',iv:ub64(w.iv)},key,ub64(w.ct));const pl=JSON.parse(new TextDecoder().decode(pp));if(pl)cache[PLAN_KEY]=pl}}catch(e){console.error(e)}}
+  SEC_KEY=key;SEC_CACHE=cache}
 const LS={get(k,d){if(SECURE&&SEC_KEYS.includes(k))return SEC_CACHE[k]!==undefined?SEC_CACHE[k]:d;try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
-  set(k,v){if(SECURE&&SEC_KEYS.includes(k)){SEC_CACHE[k]=v;clearTimeout(_sp);_sp=setTimeout(vaultWrite,400);return true}try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
+  set(k,v){if(SECURE&&SEC_KEYS.includes(k)){SEC_CACHE[k]=v;if(k===PLAN_KEY)PLAN_DIRTY=true;clearTimeout(_sp);_sp=setTimeout(vaultWrite,400);return true}try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
 function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,4200)}
 
 function parseDate(v){
@@ -1521,10 +1533,21 @@ function loadSeed(){
   const recs=SEED_ROWS.map(a=>mkRec(f=>a[idx[FIELD_ALIASES[f]]],nome)).filter(Boolean);
   SHEETS.push({id:BASE_ID,nome,importadaEm:'2026-09-26T12:48:00',ativa:true,recs,builtin:true});
 }
+/* ---------- resumo diário permanente (alimenta a Agenda; não depende das planilhas selecionadas) ---------- */
+let RESUMO={},_rs=0;
+function allSheetRows(){const seen=new Set(),out=[];for(const s of SHEETS)for(const r of s.recs){if(!r||seen.has(r.key))continue;seen.add(r.key);if(r.tipo!=='FORA'&&r.cat!=='FIMDIA')out.push(r)}return out}
+function resumoAtualiza(){let mud=false;for(const [d,rs] of groupBy(allSheetRows(),r=>r.day)){const a=agg(rs);const x={t:a.trab,p:a.prod,pg:a.pag,im:a.IMPED};const o=RESUMO[d];
+    if(!o||o.t!==x.t||o.p!==x.p||o.pg!==x.pg||o.im!==x.im){RESUMO[d]=x;mud=true}}
+  if(mud){clearTimeout(_rs);_rs=setTimeout(saveResumo,800)}}
+async function saveResumo(){LS.set('sa_dash_resumo',RESUMO);if(DB){try{await DB.doc('config/resumo').set({dias:RESUMO})}catch(e){}}}
+async function loadResumo(){const l=LS.get('sa_dash_resumo',null);if(l)RESUMO=Object.assign({},l,RESUMO);
+  if(DB){try{const d=await DB.doc('config/resumo').get();if(d.exists){const r=(d.data()||{}).dias||{};let add=false;for(const k in r)if(!RESUMO[k]){RESUMO[k]=r[k];add=true}if(add&&VIEW==='agenda')render()}}catch(e){}}}
+function diaAgenda(k){const x=RESUMO[k];const ac=AC_ROWS.filter(r=>r.day===k);if(!x&&!ac.length)return null;
+  const t=(x?x.t:0)+ac.length,p=(x?x.p:0)+ac.filter(r=>r.cat==='ACAO').length;return {trab:t,prod:p,den:t,pr:t?p/t*100:0,pag:x?x.pg:0,IMPED:x?x.im:0,ac:ac.length}}
 function rebuild(){
   ROWS=[];KEYS=new Set();SOURCES=[];
   for(const s of SHEETS){if(!s.ativa)continue;addRows(s.recs);SOURCES.push(s.nome)}
-  markSuspects();syncReg();
+  markSuspects();syncReg();resumoAtualiza();
 }
 let PER_USER=false; // o período só fica fixo quando o usuário escolhe; senão acompanha o mês mais recente
 function refreshAll(forcePer){const keepPer=forcePer||(PER_USER?$('#fPer').value:'');rebuild();fillSelects();if(keepPer&&[...$('#fPer').options].some(o=>o.value===keepPer))$('#fPer').value=keepPer;if($('#fPer').value!=='CUSTOM')setPeriod();readF();info();render()}
@@ -1569,7 +1592,7 @@ async function saveReg(){LS.set(REG_KEY,REG);if(DB){try{await DB.doc('config/cad
 async function initStore(){
   lsLoad();refreshAll();
   let db=null;try{db=window.claude&&window.claude.use?await window.claude.use('db'):null}catch(e){db=null}
-  if(!db){DBSTATE='local';info();loadNotes();loadAgenda();loadRodizio();loadAcoes();if(VIEW==='planilhas')render();return}
+  if(!db){DBSTATE='local';info();loadNotes();loadAgenda();loadRodizio();loadAcoes();loadResumo();if(VIEW==='planilhas')render();return}
   DB=db;
   try{
     // leva para o banco o que estava só neste navegador
@@ -1577,7 +1600,7 @@ async function initStore(){
     await dbLoad();DBSTATE='ok';
   }catch(e){console.error(e);DBSTATE='erro'}
   SHEETS.sort((x,y)=>(x.builtin?-1:0)-(y.builtin?-1:0)||String(x.importadaEm).localeCompare(String(y.importadaEm)));
-  lsSave();refreshAll();loadNotes();loadAgenda();loadRodizio();loadAcoes();
+  lsSave();refreshAll();loadNotes();loadAgenda();loadRodizio();loadAcoes();loadResumo();
 }
 async function importFiles(files){
   let tn=0,td=0,bad=[],same=[],lastMonth='';const btn=$('#btnFile');btn.disabled=true;btn.textContent='Importando…';
@@ -1691,7 +1714,7 @@ function render(){
   const rows=applyF(scope());
   const v=$('#views');
   const fn={rodizio:vRodizio,bairros:vBairros,agenda:vAgenda,ranking:vRanking,planilhas:vPlanilhas,geral:vGeral,producao:vProducao,pos:vPOS,jornada:vJornada,equipes:vEquipes,colab:vColab,gargalos:vGargalos,os:vOS}[VIEW];
-  if(!ROWS.length&&VIEW!=='planilhas'&&VIEW!=='agenda'&&VIEW!=='rodizio'){v.innerHTML=`<div class="panel empty"><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#7cc7ff" stroke-width="1.6"><path d="M4 3h11l5 5v13H4z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg><h3>Nenhuma planilha carregada</h3><p>Importe o export do GeoCall (Excel ou CSV). As planilhas ficam guardadas${SECURE?' e cifradas neste navegador':''} e são somadas automaticamente.</p><button class="btn" type="button" id="emImp">Importar planilhas</button></div>`;$('#emImp').onclick=()=>$('#file').click();const pl=$('#pulse');if(pl)pl.innerHTML='';const sb=$('#sideBase');if(sb)sb.innerHTML='';return}
+  if(!ROWS.length&&VIEW!=='planilhas'&&VIEW!=='agenda'&&VIEW!=='rodizio'&&!(VIEW==='os'&&DRILL.all)){v.innerHTML=`<div class="panel empty"><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#7cc7ff" stroke-width="1.6"><path d="M4 3h11l5 5v13H4z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg><h3>Nenhuma planilha carregada</h3><p>Importe o export do GeoCall (Excel ou CSV). As planilhas ficam guardadas${SECURE?' e cifradas neste navegador':''} e são somadas automaticamente.</p><button class="btn" type="button" id="emImp">Importar planilhas</button></div>`;$('#emImp').onclick=()=>$('#file').click();const pl=$('#pulse');if(pl)pl.innerHTML='';const sb=$('#sideBase');if(sb)sb.innerHTML='';return}
   v.innerHTML='';fn(v,rows);drawCharts();enhance(v);renderPulse(rows);requestAnimationFrame(fitSide);updHist();
 }
 
@@ -2484,7 +2507,8 @@ async function loadAgenda(){const l=LS.get('sa_dash_agenda',null);if(l)AG=l;AG_E
   if(VIEW==='agenda')render()}
 async function saveAgenda(){AG_PEND=false;AG_EM=new Date().toISOString();LS.set('sa_dash_agenda',AG);LS.set('sa_dash_agenda_em',AG_EM);const s=$('#agSt');
   if(DB){try{await DB.doc('config/agenda').set({dias:AG,em:AG_EM});if(s)s.innerHTML='✓ Salvo às '+hhmm(Date.now())}catch(e){if(s)s.textContent='Salvo neste navegador · sem conexão com o painel agora'}}
-  else{if(SECURE){clearTimeout(_sp);await vaultWrite()}if(s)s.innerHTML='✓ Salvo às '+hhmm(Date.now())+(SECURE?' · protegido pela senha':'')}}
+  else{let ok=true;if(SECURE){clearTimeout(_sp);ok=await vaultWrite()}else{try{ok=localStorage.getItem('sa_dash_agenda')===JSON.stringify(AG)}catch(e){ok=false}}
+    if(s){s.classList.toggle('agerr',!ok);s.innerHTML=ok?'✓ Salvo às '+hhmm(Date.now())+(SECURE?' · protegido pela senha':''):'⚠ Não foi possível salvar. Baixe a cópia de segurança abaixo.'}}}
 /* garante que nada fica sem salvar ao trocar de aba, bloquear ou fechar */
 async function flushSaves(){try{if(AG_PEND){clearTimeout(_ag);await saveAgenda()}if(SECURE&&SEC_KEY&&_sp){clearTimeout(_sp);_sp=0;await vaultWrite()}}catch(e){}}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushSaves()});
@@ -2494,29 +2518,29 @@ function backupHTML(){if(!SECURE||window.claude)return '';return `<div class="bk
   <p class="note">Guarde uma cópia no seu computador de vez em quando. O arquivo sai <b>cifrado com a sua senha</b>: sem ela ninguém consegue ler.</p>
   <div class="rzact" style="margin-top:6px"><button type="button" class="btn ghost sm" id="bkDown">Baixar cópia de segurança</button><button type="button" class="btn ghost sm" id="bkUp">Restaurar cópia</button></div></div>`}
 function bindBackup(v){const d=v.querySelector('#bkDown'),u=v.querySelector('#bkUp');if(!d)return;
-  d.onclick=async()=>{await flushSaves();const raw=localStorage.getItem(VAULT);if(!raw){toast('Nada para copiar ainda.');return}
-    const blob=new Blob([JSON.stringify({tipo:'backup-painel-santo-andre',v:1,em:new Date().toISOString(),vault:JSON.parse(raw)})],{type:'application/json'});
+  d.onclick=async()=>{await flushSaves();const raw=localStorage.getItem(VAULT);if(!raw){toast('Nada para copiar ainda.');return}const rawP=localStorage.getItem(VAULT_P);
+    const blob=new Blob([JSON.stringify({tipo:'backup-painel-santo-andre',v:1,em:new Date().toISOString(),vault:JSON.parse(raw),vaultPlan:rawP?JSON.parse(rawP):null})],{type:'application/json'});
     const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='copia-painel-'+dayKey(Date.now())+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(url);a.remove()},1500);toast('Cópia baixada. Guarde no seu computador.')};
   u.onclick=()=>{const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=async()=>{const f=i.files[0];if(!f)return;
     try{const p=JSON.parse(await f.text());const vv=p&&p.vault;if(!p||p.tipo!=='backup-painel-santo-andre'||!vv||!vv.salt||!vv.iv||!vv.ct)throw new Error('este arquivo não é uma cópia do painel');
       if(!confirm('Restaurar a cópia de '+(p.em?dayBRf(dayKey(Date.parse(p.em)))+' ':'')+'? Os dados atuais deste navegador serão trocados pelos da cópia. Depois é só digitar a senha da cópia.'))return;
-      localStorage.setItem(VAULT,JSON.stringify(vv));location.reload()}catch(e){toast('Não foi possível restaurar: '+e.message)}};i.click()}}
+      localStorage.setItem(VAULT,JSON.stringify(vv));if(p.vaultPlan)localStorage.setItem(VAULT_P,JSON.stringify(p.vaultPlan));else localStorage.removeItem(VAULT_P);location.reload()}catch(e){toast('Não foi possível restaurar: '+e.message)}};i.click()}}
 function agRR(k,full){try{if(typeof RZ==='undefined'||!RZ.cfg)return '';const x=rrDoDia(k);if(!x)return '';const n=x.quem.map(rzNome).join(' e ');return full?`<button type="button" class="ag-rrb" id="agRR"><span>↻ Restabelecimento e religação</span><b>${esc(n)}</b></button>`:`<span class="ag-rr">↻ ${esc(n)}</span>`}catch(e){return ''}}
 function vAgenda(v,rows){
   const today=dayKey(Date.now());if(!AG_M)AG_M=(lastDay(rows)||today).slice(0,7);if(!AG_D)AG_D=lastDay(rows)||today;
   const [Y,M]=AG_M.split('-').map(Number);const first=new Date(Y,M-1,1),dim=new Date(Y,M,0).getDate();const off=(first.getDay()+6)%7;
-  const byD=groupBy(applyF(scope()).length?scope().filter(r=>r.day.startsWith(AG_M)):[],r=>r.day);
+  const comOS=new Set(allSheetRows().filter(r=>r.day.startsWith(AG_M)||r.day===AG_D).map(r=>r.day));
   const cells=[];for(let i=0;i<off;i++)cells.push('<div class="ag-c empty"></div>');
-  for(let d=1;d<=dim;d++){const k=AG_M+'-'+pad(d);const rs=byD.get(k)||[];const a=rs.length?agg(rs):null;const note=(AG[k]||'').trim();
+  for(let d=1;d<=dim;d++){const k=AG_M+'-'+pad(d);const a=diaAgenda(k);const note=(AG[k]||'').trim();
     cells.push(`<button type="button" class="ag-c ${k===AG_D?'sel':''} ${k===today?'hoje':''} ${note?'hasn':''}" data-d="${k}"><span class="ag-n">${d}</span>${a?`<span class="ag-p ${a.pr>=META?'up':''}">${pct(a.prod,a.den,0)}%</span><span class="ag-o">${fmt(a.trab)} OS</span>`:''}${acDia(k).length?`<span class="ag-ac">★ ${esc(acDia(k)[0].tipo)}</span>`:''}${agRR(k)}${note?`<span class="ag-t">${esc(note.split('\n')[0].slice(0,40))}</span>`:''}</button>`)}
-  const sel=byD.get(AG_D)||[];const sa=sel.length?agg(sel):null;const dt=new Date(AG_D+'T12:00');const DW=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+  const sa=diaAgenda(AG_D),podeAbrir=comOS.has(AG_D)||(sa&&sa.ac);const dt=new Date(AG_D+'T12:00');const DW=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
   const withNotes=Object.keys(AG).filter(k=>AG[k]&&AG[k].trim()&&k.startsWith(AG_M)).sort();
   v.innerHTML=`<div class="ag-wrap">
    <div class="panel ag-cal"><h3>${MESES[M-1].charAt(0)+MESES[M-1].slice(1).toLowerCase()} de ${Y} <small><button type="button" class="cptab" id="agPrev">‹ Mês anterior</button><button type="button" class="cptab" id="agHoje">Hoje</button><button type="button" class="cptab" id="agNext">Próximo mês ›</button></small></h3>
     <div class="ag-grid">${['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'].map(x=>`<div class="ag-h">${x}</div>`).join('')}${cells.join('')}</div>
     </div>
    <div class="panel ag-side fillp"><h3>${DW[dt.getDay()]}, ${dayBRf(AG_D)}</h3>
-    ${sa?`<div class="ag-sum"><button type="button" data-go="all"><b>${fmt(sa.trab)}</b><span>OS trabalhadas</span></button><button type="button" data-go="prod"><b class="${sa.pr>=META?'up':''}">${pct(sa.prod,sa.den)}%</b><span>produtividade do dia</span></button><button type="button" data-go="pag"><b>${fmt(sa.pag)}</b><span>pagamentos</span></button><button type="button" data-go="imp"><b>${fmt(sa.IMPED)}</b><span>impedimentos</span></button></div>`:'<p class="muted small">Sem OS registradas neste dia.</p>'}
+    ${sa?`<div class="ag-sum ${podeAbrir?'':'semos'}"><button type="button" data-go="all"><b>${fmt(sa.trab)}</b><span>OS trabalhadas</span></button><button type="button" data-go="prod"><b class="${sa.pr>=META?'up':''}">${pct(sa.prod,sa.den)}%</b><span>produtividade do dia</span></button><button type="button" data-go="pag"><b>${fmt(sa.pag)}</b><span>pagamentos</span></button><button type="button" data-go="imp"><b>${fmt(sa.IMPED)}</b><span>impedimentos</span></button></div>${podeAbrir?'':'<p class="muted small" style="margin:6px 0 0">Resumo guardado. A planilha deste dia foi removida, por isso a lista de OS não está disponível.</p>'}`:'<p class="muted small">Sem OS registradas neste dia.</p>'}
     ${agRR(AG_D,1)}<div class="ag-acs">${acDia(AG_D).map(a=>{const t=acTot(a);return `<button type="button" data-acd="${esc(a.id)}"><span class="ac-tag">★ ${esc(a.tipo)}</span><span>${a.itens.length} colab. · ${fmt(t.r)} serviços · ${pct(t.p,t.r,0)}% prod.</span></button>`}).join('')}<button type="button" class="btn ghost sm" id="agAc">+ Lançar ação especial neste dia</button></div>
     <label for="agT" class="svct" style="margin-top:12px">Anotações do dia</label>
     <textarea id="agT" rows="9" placeholder="Reunião, escala, ocorrências, combinados com a equipe…">${esc(AG[AG_D]||'')}</textarea>
@@ -2528,7 +2552,7 @@ function vAgenda(v,rows){
   v.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{if(AG_PEND){clearTimeout(_ag);saveAgenda()}AG_D=b.dataset.d;render();setTimeout(()=>{const t=$('#agT');if(t)t.focus()},30)});
   $('#agT').oninput=e=>{AG[AG_D]=e.target.value;if(!AG[AG_D].trim())delete AG[AG_D];AG_PEND=true;$('#agSt').textContent='Salvando…';clearTimeout(_ag);_ag=setTimeout(saveAgenda,500)};
   $('#agT').onblur=()=>{if(AG_PEND){clearTimeout(_ag);saveAgenda()}};bindBackup(v);if($('#agRR'))$('#agRR').onclick=()=>{RZ.tab='rr';go('rodizio')};if($('#agAc'))$('#agAc').onclick=()=>acModal(null,AG_D);v.querySelectorAll('[data-acd]').forEach(b=>b.onclick=()=>acModal(b.dataset.acd));
-  v.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{const g=b.dataset.go;drill({day:AG_D,cats:g==='prod'?PROD_CATS:g==='pag'?['PAG_POS','PAG_FAT']:g==='imp'?['IMPED']:null,label:'Dia '+dayBRf(AG_D)})});
+  v.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{const g=b.dataset.go;if(!podeAbrir)return;drill({day:AG_D,all:1,cats:g==='prod'?PROD_CATS:g==='pag'?['PAG_POS','PAG_FAT']:g==='imp'?['IMPED']:null,label:'Dia '+dayBRf(AG_D)})});
 }
 
 /* ---------- Detalhamento ---------- */
@@ -2537,7 +2561,7 @@ function acOsResumo(L){const g=[...groupBy(L,r=>r.acid+'|'+r.eq)].map(([k,rs])=>
 function vOS(v,rows){
   const D=DRILL;
   let OSS=D.oss?new Set(D.oss):null;
-  let list=rows.filter(r=>(!D.motOut||(!isProd(r.cat)&&!['IMOVEL FECHADO, REPROGRAMAR ORDEM','IMOVEL FECHADO, ORDEM ENCERRADA','CLIENTE NAO PERMITIU EXECUCAO DO SERVICO','NEGOCIACAO INFRUTIFERA'].includes(norm(r.res))))&&(!D.sus||r.sus)&&(!D.rr||isRR(r))&&(!D.nprod||!isProd(r.cat))&&(!OSS||OSS.has(r.os))&&(!D.cats||D.cats.includes(r.cat))&&(!D.res||r.res===D.res)&&(!D.tipo||r.tipo===D.tipo)&&(!D.os||r.os===D.os)&&(!D.eqs||D.eqs.includes(r.eq))&&(!D.day||r.day===D.day)&&(!D.notPos||r.tipo!=='POS')&&(!D.bai||r.bai===D.bai)&&(!D.sf||r.sf===D.sf)&&(!D.fech||/^IMOVEL FECHADO/.test(norm(r.res)))&&(!D.naoExec||(!isProd(r.cat)&&r.cat!=='FIMDIA')));
+  let list=(D.all&&D.day?allSheetRows().concat(AC_ROWS).filter(r=>r.day===D.day):rows).filter(r=>(!D.motOut||(!isProd(r.cat)&&!['IMOVEL FECHADO, REPROGRAMAR ORDEM','IMOVEL FECHADO, ORDEM ENCERRADA','CLIENTE NAO PERMITIU EXECUCAO DO SERVICO','NEGOCIACAO INFRUTIFERA'].includes(norm(r.res))))&&(!D.sus||r.sus)&&(!D.rr||isRR(r))&&(!D.nprod||!isProd(r.cat))&&(!OSS||OSS.has(r.os))&&(!D.cats||D.cats.includes(r.cat))&&(!D.res||r.res===D.res)&&(!D.tipo||r.tipo===D.tipo)&&(!D.os||r.os===D.os)&&(!D.eqs||D.eqs.includes(r.eq))&&(!D.day||r.day===D.day)&&(!D.notPos||r.tipo!=='POS')&&(!D.bai||r.bai===D.bai)&&(!D.sf||r.sf===D.sf)&&(!D.fech||/^IMOVEL FECHADO/.test(norm(r.res)))&&(!D.naoExec||(!isProd(r.cat)&&r.cat!=='FIMDIA')));
   const manL=list.filter(r=>r.man);list=list.filter(r=>!r.man);
   const q=norm(D.q||'');
   if(q)list=list.filter(r=>norm([r.os,r.pde,r.bai,r.sf,r.end,r.eq,r.res,r.nota,equipeDe(r.eq)].join(' ')).includes(q));
@@ -2983,7 +3007,7 @@ function rzBind(v){const root=v.querySelector('.rz');if(!root)return;
 }
 
 /* ============ início ============ */
-function startApp(){REG=LS.get(REG_KEY,{});loadSeed();rebuild();buildNav();fillSelects();setPeriod();readF();bindFilters();info();tick();setInterval(tick,20000);render();pushHist();initStore();
+function startApp(){REG=LS.get(REG_KEY,{});RESUMO=LS.get('sa_dash_resumo',{})||{};loadSeed();rebuild();buildNav();fillSelects();setPeriod();readF();bindFilters();info();tick();setInterval(tick,20000);render();pushHist();initStore();
   $('#hBack').onclick=()=>histGo(HI-1);$('#hFwd').onclick=()=>histGo(HI+1);addEventListener('keydown',e=>{if(e.altKey&&e.key==='ArrowLeft'){e.preventDefault();histGo(HI-1)}if(e.altKey&&e.key==='ArrowRight'){e.preventDefault();histGo(HI+1)}});
   if(SECURE){const b=document.createElement('button');b.type='button';b.className='btn ghost sm lockbtn';b.innerHTML='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Bloquear';b.onclick=async()=>{await flushSaves();location.reload()};const c=$('.clock');if(c)c.appendChild(b);
     let idle=0;const reset=()=>{clearTimeout(idle);idle=setTimeout(async()=>{await flushSaves();location.reload()},(+CFG.bloquearAposMinutos||15)*60000)};['pointerdown','keydown','scroll','touchstart'].forEach(ev=>addEventListener(ev,reset,{passive:true}));reset()}}
@@ -3003,8 +3027,8 @@ function lockScreen(){
   const P=$('#lkP'),E=$('#lkE');setTimeout(()=>P.focus(),50);
   if(!has){P.oninput=()=>{const s=P.value;let sc=Math.min(4,Math.floor(s.length/5))+(/[A-Z]/.test(s)&&/[a-z]/.test(s)?1:0)+(/\d/.test(s)?1:0)+(/[^\w\s]/.test(s)||/\s/.test(s)?1:0);sc=Math.min(6,sc);
     $('#lkM').style.width=(sc/6*100)+'%';$('#lkM').style.background=sc<3?'#ef4444':sc<5?'#f5b73b':'#22c55e';$('#lkMs').textContent=s.length<12?'Mínimo de 12 caracteres':sc<3?'Fraca':sc<5?'Razoável':'Forte'}}
-  if(!has)$('#lkRest').onclick=()=>{const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=async()=>{try{const p=JSON.parse(await i.files[0].text());const vv=p&&p.vault;if(!vv||!vv.salt||!vv.iv||!vv.ct)throw 0;localStorage.setItem(VAULT,JSON.stringify(vv));location.reload()}catch(e){E.textContent='Esse arquivo não é uma cópia de segurança do painel.'}};i.click()};
-  if(has){$('#lkF1').onclick=()=>{$('#lkF2').hidden=false};$('#lkF3').onclick=()=>{[VAULT,...SEC_KEYS].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});location.reload()}}
+  if(!has)$('#lkRest').onclick=()=>{const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=async()=>{try{const p=JSON.parse(await i.files[0].text());const vv=p&&p.vault;if(!vv||!vv.salt||!vv.iv||!vv.ct)throw 0;localStorage.setItem(VAULT,JSON.stringify(vv));if(p.vaultPlan)localStorage.setItem(VAULT_P,JSON.stringify(p.vaultPlan));else localStorage.removeItem(VAULT_P);location.reload()}catch(e){E.textContent='Esse arquivo não é uma cópia de segurança do painel.'}};i.click()};
+  if(has){$('#lkF1').onclick=()=>{$('#lkF2').hidden=false};$('#lkF3').onclick=()=>{[VAULT,VAULT_P,...SEC_KEYS].forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});location.reload()}}
   let tries=0;
   let busy=false;
   const go=async()=>{if(busy||$('#lkB').disabled)return;E.textContent='';const pw=P.value;
