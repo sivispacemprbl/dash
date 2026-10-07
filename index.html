@@ -852,6 +852,34 @@ td .rp,td .rn{font-weight:500;font-size:11.5px;letter-spacing:.01em}
 .info-i{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;border:1px solid #5b7397;color:#9fb3cf;font-size:10px;font-weight:700;font-style:normal;margin-left:6px;cursor:help;vertical-align:middle}
 #agSt.agerr{color:#f87171;font-weight:600}
 .ag-sum.semos button{cursor:default}
+
+/* foco em setores */
+.rzreg.fora{stroke:#132a4d;cursor:pointer}.rzreg.fora:hover{filter:none;fill-opacity:1!important}
+.rzlbl.fora text{fill:#4a6489;stroke:none;font-size:15px}
+.rzpin.fora{opacity:.3;transform:translate(-50%,-50%) scale(.8)}
+.fc-how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.fc-how>div{position:relative;padding:16px 18px 16px 62px;border-radius:12px;background:linear-gradient(160deg,#10284d,#0b1d3a);border:1px solid var(--line2)}
+.fc-how span{position:absolute;left:16px;top:16px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#0b1b33;background:#7cc7ff}
+.fc-how b{font-size:14px}.fc-how p{margin:4px 0 0;font-size:12.5px;color:#9fb3cf;line-height:1.45}
+@container vw (max-width:900px){.fc-how{grid-template-columns:1fr}}
+.fc-rank{display:flex;flex-direction:column;gap:6px}
+.fc-rank button{display:grid;grid-template-columns:30px 54px minmax(0,1fr) 46px 110px minmax(70px,150px);gap:10px;align-items:center;padding:8px 10px;border-radius:9px;background:rgba(8,20,42,.45);border:1px solid transparent;border-left:3px solid var(--t);color:inherit;font:inherit;text-align:left;cursor:pointer}
+.fc-rank button:hover{border-color:rgba(124,199,255,.35);border-left-color:var(--t)}
+.fc-pos{font-weight:700;color:#9fb3cf;font-size:13px}
+.fc-b{display:flex;flex-direction:column;gap:3px;min-width:0}.fc-b b{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fc-b small{font-size:11px;color:#8aa0bf;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.fc-pr{font-weight:700;font-size:14px;text-align:right}
+.fc-nota{position:relative;height:18px;border-radius:5px;background:rgba(148,163,184,.12);overflow:hidden}.fc-nota i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,#1d4e8f,#38bdf8)}.fc-nota b{position:relative;display:block;text-align:center;font-size:11.5px;line-height:18px}
+.fc-hoje{font-size:12px;color:#c9d6ea;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right}
+.fc-leg{margin-top:10px;font-size:11.5px;color:#8aa0bf}
+@container vw (max-width:640px){.fc-rank button{grid-template-columns:24px 48px minmax(0,1fr) 42px}.fc-nota,.fc-hoje{display:none}}
+.fc-mx td.c,.fc-mx th.c{text-align:center}.fc-mx th .rzchip{min-width:36px;font-size:11px}
+.fc-dot{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;color:#3b5680;font-weight:700}
+.fc-dot.ok{color:#22c55e;background:rgba(34,197,94,.12)}.fc-dot.on{color:#38bdf8;background:rgba(56,189,248,.16)}
+.fc-sel{display:flex;flex-wrap:wrap;gap:6px}.fc-sel label{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;background:rgba(8,20,42,.5);border-left:3px solid var(--t);font-size:13px;font-weight:600;cursor:pointer}
+.fc-sel input,.fc-tg input{accent-color:#38bdf8}.fc-tg{display:inline-flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;margin-right:6px}
+.fc-par{font-size:10.5px;color:#9fb3cf;background:rgba(148,163,184,.12);border-radius:6px;padding:2px 7px;white-space:nowrap}.fc-par b{color:#e6eefb;font-weight:600}
+.tw:has(>.fc-mx){overflow-x:auto}
+@container vw (max-width:640px){.fc-mx th,.fc-mx td{padding:6px 3px}.fc-mx th .rzchip{min-width:30px;font-size:10px;padding:2px 4px}.fc-dot{width:18px;height:18px;font-size:11px}.fc-mx td.nw{white-space:normal;font-size:12px}}
 </style>
 
 <div class="app">
@@ -1870,7 +1898,7 @@ function enhance(root){paintTitles();
   });
   fitTables(root);
 }
-function fitTables(root){requestAnimationFrame(()=>root.querySelectorAll('.tw').forEach(tw=>{const tb=tw.querySelector('table');if(!tb)return;tb.classList.remove('stack');if(tb.scrollWidth>tw.clientWidth+2)tb.classList.add('stack')}))}
+function fitTables(root){requestAnimationFrame(()=>root.querySelectorAll('.tw').forEach(tw=>{const tb=tw.querySelector('table');if(!tb||tb.classList.contains('nostack'))return;tb.classList.remove('stack');if(tb.scrollWidth>tw.clientWidth+2)tb.classList.add('stack')}))}
 let _fw=0;window.addEventListener('resize',()=>{clearTimeout(_fw);_fw=setTimeout(()=>fitTables(document),150)});
 function markWide(root){requestAnimationFrame(()=>root.querySelectorAll('.tw').forEach(tw=>{const prev=tw.previousElementSibling;const has=prev&&prev.classList.contains('swipe');
   if(tw.scrollWidth>tw.clientWidth+4&&!has)tw.insertAdjacentHTML('beforebegin','<p class="swipe">Arraste a tabela para o lado para ver todas as colunas →</p>');else if(has&&tw.scrollWidth<=tw.clientWidth+4)prev.remove()}))}
@@ -2656,7 +2684,7 @@ const RZ_KEY='sa_rodizio_v1';
 const RZ_TIERS=['ALTO','MÉDIO-ALTO','MÉDIO','MÉDIO-BAIXO'];
 const RZ_TC={'ALTO':'#f5b73b','MEDIO-ALTO':'#2dd4bf','MEDIO':'#7aa2d6','MEDIO-BAIXO':'#8193a8'};
 const RZ_DS=['domingo','segunda','terça','quarta','quinta','sexta','sábado'],RZ_MS=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
-const RZ_TABS=[['hoje','Escala do dia'],['rr','Religação'],['analise','Setores × Produção'],['mapa','Mapa'],['semana','Semana'],['equipe','Equipe e faltas'],['setores','Pesos dos setores']];
+const RZ_TABS=[['hoje','Escala do dia'],['foco','Estratégia'],['rr','Religação'],['analise','Análise'],['mapa','Mapa'],['semana','Semana'],['equipe','Equipe e faltas'],['setores','Pesos']];
 let RZ={tab:'hoje',dia:null,cfg:null,sel:null,confirm:null,cache:null,priv:false,loaded:false,q:''};
 try{RZ.priv=localStorage.getItem('sa_rz_priv')==='1'}catch(e){}
 const rzTK=p=>String(p||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase();
@@ -2690,7 +2718,7 @@ function rzRerender(){const y=scrollY;render();scrollTo(0,y)}
 
 /* ---------- escala ---------- */
 function rzAlvoMin(){let d=rzHoje(),k=0;while(k<15){d=RM.proximoDiaUtil(RM.addDias(d,1),rzFer());k++}return d}
-function rzEscalaAte(d){const m=rzAlvoMin(),ate=d>m?d:m;if(RZ.cache&&RZ.cache.ate>=ate)return RZ.cache.dias;const dias=RM.simular(RZ.cfg,ate);RZ.cache={ate,dias};return dias}
+function rzEscalaAte(d){const m=rzAlvoMin(),ate=d>m?d:m;if(RZ.cache&&RZ.cache.ate>=ate)return RZ.cache.dias;const dias=rzSimular(RZ.cfg,ate);RZ.cache={ate,dias};return dias}
 const rzDia=d=>rzEscalaAte(d).find(x=>x.data===d);
 const rzMeta=u=>{const m=RZ.cfg.metas||{moto:25,carro:10};return u&&u.tipo==='carro'?m.carro:m.moto};
 function rzFeitos(d){RZ.cfg.feitos=RZ.cfg.feitos||{};return RZ.cfg.feitos[d]||{}}
@@ -2751,34 +2779,35 @@ const RZ_MM=[['escala','Escala do dia'],['prod','Produtividade'],['pot','Potenci
 const rzProdCor=pr=>pr==null?null:pr>=META?'#22c55e':pr>=45?'#86efac':pr>=35?'#facc15':pr>=25?'#fb923c':'#ef4444';
 function rzMapaHTML(d,ST){
   const mm=RZ.mm||'escala';const F=rzFormas();
-  const dia=rzDia(d),it=dia?dia.itens:[],f=rzFeitos(d),quem={};it.forEach(i=>quem[i.setor]=i.unidade);
+  const dia=rzDia(d),it=dia?dia.itens:[],f=rzFeitos(d),quem={},todos={};it.forEach(i=>{if(!quem[i.setor])quem[i.setor]=i.unidade;(todos[i.setor]=todos[i.setor]||[]).push(i.unidade)});
   const bar=`<div class="rzmm" role="tablist">${RZ_MM.filter(m=>m[0]!=='ruas'||rzMapa()).map(([k,l])=>`<button type="button" class="${mm===k?'on':''}" data-rz="mm" data-m="${k}">${l}</button>`).join('')}</div>`;
   if(mm==='ruas'||!F){const src=rzMapa();if(!src)return bar+'<p class="note">Mapa não carregado. Importe o pacote do rodízio em “Equipe e faltas”.</p>';
     return bar+`<div class="rzmap" id="rzMap"><img src="${src}" alt="Mapa dos setores com ruas" draggable="false" class="rzs">${RZ.cfg.setores.map(s=>{const p=MAPA_POS[s.codigo];if(!p)return '';const u=quem[s.codigo];
-      return `<button type="button" class="rzpin ${u?'on':'off'} ${u&&f[u]?'ok':''} ${RZ.sel===+s.codigo?'sel':''}" data-rz="setor" data-c="${s.codigo}" style="left:${(p[0]/16).toFixed(2)}%;top:${(p[1]/7.96).toFixed(2)}%;--t:${rzCol(s.potencial)}" aria-label="Setor ${s.codigo}"><b class="rzs">${s.codigo}</b>${u?`<span class="rzn">${esc(rzNome(u))}</span>`:''}</button>`}).join('')}</div>
+      return `<button type="button" class="rzpin ${u?'on':'off'} ${u&&f[u]?'ok':''} ${emFoco(s.codigo)?'':'fora'} ${RZ.sel===+s.codigo?'sel':''}" data-rz="setor" data-c="${s.codigo}" style="left:${(p[0]/16).toFixed(2)}%;top:${(p[1]/7.96).toFixed(2)}%;--t:${rzCol(s.potencial)}" aria-label="Setor ${s.codigo}"><b class="rzs">${s.codigo}</b>${u?`<span class="rzn">${esc(rzNome(u))}</span>`:''}</button>`}).join('')}</div>
       <div class="rzleg"><span>Mapa original com as ruas · toque num setor para ver os detalhes</span></div>`}
   const st={};(ST?ST.setores:[]).forEach(x=>st[x.sf]=x);
   const cell=s=>{const c=String(s.codigo),u=quem[s.codigo],x=st[c],pr=x&&x.a.den>=10?x.a.prod/x.a.den*100:null;
     let fill,op,l2='';
-    if(mm==='escala'){fill=u?rzCol(s.potencial):'#1b3358';op=u?.85:1;l2=u?rzNome(u):''}
+    if(!emFoco(c))return {c,u:null,fill:'#0c1a33',op:1,l2:'',pr,ok:false,fora:1};
+    if(mm==='escala'){fill=u?rzCol(s.potencial):'#1b3358';op=u?.85:1;l2=u?(todos[s.codigo]||[u]).map(rzNome).join(' + '):''}
     else if(mm==='prod'){fill=rzProdCor(pr)||'#1b3358';op=pr==null?1:.85;l2=pr==null?'sem dados':pr.toFixed(0)+'%'}
     else{fill=rzCol(s.potencial);op=.85;l2=s.potencial}
     return {c,u,fill,op,l2,pr,ok:u&&f[u]}};
   const cells=RZ.cfg.setores.filter(s=>F.paths[String(s.codigo)]).map(s=>Object.assign(cell(s),{s}));
-  const tip=x=>{const s=x.s,a=st[x.c];return `<b>Setor ${x.c}</b> · ${esc(s.potencial||'')}<br>${esc(s.bairros||'')}<br>${x.u?'Hoje: <b>'+esc(rzNome(x.u))+'</b>'+(x.ok?' ✓':''):'Sem equipe neste dia'}${a?`<br>GeoCall: ${pct(a.a.prod,a.a.den)}% em ${fmt(a.a.den)} OS`:''}`.replace(/"/g,'&quot;')};
+  const tip=x=>{const s=x.s,a=st[x.c];if(x.fora)return `<b>Setor ${x.c}</b> · fora do foco<br>${esc(s.bairros||'')}`.replace(/"/g,'&quot;');return `<b>Setor ${x.c}</b> · ${esc(s.potencial||'')}<br>${esc(s.bairros||'')}<br>${x.u?'Hoje: <b>'+esc((todos[x.c]||[x.u]).map(rzNome).join(' + '))+'</b>'+(x.ok?' ✓':''):'Sem equipe neste dia'}${a?`<br>GeoCall: ${pct(a.a.prod,a.a.den)}% em ${fmt(a.a.den)} OS`:''}`.replace(/"/g,'&quot;')};
   const svg=`<svg class="rzsvg" viewBox="0 0 ${F.w} ${F.h}" role="img" aria-label="Mapa esquemático dos setores">
     <defs><filter id="rzGlow" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="14"/></filter></defs>
     <path d="${F.outline}" fill="rgba(124,199,255,.16)" filter="url(#rzGlow)"/>
     <path d="${F.outline}" fill="#0f2445" stroke="rgba(124,199,255,.45)" stroke-width="2"/>
-    ${cells.map(x=>`<path class="rzreg ${RZ.sel===+x.c?'sel':''} ${mm==='escala'&&!x.u?'vazio':''}" d="${F.paths[x.c]}" fill="${x.fill}" fill-opacity="${x.op}" data-rz="setor" data-c="${x.c}" data-tip="${tip(x)}"/>`).join('')}
+    ${cells.map(x=>`<path class="rzreg ${RZ.sel===+x.c?'sel':''} ${mm==='escala'&&!x.u?'vazio':''} ${x.fora?'fora':''}" d="${F.paths[x.c]}" fill="${x.fill}" fill-opacity="${x.op}" data-rz="setor" data-c="${x.c}" data-tip="${tip(x)}"/>`).join('')}
     ${cells.filter(x=>RZ.sel===+x.c).map(x=>`<path d="${F.paths[x.c]}" fill="none" stroke="#fff" stroke-width="4" pointer-events="none"/>`).join('')}
     ${cells.map(x=>{const p=F.pole[x.c];if(!p)return '';const sm=p[2]<24;const dark=(mm!=='escala'||x.u)&&mm!=='pot'?'':'';
-      return `<g class="rzlbl" pointer-events="none" transform="translate(${p[0]} ${p[1]})"><text class="rzs" y="${sm?6:-4}" font-size="${sm?17:27}" font-weight="700">${x.c}${x.ok?' ✓':''}</text>${sm?'':`<text class="${mm==='escala'&&x.u?'rzn':''}" y="18" font-size="16.5" font-weight="600">${esc(x.l2)}</text>`}</g>`}).join('')}
+      return `<g class="rzlbl ${x.fora?'fora':''}" pointer-events="none" transform="translate(${p[0]} ${p[1]})"><text class="rzs" y="${sm?6:-4}" font-size="${sm?17:27}" font-weight="700">${x.c}${x.ok?' ✓':''}</text>${sm?'':`<text class="${mm==='escala'&&x.u?'rzn':''}" y="18" font-size="16.5" font-weight="600">${esc(x.l2)}</text>`}</g>`}).join('')}
   </svg>`;
   const leg=mm==='escala'?`${RZ_TIERS.map(t=>`<span><i style="background:${rzCol(t)}"></i>${t} com equipe</span>`).join('')}<span><i style="background:#1b3358;box-shadow:inset 0 0 0 1px #3b5a86"></i>sem equipe</span><span>✓ programado no GeoCall</span>`
     :mm==='prod'?`<span><i style="background:#22c55e"></i>${META}% ou mais</span><span><i style="background:#86efac"></i>45–${META}%</span><span><i style="background:#facc15"></i>35–45%</span><span><i style="background:#fb923c"></i>25–35%</span><span><i style="background:#ef4444"></i>abaixo de 25%</span><span><i style="background:#1b3358"></i>menos de 10 OS</span><span class="muted">GeoCall · período filtrado</span>`
     :RZ_TIERS.map(t=>`<span><i style="background:${rzCol(t)}"></i>${t}</span>`).join('')+'<span class="muted">potencial de arrecadação do setor</span>';
-  return bar+`<div class="rzmap rzvec" id="rzMap">${svg}</div><div class="rzleg">${leg}</div>`}
+  return bar+`<div class="rzmap rzvec" id="rzMap">${svg}</div><div class="rzleg">${leg}${focoOn()?`<span><i style="background:#0c1a33;box-shadow:inset 0 0 0 1px #24406b"></i>fora do foco (${rzFoco().setores.length} setores ativos)</span>`:''}</div>`}
 function rzFicha(c,d,ST){const s=rzSetor(c);if(!s)return `<div class="rzf-vazia"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="#7cc7ff" stroke-width="1.6"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><b>Toque num setor do mapa</b><span>Veja bairros, quem está lá, próximas visitas e como o setor rende no GeoCall.</span></div>`;
   const dia=rzDia(d),it=dia&&dia.itens.find(i=>+i.setor===+c);let fim=d,k=0;while(k<9){fim=RM.proximoDiaUtil(RM.addDias(fim,1),rzFer());k++}
   const todos=rzEscalaAte(fim);const prox=todos.filter(x=>x.data>d&&x.itens.some(i=>+i.setor===+c)).slice(0,4);const ant=todos.filter(x=>x.data<d&&x.itens.some(i=>+i.setor===+c)).slice(-3).reverse();
@@ -2844,15 +2873,89 @@ function rzTelaRR(){const c=rrCfg();const hoje=RZ.dia;const L=rrProximos(rzHoje(
     <p class="note">Quem está há mais tempo sem fazer religação é o próximo. Faltas e férias lançadas em “Equipe e faltas” pulam a pessoa naquele dia, e ela entra na próxima vez. Feriados não têm religação.</p></div></div>`}
 function rrWhats(){const L=rrProximos(rzHoje(),8);return '*Restabelecimento e religação* – próximos dias\n\n'+L.map(x=>'• '+rzFmt(x.d,true)+' → '+x.quem.map(rzNome).join(' e ')).join('\n')}
 
+/* ---------- Foco em setores: rodízio completo (cada um passa por todos os setores antes de repetir) ---------- */
+const FOCO_PADRAO={ativo:true,setores:[149,150,151,152,153,154,155],inicio:'2026-10-07'};
+function rzFoco(){if(!RZ.cfg)return null;if(!RZ.cfg.foco)RZ.cfg.foco=JSON.parse(JSON.stringify(FOCO_PADRAO));return RZ.cfg.foco}
+const focoOn=()=>{const f=rzFoco();return !!(f&&f.ativo&&f.setores&&f.setores.length)};
+const emFoco=c=>!focoOn()||rzFoco().setores.includes(+c);
+/* nota de cada setor: 50% potencial de arrecadação (peso) + 50% produtividade real no GeoCall (todas as planilhas guardadas) */
+let _fr=null;
+function focoRanking(){const f=rzFoco();const key=f.setores.join(',')+'|'+SHEETS.length+'|'+ROWS.length;if(_fr&&_fr.key===key)return _fr.list;
+  const rows=typeof allSheetRows==='function'?allSheetRows():[];const g=groupBy(rows.filter(r=>r.sf),r=>String(r.sf));
+  const base=f.setores.map(c=>{const s=rzSetor(c)||{codigo:c,peso:1,potencial:'',bairros:''};const rs=g.get(String(c))||[];const a=agg(rs);
+    const fech=rs.filter(r=>/^IMOVEL FECHADO/.test(norm(r.res))).length;return {c:+c,s,a,pr:a.den>=20?a.prod/a.den*100:null,fechP:a.den?fech/a.den*100:0}});
+  const vals=base.filter(x=>x.pr!=null).map(x=>x.pr),mx=Math.max(1,...vals),med=vals.length?vals.reduce((p,q)=>p+q,0)/vals.length:0;
+  base.forEach(x=>{const pr=x.pr==null?med:x.pr;x.nota=Math.round(50*((+x.s.peso||0)/5)+50*(pr/mx))});
+  base.sort((x,y)=>y.nota-x.nota||x.c-y.c);_fr={key,list:base};return base}
+function hung(c){const n=c.length,INF=1e18,u=Array(n+1).fill(0),v=Array(n+1).fill(0),p=Array(n+1).fill(0),way=Array(n+1).fill(0);
+  for(let i=1;i<=n;i++){p[0]=i;let j0=0;const minv=Array(n+1).fill(INF),used=Array(n+1).fill(false);
+    do{used[j0]=true;const i0=p[j0];let delta=INF,j1=0;for(let j=1;j<=n;j++)if(!used[j]){const cur=c[i0-1][j-1]-u[i0]-v[j];if(cur<minv[j]){minv[j]=cur;way[j]=j0}if(minv[j]<delta){delta=minv[j];j1=j}}
+      for(let j=0;j<=n;j++){if(used[j]){u[p[j]]+=delta;v[j]-=delta}else minv[j]-=delta}j0=j1}while(p[j0]!==0);
+    do{const j1=way[j0];p[j0]=p[j1];j0=j1}while(j0)}
+  const r=Array(n);for(let j=1;j<=n;j++)if(p[j])r[p[j]-1]=j-1;return r}
+/* ciclo de cada pessoa = setores já feitos desde que completou o último giro */
+function focoCiclos(hist){const S=rzFoco().setores.map(Number),cic={},ult={};
+  hist.forEach(d=>d.itens.forEach(i=>{if(!S.includes(+i.setor))return;const c=cic[i.unidade]||(cic[i.unidade]=new Set());if(c.size>=S.length)c.clear();c.add(+i.setor);ult[i.unidade]=+i.setor}));
+  Object.keys(cic).forEach(k=>{if(cic[k].size>=S.length)cic[k].clear()});return {cic,ult}}
+function focoGerar(d,hist){const S=rzFoco().setores.map(Number);const rank=focoRanking().map(x=>x.c);
+  const pes=RM.disponiveis(RZ.cfg.unidades,d,RZ.cfg.ausencias||[]);if(!pes.length)return [];
+  const {cic,ult}=focoCiclos(hist);
+  /* 1) reforço vai para os setores que mais gente ainda precisa visitar neste giro (desempate: melhor nota);
+     2) o cálculo distribui as pessoas com menor custo: repetir setor antes de fechar o giro custa muito, sair da distribuição ideal custa pouco. */
+  const n=pes.length;const need={},cap={};rank.forEach(c=>{need[c]=pes.filter(u=>!(cic[u.id]&&cic[u.id].has(c))).length;cap[c]=0});
+  for(let k=0;k<n;k++){let best=rank[0],bv=-1e9;for(const c of rank){const v=need[c]-cap[c]+(cap[c]===0?.5:0);if(v>bv){bv=v;best=c}}cap[best]++}
+  const slots=[];rank.forEach((c,ri)=>{for(let k=0;k<n;k++)slots.push({c,k,ri,ok:k<cap[c]})});
+  const N=slots.length;const C=[];
+  for(let i=0;i<N;i++){const row=[];for(let j=0;j<N;j++){const u=pes[i],sl=slots[j];if(!u){row.push(0);continue}
+      const feito=cic[u.id]&&cic[u.id].has(sl.c);row.push((feito?10000:0)+(ult[u.id]===sl.c?300:0)+(sl.ok?sl.k*3:400+sl.k*50)+sl.ri*0.01)}C.push(row)}
+  const a=hung(C);const out=[];pes.forEach((u,i)=>{const sl=slots[a[i]];if(sl)out.push({unidade:u.id,setor:sl.c})});
+  return out.sort((x,y)=>rank.indexOf(x.setor)-rank.indexOf(y.setor))}
+function rzSimular(cfg,ate){const f=rzFoco();if(!focoOn())return RM.simular(cfg,ate);
+  const ini=RM.proximoDiaUtil(f.inicio>cfg.inicio?f.inicio:cfg.inicio,cfg.feriados||[]);
+  const antes=ini>cfg.inicio?RM.simular(cfg,RM.addDias(ini,-1)):[];const out=antes.slice(),hist=[];let d=ini,g=0;
+  while(d<=ate&&g++<1500){const aj=cfg.ajustes&&cfg.ajustes[d];const itens=aj||focoGerar(d,hist);const dia={data:d,itens,ajustado:!!aj};out.push(dia);hist.push(dia);d=RM.proximoDiaUtil(RM.addDias(d,1),cfg.feriados||[])}
+  return out}
+function focoStatus(d){const S=rzFoco().setores.map(Number);const hist=rzEscalaAte(d).filter(x=>x.data<=d&&x.data>=rzFoco().inicio);const {cic}=focoCiclos(hist);return {S,cic}}
+
+function rzTelaFoco(rows,ST){const f=rzFoco();const R=focoRanking();const d=RZ.dia;const dia=rzDia(d),it=dia?dia.itens:[];
+  const quem={};it.forEach(i=>(quem[i.setor]=quem[i.setor]||[]).push(i.unidade));
+  const {S,cic}=focoStatus(d);const pessoas=rzAtivos();const bai=new Set();R.forEach(x=>String(x.s.bairros||'').split(' / ').forEach(b=>b&&bai.add(b)));
+  const tot=R.reduce((s,x)=>s+x.a.den,0),prd=R.reduce((s,x)=>s+x.a.prod,0);
+  const reforco=R.filter(x=>(quem[x.c]||[]).length>1).map(x=>x.c);
+  const prog=pessoas.map(u=>({u,n:cic[u.id]?cic[u.id].size:0}));const giroMed=prog.length?prog.reduce((s,x)=>s+x.n,0)/prog.length:0;
+  const col=pr=>pr==null?'#5b7397':pr>=META?'#22c55e':pr>=35?'#7cc7ff':pr>=25?'#f5b73b':'#f87171';
+  return `<div class="kpis">
+   ${rzKpi('Setores em foco',S.length,null,'maior retorno da área','rr')}
+   ${rzKpi('Bairros cobertos',fmt(bai.size),null,'dentro dos setores em foco','')}
+   ${rzKpi('Giro completo',S.length+' dias',null,'cada um passa por todos os setores','g')}
+   ${rzKpi('Giro da equipe',(giroMed).toFixed(1).replace('.',',')+' / '+S.length,null,'setores já percorridos (média)','pg')}
+   ${rzKpi('Reforço hoje',`<span class="rrkv">${reforco.length?reforco.join(' · '):'—'}</span>`,null,'setores com 2 pessoas','')}
+   ${rzKpi('Produtividade no foco',tot?pct(prd,tot)+'%':'—',null,'GeoCall · setores em foco',tot&&prd/tot*100>=META?'g':'ct')}</div>
+  <div class="fc-how">
+   <div><span>1</span><b>Foco nos melhores setores</b><p>A operação concentra a equipe em ${S.length} setores, escolhidos pelo potencial de arrecadação e pelo resultado real no GeoCall.</p></div>
+   <div><span>2</span><b>Todos passam por todos</b><p>Cada colaborador percorre os ${S.length} setores antes de repetir qualquer um. Ninguém fica preso no setor bom ou no setor ruim.</p></div>
+   <div><span>3</span><b>Reforço onde rende mais</b><p>Com mais pessoas do que setores, os setores de nota mais alta recebem uma segunda pessoa no dia.</p></div>
+  </div>
+  <div class="panel"><h3>Ranking dos setores em foco <small>nota = 50% potencial + 50% produtividade real · toque para ver as OS</small></h3><div class="fc-rank">
+   ${R.map((x,i)=>`<button type="button" data-rz="drill" data-sf="${x.c}" style="--t:${rzCol(x.s.potencial)}"><span class="fc-pos">${i+1}º</span>${rzChip(x.c)}<span class="fc-b"><b class="rzs">${esc(String(x.s.bairros||'').split(' / ').slice(0,3).join(' · '))}</b><small>${rzTier(x.s.potencial)} ${x.a.den?fmt(x.a.den)+' OS · '+x.fechP.toFixed(0)+'% fechado':'sem OS no GeoCall'}</small></span><span class="fc-pr" style="color:${col(x.pr)}">${x.pr==null?'—':x.pr.toFixed(0)+'%'}</span><span class="fc-nota"><i style="width:${x.nota}%"></i><b>${x.nota}</b></span><span class="fc-hoje rzn">${(quem[x.c]||[]).map(rzNome).join(' + ')||'—'}</span></button>`).join('')}
+   </div><div class="fc-leg"><span>%</span> produtividade no GeoCall <span style="margin-left:14px">▬</span> nota do setor (0 a 100) <span style="margin-left:14px">à direita:</span> quem está no setor ${d===rzHoje()?'hoje':'neste dia'}</div></div>
+   <div class="panel"><h3>Giro de cada colaborador <small>✓ = setor já feito neste giro · ● = setor ${d===rzHoje()?'de hoje':'deste dia'}</small></h3><div class="tw"><table class="fc-mx nostack"><thead><tr><th>Colaborador</th>${S.map(c=>`<th class="c">${rzChip(c)}</th>`).join('')}<th class="n">Giro</th></tr></thead><tbody>
+    ${prog.map(({u,n})=>{const hoje=it.find(i=>i.unidade===u.id);return `<tr><td class="nw"><span class="rzn">${esc(u.curto||u.nome)}</span></td>${S.map(c=>{const h=hoje&&+hoje.setor===c,done=cic[u.id]&&cic[u.id].has(c);return `<td class="c">${h?'<span class="fc-dot on">●</span>':done?'<span class="fc-dot ok">✓</span>':'<span class="fc-dot">·</span>'}</td>`}).join('')}<td class="n"><b>${n}</b>/${S.length}</td></tr>`}).join('')}
+   </tbody></table></div></div>
+  <div class="panel"><h3>Setores em foco <small>marque os setores que entram na operação · os demais ficam fora do rodízio até você reativar</small></h3>
+   <div class="fc-sel">${RZ.cfg.setores.slice().sort((a,b)=>a.codigo-b.codigo).map(s=>`<label style="--t:${rzCol(s.potencial)}"><input type="checkbox" data-rz="focoSet" value="${s.codigo}" ${f.setores.includes(+s.codigo)?'checked':''}><span class="rzs">${s.codigo}</span></label>`).join('')}</div>
+   <div class="rzact"><label class="fc-tg"><input type="checkbox" data-rz="focoOn" ${f.ativo?'checked':''}> Foco ativo</label><button type="button" class="btn ghost sm" data-rz="focoReini">Começar novo giro hoje</button></div></div>`}
+
 function rzTelaHoje(rows,ST){const d=RZ.dia;const se=rzSemExp();if(se)return rzDayBar('Programação no GeoCall')+se;
-  const dia=rzDia(d),it=dia?dia.itens:[],f=rzFeitos(d),feitos=it.filter(i=>f[i.unidade]).length,comp=RM.complementos(it,RZ.cfg.setores);
+  const dia=rzDia(d),it=dia?dia.itens:[],f=rzFeitos(d),feitos=it.filter(i=>f[i.unidade]).length,comp=focoOn()?{}:RM.complementos(it,RZ.cfg.setores);
   const noRod=RZ.cfg.setores.filter(s=>s.peso>0),altos=noRod.filter(s=>rzTK(s.potencial)==='ALTO'),altC=altos.filter(s=>it.some(i=>+i.setor===+s.codigo)).length;
-  const fora=rzFora(d),cob={};it.forEach(i=>cob[i.setor]=1);const sem=rzOrdem().filter(s=>s.peso>0&&!cob[s.codigo]);
+  const fora=rzFora(d),cob={};it.forEach(i=>cob[i.setor]=1);const sem=rzOrdem().filter(s=>s.peso>0&&emFoco(s.codigo)&&!cob[s.codigo]);
   const aj=!!(dia&&dia.ajustado);
   let h=rzDayBar('Programação no GeoCall')+`<div class="kpis">
    ${rzKpi('Em campo',it.length,rzAtivos().length,fora.length?fora.length+' fora de campo':'equipe completa','rr')}
-   ${rzKpi('Setores ALTO cobertos',altC,altos.length,'maior arrecadação',altC===altos.length?'g':'sp')}
-   ${rzKpi('Setores com equipe',it.length,noRod.length,sem.length+' sem equipe hoje','')}
+   ${focoOn()?(()=>{const S=rzFoco().setores,cobF=S.filter(c=>cob[c]).length,{cic}=focoStatus(d),pr=rzAtivos().map(u=>cic[u.id]?cic[u.id].size:0),m=pr.length?pr.reduce((a,b)=>a+b,0)/pr.length:0;
+      return rzKpi('Setores em foco cobertos',cobF,S.length,'estratégia ativa',cobF===S.length?'g':'sp','data-rz="tab" data-t="foco"')+rzKpi('Giro da equipe',m.toFixed(1).replace('.',','),S.length,'setores percorridos (média)','','data-rz="tab" data-t="foco"')})()
+     :rzKpi('Setores ALTO cobertos',altC,altos.length,'maior arrecadação',altC===altos.length?'g':'sp')+rzKpi('Setores com equipe',it.length,noRod.length,sem.length+' sem equipe hoje','')}
    ${rzKpi('Programados no GeoCall',feitos,it.length,feitos===it.length&&it.length?'tudo lançado':'falta '+(it.length-feitos),feitos===it.length&&it.length?'g':'')}
    ${rzKpi('Meta do dia',fmt(it.reduce((s,i)=>s+rzMeta(rzUni(i.unidade)),0)),null,'ordens somando a equipe','pg')}
    ${(()=>{const x=rrDoDia(d),p=x?null:rrProximos(d,1)[0];return rzKpi('Religação',x?`<span class="rrkv rzn">${rrNomes(x)}</span>`:`<span class="rrkv">${p?rzFmt(p.d):'—'}</span>`,null,x?(d===rzHoje()?'responsável hoje':'responsável neste dia'):(p?'próximo · '+p.quem.map(rzNome).join(' e '):'sem escala'),'rr','data-rz="tab" data-t="rr"')})()}</div>`;
@@ -2863,7 +2966,7 @@ function rzTelaHoje(rows,ST){const d=RZ.dia;const se=rzSemExp();if(se)return rzD
      const eq=rzEqDe(u),a=eq&&ST.cx[eq+'|'+x.setor];const hist=a&&a.den?`<button type="button" class="rzhist" data-rz="drill" data-sf="${x.setor}" data-eq="${esc(eq)}" title="Histórico dessa pessoa neste setor no GeoCall">neste setor: <b class="${a.prod/a.den*100>=META?'up':'dn'}">${pct(a.prod,a.den,0)}%</b> em ${fmt(a.den)} OS</button>`:(eq?'<span class="rzhist muted">primeira vez neste setor no período</span>':'');
      return `<article class="rzcard ${ok?'done':''}" style="--t:${rzCol(s.potencial)}"><span class="rzn0">${i+1}</span><button type="button" class="rzcode rzs" data-rz="setor" data-c="${s.codigo}" title="Ver no mapa">${esc(s.codigo)}</button>
       <div class="rzbody"><div class="rzwho"><b class="rzn">${esc(u.curto||u.nome||x.unidade)}</b>${u.tipo==='carro'?'<span class="st n0">carro</span>':''}${rrSet.has(x.unidade)?'<span class="rrtag">↻ religação</span>':''}</div><div class="rzwhere rzs">${esc(s.bairros)}</div>
-       <div class="rzmeta">${rzTier(s.potencial)}<span class="rzm">meta ${rzMeta(u)}</span>${(comp[x.unidade]||[]).length?'<span class="muted">se faltar:</span>'+comp[x.unidade].map(c=>`<button type="button" data-rz="setor" data-c="${c}" class="rzplus"><span class="rzchip rzs" style="--t:${rzCol((rzSetor(c)||{}).potencial)}">+${c}</span></button>`).join(''):''}</div>${hist}
+       <div class="rzmeta">${rzTier(s.potencial)}<span class="rzm">meta ${rzMeta(u)}</span>${(()=>{const par=it.filter(y=>+y.setor===+x.setor&&y.unidade!==x.unidade);return par.length?`<span class="fc-par">dividir com <b class="rzn">${par.map(y=>esc(rzNome(y.unidade))).join(', ')}</b></span>`:''})()}${(comp[x.unidade]||[]).length?'<span class="muted">se faltar:</span>'+comp[x.unidade].map(c=>`<button type="button" data-rz="setor" data-c="${c}" class="rzplus"><span class="rzchip rzs" style="--t:${rzCol((rzSetor(c)||{}).potencial)}">+${c}</span></button>`).join(''):''}</div>${hist}
        <details class="rzmore"><summary>Trocar setor ou marcar falta</summary><div class="rzedit"><label>Mandar para o setor<select data-rz="troca" data-u="${esc(x.unidade)}">${rzOrdem().filter(z=>z.peso>0).map(z=>`<option value="${z.codigo}" ${+z.codigo===+x.setor?'selected':''}>${z.codigo} · ${esc(z.potencial)}</option>`).join('')}</select></label><button type="button" class="btn sm ghost" data-rz="falta" data-u="${esc(x.unidade)}">Faltou hoje</button></div></details></div>
       <button type="button" class="rzchk" data-rz="feito" data-u="${esc(x.unidade)}" aria-pressed="${ok}" aria-label="Marcar como programado">${ok?'✓':''}</button></article>`}).join('')}</div>
    ${sem.length?`<div class="rzfora"><span>Sem equipe hoje:</span>${sem.map(s=>`<button type="button" data-rz="setor" data-c="${s.codigo}">${rzChip(s.codigo)}</button>`).join('')}</div>`:''}
@@ -2952,7 +3055,7 @@ function vRodizio(v,rows){
   if(!RZ.cfg){v.innerHTML=`<div class="rz">${rzTelaImport()}</div>`;rzBind(v);return}
   if(!RZ.dia)RZ.dia=rzDiaInicial();
   const ST=rzStats(rows);
-  const T={rr:rzTelaRR,hoje:rzTelaHoje,analise:rzTelaAnalise,mapa:rzTelaMapa,semana:rzTelaSemana,equipe:rzTelaEquipe,setores:rzTelaSetores}[RZ.tab]||rzTelaHoje;
+  const T={foco:rzTelaFoco,rr:rzTelaRR,hoje:rzTelaHoje,analise:rzTelaAnalise,mapa:rzTelaMapa,semana:rzTelaSemana,equipe:rzTelaEquipe,setores:rzTelaSetores}[RZ.tab]||rzTelaHoje;
   let body='';try{body=T(rows,ST)}catch(e){console.error(e);body=`<div class="panel"><p class="note">Algo deu errado ao montar esta tela: ${esc(e.message)}</p></div>`}
   v.innerHTML=`<div class="rz ${RZ.priv?'priv':''}"><div class="rztabs" role="tablist">${RZ_TABS.map(([k,l])=>`<button type="button" role="tab" aria-selected="${RZ.tab===k}" class="${RZ.tab===k?'on':''}" data-rz="tab" data-t="${k}">${l}</button>`).join('')}
     ${window.claude?'':`<button type="button" class="rzimp" data-rz="importar" aria-label="Atualizar dados do rodízio" data-tip="Atualizar dados do rodízio<br><span style='opacity:.75'>carregar o arquivo .json</span>"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 15.5v2.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2.5"/><path d="M12 15V4.5M8 8.5l4-4 4 4"/></svg></button>`}
@@ -2971,6 +3074,7 @@ function rzBind(v){const root=v.querySelector('.rz');if(!root)return;
       else if(a==='rrPart'){const c=rrCfg(),id=b.dataset.u;c.part=c.part.includes(id)?c.part.filter(x=>x!==id):c.part.concat(id);rzSave()}
       else if(a==='rrDesf'){const c=rrCfg();delete c.ajustes[b.dataset.d];rzSave('Dia voltou ao automático')}
       else if(a==='rrCopiar'){const t=rrWhats();try{await navigator.clipboard.writeText(t);toast('Escala de religação copiada.')}catch(e){toast('Não foi possível copiar')}}
+      else if(a==='focoReini'){rzFoco().inicio=RZ.dia;rzSave('Novo giro começa em '+rzFmt(RZ.dia,true))}
       else if(a==='mm'){RZ.mm=b.dataset.m;rzRerender()}
       else if(a==='fechar'){RZ.sel=null;rzRerender()}
       else if(a==='dia'){const dir=+b.dataset.dir;let n=RM.addDias(d,dir),g=0;while(!RM.ehDiaUtil(n,rzFer())&&g++<30)n=RM.addDias(n,dir);RZ.dia=n;RZ.confirm=null;rzRerender()}
@@ -2993,7 +3097,9 @@ function rzBind(v){const root=v.querySelector('.rz');if(!root)return;
       else if(a==='importar'){const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=async()=>{const f=i.files[0];if(!f)return;try{const p=JSON.parse(await f.text());const c=p&&p.cfg;if(!c||!Array.isArray(c.unidades)||!Array.isArray(c.setores))throw new Error('arquivo não é um pacote do rodízio');if(RZ.cfg&&RZ.cfg.unidades&&RZ.cfg.unidades.length){if(confirm('Você já tem um rodízio salvo. Manter a equipe, as faltas e os ajustes que você lançou e atualizar só o mapa?')){if(c.formas)RZ.cfg.formas=c.formas;if(c.mapa)RZ.cfg.mapa=c.mapa;rzSave('Mapa atualizado. Equipe, faltas e ajustes mantidos.');return}if(!confirm('Substituir tudo pelo conteúdo do arquivo?'))return}RZ.cfg=RM.migrar(c);RZ.cfg.feitos=RZ.cfg.feitos||{};RZ.dia=rzDiaInicial();rzSave('Rodízio importado: '+c.unidades.length+' colaboradores, '+c.setores.length+' setores.')}catch(e){toast('Não foi possível importar: '+e.message)}};i.click()}
     }catch(e){toast(e&&e.message||'Não foi possível')}};
   root.onchange=ev=>{const el=ev.target,a=el.dataset&&el.dataset.rz;if(!a)return;try{
-    if(a==='rrTroca'){const c=rrCfg();c.ajustes=c.ajustes||{};c.ajustes[el.dataset.d]=[el.value];rzSave('Responsável trocado')}
+    if(a==='focoSet'){const f=rzFoco(),c=+el.value;f.setores=el.checked?[...new Set(f.setores.concat(c))].sort((x,y)=>x-y):f.setores.filter(x=>x!==c);rzSave('Setores em foco: '+f.setores.join(', '))}
+    else if(a==='focoOn'){rzFoco().ativo=el.checked;rzSave(el.checked?'Foco ativado':'Foco desligado: rodízio volta a usar todos os setores')}
+    else if(a==='rrTroca'){const c=rrCfg();c.ajustes=c.ajustes||{};c.ajustes[el.dataset.d]=[el.value];rzSave('Responsável trocado')}
     else if(a==='rrDia'){const c=rrCfg(),k=el.dataset.s==='A'?'semA':'semB',w=+el.value;c[k]=el.checked?[...new Set(c[k].concat(w))].sort():c[k].filter(x=>x!==w);rzSave()}
     else if(a==='rrPor'){rrCfg().porDia=+el.value;rzSave()}
     else if(a==='rrAt'){const c=rrCfg();const seg=rrSegunda(RZ.dia);c.ancora=el.value==='A'?seg:RM.addDias(seg,-7);rzSave('Semana ajustada')}
