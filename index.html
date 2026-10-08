@@ -147,7 +147,7 @@ footer.bot b{font-weight:700}
 .svcb.pcol button>span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media (max-width:820px){.svcb.pcol button{grid-template-columns:minmax(0,1fr) 30% 40px}.svcb.pcol em{display:none}}
 .svcb.mini{margin-top:14px}
-.svcb.wide button{grid-template-columns:minmax(120px,170px) 1fr 44px 56px}
+.svcb.wide button{grid-template-columns:minmax(120px,170px) 1fr 56px 56px}
 .svcb.wide button>span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row2>.panel,.g2>.panel{display:flex;flex-direction:column}
 #pTop,#pPrim{display:flex;flex-direction:column}
@@ -880,6 +880,21 @@ td .rp,td .rn{font-weight:500;font-size:11.5px;letter-spacing:.01em}
 .fc-par{font-size:10.5px;color:#9fb3cf;background:rgba(148,163,184,.12);border-radius:6px;padding:2px 7px;white-space:nowrap}.fc-par b{color:#e6eefb;font-weight:600}
 .tw:has(>.fc-mx){overflow-x:auto}
 @container vw (max-width:640px){.fc-mx th,.fc-mx td{padding:6px 3px}.fc-mx th .rzchip{min-width:30px;font-size:10px;padding:2px 4px}.fc-dot{width:18px;height:18px;font-size:11px}.fc-mx td.nw{white-space:normal;font-size:12px}}
+
+/* telemetria */
+.tl-two{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:22px;align-items:start}
+.tl-two>div{min-width:0}.tl-two .svcb.mini{margin-top:0}
+@container vw (max-width:980px){.tl-two{grid-template-columns:minmax(0,1fr)}}
+.tl-rh{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;justify-content:space-between;margin-bottom:12px}
+.tl-rh .filters{flex:1 1 360px;margin:0}
+.tl-rs{display:grid;grid-template-columns:repeat(6,auto);gap:8px}
+.tl-rs div{background:rgba(8,20,42,.5);border-radius:9px;padding:7px 12px;display:flex;flex-direction:column;min-width:74px}
+.tl-rs b{font-size:16px}.tl-rs span{font-size:10.5px;color:#9fb3cf}
+@container vw (max-width:760px){.tl-rs{grid-template-columns:repeat(3,1fr)}}
+.tl-rt tr[data-os]{cursor:pointer}.tl-rt td{vertical-align:middle}
+.tl-rt tr.sus td{background:rgba(239,68,68,.07)}.tl-rt tr.sus td:first-child{box-shadow:inset 3px 0 0 #f87171}
+.tl-tr{font-size:11px;font-weight:600;color:#c4b5fd;background:rgba(167,139,250,.12);border-radius:5px;padding:1px 6px}.tl-tr.bad{color:#fca5a5;background:rgba(239,68,68,.14)}
+.tl-rt.stack td:first-child{display:none}.tl-rt.stack .rt-sus{text-align:right}
 </style>
 
 <div class="app">
@@ -1659,6 +1674,7 @@ let REG=LS.get(REG_KEY,{});
 function syncReg(){let ch=false;for(const s of SHEETS)for(const r of s.recs){if(r.eq&&!REG[r.eq]){REG[r.eq]={equipe:title(r.eq),ativo:true,desde:r.day};ch=true}}if(ch)saveReg()}
 const equipeDe=n=>(REG[n]&&REG[n].equipe)||title(n);
 const nomeDe=n=>title(n);
+const curto=n=>nomeDe(n).split(' ').filter(x=>!/^(d[aoe]s?|e)$/i.test(x)).slice(0,2).join(' '); // nome e sobrenome
 const temEquipes=()=>Object.keys(REG).some(n=>norm(equipeDe(n))!==norm(nomeDe(n))); // equipes de verdade cadastradas (senão, equipe = colaborador)
 
 /* ============ filtros ============ */
@@ -1913,8 +1929,8 @@ function susLocHTML(L){
      <footer>${ob?`<span class="rn">Outro bairro: ${esc(a.bai)} → ${esc(r.bai)}</span>`:`<span class="muted">${esc(r.susWhy)}</span>`}</footer></article>`};
   return `<div class="panel"><h3>Baixas fora do local · endereço da ordem × onde foi feita a baixa <small>${fmt(L.length)} baixas · toque num cartão para ver a OS <span class="info-i" data-tip="A planilha do GeoCall não traz GPS. O “onde estava” é o endereço da última baixa válida do colaborador antes desta: como a baixa veio poucos minutos depois, sem tempo de deslocamento, ela foi lançada de lá.">i</span></small></h3>
    
-   <div class="sus-list">${L.slice(0,SUS_SHOW).map(card).join('')}</div>${L.length>SUS_SHOW?`<div class="rzact"><button type="button" class="btn ghost sm" id="susMore">Mostrar mais ${Math.min(30,L.length-SUS_SHOW)} de ${fmt(L.length-SUS_SHOW)} restantes</button></div>`:''}</div>`}
-let SUS_SHOW=30;
+   <div class="sus-list">${L.slice(0,SUS_SHOW).map(card).join('')}</div>${L.length>SUS_SHOW?`<div class="rzact"><button type="button" class="btn ghost sm" id="susMore">Mostrar mais ${Math.min(12,L.length-SUS_SHOW)} de ${fmt(L.length-SUS_SHOW)} restantes</button></div>`:''}</div>`}
+let SUS_SHOW=12;
 /* ---------- bairros: melhores, intermediários e piores (sempre visível) ---------- */
 function bairroTiersHTML(rows,opt={}){const min=opt.min||20;
   const L=[...groupBy(rows.filter(r=>r.bai),r=>r.bai)].map(([k,rs])=>{const a=agg(rs);return {k,a,sf:[...new Set(rs.map(r=>r.sf).filter(Boolean))].slice(0,3).join(', '),f:rs.filter(r=>/^IMOVEL FECHADO/.test(norm(r.res))).length}}).filter(x=>x.a.den>=min).sort((x,y)=>y.a.pr-x.a.pr||y.a.den-x.a.den);
@@ -2490,36 +2506,57 @@ function vBairros(v,rows){rows=rows.filter(r=>!r.man);
     ['sus','Baixas fora do local',fmt(sus.length),`${pct(sus.length,base.length)}% das baixas`,'sp'],
     ['top','Mais trocas de bairro',byTroca[0]?esc(nomeDe(byTroca[0].k)).split(' ')[0]:'—',byTroca[0]?byTroca[0].n+' trocas':'','']];
   const T=TL.tab;let det='';
-  const tbl=(head,body)=>`<div class="tw"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
-  if(T==='bairros'){det=`<h3>Bairros atendidos <small><select id="tlSort" class="daysel" aria-label="Ordenar"><option value="os">Mais OS</option><option value="pr">Maior produtividade</option><option value="fech">Mais imóvel fechado</option><option value="nome">Nome</option></select></small></h3>`+
-    tbl('<th>Bairro</th><th class="n">OS</th><th class="n">Produtividade</th><th class="n">Imóvel fechado</th><th class="n">Colaboradores</th>',bai.map(b=>`<tr data-b="${esc(b.k)}"><td>${esc(b.k)}<br><span class="muted small">setor ${esc(b.sf)||'—'}</span></td><td class="n">${fmt(b.a.rec)}</td><td class="n ${b.a.pr>=META?'rp':'rn'}">${pct(b.a.prod,b.a.den)}%</td><td class="n">${pct(b.f,b.a.rec,0)}%</td><td class="n" title="${esc(b.cs.map(nomeDe).join(', '))}">${b.cs.length}</td></tr>`).join(''))}
-  else if(T==='trocas'){const rotas=[...groupBy(trocas,m=>m.from+' → '+m.to)].map(([k,ms])=>({k,n:ms.length,g:med(ms.map(m=>m.gap)),s:ms.filter(m=>m.sus).length,to:ms[0].to})).sort((x,y)=>y.n-x.n).slice(0,25);
-    det=`<h3>Trocas de bairro mais frequentes <small>toque para ver as OS do bairro de destino</small></h3>`+tbl('<th>De → Para</th><th class="n">Vezes</th><th class="n">Tempo típico</th><th class="n">Fora do local</th>',rotas.map(x=>`<tr data-b="${esc(x.to)}"><td>${esc(x.k)}</td><td class="n">${x.n}</td><td class="n">${x.g} min</td><td class="n ${x.s?'rn':''}">${x.s}</td></tr>`).join(''))}
+  const tbl=(head,body,lim)=>`<div class="tw"><table${lim?` data-limit="${lim}"`:''}><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+  const bars=(title,sub,items,cls)=>miniBlock(title,sub,items,{cls:'wide '+(cls||'')});
+  const buckets=gs=>{const B=[['até 2 min',0,2],['3 a 5 min',3,5],['6 a 10 min',6,10],['11 a 20 min',11,20],['21 a 45 min',21,45],['mais de 45 min',46,1e9]];const n=gs.length||1;const mx=Math.max(1,...B.map(([l,a,b])=>gs.filter(g=>g>=a&&g<=b).length));return B.map(([l,a,b])=>{const c=gs.filter(g=>g>=a&&g<=b).length;return {l,w:c/mx*100,v:fmt(c),s:pct(c,n,0)+'%',c:'#7cc7ff'}})};
+  const two=(h,a,b)=>`<h3>${h}</h3><div class="tl-two"><div>${a}</div><div>${b}</div></div>`;
+  if(T==='bairros'){const top=[...bai].sort((x,y)=>y.a.rec-x.a.rec).slice(0,10),mx=Math.max(1,...top.map(x=>x.a.rec));
+    det=two(`Bairros atendidos <small><select id="tlSort" class="daysel" aria-label="Ordenar"><option value="os">Mais OS</option><option value="pr">Maior produtividade</option><option value="fech">Mais imóvel fechado</option><option value="nome">Nome</option></select></small>`,
+      tbl('<th>Bairro</th><th class="n">OS</th><th class="n">Produtividade</th><th class="n">Imóvel fechado</th><th class="n">Colab.</th>',bai.map(b=>`<tr data-b="${esc(b.k)}"><td>${esc(b.k)}<br><span class="muted small">setor ${esc(b.sf)||'—'}</span></td><td class="n">${fmt(b.a.rec)}</td><td class="n ${b.a.pr>=META?'rp':'rn'}">${pct(b.a.prod,b.a.den)}%</td><td class="n">${pct(b.f,b.a.rec,0)}%</td><td class="n" title="${esc(b.cs.map(nomeDe).join(', '))}">${b.cs.length}</td></tr>`).join(''),12),
+      bars('10 bairros com mais OS','cor = produtividade',top.map(x=>({l:esc(x.k),w:x.a.rec/mx*100,v:fmt(x.a.rec),s:pct(x.a.prod,x.a.den,0)+'%',c:x.a.pr>=META?'var(--green)':x.a.pr>=35?'#7cc7ff':'#f87171',attr:`data-tb="${esc(x.k)}"`}))))}
+  else if(T==='trocas'){const rotas=[...groupBy(trocas,m=>m.from+' → '+m.to)].map(([k,ms])=>({k,n:ms.length,g:med(ms.map(m=>m.gap)),s:ms.filter(m=>m.sus).length,to:ms[0].to})).sort((x,y)=>y.n-x.n).slice(0,30);
+    const pe=byTroca.slice(0,11),mx=Math.max(1,...pe.map(x=>x.n));
+    det=two('Trocas de bairro <small>toque para ver as OS do bairro de destino</small>',
+      tbl('<th>De → Para</th><th class="n">Vezes</th><th class="n">Tempo típico</th><th class="n">Fora do local</th>',rotas.map(x=>`<tr data-b="${esc(x.to)}"><td>${esc(x.k)}</td><td class="n">${x.n}</td><td class="n">${x.g} min</td><td class="n ${x.s?'rn':''}">${x.s||'—'}</td></tr>`).join(''),12),
+      bars('Trocas por colaborador','toque para ver a rota',pe.map(x=>({l:esc(curto(x.k)),w:x.n/mx*100,v:fmt(x.n),s:(x.n/Math.max(1,x.dias)).toFixed(1).replace('.',',')+'/dia',c:'#c4b5fd',attr:`data-tq="${esc(x.k)}"`}))))}
   else if(T==='same'||T==='troca'){const key=T==='same'?'sm':'tr';const L=[...perEq].filter(x=>x[key]!=null).sort((x,y)=>x[key]-y[key]);const mx=Math.max(1,...L.map(x=>x[key]));
-    det=`<h3>${T==='same'?'Tempo entre OS no mesmo bairro':'Tempo ao trocar de bairro'} por colaborador <small>mediana · toque para ver a rota</small></h3>`+miniBlock('',(T==='same'?'equipe: ':'equipe: ')+(T==='same'?mSame:mTroca)+' min',L.map(x=>({l:esc(nomeDe(x.k)),w:x[key]/mx*100,v:x[key]+' min',s:x.dias+' dias',c:T==='same'?'#7cc7ff':'#c4b5fd',attr:`data-tq="${esc(x.k)}"`})),{cls:'wide'})+
-      (T==='troca'?`<div class="svct" style="margin-top:14px">Trocas mais demoradas <span class="muted">acima de 45 min</span></div>`+tbl('<th>Colaborador</th><th>De → Para</th><th class="n">Dia</th><th class="n">Tempo</th>',trocasOk.filter(m=>m.gap>45).sort((x,y)=>y.gap-x.gap).slice(0,10).map(m=>`<tr data-os="${esc(m.c.os)}"><td>${esc(nomeDe(m.eq))}</td><td>${esc(m.from)} → ${esc(m.to)}</td><td class="n">${dayBR(m.day)}</td><td class="n rn">${m.gap} min</td></tr>`).join('')||'<tr><td colspan="4" class="muted">Nenhuma</td></tr>'):'')}
+    const gs=(T==='same'?same:trocasOk).map(m=>m.gap);
+    const lenta=trocasOk.filter(m=>m.gap>45).sort((x,y)=>y.gap-x.gap).slice(0,8);
+    det=two(`${T==='same'?'Tempo entre OS no mesmo bairro':'Tempo ao trocar de bairro'} <small>mediana da equipe: ${T==='same'?mSame:mTroca} min</small>`,
+      bars('Por colaborador','mediana · toque para ver a rota',L.map(x=>({l:esc(curto(x.k)),w:x[key]/mx*100,v:x[key]+' min',s:x.dias+' dias',c:T==='same'?'#7cc7ff':'#c4b5fd',attr:`data-tq="${esc(x.k)}"`}))),
+      bars('Como se distribui','quantidade de deslocamentos',buckets(gs))+(T==='troca'&&lenta.length?`<div class="svct" style="margin-top:14px">Trocas mais demoradas <span class="muted">acima de 45 min</span></div>`+tbl('<th>Colaborador</th><th>De → Para</th><th class="n">Dia</th><th class="n">Tempo</th>',lenta.map(m=>`<tr data-os="${esc(m.c.os)}"><td>${esc(nomeDe(m.eq))}</td><td>${esc(m.from)} → ${esc(m.to)}</td><td class="n">${dayBR(m.day)}</td><td class="n rn">${m.gap} min</td></tr>`).join('')):''))}
   else if(T==='sus'){const pe=[...groupBy(sus,r=>r.eq)].map(([k,rs])=>({k,n:rs.length})).sort((x,y)=>y.n-x.n);
     const outroB=sus.filter(r=>r.susAnc&&norm(r.susAnc.bai)!==norm(r.bai)).length;
-    det=`<h3>Baixas fora do local <small><button type="button" class="cptab" id="tlSusAll">Ver todas no Detalhamento →</button></small></h3>`+miniBlock('Por colaborador',TL.susEq?'filtrando '+esc(nomeDe(TL.susEq))+' · toque de novo para limpar':'toque para filtrar a lista abaixo',pe.map(x=>({l:esc(nomeDe(x.k)),w:x.n/Math.max(1,pe[0].n)*100,v:x.n,s:'baixas',c:x.k===TL.susEq?'#fca5a5':'#f87171',attr:`data-su="${esc(x.k)}"`})),{cls:'wide'})+
-      `<div class="susum"><div><b>${fmt(sus.length)}</b><span>baixas fora do local</span></div><div><b>${fmt(outroB)}</b><span>em outro bairro</span></div><div><b>${fmt(sus.length-outroB)}</b><span>outra rua / 23:59</span></div></div>`}
-  else if(T==='top'){det=`<h3>Trocas de bairro por colaborador <small>toque para ver a rota</small></h3>`+tbl('<th>Colaborador</th><th class="n">Trocas</th><th class="n">Por dia</th><th class="n">Tempo ao trocar</th>',byTroca.map(x=>`<tr data-tq="${esc(x.k)}"><td>${esc(nomeDe(x.k))}</td><td class="n">${x.n}</td><td class="n">${(x.n/Math.max(1,x.dias)).toFixed(1).replace('.',',')}</td><td class="n">${x.tr==null?'—':x.tr+' min'}</td></tr>`).join(''))}
-  v.innerHTML=`<div class="kpis tl-k">${tiles.map(([k,l,val,s,cls])=>`<button type="button" class="kpi ${cls} ${T===k?'on':''}" data-tt="${k}"><span class="lab">${l}</span><span class="val">${val}</span><span class="sub">${s}</span></button>`).join('')}</div>
-   <div class="g2 tl-g">
-    <div class="panel fillp" id="tlDet">${det}</div>
-    <div class="panel fillp" id="tlRota"><h3>Rota do dia <small>ordem real das baixas</small></h3>
-     <div class="filters" style="margin-bottom:8px"><div class="fgroup" style="flex:1 1 180px"><label for="tlEq">Colaborador</label><select id="tlEq">${eqs.map(k=>`<option value="${esc(k)}" ${k===TL.eq?'selected':''}>${esc(nomeDe(k))}</option>`).join('')}</select></div>
+    const onde=[...groupBy(sus.filter(r=>r.susAnc),r=>r.susAnc.bai||'—')].map(([k,rs])=>({k,n:rs.length})).sort((x,y)=>y.n-x.n).slice(0,6),mo=Math.max(1,...onde.map(x=>x.n));
+    det=two(`Baixas fora do local <small><button type="button" class="cptab" id="tlSusAll">Ver todas no Detalhamento →</button></small>`,
+      bars('Por colaborador',TL.susEq?'filtrando '+esc(nomeDe(TL.susEq))+' · toque de novo para limpar':'toque para filtrar os cartões abaixo',pe.map(x=>({l:esc(curto(x.k)),w:x.n/Math.max(1,pe[0].n)*100,v:x.n,s:'baixas',c:x.k===TL.susEq?'#fca5a5':'#f87171',attr:`data-su="${esc(x.k)}"`}))),
+      `<div class="susum"><div><b>${fmt(sus.length)}</b><span>baixas fora do local</span></div><div><b>${fmt(outroB)}</b><span>em outro bairro</span></div><div><b>${fmt(sus.length-outroB)}</b><span>outra rua ou 23:59</span></div></div>`+
+      bars('De onde foram lançadas','bairro onde o colaborador estava',onde.map(x=>({l:esc(x.k),w:x.n/mo*100,v:x.n,s:'baixas',c:'#fca5a5'}))))}
+  else if(T==='top'){const pe=byTroca,mx=Math.max(1,...pe.map(x=>x.n/Math.max(1,x.dias)));
+    det=two('Trocas de bairro por colaborador <small>toque para ver a rota</small>',
+      tbl('<th>Colaborador</th><th class="n">Trocas</th><th class="n">Por dia</th><th class="n">Tempo ao trocar</th>',pe.map(x=>`<tr data-tq="${esc(x.k)}"><td>${esc(nomeDe(x.k))}</td><td class="n">${x.n}</td><td class="n">${(x.n/Math.max(1,x.dias)).toFixed(1).replace('.',',')}</td><td class="n">${x.tr==null?'—':x.tr+' min'}</td></tr>`).join('')),
+      bars('Trocas por dia','média de cada colaborador',pe.map(x=>({l:esc(curto(x.k)),w:x.n/Math.max(1,x.dias)/mx*100,v:(x.n/Math.max(1,x.dias)).toFixed(1).replace('.',','),s:'por dia',c:'#c4b5fd',attr:`data-tq="${esc(x.k)}"`}))))}
+  const rex=rota.filter(r=>isProd(r.cat)).length,rtr=rota.filter((r,i)=>i&&norm(rota[i-1].bai)!==norm(r.bai)).length;
+  const rotaHTML=`<div class="panel" id="tlRota"><h3>Rota do dia <small>ordem real das baixas · toque numa linha para abrir a OS</small></h3>
+    <div class="tl-rh"><div class="filters"><div class="fgroup" style="flex:1 1 220px"><label for="tlEq">Colaborador</label><select id="tlEq">${eqs.map(k=>`<option value="${esc(k)}" ${k===TL.eq?'selected':''}>${esc(nomeDe(k))}</option>`).join('')}</select></div>
       <div class="fgroup"><label for="tlDay">Dia</label><select id="tlDay">${dias.map(d=>`<option value="${d}" ${d===TL.day?'selected':''}>${dayBRf(d)}</option>`).join('')}</select></div></div>
-     <ol class="rota">${rota.map((r,i)=>{const p=rota[i-1];const troca=p&&norm(p.bai)!==norm(r.bai);const gap=p?Math.max(0,Math.round(((r.ini||r.fim)-p.fim)/6e4)):null;
-       return `${troca?`<li class="rt-move ${r.sus?'bad':''}"><span>${esc(p.bai)} → ${esc(r.bai)}</span><em>${gap} min${r.sus?' · fora do local':''}</em></li>`:''}<li class="rt ${isProd(r.cat)?'ok':'no'} ${r.sus?'sus':''}" data-os="${esc(r.os)}"><b>${hhmm(r.ini)}–${hhmm(r.fim)}</b><span class="rt-a">${esc(r.end)} <em>· ${esc(r.bai)}</em>${r.sus&&r.susAnc?`<small class="rt-sus">baixa feita provavelmente em ${esc(r.susAnc.end)} · ${esc(r.susAnc.bai)}</small>`:''}</span><span class="st ${isProd(r.cat)?'p':'i'}">${isProd(r.cat)?'Executada':CAT_LBL[r.cat]}</span></li>`}).join('')||'<li class="muted">Sem baixas nesse dia.</li>'}</ol>
-     <div class="pfoot"><span><b>${rota.length}</b> baixas</span><span class="rp"><b>${rota.filter(r=>isProd(r.cat)).length}</b> executadas</span><span><b>${new Set(rota.map(r=>norm(r.bai))).size}</b> bairros</span><span class="rn"><b>${rota.filter(r=>r.sus).length}</b> fora do local</span></div></div>
-   </div>${T==='sus'?susLocHTML(TL.susEq?sus.filter(r=>r.eq===TL.susEq):sus):''}`;
+     <div class="tl-rs"><div><b>${rota.length}</b><span>baixas</span></div><div><b class="up">${rex}</b><span>executadas</span></div><div><b>${new Set(rota.map(r=>norm(r.bai))).size}</b><span>bairros</span></div><div><b>${rtr}</b><span>trocas</span></div><div><b class="${rota.some(r=>r.sus)?'dn':''}">${rota.filter(r=>r.sus).length}</b><span>fora do local</span></div><div><b>${rota.length?hhmm(rota[0].ini||rota[0].fim)+'–'+hhmm(rota[rota.length-1].fim):'—'}</b><span>janela</span></div></div></div>
+    <div class="tw"><table class="tl-rt"><thead><tr><th class="n">#</th><th>Horário</th><th>Endereço da OS</th><th>Bairro</th><th>Resultado</th><th>Deslocamento</th></tr></thead><tbody>
+     ${rota.map((r,i)=>{const p=rota[i-1];const troca=p&&norm(p.bai)!==norm(r.bai);const gap=p?Math.max(0,Math.round(((r.ini||r.fim)-p.fim)/6e4)):null;
+       return `<tr data-os="${esc(r.os)}" class="${r.sus?'sus':''}"><td class="n muted">${i+1}</td><td class="nw"><b>${hhmm(r.ini)}–${hhmm(r.fim)}</b></td><td>${esc(r.end)}${r.sus&&r.susAnc?`<small class="rt-sus">baixa feita provavelmente em ${esc(r.susAnc.end)} · ${esc(r.susAnc.bai)}</small>`:''}</td><td class="nw">${esc(r.bai)}</td><td><span class="st ${isProd(r.cat)?'p':'i'}">${isProd(r.cat)?'Executada':esc(CAT_LBL[r.cat])}</span></td><td class="nw">${p==null?'<span class="muted">início</span>':`${troca?`<span class="tl-tr ${r.sus?'bad':''}">↪ troca de bairro</span> `:''}<span class="${r.sus?'rn':'muted'}">${gap} min${r.sus?' · fora do local':''}</span>`}</td></tr>`}).join('')||'<tr><td colspan="6" class="muted">Sem baixas nesse dia.</td></tr>'}
+    </tbody></table></div></div>`;
+  v.innerHTML=`<div class="kpis tl-k">${tiles.map(([k,l,val,s,cls])=>`<button type="button" class="kpi ${cls} ${T===k?'on':''}" data-tt="${k}"><span class="lab">${l}</span><span class="val">${val}</span><span class="sub">${s}</span></button>`).join('')}</div>
+   <div class="panel" id="tlDet">${det}</div>
+   ${T==='sus'?susLocHTML(TL.susEq?sus.filter(r=>r.eq===TL.susEq):sus):''}
+   ${rotaHTML}`;
   v.querySelectorAll('[data-tt]').forEach(b=>b.onclick=()=>{TL.tab=b.dataset.tt;render()});
-  if($('#susMore'))$('#susMore').onclick=()=>{SUS_SHOW+=30;const y=scrollY;render();scrollTo(0,y)};
+  if($('#susMore'))$('#susMore').onclick=()=>{SUS_SHOW+=12;const y=scrollY;render();scrollTo(0,y)};
   if($('#tlSort')){$('#tlSort').value=TL.sort;$('#tlSort').onchange=e=>{TL.sort=e.target.value;render()}}
   $('#tlEq').onchange=e=>{TL.eq=e.target.value;TL.day='';render()};$('#tlDay').onchange=e=>{TL.day=e.target.value;render()};
   v.querySelectorAll('tr[data-b]').forEach(tr=>tr.onclick=()=>drill({bai:tr.dataset.b,label:'Bairro: '+tr.dataset.b}));
-  v.querySelectorAll('[data-tq]').forEach(b=>b.onclick=()=>{TL.eq=b.dataset.tq;TL.day='';render();setTimeout(()=>{const r=$('#tlRota');if(r&&innerWidth<1100)r.scrollIntoView({behavior:'smooth'})},50)});
-  v.querySelectorAll('[data-su]').forEach(b=>b.onclick=()=>{TL.susEq=TL.susEq===b.dataset.su?'':b.dataset.su;SUS_SHOW=30;const y=scrollY;render();scrollTo(0,y)});
+  v.querySelectorAll('[data-tq]').forEach(b=>b.onclick=()=>{TL.eq=b.dataset.tq;TL.day='';render();setTimeout(()=>{const r=$('#tlRota');if(r)r.scrollIntoView({behavior:'smooth',block:'start'})},60)});
+  v.querySelectorAll('#tlDet [data-tb]').forEach(b=>b.onclick=()=>drill({bai:b.dataset.tb,label:'Bairro: '+b.dataset.tb}));
+  v.querySelectorAll('[data-su]').forEach(b=>b.onclick=()=>{TL.susEq=TL.susEq===b.dataset.su?'':b.dataset.su;SUS_SHOW=12;const y=scrollY;render();scrollTo(0,y)});
   if($('#tlSusAll'))$('#tlSusAll').onclick=()=>drill({sus:1,label:'Baixas fora do local'});
   v.querySelectorAll('.sus-c[data-os]').forEach(c=>c.onclick=()=>drill({os:c.dataset.os,label:'OS '+c.dataset.os}));
   bindOsRows(v);
