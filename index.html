@@ -496,6 +496,7 @@ input.cad{background:#0a1b37;border:1px solid var(--line2);border-radius:4px;pad
 .rk-sp{display:block;max-width:100%}
 .rk-score{font-family:var(--cond);font-size:26px;font-weight:700;text-align:right}
 .rk.by-prod .rk-row .rk-score{color:#cfe3ff}@media (max-width:760px){.rk.by-prod .rk-score{display:none}}
+.rk-ac{display:inline-block;align-self:flex-start;width:auto;margin-left:8px;font-style:normal;font-size:11px;font-weight:600;color:#c4b5fd;background:rgba(167,139,250,.14);border:1px solid rgba(167,139,250,.4);border-radius:999px;padding:1px 8px;vertical-align:middle}
 .rk-note{margin:0;padding:10px 14px;font-size:12px;color:#c9d6ea;line-height:1.5}
 @media (max-width:1280px){.rk-lh,.rk-row{grid-template-columns:36px minmax(150px,1.3fr) minmax(120px,1.2fr) 100px 70px 80px}.rk-spk{display:none}.rk-lh span:nth-child(6){display:none}}
 @media (max-width:820px){.rk{padding:12px}.rk-pod{grid-template-columns:1fr}.rk-pod .rk-ouro{order:-1}.rk-hl{grid-template-columns:1fr 1fr}
@@ -1929,7 +1930,7 @@ window.addEventListener('resize',()=>fitSide());
 let PULSE_Q='';
 function renderPulse(rows){
   const el=$('#pulse');if(!el)return;
-  const A=agg(rows);const ld=lastDay(rows);const D=agg(rows.filter(r=>r.day===ld));
+  const A=agg(rows);const ld=lastDay(rows.filter(r=>!r.man))||lastDay(rows);const D=agg(rows.filter(r=>r.day===ld));
   const byDay=[...groupBy(rows,r=>r.day)].sort((a,b)=>a[0]<b[0]?-1:1).slice(-12).map(([d,rs])=>[d,agg(rs).pr]);
   // sparkline
   const W=196,H=46,n=byDay.length;const x=i=>4+(n<=1?0:i*(W-8)/(n-1)),y=v=>H-4-Math.min(100,v)/100*(H-8);
@@ -1943,7 +1944,7 @@ function renderPulse(rows){
   const abaixo=colab.filter(c=>c.a.pr<META).length;
   const susDia=rows.filter(r=>r.day===ld&&r.sus).length;
   const reinc=[...groupBy(rows,r=>r.os)].filter(([k,rs])=>rs.length>1&&!rs.some(r=>isProd(r.cat))).length;
-  const semBaixa=[...groupBy(rows.filter(r=>r.day===ld),r=>r.eq)].filter(([k,rs])=>!rs.some(isValida)).length;
+  const semBaixa=[...groupBy(rows.filter(r=>r.day===ld&&!r.man),r=>r.eq)].filter(([k,rs])=>!rs.some(isValida)).length;
   const al=[
     abaixo&&{lv:'bad',t:`${abaixo} colaborador${abaixo>1?'es':''} abaixo da meta`,go:'colab'},
     susDia&&{lv:'warn',t:`${susDia} baixa${susDia>1?'s':''} fora do local em ${dayBR(ld)}`,go:'jornada'},
@@ -2175,16 +2176,16 @@ const RK_MIN_DIAS=5;
 function rankData(rows){
   const days=[...new Set(rows.map(r=>r.day))].sort();const half=days.slice(-7),prev=days.slice(-14,-7);
   const list=[...groupBy(rows,r=>r.eq)].map(([k,rs])=>{const a=agg(rs);
-    const val=rs.filter(isValida);const byD=groupBy(val,r=>r.day);
+    const val=rs.filter(isValida);const byD=groupBy(val,r=>r.day);const diasT=new Set(rs.filter(r=>isValida(r)||r.man).map(r=>r.day)).size;
     const starts=[...byD.values()].map(x=>{const d=new Date(Math.min(...x.map(r=>r.ini||r.fim)));return d.getHours()*60+d.getMinutes()});
     const pr7=agg(rs.filter(r=>half.includes(r.day))).pr,prP=agg(rs.filter(r=>prev.includes(r.day))).pr;
     const sus=rs.filter(r=>r.sus).length;
     const spark=days.map(d=>{const x=rs.filter(r=>r.day===d);return x.length?agg(x).pr:null});
-    return {k,a,dias:byD.size,ini:starts.length?starts.reduce((s,v)=>s+v,0)/starts.length:null,trend:prP?pr7-prP:null,sus,spark,
+    return {k,a,dias:diasT,ini:starts.length?starts.reduce((s,v)=>s+v,0)/starts.length:null,trend:prP?pr7-prP:null,sus,spark,
       fimP:a.rec?a.FIMDIA/a.rec*100:0,susP:a.trab?sus/a.trab*100:0}}).filter(x=>x.a.rec>=10);
   /* tipo de equipe: cadastro do rodízio (moto/carro); sem cadastro, pelo serviço que mais faz (supressão = carro) */
   const carro=new Set(),nomeU={};try{if(typeof RZ!=='undefined'&&RZ.cfg)RZ.cfg.unidades.forEach(u=>{const e=rzEqDe(u);if(e&&/\+/.test(u.nome||''))nomeU[e]=u.nome;if(u.tipo==='carro'&&e)carro.add(e)})}catch(e){}
-  list.forEach(x=>{const rs=rows.filter(r=>r.eq===x.k&&!r.man);const sup=rs.filter(r=>r.tipo==='SUPRESSAO').length;x.mod=carro.has(x.k)||(rs.length&&sup/rs.length>=.5)?'carro':'moto';x.osDia=x.dias?x.a.den/x.dias:0;x.nome=nomeU[x.k]||nomeDe(x.k);x.peq=x.dias<RK_MIN_DIAS});
+  list.forEach(x=>{const rs=rows.filter(r=>r.eq===x.k&&!r.man);const sup=rs.filter(r=>r.tipo==='SUPRESSAO').length;x.mod=carro.has(x.k)||(rs.length&&sup/rs.length>=.5)?'carro':'moto';const gd=new Set(rs.filter(isValida).map(r=>r.day)).size,gn=agg(rs).den;x.osDia=gd?gn/gd:0;const ac=rows.filter(r=>r.eq===x.k&&r.man);x.acN=ac.length;x.acP=ac.filter(r=>r.cat==='ACAO').length;x.acT=[...new Set(ac.map(r=>r.tss))].join(', ');x.nome=nomeU[x.k]||nomeDe(x.k);x.peq=x.dias<RK_MIN_DIAS});
   for(const m of ['moto','carro']){const g=list.filter(x=>x.mod===m);const mx=Math.max(1,...g.map(x=>x.a.prod));g.forEach(x=>{x.sP=Math.min(100,x.a.pr/META*100);x.sV=x.a.prod/mx*100;x.idx=0.625*x.sP+0.375*x.sV})}
   return list;
 }
@@ -2206,7 +2207,7 @@ function vRanking(v,rows){
   const medal=['ouro','prata','bronze'];
   const rkRow=(x,i,car)=>{const meta=x.a.pr>=META;return `<div class="rk-row ${!car&&i<3&&!x.peq?'top':''} ${x.peq?'peq':''} ${x.k===RK_SHOW?'show':''}" data-c="${esc(x.k)}" style="--d:${i*40}ms">
        <span class="rk-pos">${car?'<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11a2 2 0 0 1 2 2v4h-2a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H3v-4a2 2 0 0 1 2-2zm2.2 0h9.6l-1-3.2a.6.6 0 0 0-.6-.4H8.8a.6.6 0 0 0-.6.4z"/></svg>':x.peq?'–':i+1}</span>
-       <span class="rk-nm"><b class="pvn">${esc(x.nome)}</b>${x.peq?'<em class="rk-tag pv">pouca amostra</em>':''}<small class="pv">${fmt(x.a.den)} OS trabalhadas${car?` · ${meta?'acima':'abaixo'} da meta`:''}</small></span>
+       <span class="rk-nm"><b class="pvn">${esc(x.nome)}</b>${x.peq?'<em class="rk-tag pv">pouca amostra</em>':''}${x.acN?`<em class="rk-ac pv" title="Ação especial: ${esc(x.acT)}">★ ${fmt(x.acP)} ${esc(x.acT.toLowerCase()==='leitura'?'leituras':'em ação especial')}</em>`:''}<small class="pv">${fmt(x.a.den)} OS trabalhadas${car?` · ${meta?'acima':'abaixo'} da meta`:''}</small></span>
        <span class="rk-bar pv"><i style="width:${Math.min(100,x.a.pr)}%;background:${meta?'linear-gradient(90deg,#16a34a,#4ade80)':'linear-gradient(90deg,#2a72bd,#7cc7ff)'}"></i><s style="left:${META}%"></s><b>${pct(x.a.prod,x.a.den)}%</b></span>
        <span class="rk-n pv">${fmt(x.a.prod)}<small>${fmt(x.a.pag)} pag · ${fmt(x.a.CORTE+x.a.SUP)} ${car?'supr./cortes':'cortes'}</small></span>
        <span class="rk-q pv"><b>${x.dias}</b><small>dia${x.dias===1?'':'s'}</small></span>
@@ -2242,7 +2243,6 @@ function vRanking(v,rows){
      <div class="rk-sec"><b>Carro · supressão</b><span>${CARGA.SUPRESSAO} ordens por dia · comparado só com a própria meta e com o próprio histórico</span></div>
      ${cars.map((x,i)=>rkRow(x,i,1)).join('')}
     </div>`:''}
-    <p class="rk-note">Cada equipe é comparada com quem faz o mesmo serviço. Quem trabalhou menos de ${RK_MIN_DIAS} dias no período aparece no fim, como pouca amostra.</p>
     
    </div></section>`;
   $('#rkBy').onchange=e=>{RK_BY=e.target.value;render()};
@@ -2259,7 +2259,7 @@ const BANDS=[['Antes das 10h',0,10],['10h às 12h',10,12],['12h às 14h',12,14],
 const hourOf=r=>new Date(r.fim).getHours();
 function miniBlock(title,sub,items,opt={}){
   return `<div class="svcb mini ${opt.cls||''}"><div class="svct">${title} <span class="muted">${sub||''}</span></div>${items.map(x=>`<button type="button" ${x.attr||''}><span>${x.l}</span><div class="bar"><i style="width:${Math.min(100,x.w)}%;background:${x.c||'var(--blue)'}"></i>${opt.meta?`<s style="left:${META}%"></s>`:''}</div><b>${x.v}</b><em>${x.s||''}</em></button>`).join('')}</div>`}
-function weekdayBlock(rows){const DW=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];const g=groupBy(rows,r=>new Date(r.day+'T12:00').getDay());
+function weekdayBlock(rows){rows=rows.filter(r=>!r.man);const DW=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];const g=groupBy(rows,r=>new Date(r.day+'T12:00').getDay());
   const it=[1,2,3,4,5,6,0].filter(d=>g.has(d)&&agg(g.get(d)).den>=30).map(d=>{const rs=g.get(d),a=agg(rs),nd=new Set(rs.map(r=>r.day)).size;return {l:DW[d],w:a.pr,v:pct(a.prod,a.den,0)+'%',s:`${fmt(Math.round(a.den/nd))} OS/dia`,c:a.pr>=META?'var(--green)':'var(--blue)',attr:''}});
   return miniBlock('Produtividade por dia da semana','média do período',it,{meta:true})}
 function hourBlock(rows){const b=rows.filter(isBaixa);const it=BANDS.map(([l,h0,h1])=>{const rs=b.filter(r=>{const h=hourOf(r);return h>=h0&&h<h1});const a=agg(rs);return {l,w:a.pr,v:rs.length?pct(a.prod,a.den,0)+'%':'—',s:`${fmt(rs.length)} baixas`,c:a.pr>=META?'var(--green)':'#7cc7ff'}});
@@ -2284,8 +2284,10 @@ function drawDaily(el,byDay){
   const paint=()=>{
     const W=Math.max(320,el.clientWidth),H=W<600?250:300,pl=34,pr=8,pt=26,pb=28,ih=H-pt-pb,iw=W-pl-pr;
     const days=byDay.map(([d,rs])=>{const g=DGRP.map(x=>rs.filter(r=>x.cs.includes(r.cat)).length);const a=agg(rs);return {d,g,t:rs.length,a,rs}});
-    const mx=Math.max(10,...days.map(x=>x.t));const step=mx>200?100:mx>80?50:mx>40?20:10;const top=Math.ceil(mx*1.08/step)*step;
-    const n=days.length||1,slot=iw/n,bw=Math.max(6,Math.min(34,slot*.62)),y=v=>pt+ih-v/top*ih;
+    /* dia fora da curva (ex.: ação especial com centenas de serviços): a escala segue os dias normais e a barra alta ganha um corte */
+    const ts=days.map(x=>x.t).sort((p,q)=>p-q),med=ts.length?ts[Math.floor(ts.length/2)]:0,lim=Math.max(med*2.5,40);const norm=days.filter(x=>x.t<=lim);
+    const mx=Math.max(10,...(norm.length?norm:days).map(x=>x.t));const step=mx>200?100:mx>80?50:mx>40?20:10;const top=Math.ceil(mx*1.15/step)*step;
+    const n=days.length||1,slot=iw/n,bw=Math.max(6,Math.min(34,slot*.62)),y=v=>pt+ih-Math.min(v,top)/top*ih;
     let h=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Produção diária por resultado">`;
     for(let v=0;v<=top;v+=step)h+=`<line x1="${pl}" x2="${W-pr}" y1="${y(v)}" y2="${y(v)}" stroke="rgba(148,163,184,${v?'.10':'.28'})"/><text x="${pl-8}" y="${y(v)+4}" text-anchor="end" class="dax">${v}</text>`;
     const every=Math.ceil(n/(iw/46));
@@ -2296,7 +2298,8 @@ function drawDaily(el,byDay){
       segs.forEach((sg,j)=>{const last=j===segs.length-1,hh=Math.max(0,sg.y0-sg.y1-(last?0:2)),yy=sg.y1+(last?0:2);
         if(hh<=0)return;const r=last?Math.min(5,bw/2,hh):0;
         h+=r?`<path d="M${x0} ${yy+hh}V${yy+r}Q${x0} ${yy} ${x0+r} ${yy}H${x0+bw-r}Q${x0+bw} ${yy} ${x0+bw} ${yy+r}V${yy+hh}Z" fill="${DGRP[sg.k].c}"/>`:`<rect x="${x0}" y="${yy}" width="${bw}" height="${hh}" fill="${DGRP[sg.k].c}"/>`});
-      if(x.a.den&&bw>=14)h+=`<text x="${cx}" y="${y(x.t)-7}" text-anchor="middle" class="dpct ${x.a.pr>=META?'ok':''}">${pct(x.a.prod,x.a.den,0)}%</text>`;
+      const big=x.t>top;if(big){const yb=pt+16;h+=`<path d="M${x0-3} ${yb+5}L${x0+bw+3} ${yb-3}M${x0-3} ${yb+11}L${x0+bw+3} ${yb+3}" stroke="#0d2244" stroke-width="5"/><path d="M${x0-3} ${yb+5}L${x0+bw+3} ${yb-3}M${x0-3} ${yb+11}L${x0+bw+3} ${yb+3}" stroke="#cbd5e1" stroke-width="1.4"/>`}
+      if(x.a.den&&bw>=14)h+=big?`<text x="${cx}" y="${pt-8}" text-anchor="middle" class="dpct ${x.a.pr>=META?'ok':''}">${pct(x.a.prod,x.a.den,0)}% · ${fmt(x.t)}</text>`:`<text x="${cx}" y="${y(x.t)-7}" text-anchor="middle" class="dpct ${x.a.pr>=META?'ok':''}">${pct(x.a.prod,x.a.den,0)}%</text>`;
       if(i%every===0)h+=`<text x="${cx}" y="${H-9}" text-anchor="middle" class="dax">${dayBR(x.d)}</text>`;
       h+='</g>'});
     h+='</svg>';el.innerHTML=h;
@@ -2907,7 +2910,7 @@ function rzRerender(){const y=scrollY;render();scrollTo(0,y)}
 function rzAlvoMin(){let d=rzHoje(),k=0;while(k<15){d=RM.proximoDiaUtil(RM.addDias(d,1),rzFer());k++}return d}
 function rzEscalaAte(d){const m=rzAlvoMin(),ate=d>m?d:m;if(RZ.cache&&RZ.cache.ate>=ate)return RZ.cache.dias;const dias=rzSimular(RZ.cfg,ate);RZ.cache={ate,dias};return dias}
 const rzDia=d=>rzEscalaAte(d).find(x=>x.data===d);
-const rzMeta=u=>{const m=RZ.cfg.metas||{moto:25,carro:10};return u&&u.tipo==='carro'?m.carro:m.moto};
+const rzMeta=u=>{const m=RZ.cfg.metas||{moto:CARGA.CORTE,carro:CARGA.SUPRESSAO};return u&&u.tipo==='carro'?(m.carro||CARGA.SUPRESSAO):(m.moto||CARGA.CORTE)};
 function rzFeitos(d){RZ.cfg.feitos=RZ.cfg.feitos||{};return RZ.cfg.feitos[d]||{}}
 function rzFora(d){return rzAtivos().filter(u=>!RM.disponiveis([u],d,RZ.cfg.ausencias).length).map(u=>({u,a:(RZ.cfg.ausencias||[]).find(x=>x.id===u.id&&x.de<=d&&d<=x.ate)}))}
 function rzAusencia(id,de,ate,motivo){RZ.cfg.ausencias=RZ.cfg.ausencias||[];let d=de,g=0;const fim=ate||de;
@@ -3283,7 +3286,7 @@ function rzTelaEquipe(){const hoje=rzHoje();const lst=(RZ.cfg.ausencias||[]).map
   <div class="g2"><div class="panel"><h3>Equipe do rodízio <small>“Desligar” tira a pessoa da escala (o histórico fica)</small></h3><div class="rzlist">${RZ.cfg.unidades.slice().sort((a,b)=>(a.ordem||0)-(b.ordem||0)).map(u=>{const off=u.status==='inativo';const eq=rzEqDe(u);
      return `<div><span><b class="rzn">${esc(u.nome)}</b><small>${u.tipo==='carro'?'Carro · supressão no passeio':'Moto · corte / negociação'} · ${eq?'ligado ao GeoCall':'<span style="color:#f5b73b">sem OS no GeoCall</span>'}${off?' · desligado':''}</small></span>${off?`<button type="button" class="btn ghost sm" data-rz="religar" data-u="${esc(u.id)}">Voltar ao rodízio</button>`:RZ.confirm==='desl'+u.id?`<button type="button" class="btn danger sm" data-rz="desligarOk" data-u="${esc(u.id)}">Confirmar</button><button type="button" class="btn ghost sm" data-rz="cancelar">Cancelar</button>`:`<button type="button" class="btn ghost sm" data-rz="desligar" data-u="${esc(u.id)}">Desligar</button>`}</div>`}).join('')}</div>
    <form class="rzform" id="rzAdd"><label>Novo colaborador<input id="rzNn" placeholder="Nome completo" autocomplete="off"></label><label>Veículo<select id="rzNt"><option value="moto">Moto</option><option value="carro">Carro</option></select></label><button type="submit" class="btn">Adicionar</button></form></div>
-   <div class="panel"><h3>Metas diárias e feriados</h3><form class="rzform" id="rzMetas"><label>Meta moto (ordens/dia)<input type="number" min="1" id="rzMm" value="${(RZ.cfg.metas||{}).moto||25}"></label><label>Meta carro (supressão)<input type="number" min="1" id="rzMc" value="${(RZ.cfg.metas||{}).carro||10}"></label><button type="submit" class="btn">Salvar metas</button></form>
+   <div class="panel"><h3>Metas diárias e feriados</h3><form class="rzform" id="rzMetas"><label>Meta moto (ordens/dia)<input type="number" min="1" id="rzMm" value="${(RZ.cfg.metas||{}).moto||CARGA.CORTE}"></label><label>Meta carro (supressão)<input type="number" min="1" id="rzMc" value="${(RZ.cfg.metas||{}).carro||CARGA.SUPRESSAO}"></label><button type="submit" class="btn">Salvar metas</button></form>
    <label class="rzl" for="rzFer">Feriados (um por linha, AAAA-MM-DD)</label><textarea id="rzFer" rows="5" class="rzin">${esc(rzFer().join('\n'))}</textarea><div class="rzact"><button type="button" class="btn ghost sm" data-rz="feriados">Salvar feriados</button></div>
    <h3 style="margin-top:14px">Pacote do rodízio</h3><p class="note">Leve a equipe, os setores e o mapa para a versão protegida do GitHub: importe lá, nesta mesma aba, o arquivo <b>rodizio-sao-mateus.json</b>. O arquivo tem nomes: guarde só no seu computador, não suba para o GitHub.</p>
    <div class="rzact">${window.claude?'':'<button type="button" class="btn ghost sm" data-rz="exportar">Exportar pacote (.json)</button>'}<button type="button" class="btn ghost sm" data-rz="importar">Importar pacote</button></div></div></div>`}
