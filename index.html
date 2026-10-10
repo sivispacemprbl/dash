@@ -992,6 +992,38 @@ td .rp,td .rn{font-weight:500;font-size:11.5px;letter-spacing:.01em}
 .rzidx button.fora{opacity:.6}
 @container vw (max-width:620px){.rzr-zm{flex-direction:row;top:8px;right:8px;gap:5px}.rzr-zm button{width:30px;height:30px;font-size:16px}}
 .rzidx button[hidden]{display:none}
+
+/* mapa compacto (cabe numa tela de notebook) */
+.rzmp{padding:14px 16px}
+.rzmp-h{display:flex;justify-content:space-between;align-items:center;gap:10px 16px;flex-wrap:wrap;margin-bottom:10px}.rzmp-h h3{margin:0}.rzmp-h .rzmm{margin:0}
+.rzmapg{grid-template-columns:minmax(0,1fr) 290px!important;gap:14px!important;align-items:start!important}
+.rzficha{padding:12px 14px!important}
+.rzruas{box-shadow:none}
+.rzmapc .rzleg{margin-top:6px;gap:10px;font-size:11px}
+.rzsvg{max-height:430px}
+.rzf3{display:flex;flex-direction:column;gap:10px}
+.rzf3-top{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;align-items:center}
+.rzf3-top .pa{grid-column:2;justify-self:start;min-width:0}
+.rzf3-cod{font-size:34px;font-weight:700;color:#f5b73b;line-height:1;grid-row:span 2}
+.rzf3-top b{display:block;font-size:12.5px;line-height:1.35}.rzf3-top small{display:block;font-size:11px;color:#9fb3cf;margin-top:2px}
+.rzf3-hoje{display:flex;flex-direction:column;gap:1px}.rzf3-hoje b{font-size:14px}
+.rzf3-k{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.rzf3-k>*{display:flex;flex-direction:column;text-align:left;font:inherit;color:inherit;background:rgba(8,20,42,.55);border:1px solid var(--line);border-radius:8px;padding:6px 9px}
+.rzf3-k>button{cursor:pointer}.rzf3-k>button:hover{border-color:#7cc7ff}
+.rzf3-k b{font-size:17px;line-height:1.15}.rzf3-k span{font-size:10.5px;color:#9fb3cf}
+.rzf3 .mid{color:#7cc7ff}
+.rzf3-px{display:flex;flex-direction:column;gap:2px;font-size:12px}.rzf3-px em{font-style:normal;color:#9fb3cf;display:inline-block;min-width:74px}
+.rzf3-act{display:grid;grid-template-columns:1fr 1fr;gap:6px}.rzf3-act .btn{justify-content:center;padding:6px 8px}
+.rzstrip{margin-top:12px;gap:6px!important}
+.rzstrip button{border-top-width:2px!important;padding:6px 10px!important;gap:1px!important}
+.rzstrip .rzst-t{display:flex;justify-content:space-between;align-items:baseline;width:100%;-webkit-line-clamp:unset;min-height:0;display:flex}
+.rzstrip .rzst-t b{font-size:15px}.rzstrip .rzst-t em{font-size:12.5px}
+.rzstrip span.rzn{font-size:11px!important;color:#9fb3cf!important;-webkit-line-clamp:1!important;min-height:0!important}
+.rzall{margin-top:10px!important;padding-top:8px!important}
+@container vw (max-width:860px){.rzmapg{grid-template-columns:minmax(0,1fr)!important}.rzficha .rzf3{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}.rzficha .rzf3-top,.rzficha .rzf3-act{grid-column:1/-1}}
+@container vw (max-width:560px){.rzficha .rzf3{display:flex}}
+.rzr-zm{right:8px;top:8px;gap:5px}.rzr-zm button{width:30px;height:30px;font-size:16px;border-radius:8px}
+.rzmp>*{max-width:1240px;margin-left:auto!important;margin-right:auto!important}.rzsvg{max-height:none}
 </style>
 
 <div class="app">
@@ -2910,10 +2942,11 @@ function rzInsights(ST){
 const rzFormas=()=>(RZ.cfg&&RZ.cfg.formas)||window.RZ_FORMAS||null;
 const RZ_MM=[['escala','Escala do dia'],['prod','Produtividade'],['pot','Potencial'],['ruas','Ruas']];
 const rzProdCor=pr=>pr==null?null:pr>=META?'#22c55e':pr>=45?'#86efac':pr>=35?'#facc15':pr>=25?'#fb923c':'#ef4444';
-function rzMapaHTML(d,ST){
+function rzMapaBar(){const mm=RZ.mm||'escala';return `<div class="rzmm" role="tablist">${RZ_MM.filter(m=>m[0]!=='ruas'||(rzMapa()&&rzFormas())).map(([k,l])=>`<button type="button" class="${mm===k?'on':''}" data-rz="mm" data-m="${k}">${l}</button>`).join('')}</div>`}
+function rzMapaHTML(d,ST,semBarra){
   const mm=RZ.mm||'escala';const F=rzFormas();
   const dia=rzDia(d),it=dia?dia.itens:[],f=rzFeitos(d),quem={},todos={};it.forEach(i=>{if(!quem[i.setor])quem[i.setor]=i.unidade;(todos[i.setor]=todos[i.setor]||[]).push(i.unidade)});
-  const bar=`<div class="rzmm" role="tablist">${RZ_MM.filter(m=>m[0]!=='ruas'||rzMapa()).map(([k,l])=>`<button type="button" class="${mm===k?'on':''}" data-rz="mm" data-m="${k}">${l}</button>`).join('')}</div>`;
+  const bar=semBarra?'':rzMapaBar();
   if(mm==='ruas'&&F&&rzMapa())return bar+rzRuasHTML(d,ST,F,quem,todos,f);
   if(mm==='ruas'||!F){const src=rzMapa();if(!src)return bar+'<p class="note">Mapa não carregado. Importe o pacote do rodízio em “Equipe e faltas”.</p>';
     return bar+`<div class="rzmap" id="rzMap"><img src="${src}" alt="Mapa dos setores com ruas" draggable="false" class="rzs">${RZ.cfg.setores.map(s=>{const p=MAPA_POS[s.codigo];if(!p)return '';const u=quem[s.codigo];
@@ -2929,7 +2962,7 @@ function rzMapaHTML(d,ST){
     return {c,u,fill,op,l2,pr,ok:u&&f[u]}};
   const cells=RZ.cfg.setores.filter(s=>F.paths[String(s.codigo)]).map(s=>Object.assign(cell(s),{s}));
   const tip=x=>{const s=x.s,a=st[x.c];if(x.fora)return `<b>Setor ${x.c}</b> · fora do foco<br>${esc(s.bairros||'')}`.replace(/"/g,'&quot;');return `<b>Setor ${x.c}</b> · ${esc(s.potencial||'')}<br>${esc(s.bairros||'')}<br>${x.u?'Hoje: <b>'+esc((todos[x.c]||[x.u]).map(rzNome).join(' + '))+'</b>'+(x.ok?' ✓':''):'Sem equipe neste dia'}${a?`<br>GeoCall: ${pct(a.a.prod,a.a.den)}% em ${fmt(a.a.den)} OS`:''}`.replace(/"/g,'&quot;')};
-  const svg=`<svg class="rzsvg" viewBox="${focoOn()?rzVBfoco().map(x=>x.toFixed(1)).join(' '):'0 0 '+F.w+' '+F.h}" role="img" aria-label="Mapa esquemático dos setores">
+  const svg=`<svg class="rzsvg" viewBox="0 0 ${F.w} ${F.h}" role="img" aria-label="Mapa esquemático dos setores">
     <defs><filter id="rzGlow" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="14"/></filter></defs>
     <path d="${F.outline}" fill="rgba(124,199,255,.16)" filter="url(#rzGlow)"/>
     <path d="${F.outline}" fill="#0f2445" stroke="rgba(124,199,255,.45)" stroke-width="2"/>
@@ -2944,10 +2977,12 @@ function rzMapaHTML(d,ST){
   return bar+`<div class="rzmap rzvec" id="rzMap">${svg}</div><div class="rzleg">${leg}${focoOn()?`<span><i style="background:#0c1a33;box-shadow:inset 0 0 0 1px #24406b"></i>fora do foco (${rzFoco().setores.length} setores ativos)</span>`:''}</div>`}
 
 /* mapa de ruas no tema do painel: ruas em tons escuros, setores em foco contornados, zoom e arraste */
-const RZ_AR=1.45;
+let RZ_AR=2;
+function rzSetAR(){const a=innerWidth<640?1.5:2;if(a!==RZ_AR){RZ_AR=a;RZ.vb=null}}
 function rzVBfoco(){const F=rzFormas();if(!F)return [0,0,1600,1600/RZ_AR];const cs=Object.keys(F.paths).filter(c=>emFoco(c));if(!cs.length||cs.length===Object.keys(F.paths).length)return rzClampVB([0,(796-1600/RZ_AR)/2,1600,1600/RZ_AR]);const b=cs.map(c=>rzBBox(F.paths[c]));return rzFitVB([Math.min(...b.map(x=>x[0])),Math.min(...b.map(x=>x[1])),Math.max(...b.map(x=>x[2])),Math.max(...b.map(x=>x[3]))],30)}
 const rzNomesC=u=>{const n=u.map(rzNome).join(' + ').split(' + ');return n.length>2?n[0]+' +'+(n.length-1):n.join(' + ')};
-function rzVB(){const v=RZ.vb;return v&&v.length===4?v:rzVBfoco()}
+function rzVBall(){return rzClampVB([0,(796-1600/RZ_AR)/2,1600,1600/RZ_AR])}
+function rzVB(){const v=RZ.vb;return v&&v.length===4?v:rzVBall()}
 function rzBBox(d){const n=String(d).match(/-?\d+(\.\d+)?/g).map(Number);let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;for(let i=0;i+1<n.length;i+=2){x0=Math.min(x0,n[i]);x1=Math.max(x1,n[i]);y0=Math.min(y0,n[i+1]);y1=Math.max(y1,n[i+1])}return [x0,y0,x1,y1]}
 function rzFitVB(b,pad){const R=RZ_AR;let [x0,y0,x1,y1]=b;x0-=pad;y0-=pad;x1+=pad;y1+=pad;let w=x1-x0,h=y1-y0;if(w/h>R){const nh=w/R;y0-=(nh-h)/2;h=nh}else{const nw=h*R;x0-=(nw-w)/2;w=nw}return rzClampVB([x0,y0,w,h])}
 function rzClampVB(v){let [x,y,w,h]=v;w=Math.max(220,Math.min(1600,w));h=w/RZ_AR;x=Math.max(0,Math.min(1600-w,x));y=h>=796?(796-h)/2:Math.max(0,Math.min(796-h,y));return [x,y,w,h]}
@@ -2959,7 +2994,7 @@ function rzRuasHTML(d,ST,F,quem,todos,f){const src=rzMapa();const vb=rzVB();cons
     if(!foco)return `<g class="rzr-lo" transform="translate(${p[0]} ${p[1]}) scale(${k})"><text>${c}</text></g>`;
     const nm=u?rzNomesC(u):'';
     return `<g class="rzr-lb ${sel?'sel':''}" transform="translate(${p[0]} ${p[1]}) scale(${k})"><rect x="-30" y="-15" width="60" height="26" rx="13"/><text class="n" y="4">${c}${u&&f[u[0]]?' ✓':''}</text>${nm?`<text class="u rzn" y="30">${esc(nm)}</text>`:''}</g>`};
-  return `<div class="rzmap rzvec rzruas ${vb[2]<1599?'zoomed':''}" id="rzMap"><svg class="rzr-svg" id="rzRuas" viewBox="${vb.join(' ')}" role="img" aria-label="Mapa de ruas dos setores">
+  return `<div class="rzmap rzvec rzruas ${vb[2]<1599?'zoomed':''}" id="rzMap"><svg class="rzr-svg" id="rzRuas" style="aspect-ratio:${RZ_AR}" viewBox="${vb.join(' ')}" role="img" aria-label="Mapa de ruas dos setores">
     <defs><filter id="rzDark" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="-.087 -.293 -.030 0 .453  -.096 -.322 -.032 0 .564  -.104 -.350 -.035 0 .717  0 0 0 1 0"/></filter></defs>
     <rect x="-400" y="-600" width="2400" height="2000" fill="#0b1d3a"/>
     <image href="${src}" x="0" y="0" width="1600" height="796" filter="url(#rzDark)" class="rzr-img"/>
@@ -2969,7 +3004,7 @@ function rzRuasHTML(d,ST,F,quem,todos,f){const src=rzMapa();const vb=rzVB();cons
     <g class="rzr-lbs">${cods.map(lbl).join('')}</g></svg>
    <div class="rzr-zm"><button type="button" data-rz="zoom" data-z="in" aria-label="Aproximar">+</button><button type="button" data-rz="zoom" data-z="out" aria-label="Afastar">−</button><button type="button" data-rz="zoom" data-z="reset" aria-label="Enquadrar os setores em foco" title="Enquadrar os setores em foco"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button><button type="button" data-rz="zoom" data-z="all" aria-label="Ver a área inteira" title="Ver a área inteira"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></button></div>
   </div>
-  <div class="rzleg"><span><i class="rzr-lf"></i>setor em foco</span><span><i class="rzr-ls"></i>setor selecionado</span><span><i class="rzr-lo2"></i>fora do foco</span><span class="muted">arraste o mapa e use + e − para ver as ruas</span></div>`}
+  <div class="rzleg"><span><i class="rzr-lf"></i>setor em foco</span><span><i class="rzr-ls"></i>setor selecionado</span><span><i class="rzr-lo2"></i>fora do foco</span><span class="muted">use + e − e arraste para ver as ruas</span></div>`}
 function rzLblK(vb,W){return vb[2]/W*Math.max(.62,Math.min(1,W/800))}
 function rzRuasZoom(el,vb){RZ.vb=rzClampVB(vb);el.classList.toggle('zoomed',RZ.vb[2]<1599);const s=el.querySelector('#rzRuas');if(!s)return;const k=rzLblK(RZ.vb,s.getBoundingClientRect().width||820);s.setAttribute('viewBox',RZ.vb.map(x=>x.toFixed(1)).join(' '));
   s.querySelectorAll('.rzr-lb,.rzr-lo').forEach(g=>{g.setAttribute('transform',g.getAttribute('transform').replace(/scale\([^)]*\)/,'scale('+k.toFixed(4)+')'))})}
@@ -2981,23 +3016,18 @@ function rzRuasBind(root){const box=root.querySelector('.rzruas');if(!box)return
   const end=()=>{drag=null;box.classList.remove('drag')};s.addEventListener('pointerup',end);s.addEventListener('pointercancel',end);
   box.addEventListener('click',ev=>{if(moved){ev.stopPropagation();ev.preventDefault();moved=false}},true);
   s.addEventListener('wheel',ev=>{if(!ev.ctrlKey&&!ev.metaKey)return;ev.preventDefault();const [x,y]=pt(ev);const v=rzVB();const f=ev.deltaY<0?.8:1.25;const w=v[2]*f;rzRuasZoom(box,[x-(x-v[0])*f,y-(y-v[1])*f,w,w/RZ_AR])},{passive:false})}
-function rzFicha(c,d,ST,rows){const s=rzSetor(c);if(!s)return `<div class="rzf-vazia"><b>Toque num setor do mapa</b><span>Veja bairros, quem está lá e como o setor rende no GeoCall.</span></div>`;
+function rzFicha(c,d,ST,rows){const s=rzSetor(c);if(!s)return `<div class="rzf-vazia"><b>Toque num setor do mapa</b></div>`;
   const dia=rzDia(d),its=dia?dia.itens.filter(i=>+i.setor===+c):[];let fim=d,k=0;while(k<9){fim=RM.proximoDiaUtil(RM.addDias(fim,1),rzFer());k++}
-  const todos=rzEscalaAte(fim);const prox=todos.filter(x=>x.data>d&&x.itens.some(i=>+i.setor===+c)).slice(0,3);const ant=todos.filter(x=>x.data<d&&x.itens.some(i=>+i.setor===+c)).slice(-3).reverse();
-  const lin=x=>`<li><span>${rzFmt(x.data)}</span><b class="rzn">${esc(x.itens.filter(i=>+i.setor===+c).map(i=>rzNome(i.unidade)).join(' + '))}</b></li>`;
+  const prox=rzEscalaAte(fim).filter(x=>x.data>d&&x.itens.some(i=>+i.setor===+c)).slice(0,2);
   const st=ST.setores.find(x=>x.sf===String(c));const pr=st&&st.a.den?st.a.prod/st.a.den*100:null;
   const pos=agg((rows||[]).filter(r=>!r.man&&String(r.sf)===String(c)&&r.tipo==='POS'));const dd=distDe(c);
-  const best=st?Object.entries(ST.cx).filter(([k,a])=>k.endsWith('|'+c)&&a.den>=8).map(([k,a])=>({eq:k.split('|')[0],pr:a.prod/a.den*100,n:a.den})).sort((x,y)=>y.pr-x.pr).slice(0,3):[];
-  const cor=v=>v==null?'':v>=META?'up':v>=35?'mid':'dn';
-  return `<div class="rzf rzf2" style="--t:${rzCol(s.potencial)}">
-   <div class="rzf-top"><span class="rzf-cod rzs">${s.codigo}</span><div class="rzf-id">${dd?paTag(dd).replace('>Alto<','>Renda alta<').replace('>Médio<','>Renda média<').replace('>Baixo<','>Renda baixa<'):''}<small>${dd?esc(dd)+' · ':''}${emFoco(c)?'em foco':'fora do foco'} · peso ${s.peso}</small></div></div>
-   <div class="rzf-sec"><span class="rzl">Bairros</span><div class="rzbai rzs">${String(s.bairros||'').split(' / ').map(b=>`<span>${esc(b)}</span>`).join('')}</div></div>
-   <div class="rzf-sec"><span class="rzl">${rzFmt(d,true)}</span>${its.length?`<b class="rzf-quem rzn">${esc(its.map(i=>rzNome(i.unidade)).join(' + '))}</b>${its.every(i=>rzFeitos(d)[i.unidade])?' <span class="st p">programado</span>':''}`:'<span class="muted">Sem equipe neste dia</span>'}</div>
-   ${st?`<div class="rzf-k2"><button type="button" data-rz="drill" data-sf="${c}"><b class="${cor(pr)}">${pct(st.a.prod,st.a.den,0)}%</b><span>produtividade</span></button><button type="button" data-rz="drill" data-sf="${c}"><b>${fmt(st.a.rec)}</b><span>OS no período</span></button>
-     <div><b class="${st.fechP>=50?'dn':st.fechP>=45?'mid':'up'}">${st.fechP.toFixed(0)}%</b><span>imóvel fechado</span></div><div><b class="${cor(pos.den>=10?pos.pr:null)}">${pos.den>=10?pct(pos.prod,pos.den,0)+'%':'—'}</b><span>negociação</span></div></div>`:'<p class="muted small">Sem OS deste setor no período.</p>'}
-   ${best.length?`<div class="rzf-sec"><span class="rzl">Quem mais rende aqui</span><div class="rzf-best">${best.map(b=>`<button type="button" data-rz="drill" data-sf="${c}" data-eq="${esc(b.eq)}"><span class="rzn">${esc(nomeDe(b.eq))}</span><b>${b.pr.toFixed(0)}%</b><em>${b.n} OS</em></button>`).join('')}</div></div>`:''}
-   <div class="rzf-cols"><div><span class="rzl">Próximas visitas</span>${prox.length?`<ul class="rzvis">${prox.map(lin).join('')}</ul>`:'<span class="muted">—</span>'}</div><div><span class="rzl">Últimas visitas</span>${ant.length?`<ul class="rzvis">${ant.map(lin).join('')}</ul>`:'<span class="muted">—</span>'}</div></div>
-   <div class="rzf-act">${rzMapa()&&rzFormas()?`<button type="button" class="btn sm" data-rz="zoomSetor" data-c="${c}"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M11 8v6M8 11h6"/></svg> Ampliar as ruas do setor</button>`:''}${st?`<button type="button" class="btn ghost sm" data-rz="drill" data-sf="${c}">Ver as ${fmt(st.a.rec)} OS do setor →</button>`:''}</div></div>`}
+  const cor=v=>v==null?'':v>=META?'up':v>=35?'mid':'dn';const ren=dd?paTag(dd).replace('>Alto<','>Renda alta<').replace('>Médio<','>Renda média<').replace('>Baixo<','>Renda baixa<'):'';
+  return `<div class="rzf rzf3">
+   <div class="rzf3-top"><span class="rzf3-cod rzs">${s.codigo}</span><div><b class="rzf3-bai rzs">${esc(String(s.bairros||'').split(' / ').slice(0,3).join(' · '))}</b><small>${dd?esc(dd)+' · ':''}${emFoco(c)?'em foco':'fora do foco'}</small></div>${ren}</div>
+   <div class="rzf3-hoje"><span class="rzl">${rzFmt(d,true)}</span><b class="rzn">${its.length?esc(its.map(i=>rzNome(i.unidade)).join(' + ')):'<span class="muted">sem equipe</span>'}</b></div>
+   ${st?`<div class="rzf3-k"><button type="button" data-rz="drill" data-sf="${c}"><b class="${cor(pr)}">${pct(st.a.prod,st.a.den,0)}%</b><span>produtividade</span></button><button type="button" data-rz="drill" data-sf="${c}"><b>${fmt(st.a.rec)}</b><span>OS</span></button><div><b class="${st.fechP>=50?'dn':st.fechP>=45?'mid':'up'}">${st.fechP.toFixed(0)}%</b><span>fechado</span></div><div><b class="${cor(pos.den>=10?pos.pr:null)}">${pos.den>=10?pct(pos.prod,pos.den,0)+'%':'—'}</b><span>negociação</span></div></div>`:'<p class="muted small">Sem OS deste setor no período.</p>'}
+   ${prox.length?`<div class="rzf3-px"><span class="rzl">Próximas visitas</span>${prox.map(x=>`<span><em>${rzFmt(x.data)}</em> <b class="rzn">${esc(x.itens.filter(i=>+i.setor===+c).map(i=>rzNome(i.unidade)).join(' + '))}</b></span>`).join('')}</div>`:''}
+   <div class="rzf3-act">${rzMapa()&&rzFormas()?`<button type="button" class="btn sm" data-rz="zoomSetor" data-c="${c}">Ampliar ruas</button>`:''}${st?`<button type="button" class="btn ghost sm" data-rz="drill" data-sf="${c}">Ver OS →</button>`:''}</div></div>`}
 
 /* ---------- telas ---------- */
 function rzDayBar(sub){const d=RZ.dia,h=rzHoje();return `<div class="rzday"><button type="button" class="btn ghost sm" data-rz="dia" data-dir="-1" aria-label="Dia anterior">‹</button><div><b>${rzFmt(d,true)}${d===h?' · hoje':''}</b><small>${sub}</small></div><button type="button" class="btn ghost sm" data-rz="dia" data-dir="1" aria-label="Próximo dia">›</button>${d!==rzDiaInicial()?'<button type="button" class="btn ghost sm" data-rz="hojeBtn">Hoje</button>':''}</div>`}
@@ -3158,20 +3188,19 @@ function rzTelaHoje(rows,ST){const d=RZ.dia;const se=rzSemExp();if(se)return rzD
    </div>`;
   return h}
 
-function rzTelaMapa(rows,ST){const d=RZ.dia;const se=rzSemExp();if(se)return rzDayBar('Toque num setor')+se;
+function rzTelaMapa(rows,ST){const d=RZ.dia;const se=rzSemExp();if(se)return rzDayBar('Toque num setor')+se;rzSetAR();
   const dia=rzDia(d),todos={};(dia?dia.itens:[]).forEach(i=>(todos[i.setor]=todos[i.setor]||[]).push(i.unidade));
   const st={};(ST?ST.setores:[]).forEach(x=>st[x.sf]=x);
   const lista=focoOn()?focoRanking().map(x=>x.c):RZ.cfg.setores.filter(s=>todos[s.codigo]).map(s=>+s.codigo);
   if(!RZ.sel||!rzSetor(RZ.sel))RZ.sel=lista[0]||null;
   const nf=RZ.cfg.setores.length-lista.length;
-  const strip=`<div class="rzstrip" style="--n:${Math.min(lista.length,8)}">${lista.map(c=>{const s=rzSetor(c)||{},a=st[String(c)],pr=a&&a.a.den>=10?a.a.prod/a.a.den*100:null,u=todos[c];
-     return `<button type="button" class="${RZ.sel===+c?'sel':''}" data-rz="setor" data-c="${c}" style="--t:${rzCol(s.potencial)}"><b class="rzs">${c}</b><span class="rzn">${u?esc(rzNomesC(u)):'sem equipe'}</span><em class="${pr==null?'muted':pr>=META?'up':pr>=35?'mid':'lo'}">${pr==null?'—':pr.toFixed(0)+'%'}</em></button>`}).join('')}</div>`;
+  const strip=`<div class="rzstrip" style="--n:${Math.min(lista.length,8)}">${lista.map(c=>{const a=st[String(c)],pr=a&&a.a.den>=10?a.a.prod/a.a.den*100:null,u=todos[c];
+     return `<button type="button" class="${RZ.sel===+c?'sel':''}" data-rz="setor" data-c="${c}"><span class="rzst-t"><b class="rzs">${c}</b><em class="${pr==null?'muted':pr>=META?'up':pr>=35?'mid':'lo'}">${pr==null?'—':pr.toFixed(0)+'%'}</em></span><span class="rzn">${u?esc(rzNomesC(u)):'sem equipe'}</span></button>`}).join('')}</div>`;
   const idx=RZ.cfg.setores.slice().sort((a,b)=>a.codigo-b.codigo).map(s=>{const u=todos[s.codigo];return `<button type="button" class="${RZ.sel===+s.codigo?'sel':''} ${emFoco(s.codigo)?'':'fora'}" data-rz="setor" data-c="${s.codigo}" data-b="${esc(rzNorm(s.codigo+' '+s.bairros))}" style="--t:${rzCol(s.potencial)}">${rzChip(s.codigo)}<span class="rzs">${esc(s.bairros)}</span><em class="${u?'rzn':'muted'}">${u?esc(u.map(rzNome).join(' + ')):emFoco(s.codigo)?'—':'fora do foco'}</em></button>`}).join('');
-  return rzDayBar('Toque num setor do mapa')+`<div class="panel rzmp"><div class="rzmp-h"><h3>São Mateus · ${focoOn()?lista.length+' setores em foco':RZ.cfg.setores.length+' setores'} <small>${dia?dia.itens.length:0} pessoas em campo neste dia</small></h3>${''}</div>
-   <div class="rzmapg"><div class="rzmapc">${rzMapaHTML(d,ST)}
-    <div class="rzstrip-h"><span class="rzl">${focoOn()?'Setores em foco · do melhor para o pior':'Setores com equipe neste dia'}</span><span class="muted small">% = produtividade no período</span></div>${strip}</div>
-   <div class="rzficha">${rzFicha(RZ.sel,d,ST,rows)}</div></div>
-   <details class="rzall" ${RZ.q?'open':''}><summary>Ver todos os setores e buscar bairro <span class="muted">${RZ.cfg.setores.length} setores${focoOn()&&nf>0?' · '+nf+' fora do foco':''}</span></summary>
+  return rzDayBar('Toque num setor do mapa')+`<div class="panel rzmp"><div class="rzmp-h"><h3>São Mateus · ${focoOn()?lista.length+' setores em foco':RZ.cfg.setores.length+' setores'} <small>${dia?dia.itens.length:0} em campo</small></h3>${rzMapaBar()}</div>
+   <div class="rzmapg"><div class="rzmapc">${rzMapaHTML(d,ST,true)}</div><div class="rzficha">${rzFicha(RZ.sel,d,ST,rows)}</div></div>
+   ${strip}
+   <details class="rzall" ${RZ.q?'open':''}><summary>Todos os setores e busca por bairro <span class="muted">${RZ.cfg.setores.length} setores${focoOn()&&nf>0?' · '+nf+' fora do foco':''}</span></summary>
     <input type="search" id="rzBusca" class="rzin" placeholder="Buscar bairro (ex.: Iguatemi)" value="${esc(RZ.q)}" autocomplete="off">
     <div class="rzidx">${idx}</div><p class="muted" id="rzBv" hidden>Nenhum setor com esse bairro.</p></details></div>`}
 
@@ -3269,7 +3298,7 @@ function rzBind(v){const root=v.querySelector('.rz');if(!root)return;rzRuasBind(
       else if(a==='rrCopiar'){const t=rrWhats();try{await navigator.clipboard.writeText(t);toast('Escala de religação copiada.')}catch(e){toast('Não foi possível copiar')}}
       else if(a==='focoReini'){rzFoco().inicio=RZ.dia;rzSave('Novo giro começa em '+rzFmt(RZ.dia,true))}
       else if(a==='mm'){RZ.mm=b.dataset.m;rzRerender()}
-      else if(a==='zoom'){const box=root.querySelector('.rzruas');if(!box)return;const v=rzVB(),z=b.dataset.z;if(z==='reset')rzRuasZoom(box,rzVBfoco());else if(z==='all')rzRuasZoom(box,[0,(796-1600/RZ_AR)/2,1600,1600/RZ_AR]);else{const f=z==='in'?.6:1/.6,cx=v[0]+v[2]/2,cy=v[1]+v[3]/2,w=v[2]*f;rzRuasZoom(box,[cx-w/2,cy-w/RZ_AR/2,w,w/RZ_AR])}}
+      else if(a==='zoom'){const box=root.querySelector('.rzruas');if(!box)return;const v=rzVB(),z=b.dataset.z;if(z==='reset')rzRuasZoom(box,rzVBfoco());else if(z==='all')rzRuasZoom(box,rzVBall());else{const f=z==='in'?.6:1/.6,cx=v[0]+v[2]/2,cy=v[1]+v[3]/2,w=v[2]*f;rzRuasZoom(box,[cx-w/2,cy-w/RZ_AR/2,w,w/RZ_AR])}}
       else if(a==='zoomSetor'){const F=rzFormas(),c=String(b.dataset.c);if(!F||!F.paths[c])return;RZ.sel=+c;RZ.mm='ruas';RZ.vb=rzFitVB(rzBBox(F.paths[c]),40);rzRerender();const m=document.querySelector('#rzMap');if(m){const r=m.getBoundingClientRect();if(r.top<0||r.top>innerHeight*.5)m.scrollIntoView({behavior:'smooth',block:'start'})}}
       else if(a==='fechar'){RZ.sel=null;rzRerender()}
       else if(a==='dia'){const dir=+b.dataset.dir;let n=RM.addDias(d,dir),g=0;while(!RM.ehDiaUtil(n,rzFer())&&g++<30)n=RM.addDias(n,dir);RZ.dia=n;RZ.confirm=null;rzRerender()}
