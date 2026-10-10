@@ -932,7 +932,7 @@ td .rp,td .rn{font-weight:500;font-size:11.5px;letter-spacing:.01em}
 .sx-out{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .sx-out>div{background:rgba(8,20,42,.5);border:1px solid var(--line);border-radius:9px;padding:10px;display:flex;flex-direction:column;gap:2px}
 .sx-out b{font-size:22px}.sx-out span{font-size:11.5px;color:var(--mut);line-height:1.3}
-.sx-plan{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}@container vw (max-width:1250px){.sx-plan{grid-template-columns:repeat(2,minmax(0,1fr))}.sx-plan>div:last-child{grid-column:1/-1}}@container vw (max-width:620px){.sx-plan{grid-template-columns:1fr}}
+.sx-plan{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}@container vw (max-width:1250px){.sx-plan{grid-template-columns:repeat(2,minmax(0,1fr))}}@container vw (max-width:620px){.sx-plan{grid-template-columns:1fr}}
 .sx-plan>div{position:relative;padding:58px 16px 16px 16px;border-radius:12px;background:linear-gradient(160deg,#10284d,#0b1d3a);border:1px solid var(--line2)}
 .sx-plan span{position:absolute;left:16px;top:16px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#1e1145;background:#c4b5fd}
 .sx-plan b{font-size:14px}.sx-plan p{margin:5px 0 0;font-size:12.5px;color:#9fb3cf;line-height:1.5}.sx-plan p b{font-size:12.5px;color:#e8f0fb}
@@ -2678,7 +2678,7 @@ function vOS(v,rows){
   const D=DRILL;
   let OSS=D.oss?new Set(D.oss):null;
   let list=(D.all&&D.day?allSheetRows().concat(AC_ROWS).filter(r=>r.day===D.day):rows).filter(r=>(!D.motOut||(!isProd(r.cat)&&!['IMOVEL FECHADO, REPROGRAMAR ORDEM','IMOVEL FECHADO, ORDEM ENCERRADA','CLIENTE NAO PERMITIU EXECUCAO DO SERVICO','NEGOCIACAO INFRUTIFERA'].includes(norm(r.res))))&&(!D.sus||r.sus)&&(!D.rr||isRR(r))&&(!D.nprod||!isProd(r.cat))&&(!OSS||OSS.has(r.os))&&(!D.cats||D.cats.includes(r.cat))&&(!D.res||r.res===D.res)&&(!D.tipo||r.tipo===D.tipo)&&(!D.os||r.os===D.os)&&(!D.eqs||D.eqs.includes(r.eq))&&(!D.day||r.day===D.day)&&(D.dow==null||new Date(r.day+'T12:00').getDay()===D.dow)&&(!D.dows||D.dows.includes(new Date(r.day+'T12:00').getDay()))&&(!D.notPos||r.tipo!=='POS')&&(!D.bai||r.bai===D.bai)&&(!D.sf||r.sf===D.sf)&&(!D.fech||/^IMOVEL FECHADO/.test(norm(r.res)))&&(!D.naoExec||(!isProd(r.cat)&&r.cat!=='FIMDIA')));
-  const manL=list.filter(r=>r.man);list=list.filter(r=>!r.man);
+  const manL=D.noMan?[]:list.filter(r=>r.man);list=list.filter(r=>!r.man);
   const q=norm(D.q||'');
   if(q)list=list.filter(r=>norm([r.os,r.pde,r.bai,r.sf,r.end,r.eq,r.res,r.nota,equipeDe(r.eq)].join(' ')).includes(q));
   if(D.byOs){const last=new Map();list.forEach(r=>{if(!last.has(r.os)||r.fim>last.get(r.os))last.set(r.os,r.fim)});list.sort((a,b)=>last.get(b.os)-last.get(a.os)||(a.os<b.os?-1:a.os>b.os?1:b.fim-a.fim))}else list.sort((a,b)=>b.fim-a.fim);
@@ -3277,8 +3277,9 @@ function areasPanelHTML(rows){const {S,B}=areaStats(rows);
 let SX_SIM=null;
 function vSexta(v,rows){
   const W=rows.filter(r=>r.cat!=='FIMDIA');const A=agg(W);
-  const F=W.filter(r=>dowOf(r)===5),NF=W.filter(r=>{const d=dowOf(r);return d>=1&&d<=4});
-  const aF=agg(F),aN=agg(NF),aO=agg(W.filter(r=>dowOf(r)!==5));const nSx=new Set(F.map(r=>r.day)).size;
+  /* a sexta é analisada só pela rotina de negociação: ações especiais ficam fora deste diagnóstico (continuam contando na meta do mês) */
+  const F=W.filter(r=>dowOf(r)===5&&!r.man),NF=W.filter(r=>{const d=dowOf(r);return d>=1&&d<=4&&!r.man});
+  const aF=agg(F),aN=agg(NF),aO=agg(W.filter(r=>!(dowOf(r)===5&&!r.man)));const nSx=new Set(F.map(r=>r.day)).size;
   const posF=agg(F.filter(r=>r.tipo==='POS')),posN=agg(NF.filter(r=>r.tipo==='POS'));
   const fechF=F.filter(r=>!r.man&&isFech(r)).length;
   if(!F.length){v.innerHTML=`<div class="panel empty"><h3>Sem sextas-feiras no período</h3><p>Escolha um período com sextas-feiras para ver o plano.</p></div>`;return}
@@ -3292,13 +3293,12 @@ function vSexta(v,rows){
   // composição da sexta
   const cnt=f=>F.filter(f).length;
   const comp=[['Pagamento via POS',r=>r.cat==='PAG_POS','{"cats":["PAG_POS"]}',COL.pag],['Faturas pagas apresentadas',r=>r.cat==='PAG_FAT','{"cats":["PAG_FAT"]}',COL.fat],
-    ['Ações especiais',r=>r.man&&r.cat==='ACAO','{"cats":["ACAO"]}','#a78bfa'],['Outros produtivos',r=>!r.man&&isProd(r.cat)&&!['PAG_POS','PAG_FAT'].includes(r.cat),'{"prod":1}','#34d399'],
+    ['Outros produtivos',r=>!r.man&&isProd(r.cat)&&!['PAG_POS','PAG_FAT'].includes(r.cat),'{"prod":1}','#34d399'],
     ['Negociação infrutífera',r=>r.cat==='INFRUT','{"cats":["INFRUT"]}','#fbbf24'],['Imóvel fechado',r=>!r.man&&isFech(r),'{"fech":1}','#f87171'],
     ['Outros motivos',r=>!isProd(r.cat)&&r.cat!=='INFRUT'&&!isFech(r),'{"motOut":1}','#94a3b8']].map(([l,f,dr,c])=>({l,n:cnt(f),dr,c})).filter(x=>x.n);
   const mxc=Math.max(1,...comp.map(x=>x.n));
   // ações especiais em sextas
-  const acF=F.filter(r=>r.man),aAc=agg(acF);
-  const best3=sx.slice(0,3),worst2=sx.length>=5?sx.slice(-2).reverse():[];
+    const best3=sx.slice(0,3),worst2=sx.length>=5?sx.slice(-2).reverse():[];
   const cur=aF.pr;if(SX_SIM==null||SX_SIM.k!==F.length)SX_SIM={k:F.length,x:Math.round(cur)};
   const kp=(lab,val,sub,cls,attr)=>`<button type="button" class="kpi ${cls||''}" ${attr||''}><span class="lab">${lab}</span><span class="val">${val}</span><span class="sub">${sub}</span></button>`;
   const ppF=x=>(x>=0?'+':'−')+Math.abs(x).toFixed(1).replace('.',',')+' p.p.';
@@ -3322,21 +3322,20 @@ function vSexta(v,rows){
      <p class="sx-note">Das 10h às 16h, <b>${pct(mid.prod,mid.den,0)}%</b> das negociações viram pagamento. Fora dessa janela, <b>${pct(fora.prod,fora.den,0)}%</b>.</p></div>
     <div class="panel sx-sim"><h3>Simulador da meta</h3><p class="note">Arraste para ver o mês se a sexta render mais.</p>
      <label for="sxR" class="sx-lab">Produtividade da sexta: <b id="sxV">${SX_SIM.x}%</b></label><input type="range" id="sxR" min="0" max="90" step="1" value="${SX_SIM.x}">
-     <div class="sx-pre"><button type="button" class="cptab" data-sxp="${Math.round(cur)}">Hoje ${Math.round(cur)}%</button><button type="button" class="cptab" data-sxp="${Math.round(aN.pr)}">Igual seg–qui ${Math.round(aN.pr)}%</button>${acF.length&&aAc.den>=10?`<button type="button" class="cptab" data-sxp="${Math.round(aAc.pr)}">Ação especial ${Math.round(aAc.pr)}%</button>`:''}<button type="button" class="cptab" data-sxp="${META}">${META}%</button></div>
+     <div class="sx-pre"><button type="button" class="cptab" data-sxp="${Math.round(cur)}">Hoje ${Math.round(cur)}%</button><button type="button" class="cptab" data-sxp="${Math.round(aN.pr)}">Igual seg–qui ${Math.round(aN.pr)}%</button><button type="button" class="cptab" data-sxp="${META}">${META}%</button></div>
      <div class="sx-out"><div><b id="sxM">—</b><span>produtividade do mês</span></div><div><b id="sxG">—</b><span>produtivos a mais por sexta</span></div><div><b>${need==null?'—':need>100?'—':Math.max(0,need).toFixed(0)+'%'}</b><span>${need>100?'só a sexta não fecha a meta':need<=cur?'meta já garantida':'a sexta precisa para o mês bater '+META+'%'}</span></div></div></div></div>
    <div class="panel"><h3>Plano para a sexta-feira <small>proposta para a diretoria</small></h3><div class="sx-plan">
     <div><span>1</span><b>Rota pelos setores que pagam</b><p>Negociar primeiro em <b>${best3.map(x=>x.k).join(', ')}</b> (${best3.map(x=>pc0(x.pPr)).join(' · ')} de conversão). ${worst2.length?`Deixar <b>${worst2.map(x=>x.k).join(' e ')}</b> para os dias de corte: lá a negociação rende ${worst2.map(x=>pc0(x.pPr)).join(' e ')} e o imóvel fechado chega a ${pc0(Math.max(...worst2.map(x=>x.fechP)))}.`:''}</p></div>
     <div><span>2</span><b>Negociar das 10h às 16h</b><p>É a faixa em que a negociação mais vira pagamento: ${pct(mid.prod,mid.den,0)}% de conversão, contra ${pct(fora.prod,fora.den,0)}% fora da janela. Antes das 10h, programar religações, restabelecimentos e vistorias pendentes da semana.</p></div>
-    <div><span>3</span><b>Sexta de ação especial</b><p>${acF.length&&aAc.den>=10?`A ação especial feita em sexta chegou a <b>${pct(aAc.prod,aAc.den,0)}%</b>.`:'A ação de leitura de 02/10 chegou a 69%.'} Reservar parte da equipe para leitura, atualização cadastral e fiscalização, que contam na meta e não dependem de corte.</p></div>
-    <div><span>4</span><b>Negociar quem já foi avisado</b><p>Usar a sexta para voltar às OS de corte da semana com imóvel fechado ou cliente que pediu prazo, em vez de abrir ordens novas. O cliente já foi visitado e conhece o débito.</p></div>
-    <div><span>5</span><b>Indicador próprio para a sexta</b><p>Acompanhar a meta de ${META}% nos dias de corte (hoje ${pct(aN.prod,aN.den,0)}%) e a sexta pela conversão das negociações (hoje ${posF.den?pct(posF.prod,posF.den,0):'—'}%), sem mudar o cálculo oficial. A diretoria passa a ver o que a equipe controla.</p></div>
+    <div><span>3</span><b>Negociar quem já foi avisado</b><p>Usar a sexta para voltar às OS de corte da semana com imóvel fechado ou cliente que pediu prazo, em vez de abrir ordens novas. O cliente já foi visitado e conhece o débito.</p></div>
+    <div><span>4</span><b>Indicador próprio para a sexta</b><p>Acompanhar a meta de ${META}% nos dias de corte (hoje ${pct(aN.prod,aN.den,0)}%) e a sexta pela conversão das negociações (hoje ${posF.den?pct(posF.prod,posF.den,0):'—'}%), sem mudar o cálculo oficial. A diretoria passa a ver o que a equipe controla.</p></div>
    </div></div>`;
   const upd=x=>{SX_SIM.x=x;const xx=x===Math.round(cur)?cur:x;const m=aF.den?(A.prod-aF.prod+xx/100*aF.den)/A.den*100:A.pr;const g=nSx?(xx-cur)/100*aF.den/nSx:0;
     $('#sxV').textContent=x+'%';const mm=$('#sxM');mm.textContent=m.toFixed(1).replace('.',',')+'%';mm.className=m>=META?'up':'dn';$('#sxG').textContent=(g>=0?'+':'−')+fmt(Math.abs(Math.round(g)))};
   $('#sxR').oninput=e=>upd(+e.target.value);upd(SX_SIM.x);
   v.querySelectorAll('[data-sxp]').forEach(b=>b.onclick=()=>{$('#sxR').value=b.dataset.sxp;upd(+b.dataset.sxp)});
-  v.querySelectorAll('[data-sxc]').forEach(b=>b.onclick=()=>{const o=JSON.parse(b.dataset.sxc);drill(Object.assign({dow:5,label:'Sextas · '+b.querySelector('span').textContent},o.cats?{cats:o.cats}:{},o.prod?{cats:PROD_CATS.filter(c=>c!=='PAG_POS'&&c!=='PAG_FAT')}:{},o.fech?{fech:1}:{},o.motOut?{motOut:1}:{}))});
-  v.querySelectorAll('[data-sxd]').forEach(b=>b.onclick=()=>{const k=b.dataset.sxd;drill(k==='14'?{dows:[1,2,3,4],label:'Segunda a quinta'}:k==='pos'?{dow:5,tipo:'POS',label:'Sextas · negociações'}:k==='fech'?{dow:5,fech:1,label:'Sextas · imóvel fechado'}:{dow:5,label:'Sextas-feiras'})});
+  v.querySelectorAll('[data-sxc]').forEach(b=>b.onclick=()=>{const o=JSON.parse(b.dataset.sxc);drill(Object.assign({dow:5,noMan:1,label:'Sextas · '+b.querySelector('span').textContent},o.cats?{cats:o.cats}:{},o.prod?{cats:PROD_CATS.filter(c=>c!=='PAG_POS'&&c!=='PAG_FAT')}:{},o.fech?{fech:1}:{},o.motOut?{motOut:1}:{}))});
+  v.querySelectorAll('[data-sxd]').forEach(b=>b.onclick=()=>{const k=b.dataset.sxd;drill(Object.assign({noMan:1},k==='14'?{dows:[1,2,3,4],label:'Segunda a quinta'}:k==='pos'?{dow:5,tipo:'POS',label:'Sextas · negociações'}:k==='fech'?{dow:5,fech:1,label:'Sextas · imóvel fechado'}:{dow:5,label:'Sextas-feiras'}))});
   bindAreas(v,true);
 }
 
