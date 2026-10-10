@@ -895,6 +895,58 @@ td .rp,td .rn{font-weight:500;font-size:11.5px;letter-spacing:.01em}
 .tl-rt tr.sus td{background:rgba(239,68,68,.07)}.tl-rt tr.sus td:first-child{box-shadow:inset 3px 0 0 #f87171}
 .tl-tr{font-size:11px;font-weight:600;color:#c4b5fd;background:rgba(167,139,250,.12);border-radius:5px;padding:1px 6px}.tl-tr.bad{color:#fca5a5;background:rgba(239,68,68,.14)}
 .tl-rt.stack td:first-child{display:none}.tl-rt.stack .rt-sus{text-align:right}
+
+/* áreas: melhores setores e bairros */
+.bt-ok{--bt:#22c55e}.bt-mid{--bt:#7cc7ff}.bt-bad{--bt:#f87171}
+.pa{display:inline-flex;align-items:center;justify-content:center;min-width:52px;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;border:1px solid var(--line2);color:var(--mut);white-space:nowrap}
+.pa-a{color:#86efac;border-color:rgba(34,197,94,.45);background:rgba(34,197,94,.1)}.pa-m{color:#bae6fd;border-color:rgba(124,199,255,.4);background:rgba(124,199,255,.08)}.pa-b{color:#fcd34d;border-color:rgba(245,183,59,.45);background:rgba(245,183,59,.08)}
+.ar-l{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.ar-l>button{display:grid;grid-template-columns:34px minmax(0,1fr) auto 108px;gap:10px;align-items:center;text-align:left;color:inherit;cursor:pointer;background:rgba(8,20,42,.45);border:1px solid var(--line);border-left:3px solid var(--bt);border-radius:9px;padding:8px 10px}
+.ar-l>button:hover{border-color:var(--line2);background:#0f2547}
+.ar-p{font-weight:700;color:#7cc7ff;font-size:13px}
+.ar-n{display:flex;flex-direction:column;min-width:0}.ar-n b{font-size:13.5px}.ar-n small{color:var(--mut);font-size:11.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ar-m{display:flex;flex-wrap:wrap;gap:2px 12px;font-size:11.5px;color:#9fb3cf;margin-top:2px}
+.ar-s{display:flex;align-items:center;gap:8px}.ar-sb{position:relative;flex:1 1 auto;height:7px;border-radius:4px;background:#13305a;overflow:hidden}.ar-sb i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:linear-gradient(90deg,#2f86f6,#7cc7ff)}.ar-s b{font-size:15px;min-width:24px;text-align:right}
+.ar-rec{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:4px 0 16px}
+.ar-rec>*{display:flex;flex-direction:column;gap:3px;text-align:left;color:inherit;padding:12px 14px;border-radius:10px;background:rgba(8,20,42,.45);border:1px solid var(--line);border-top:3px solid var(--bt,#a78bfa)}
+.ar-rec span{font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}.ar-rec b{font-size:18px}.ar-rec small{color:#9fb3cf;font-size:12px}
+.ar-rec .bt-sx{cursor:pointer;--bt:#a78bfa}.ar-rec .bt-sx:hover{background:#0f2547}.ar-rec .bt-sx small{color:#c4b5fd}
+.pa-t{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:8px;margin-top:8px}
+.pa-t>div{display:grid;grid-template-columns:minmax(120px,1fr) auto minmax(90px,1fr) auto;gap:10px;align-items:center;padding:8px 10px;border-radius:9px;background:rgba(8,20,42,.45);border:1px solid var(--line)}
+.pa-d{display:flex;flex-direction:column;min-width:0}.pa-d b{font-size:13px}.pa-d small{color:var(--mut);font-size:11px}
+.pa-r{display:flex;flex-direction:column;gap:3px}.pa-r b{font-size:12.5px}
+.pa-bar{position:relative;display:inline-block;width:100%;height:7px;border-radius:4px;background:#13305a;vertical-align:middle}.pa-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:#34d399}.pa-bar s{position:absolute;top:-3px;bottom:-3px;width:2px;background:#ef4444;text-decoration:none}
+.pa-f{display:flex;flex-direction:column;text-align:right}.pa-f b{font-size:14px}.pa-f small{color:var(--mut);font-size:10.5px;white-space:nowrap}.pa-d b{white-space:nowrap}
+.pa-leg{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:11.5px;color:var(--mut);margin:8px 0 0}.pa-leg .pa-bar{width:34px}
+@container vw (max-width:900px){.ar-rec{grid-template-columns:1fr}}
+@container vw (max-width:520px){.ar-l>button{grid-template-columns:26px minmax(0,1fr) auto;}.ar-s{grid-column:2/-1}.pa-t{grid-template-columns:1fr}.pa-t>div{grid-template-columns:minmax(0,1fr) auto}.pa-r,.pa-f{grid-column:auto}.pa-f{text-align:left}}
+/* plano sexta-feira */
+.sx-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;margin-bottom:12px;background:linear-gradient(135deg,#132f5c,#0d2244 60%,#1b1f4d);border-color:var(--line2)}
+.sx-hero h3{font-size:20px;margin:6px 0 6px}.sx-hero p{margin:0;color:#b8c8e0;font-size:13.5px;line-height:1.5;max-width:760px}
+.sx-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#c4b5fd;background:rgba(167,139,250,.14);border:1px solid rgba(167,139,250,.4);border-radius:999px;padding:2px 10px}
+.sx-big{display:flex;flex-direction:column;align-items:flex-end;text-align:right}.sx-big b{font-size:44px;line-height:1}.sx-big span{font-size:12.5px;color:#c9d6ea}.sx-big em{font-style:normal;font-size:12px;color:var(--mut)}
+.sx-note{font-size:12.5px;color:#9fb3cf;margin:10px 0 0}
+.sx-sim h3{margin-bottom:2px}.sx-lab{display:block;font-size:13px;margin:10px 0 4px}.sx-lab b{color:#c4b5fd;font-size:15px}
+.sx-sim input[type=range]{width:100%;accent-color:#a78bfa}
+.sx-pre{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}
+.sx-out{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.sx-out>div{background:rgba(8,20,42,.5);border:1px solid var(--line);border-radius:9px;padding:10px;display:flex;flex-direction:column;gap:2px}
+.sx-out b{font-size:22px}.sx-out span{font-size:11.5px;color:var(--mut);line-height:1.3}
+.sx-plan{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}@container vw (max-width:1250px){.sx-plan{grid-template-columns:repeat(2,minmax(0,1fr))}.sx-plan>div:last-child{grid-column:1/-1}}@container vw (max-width:620px){.sx-plan{grid-template-columns:1fr}}
+.sx-plan>div{position:relative;padding:58px 16px 16px 16px;border-radius:12px;background:linear-gradient(160deg,#10284d,#0b1d3a);border:1px solid var(--line2)}
+.sx-plan span{position:absolute;left:16px;top:16px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#1e1145;background:#c4b5fd}
+.sx-plan b{font-size:14px}.sx-plan p{margin:5px 0 0;font-size:12.5px;color:#9fb3cf;line-height:1.5}.sx-plan p b{font-size:12.5px;color:#e8f0fb}
+@container vw (max-width:760px){.sx-hero{grid-template-columns:1fr}.sx-big{align-items:flex-start;text-align:left}.sx-out{grid-template-columns:1fr}}
+/* rodízio: sexta */
+.fc-sx{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.6fr) auto;gap:16px;align-items:center;border-left:3px solid #a78bfa}
+.fc-sx.hoje{background:linear-gradient(135deg,#1d2559,#0d2244)}
+.fc-sx b{display:block;font-size:14px;margin-top:6px}.fc-sx p{margin:4px 0 0;font-size:12.5px;color:#9fb3cf;line-height:1.45}
+.fc-sxl{display:flex;flex-wrap:wrap;gap:8px}
+.fc-sxl button{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:9px;border:1px solid var(--line2);background:rgba(8,20,42,.45);color:inherit;cursor:pointer;font-size:12px}
+.fc-sxl button b{display:inline;font-size:12.5px;margin:0}.fc-sxl button.ev{border-color:rgba(248,113,113,.4);color:#fca5a5}
+@container vw (max-width:900px){.fc-sx{grid-template-columns:1fr}}
+.fc-rank small .pa{min-width:0;padding:0 6px;font-size:10px;margin-left:2px}
+.panel>.svcb.mini:first-child{border-top:0;padding-top:0;margin-top:0}
 </style>
 
 <div class="app">
@@ -1710,8 +1762,9 @@ const IC={
 IC.sheets='<path d="M4 3h11l5 5v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm10 1.5V9h4.5zM6 12v2h4v-2zm6 0v2h6v-2zM6 16v2h4v-2zm6 0v2h6v-2z"/>';
 IC.trophy='<path d="M7 3h10v2h4v3a5 5 0 0 1-4.6 5A5 5 0 0 1 13 16.9V19h3v2H8v-2h3v-2.1A5 5 0 0 1 7.6 13 5 5 0 0 1 3 8V5h4zm0 4H5v1a3 3 0 0 0 2 2.8zm10 0v3.8A3 3 0 0 0 19 8V7z"/>';
 IC.route='<path d="M6 3a3 3 0 0 1 3 3c0 2.2-3 5.5-3 5.5S3 8.2 3 6a3 3 0 0 1 3-3zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm12 7a3 3 0 0 1 3 3c0 2.2-3 5.5-3 5.5S15 17.2 15 15a3 3 0 0 1 3-3zm0 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM6 13h5a3 3 0 0 1 0 6H9v-2h2a1 1 0 0 0 0-2H6a3 3 0 0 1 0-6h2v2H6a1 1 0 0 0 0 2z" transform="translate(0 -1)"/>';
+IC.fri='<path d="M7 2h2v2h6V2h2v2h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3zm12 8H5v9h14zm-9 1.5h5v1.6h-3.2v1.3h2.8V16h-2.8v2.5H10z"/>';
 IC.cal='<path d="M7 2h2v2h6V2h2v2h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3zm12 8H5v9h14zM7 12h3v3H7z"/>';
-const VIEWS=[['geral','Visão Geral','home'],['ranking','Ranking','trophy'],['producao','Produção','prod'],['pos','Comercial / POS','cart'],['jornada','Jornada','clock'],['equipes','Equipes','team'],['colab','Colaboradores','user'],['gargalos','Gargalos','warn'],['bairros','Telemetria / Bairros','route'],['rodizio','Rodízio / Setores','map'],['agenda','Agenda','cal'],['os','Detalhamento das OS','list'],['planilhas','Planilhas','sheets']];
+const VIEWS=[['geral','Visão Geral','home'],['ranking','Ranking','trophy'],['producao','Produção','prod'],['pos','Comercial / POS','cart'],['jornada','Jornada','clock'],['equipes','Equipes','team'],['colab','Colaboradores','user'],['gargalos','Gargalos','warn'],['sexta','Plano Sexta-feira','fri'],['bairros','Telemetria / Bairros','route'],['rodizio','Rodízio / Setores','map'],['agenda','Agenda','cal'],['os','Detalhamento das OS','list'],['planilhas','Planilhas','sheets']];
 let VIEW=(location.hash||'').slice(1); if(!VIEWS.some(v=>v[0]===VIEW))VIEW=LS.get('sa_dash_view','geral');
 function buildNav(){
   if(VIEW==='equipes'&&!temEquipes())VIEW='colab';
@@ -1757,7 +1810,7 @@ function render(){
   killCharts();
   const rows=applyF(scope());
   const v=$('#views');
-  const fn={rodizio:vRodizio,bairros:vBairros,agenda:vAgenda,ranking:vRanking,planilhas:vPlanilhas,geral:vGeral,producao:vProducao,pos:vPOS,jornada:vJornada,equipes:vEquipes,colab:vColab,gargalos:vGargalos,os:vOS}[VIEW];
+  const fn={rodizio:vRodizio,bairros:vBairros,agenda:vAgenda,ranking:vRanking,planilhas:vPlanilhas,geral:vGeral,producao:vProducao,pos:vPOS,jornada:vJornada,equipes:vEquipes,colab:vColab,gargalos:vGargalos,sexta:vSexta,os:vOS}[VIEW];
   if(!ROWS.length&&VIEW!=='planilhas'&&VIEW!=='agenda'&&VIEW!=='rodizio'&&!(VIEW==='os'&&DRILL.all)){v.innerHTML=`<div class="panel empty"><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#7cc7ff" stroke-width="1.6"><path d="M4 3h11l5 5v13H4z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg><h3>Nenhuma planilha carregada</h3><p>Importe o export do GeoCall (Excel ou CSV). As planilhas ficam guardadas${SECURE?' e cifradas neste navegador':''} e são somadas automaticamente.</p><button class="btn" type="button" id="emImp">Importar planilhas</button></div>`;$('#emImp').onclick=()=>$('#file').click();const pl=$('#pulse');if(pl)pl.innerHTML='';const sb=$('#sideBase');if(sb)sb.innerHTML='';return}
   v.innerHTML='';fn(v,rows);drawCharts();enhance(v);renderPulse(rows);requestAnimationFrame(fitSide);updHist();
 }
@@ -2484,7 +2537,7 @@ function vPlanilhas(v){
 }
 
 /* ---------- Telemetria / Bairros ---------- */
-let TL={eq:'',day:'',sort:'os',tab:'bairros',susEq:''};
+let TL={eq:'',day:'',sort:'os',tab:'areas',susEq:''};
 function vBairros(v,rows){rows=rows.filter(r=>!r.man);
   const base=rows.filter(isBaixa);
   const med=a=>{if(!a.length)return null;const s=[...a].sort((x,y)=>x-y);return s[Math.floor(s.length/2)]};
@@ -2499,12 +2552,12 @@ function vBairros(v,rows){rows=rows.filter(r=>!r.man);
   const eqs=[...new Set(base.map(r=>r.eq))].sort();if(!eqs.includes(TL.eq))TL.eq=byTroca[0]?byTroca[0].k:(eqs[0]||'');
   const dias=[...new Set(base.filter(r=>r.eq===TL.eq).map(r=>r.day))].sort().reverse();if(!dias.includes(TL.day))TL.day=dias[0]||'';
   const rota=base.filter(r=>r.eq===TL.eq&&r.day===TL.day).sort((x,y)=>x.fim-y.fim);
-  const tiles=[['bairros','Bairros atendidos',fmt(bai.length),`${fmt(new Set(rows.map(r=>r.sf).filter(Boolean)).size)} setores`,''],
+  const AR=areaStats(rows),arTop=AR.S.slice().sort((x,y)=>y.nota-x.nota)[0];
+  const tiles=[['areas','Melhores áreas',arTop?'Setor '+esc(arTop.k):'—',arTop?(arTop.d?esc(arTop.d)+' · ':'')+'nota '+arTop.nota:'sem amostra','g'],['bairros','Bairros atendidos',fmt(bai.length),`${fmt(new Set(rows.map(r=>r.sf).filter(Boolean)).size)} setores`,''],
     ['trocas','Trocas de bairro',fmt(trocas.length),`de ${fmt(moves.length)} deslocamentos`,''],
     ['same','Tempo entre OS · mesmo bairro',mSame==null?'—':mSame+' min','mediana da equipe',''],
     ['troca','Tempo ao trocar de bairro',mTroca==null?'—':mTroca+' min','mediana, sem baixas fora do local',''],
-    ['sus','Baixas fora do local',fmt(sus.length),`${pct(sus.length,base.length)}% das baixas`,'sp'],
-    ['top','Mais trocas de bairro',byTroca[0]?esc(nomeDe(byTroca[0].k)).split(' ')[0]:'—',byTroca[0]?byTroca[0].n+' trocas':'','']];
+    ['sus','Baixas fora do local',fmt(sus.length),`${pct(sus.length,base.length)}% das baixas`,'sp']];
   const T=TL.tab;let det='';
   const tbl=(head,body,lim)=>`<div class="tw"><table${lim?` data-limit="${lim}"`:''}><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
   const bars=(title,sub,items,cls)=>miniBlock(title,sub,items,{cls:'wide '+(cls||'')});
@@ -2532,10 +2585,7 @@ function vBairros(v,rows){rows=rows.filter(r=>!r.man);
       bars('Por colaborador',TL.susEq?'filtrando '+esc(nomeDe(TL.susEq))+' · toque de novo para limpar':'toque para filtrar os cartões abaixo',pe.map(x=>({l:esc(curto(x.k)),w:x.n/Math.max(1,pe[0].n)*100,v:x.n,s:'baixas',c:x.k===TL.susEq?'#fca5a5':'#f87171',attr:`data-su="${esc(x.k)}"`}))),
       `<div class="susum"><div><b>${fmt(sus.length)}</b><span>baixas fora do local</span></div><div><b>${fmt(outroB)}</b><span>em outro bairro</span></div><div><b>${fmt(sus.length-outroB)}</b><span>outra rua ou 23:59</span></div></div>`+
       bars('De onde foram lançadas','bairro onde o colaborador estava',onde.map(x=>({l:esc(x.k),w:x.n/mo*100,v:x.n,s:'baixas',c:'#fca5a5'}))))}
-  else if(T==='top'){const pe=byTroca,mx=Math.max(1,...pe.map(x=>x.n/Math.max(1,x.dias)));
-    det=two('Trocas de bairro por colaborador <small>toque para ver a rota</small>',
-      tbl('<th>Colaborador</th><th class="n">Trocas</th><th class="n">Por dia</th><th class="n">Tempo ao trocar</th>',pe.map(x=>`<tr data-tq="${esc(x.k)}"><td>${esc(nomeDe(x.k))}</td><td class="n">${x.n}</td><td class="n">${(x.n/Math.max(1,x.dias)).toFixed(1).replace('.',',')}</td><td class="n">${x.tr==null?'—':x.tr+' min'}</td></tr>`).join('')),
-      bars('Trocas por dia','média de cada colaborador',pe.map(x=>({l:esc(curto(x.k)),w:x.n/Math.max(1,x.dias)/mx*100,v:(x.n/Math.max(1,x.dias)).toFixed(1).replace('.',','),s:'por dia',c:'#c4b5fd',attr:`data-tq="${esc(x.k)}"`}))))}
+  else if(T==='areas'){det=areasPanelHTML(rows)}
   const rex=rota.filter(r=>isProd(r.cat)).length,rtr=rota.filter((r,i)=>i&&norm(rota[i-1].bai)!==norm(r.bai)).length;
   const rotaHTML=`<div class="panel" id="tlRota"><h3>Rota do dia <small>ordem real das baixas · toque numa linha para abrir a OS</small></h3>
     <div class="tl-rh"><div class="filters"><div class="fgroup" style="flex:1 1 220px"><label for="tlEq">Colaborador</label><select id="tlEq">${eqs.map(k=>`<option value="${esc(k)}" ${k===TL.eq?'selected':''}>${esc(nomeDe(k))}</option>`).join('')}</select></div>
@@ -2557,6 +2607,7 @@ function vBairros(v,rows){rows=rows.filter(r=>!r.man);
   v.querySelectorAll('[data-tq]').forEach(b=>b.onclick=()=>{TL.eq=b.dataset.tq;TL.day='';render();setTimeout(()=>{const r=$('#tlRota');if(r)r.scrollIntoView({behavior:'smooth',block:'start'})},60)});
   v.querySelectorAll('#tlDet [data-tb]').forEach(b=>b.onclick=()=>drill({bai:b.dataset.tb,label:'Bairro: '+b.dataset.tb}));
   v.querySelectorAll('[data-su]').forEach(b=>b.onclick=()=>{TL.susEq=TL.susEq===b.dataset.su?'':b.dataset.su;SUS_SHOW=12;const y=scrollY;render();scrollTo(0,y)});
+  if(T==='areas')bindAreas(v,false);
   if($('#tlSusAll'))$('#tlSusAll').onclick=()=>drill({sus:1,label:'Baixas fora do local'});
   v.querySelectorAll('.sus-c[data-os]').forEach(c=>c.onclick=()=>drill({os:c.dataset.os,label:'OS '+c.dataset.os}));
   bindOsRows(v);
@@ -2626,7 +2677,7 @@ function acOsResumo(L){const g=[...groupBy(L,r=>r.acid+'|'+r.eq)].map(([k,rs])=>
 function vOS(v,rows){
   const D=DRILL;
   let OSS=D.oss?new Set(D.oss):null;
-  let list=(D.all&&D.day?allSheetRows().concat(AC_ROWS).filter(r=>r.day===D.day):rows).filter(r=>(!D.motOut||(!isProd(r.cat)&&!['IMOVEL FECHADO, REPROGRAMAR ORDEM','IMOVEL FECHADO, ORDEM ENCERRADA','CLIENTE NAO PERMITIU EXECUCAO DO SERVICO','NEGOCIACAO INFRUTIFERA'].includes(norm(r.res))))&&(!D.sus||r.sus)&&(!D.rr||isRR(r))&&(!D.nprod||!isProd(r.cat))&&(!OSS||OSS.has(r.os))&&(!D.cats||D.cats.includes(r.cat))&&(!D.res||r.res===D.res)&&(!D.tipo||r.tipo===D.tipo)&&(!D.os||r.os===D.os)&&(!D.eqs||D.eqs.includes(r.eq))&&(!D.day||r.day===D.day)&&(!D.notPos||r.tipo!=='POS')&&(!D.bai||r.bai===D.bai)&&(!D.sf||r.sf===D.sf)&&(!D.fech||/^IMOVEL FECHADO/.test(norm(r.res)))&&(!D.naoExec||(!isProd(r.cat)&&r.cat!=='FIMDIA')));
+  let list=(D.all&&D.day?allSheetRows().concat(AC_ROWS).filter(r=>r.day===D.day):rows).filter(r=>(!D.motOut||(!isProd(r.cat)&&!['IMOVEL FECHADO, REPROGRAMAR ORDEM','IMOVEL FECHADO, ORDEM ENCERRADA','CLIENTE NAO PERMITIU EXECUCAO DO SERVICO','NEGOCIACAO INFRUTIFERA'].includes(norm(r.res))))&&(!D.sus||r.sus)&&(!D.rr||isRR(r))&&(!D.nprod||!isProd(r.cat))&&(!OSS||OSS.has(r.os))&&(!D.cats||D.cats.includes(r.cat))&&(!D.res||r.res===D.res)&&(!D.tipo||r.tipo===D.tipo)&&(!D.os||r.os===D.os)&&(!D.eqs||D.eqs.includes(r.eq))&&(!D.day||r.day===D.day)&&(D.dow==null||new Date(r.day+'T12:00').getDay()===D.dow)&&(!D.dows||D.dows.includes(new Date(r.day+'T12:00').getDay()))&&(!D.notPos||r.tipo!=='POS')&&(!D.bai||r.bai===D.bai)&&(!D.sf||r.sf===D.sf)&&(!D.fech||/^IMOVEL FECHADO/.test(norm(r.res)))&&(!D.naoExec||(!isProd(r.cat)&&r.cat!=='FIMDIA')));
   const manL=list.filter(r=>r.man);list=list.filter(r=>!r.man);
   const q=norm(D.q||'');
   if(q)list=list.filter(r=>norm([r.os,r.pde,r.bai,r.sf,r.end,r.eq,r.res,r.nota,equipeDe(r.eq)].join(' ')).includes(q));
@@ -2920,7 +2971,7 @@ let _fr=null;
 function focoRanking(){const f=rzFoco();const key=f.setores.join(',')+'|'+SHEETS.length+'|'+ROWS.length;if(_fr&&_fr.key===key)return _fr.list;
   const rows=typeof allSheetRows==='function'?allSheetRows():[];const g=groupBy(rows.filter(r=>r.sf),r=>String(r.sf));
   const base=f.setores.map(c=>{const s=rzSetor(c)||{codigo:c,peso:1,potencial:'',bairros:''};const rs=g.get(String(c))||[];const a=agg(rs);
-    const fech=rs.filter(r=>/^IMOVEL FECHADO/.test(norm(r.res))).length;return {c:+c,s,a,pr:a.den>=20?a.prod/a.den*100:null,fechP:a.den?fech/a.den*100:0}});
+    const fech=rs.filter(r=>/^IMOVEL FECHADO/.test(norm(r.res))).length;const p=agg(rs.filter(r=>r.tipo==='POS'));return {c:+c,s,a,pr:a.den>=20?a.prod/a.den*100:null,fechP:a.den?fech/a.den*100:0,pPr:p.den>=10?p.prod/p.den*100:null,d:distDe(c)}});
   const vals=base.filter(x=>x.pr!=null).map(x=>x.pr),mx=Math.max(1,...vals),med=vals.length?vals.reduce((p,q)=>p+q,0)/vals.length:0;
   base.forEach(x=>{const pr=x.pr==null?med:x.pr;x.nota=Math.round(50*((+x.s.peso||0)/5)+50*(pr/mx))});
   base.sort((x,y)=>y.nota-x.nota||x.c-y.c);_fr={key,list:base};return base}
@@ -2954,6 +3005,12 @@ function rzSimular(cfg,ate){const f=rzFoco();if(!focoOn())return RM.simular(cfg,
   return out}
 function focoStatus(d){const S=rzFoco().setores.map(Number);const hist=rzEscalaAte(d).filter(x=>x.data<=d&&x.data>=rzFoco().inicio);const {cic}=focoCiclos(hist);return {S,cic}}
 
+function focoSextaHTML(d){const rows=typeof allSheetRows==='function'?allSheetRows():[];const {S}=areaStats(rows);if(!S.length)return '';
+  const f=rzFoco().setores.map(String);const L=S.slice().sort((x,y)=>y.notaSx-x.notaSx);const noF=L.filter(x=>f.includes(x.k)),top=noF.slice(0,3),bx=noF.length>=5?noF.slice(-2).reverse():[];
+  const sx=new Date(d+'T12:00').getDay()===5;
+  return `<div class="panel fc-sx ${sx?'hoje':''}"><div><span class="sx-tag">${sx?'Hoje é sexta':'Sexta-feira'}</span><b>Sem corte: a equipe negocia</b><p>Na sexta, priorize os setores em foco onde a negociação mais vira pagamento${bx.length?' e deixe os de imóvel fechado para seg a qui':''}.</p></div>
+   <div class="fc-sxl">${top.map(x=>`<button type="button" data-rz="drill" data-sf="${x.k}">${rzChip(x.k)}<span>negociação <b>${x.pPr==null?'—':x.pPr.toFixed(0)+'%'}</b></span>${paTag(x.d)}</button>`).join('')}${bx.map(x=>`<button type="button" class="ev" data-rz="drill" data-sf="${x.k}">${rzChip(x.k)}<span>evitar · ${x.fechP.toFixed(0)}% fechado</span></button>`).join('')}</div>
+   <button type="button" class="btn ghost sm" data-rz="view" data-v="sexta">Plano Sexta-feira →</button></div>`}
 function rzTelaFoco(rows,ST){const f=rzFoco();const R=focoRanking();const d=RZ.dia;const dia=rzDia(d),it=dia?dia.itens:[];
   const quem={};it.forEach(i=>(quem[i.setor]=quem[i.setor]||[]).push(i.unidade));
   const {S,cic}=focoStatus(d);const pessoas=rzAtivos();const bai=new Set();R.forEach(x=>String(x.s.bairros||'').split(' / ').forEach(b=>b&&bai.add(b)));
@@ -2974,8 +3031,9 @@ function rzTelaFoco(rows,ST){const f=rzFoco();const R=focoRanking();const d=RZ.d
    <div><span>3</span><b>Reforço onde rende mais</b><p>Com mais pessoas do que setores, os setores de nota mais alta recebem uma segunda pessoa no dia.</p></div>
   </div>
   <div class="panel"><h3>Ranking dos setores em foco <small>nota = 50% potencial + 50% produtividade real · toque para ver as OS</small></h3><div class="fc-rank">
-   ${R.map((x,i)=>`<button type="button" data-rz="drill" data-sf="${x.c}" style="--t:${rzCol(x.s.potencial)}"><span class="fc-pos">${i+1}º</span>${rzChip(x.c)}<span class="fc-b"><b class="rzs">${esc(String(x.s.bairros||'').split(' / ').slice(0,3).join(' · '))}</b><small>${rzTier(x.s.potencial)} ${x.a.den?fmt(x.a.den)+' OS · '+x.fechP.toFixed(0)+'% fechado':'sem OS no GeoCall'}</small></span><span class="fc-pr" style="color:${col(x.pr)}">${x.pr==null?'—':x.pr.toFixed(0)+'%'}</span><span class="fc-nota"><i style="width:${x.nota}%"></i><b>${x.nota}</b></span><span class="fc-hoje rzn">${(quem[x.c]||[]).map(rzNome).join(' + ')||'—'}</span></button>`).join('')}
+   ${R.map((x,i)=>`<button type="button" data-rz="drill" data-sf="${x.c}" style="--t:${rzCol(x.s.potencial)}"><span class="fc-pos">${i+1}º</span>${rzChip(x.c)}<span class="fc-b"><b class="rzs">${esc(String(x.s.bairros||'').split(' / ').slice(0,3).join(' · '))}</b><small>${rzTier(x.s.potencial)} ${x.a.den?fmt(x.a.den)+' OS · '+x.fechP.toFixed(0)+'% fechado'+(x.pPr!=null?' · negociação '+x.pPr.toFixed(0)+'%':''):'sem OS no GeoCall'} ${x.d?'· renda '+paTag(x.d):''}</small></span><span class="fc-pr" style="color:${col(x.pr)}">${x.pr==null?'—':x.pr.toFixed(0)+'%'}</span><span class="fc-nota"><i style="width:${x.nota}%"></i><b>${x.nota}</b></span><span class="fc-hoje rzn">${(quem[x.c]||[]).map(rzNome).join(' + ')||'—'}</span></button>`).join('')}
    </div><div class="fc-leg"><span>%</span> produtividade no GeoCall <span style="margin-left:14px">▬</span> nota do setor (0 a 100) <span style="margin-left:14px">à direita:</span> quem está no setor ${d===rzHoje()?'hoje':'neste dia'}</div></div>
+   ${focoSextaHTML(d)}
    <div class="panel"><h3>Giro de cada colaborador <small>✓ = setor já feito neste giro · ● = setor ${d===rzHoje()?'de hoje':'deste dia'}</small></h3><div class="tw"><table class="fc-mx nostack"><thead><tr><th>Colaborador</th>${S.map(c=>`<th class="c">${rzChip(c)}</th>`).join('')}<th class="n">Giro</th></tr></thead><tbody>
     ${prog.map(({u,n})=>{const hoje=it.find(i=>i.unidade===u.id);return `<tr><td class="nw"><span class="rzn">${esc(u.curto||u.nome)}</span></td>${S.map(c=>{const h=hoje&&+hoje.setor===c,done=cic[u.id]&&cic[u.id].has(c);return `<td class="c">${h?'<span class="fc-dot on">●</span>':done?'<span class="fc-dot ok">✓</span>':'<span class="fc-dot">·</span>'}</td>`}).join('')}<td class="n"><b>${n}</b>/${S.length}</td></tr>`}).join('')}
    </tbody></table></div></div>
@@ -2997,6 +3055,7 @@ function rzTelaHoje(rows,ST){const d=RZ.dia;const se=rzSemExp();if(se)return rzD
    ${rzKpi('Meta do dia',fmt(it.reduce((s,i)=>s+rzMeta(rzUni(i.unidade)),0)),null,'ordens somando a equipe','pg')}
    ${(()=>{const x=rrDoDia(d),p=x?null:rrProximos(d,1)[0];return rzKpi('Religação',x?`<span class="rrkv rzn">${rrNomes(x)}</span>`:`<span class="rrkv">${p?rzFmt(p.d):'—'}</span>`,null,x?(d===rzHoje()?'responsável hoje':'responsável neste dia'):(p?'próximo · '+p.quem.map(rzNome).join(' e '):'sem escala'),'rr','data-rz="tab" data-t="rr"')})()}</div>`;
   const rrHoje=rrDoDia(d),rrSet=new Set(rrHoje?rrHoje.quem:[]);
+  if(new Date(d+'T12:00').getDay()===5)h+=focoSextaHTML(d);
   h+=`<div class="panel"><h3>Escala do dia <small>em ordem de prioridade · marque ✓ ao lançar no GeoCall</small></h3>
    <div class="rzprog"><div class="rzbar"><i style="width:${it.length?feitos/it.length*100:0}%"></i></div><span>${feitos} de ${it.length} programados</span>${aj?'<span class="st o">ajustado</span>':''}</div>
    <div class="rzcards">${it.map((x,i)=>{const s=rzSetor(x.setor)||{codigo:x.setor,bairros:'',potencial:''},u=rzUni(x.unidade)||{},ok=!!f[x.unidade];
@@ -3117,6 +3176,7 @@ function rzBind(v){const root=v.querySelector('.rz');if(!root)return;
       else if(a==='dia'){const dir=+b.dataset.dir;let n=RM.addDias(d,dir),g=0;while(!RM.ehDiaUtil(n,rzFer())&&g++<30)n=RM.addDias(n,dir);RZ.dia=n;RZ.confirm=null;rzRerender()}
       else if(a==='hojeBtn'){RZ.dia=rzDiaInicial();rzRerender()}
       else if(a==='abrir'){RZ.dia=b.dataset.d;RZ.tab='hoje';render();scrollTo({top:0})}
+      else if(a==='view'){go(b.dataset.v)}
       else if(a==='drill'){const o={label:''};if(b.dataset.sf)o.sf=b.dataset.sf;if(b.dataset.eq)o.eqs=[b.dataset.eq];o.label=(b.dataset.eq?nomeDe(b.dataset.eq)+' · ':'')+(b.dataset.sf?'Setor '+b.dataset.sf:'');drill(o)}
       else if(a==='feito'){RZ.cfg.feitos=RZ.cfg.feitos||{};const f=RZ.cfg.feitos[d]=RZ.cfg.feitos[d]||{};if(f[b.dataset.u])delete f[b.dataset.u];else f[b.dataset.u]=1;rzSave()}
       else if(a==='falta'){rzAusencia(b.dataset.u,d,d,'Falta');rzSave(rzNome(b.dataset.u)+' marcado com falta')}
@@ -3147,6 +3207,137 @@ function rzBind(v){const root=v.querySelector('.rz');if(!root)return;
   const fn=root.querySelector('#rzAdd');if(fn)fn.onsubmit=e=>{e.preventDefault();const n=$('#rzNn').value.trim();if(!n)return;const id=rzNorm(n).toLowerCase().replace(/[^a-z]/g,'').slice(0,12)+Date.now().toString(36).slice(-3);
     RZ.cfg.unidades.push({id,nome:n,curto:n.split(' ')[0],tipo:$('#rzNt').value,ordem:RZ.cfg.unidades.length+1});rzSave(n+' entrou no rodízio')};
   const fm=root.querySelector('#rzMetas');if(fm)fm.onsubmit=e=>{e.preventDefault();RZ.cfg.metas={moto:Math.max(1,+$('#rzMm').value||25),carro:Math.max(1,+$('#rzMc').value||10)};rzSave('Metas salvas')};
+}
+
+/* ============ Áreas: setores e bairros mais produtivos + poder aquisitivo ============ */
+/* Poder aquisitivo por distrito (Censo IBGE e Mapa da Desigualdade). ate3 = % das famílias com renda até 3 salários mínimos; renda = remuneração média do emprego formal */
+const DIST={
+ 'São Mateus':{ate3:43.8,renda:2528},'São Rafael':{ate3:54.4,renda:2776},'Iguatemi':{ate3:58.4,renda:1900},
+ 'Sapopemba':{ate3:49.8,renda:2818},'Parque do Carmo':{ate3:51.0,renda:3387},'José Bonifácio':{ate3:42.0,renda:2757},
+ 'Cidade Tiradentes':{ate3:55.5,renda:2654},'Aricanduva':{ate3:40.7,renda:2399},'Vila Formosa':{ate3:33.2,renda:1992}};
+const RENDA_SP=4002;
+const SF_DIST={149:'São Mateus',150:'São Mateus',151:'São Mateus',152:'São Rafael',253:'São Rafael',153:'Sapopemba',154:'Sapopemba',155:'Sapopemba',
+ 194:'Iguatemi',195:'Iguatemi',248:'Iguatemi',250:'Iguatemi',251:'Iguatemi',252:'Iguatemi',242:'Parque do Carmo',247:'José Bonifácio',249:'Cidade Tiradentes',148:'Aricanduva',117:'Aricanduva'};
+const distDe=sf=>SF_DIST[+sf]||'';
+/* índice 0–100: quanto maior, mais famílias acima de 3 salários mínimos */
+const paIdx=d=>DIST[d]?100-DIST[d].ate3:null;
+function paNivel(d){const i=paIdx(d);if(i==null)return null;return i>=55?{t:'Alto',c:'pa-a'}:i>=47?{t:'Médio',c:'pa-m'}:{t:'Baixo',c:'pa-b'}}
+const paTag=d=>{const n=paNivel(d);return n?`<span class="pa ${n.c}" title="Poder aquisitivo do distrito ${esc(d)}">${n.t}</span>`:'<span class="pa">—</span>'};
+const isFech=r=>/^IMOVEL FECHADO/.test(norm(r.res));
+const dowOf=r=>new Date(r.day+'T12:00').getDay();
+
+/* estatística de cada área; nota geral (seg–qui, dia de corte) e nota de sexta (só negociação) */
+function areaStats(rows,min){rows=rows.filter(r=>!r.man&&r.cat!=='FIMDIA');
+  const mk=(k,rs)=>{const a=agg(rs),c=agg(rs.filter(r=>r.tipo==='CORTE')),p=agg(rs.filter(r=>r.tipo==='POS'));
+    const sfC={};rs.forEach(r=>{if(r.sf)sfC[r.sf]=(sfC[r.sf]||0)+1});const sf=Object.keys(sfC).sort((x,y)=>sfC[y]-sfC[x])[0]||'';
+    const d=distDe(sf);return {k,sf,d,a,n:a.den,pr:a.den?a.pr:null,cPr:c.den>=10?c.pr:null,cN:c.den,pPr:p.den>=10?p.pr:null,pN:p.den,fechP:a.den?rs.filter(isFech).length/a.den*100:0,pa:paIdx(d)}};
+  const S=[...groupBy(rows.filter(r=>r.sf),r=>String(r.sf))].map(([k,rs])=>mk(k,rs)).filter(x=>x.n>=(min||20));
+  const B=[...groupBy(rows.filter(r=>r.bai),r=>r.bai)].map(([k,rs])=>mk(k,rs)).filter(x=>x.n>=15);
+  [S,B].forEach(L=>{
+    const nz=f=>{const v=L.map(f).filter(x=>x!=null);const lo=Math.min(...v),hi=Math.max(...v);const md=v.length?v.slice().sort((a,b)=>a-b)[Math.floor(v.length/2)]:0;return x=>{const y=f(x);const z=y==null?md:y;return hi>lo?(z-lo)/(hi-lo)*100:50}};
+    const nC=nz(x=>x.cPr==null?x.pr:x.cPr),nP=nz(x=>x.pPr),nF=nz(x=>100-x.fechP),nA=nz(x=>x.pa);
+    L.forEach(x=>{x.nota=Math.round(.4*nC(x)+.3*nP(x)+.1*nF(x)+.2*nA(x));x.notaSx=Math.round(.55*nP(x)+.25*nA(x)+.2*nF(x))});
+  });
+  return {S,B}}
+const tierOf=(i,n)=>i<Math.ceil(n/3)?['Melhor','bt-ok']:i<Math.ceil(2*n/3)?['Intermediário','bt-mid']:['Pior','bt-bad'];
+const prCol=pr=>pr==null?'#5b7397':pr>=META?'var(--green)':pr>=35?'#7cc7ff':pr>=25?'#f5b73b':'#f87171';
+const pc0=v=>v==null?'—':Math.round(v)+'%';
+/* lista ranqueada de áreas (setor ou bairro) */
+function areaList(L,key,kind,lim){const s=L.slice().sort((x,y)=>y[key]-x[key]||y.n-x.n);const n=s.length;
+  return `<div class="ar-l">${s.slice(0,lim||s.length).map((x,i)=>{const [tt,tc]=tierOf(i,n);
+    const nome=kind==='sf'?`Setor ${esc(x.k)}`:esc(x.k);const sub=kind==='sf'?(x.d?esc(x.d):'distrito não mapeado'):`setor ${esc(x.sf)||'—'}${x.d?' · '+esc(x.d):''}`;
+    const met=key==='notaSx'?`<span>negociação <b style="color:${prCol(x.pPr)}">${pc0(x.pPr)}</b></span><span>fechado <b>${pc0(x.fechP)}</b></span>`:`<span>corte <b style="color:${prCol(x.cPr)}">${pc0(x.cPr)}</b></span><span>negociação <b style="color:${prCol(x.pPr)}">${pc0(x.pPr)}</b></span><span>fechado <b>${pc0(x.fechP)}</b></span>`;
+    return `<button type="button" class="${tc}" ${kind==='sf'?`data-asf="${esc(x.k)}"`:`data-abai="${esc(x.k)}"`}><span class="ar-p">${i+1}º</span><span class="ar-n"><b>${nome}</b><small>${sub} · ${fmt(x.n)} OS</small><span class="ar-m">${met}</span></span>${paTag(x.d)}<span class="ar-s"><span class="ar-sb"><i style="width:${x[key]}%"></i></span><b>${x[key]}</b></span></button>`}).join('')}</div>`}
+function bindAreas(v,sexta){
+  v.querySelectorAll('[data-asf]').forEach(b=>b.onclick=()=>drill(Object.assign({sf:b.dataset.asf,label:'Setor '+b.dataset.asf+(sexta?' · negociações':'')},sexta?{tipo:'POS'}:{})));
+  v.querySelectorAll('[data-abai]').forEach(b=>b.onclick=()=>drill(Object.assign({bai:b.dataset.abai,label:'Bairro: '+b.dataset.abai+(sexta?' · negociações':'')},sexta?{tipo:'POS'}:{})));
+  v.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>go(b.dataset.view));
+}
+/* quadro de poder aquisitivo dos distritos atendidos */
+function paHTML(S){const ds=[...new Set(S.map(x=>x.d).filter(Boolean))];
+  const L=ds.map(d=>({d,sfs:S.filter(x=>x.d===d).map(x=>x.k).sort(),...DIST[d],i:paIdx(d)})).sort((a,b)=>b.i-a.i);const mx=Math.max(RENDA_SP,...L.map(x=>x.renda));
+  return `<div class="pa-t">${L.map(x=>`<div><span class="pa-d"><b>${esc(x.d)}</b><small>setor${x.sfs.length>1?'es':''} ${x.sfs.join(', ')||'—'}</small></span>${paTag(x.d)}<span class="pa-r"><span class="pa-bar"><i style="width:${x.renda/mx*100}%"></i><s style="left:${RENDA_SP/mx*100}%"></s></span><b>R$ ${fmt(x.renda)}</b></span><span class="pa-f"><b>${(100-x.ate3).toFixed(0)}%</b><small>acima de 3 SM</small></span></div>`).join('')}</div>
+   <p class="pa-leg"><span class="pa-bar"><i style="width:40%"></i></span> renda média do trabalhador formal <span class="pa-bar"><s style="left:50%"></s></span> média da cidade (R$ ${fmt(RENDA_SP)}) · % das famílias com renda acima de 3 salários mínimos</p>`}
+
+/* bloco da Telemetria: melhores áreas para trabalhar */
+function areasPanelHTML(rows){const {S,B}=areaStats(rows);
+  if(!S.length)return '<h3>Melhores áreas para trabalhar</h3><p class="note">Sem OS suficientes no período para comparar setores.</p>';
+  const s=S.slice().sort((x,y)=>y.nota-x.nota),sx=S.slice().sort((x,y)=>y.notaSx-x.notaSx);
+  const top=s.slice(0,3),bot=s.slice(-2).reverse();
+  return `<h3>Melhores áreas para trabalhar <small>nota de 0 a 100 · produtividade de corte, conversão das negociações, imóvel fechado e poder aquisitivo · toque para ver as OS</small></h3>
+   <div class="ar-rec">
+    <div class="bt-ok"><span>Seg a Qui · priorizar</span><b>${top.map(x=>x.k).join(' · ')}</b><small>${top.map(x=>x.d).filter((d,i,a)=>d&&a.indexOf(d)===i).join(', ')}</small></div>
+    <div class="bt-bad"><span>Seg a Qui · menor retorno</span><b>${bot.map(x=>x.k).join(' · ')}</b><small>${bot.map(x=>pc0(x.fechP)+' fechado').join(' · ')}</small></div>
+    <button type="button" class="bt-sx" data-view="sexta"><span>Sexta · negociar em</span><b>${sx.slice(0,3).map(x=>x.k).join(' · ')}</b><small>ver o plano da sexta-feira →</small></button></div>
+   <div class="tl-two"><div><div class="svct">Setores <span class="muted">${S.length} com 20+ OS</span></div>${areaList(S,'nota','sf')}</div>
+    <div><div class="svct">Bairros <span class="muted">top 12 de ${B.length} com 15+ OS</span></div>${areaList(B,'nota','bai',12)}</div></div>
+   <div class="svct" style="margin-top:16px">Poder aquisitivo dos distritos atendidos</div>${paHTML(S)}`}
+
+/* ============ Plano Sexta-feira ============ */
+let SX_SIM=null;
+function vSexta(v,rows){
+  const W=rows.filter(r=>r.cat!=='FIMDIA');const A=agg(W);
+  const F=W.filter(r=>dowOf(r)===5),NF=W.filter(r=>{const d=dowOf(r);return d>=1&&d<=4});
+  const aF=agg(F),aN=agg(NF),aO=agg(W.filter(r=>dowOf(r)!==5));const nSx=new Set(F.map(r=>r.day)).size;
+  const posF=agg(F.filter(r=>r.tipo==='POS')),posN=agg(NF.filter(r=>r.tipo==='POS'));
+  const fechF=F.filter(r=>!r.man&&isFech(r)).length;
+  if(!F.length){v.innerHTML=`<div class="panel empty"><h3>Sem sextas-feiras no período</h3><p>Escolha um período com sextas-feiras para ver o plano.</p></div>`;return}
+  const imp=A.pr-aO.pr;
+  const need=aF.den?(META/100*A.den-(A.prod-aF.prod))/aF.den*100:null;
+  const {S,B}=areaStats(rows);const sx=S.slice().sort((x,y)=>y.notaSx-x.notaSx);
+  // horário das negociações (todas as sextas e dias úteis: o comportamento de pagamento é o mesmo)
+  const posAll=W.filter(r=>r.tipo==='POS'&&!r.man);
+  const bands=BANDS.map(([l,h0,h1])=>{const rs=posAll.filter(r=>{const h=hourOf(r);return h>=h0&&h<h1});const a=agg(rs);return {l,a,n:rs.length}});
+  const mid=agg(posAll.filter(r=>{const h=hourOf(r);return h>=10&&h<16})),fora=agg(posAll.filter(r=>{const h=hourOf(r);return h<10||h>=16}));
+  // composição da sexta
+  const cnt=f=>F.filter(f).length;
+  const comp=[['Pagamento via POS',r=>r.cat==='PAG_POS','{"cats":["PAG_POS"]}',COL.pag],['Faturas pagas apresentadas',r=>r.cat==='PAG_FAT','{"cats":["PAG_FAT"]}',COL.fat],
+    ['Ações especiais',r=>r.man&&r.cat==='ACAO','{"cats":["ACAO"]}','#a78bfa'],['Outros produtivos',r=>!r.man&&isProd(r.cat)&&!['PAG_POS','PAG_FAT'].includes(r.cat),'{"prod":1}','#34d399'],
+    ['Negociação infrutífera',r=>r.cat==='INFRUT','{"cats":["INFRUT"]}','#fbbf24'],['Imóvel fechado',r=>!r.man&&isFech(r),'{"fech":1}','#f87171'],
+    ['Outros motivos',r=>!isProd(r.cat)&&r.cat!=='INFRUT'&&!isFech(r),'{"motOut":1}','#94a3b8']].map(([l,f,dr,c])=>({l,n:cnt(f),dr,c})).filter(x=>x.n);
+  const mxc=Math.max(1,...comp.map(x=>x.n));
+  // ações especiais em sextas
+  const acF=F.filter(r=>r.man),aAc=agg(acF);
+  const best3=sx.slice(0,3),worst2=sx.length>=5?sx.slice(-2).reverse():[];
+  const cur=aF.pr;if(SX_SIM==null||SX_SIM.k!==F.length)SX_SIM={k:F.length,x:Math.round(cur)};
+  const kp=(lab,val,sub,cls,attr)=>`<button type="button" class="kpi ${cls||''}" ${attr||''}><span class="lab">${lab}</span><span class="val">${val}</span><span class="sub">${sub}</span></button>`;
+  const ppF=x=>(x>=0?'+':'−')+Math.abs(x).toFixed(1).replace('.',',')+' p.p.';
+  v.innerHTML=`<div class="sx-hero panel"><div><span class="sx-tag">Sexta-feira</span><h3>Corte suspenso, negociação no lugar</h3>
+     <p>Corte por falta de pagamento não pode começar na sexta, no sábado, no domingo, em feriado ou na véspera de feriado. A equipe vai a campo só para negociar, e a sexta virou o dia que mais pesa contra a meta de ${META}%.</p></div>
+     <div class="sx-big"><b class="${aF.pr>=META?'up':'dn'}">${pct(aF.prod,aF.den,0)}%</b><span>produtividade na sexta</span><em>contra ${pct(aN.prod,aN.den,0)}% de seg a qui</em></div></div>
+   <div class="kpis">
+    ${kp('Seg a Qui',pct(aN.prod,aN.den)+'%',fmt(aN.den)+' OS trabalhadas',aN.pr>=META?'g':'','data-sxd="14"')}
+    ${kp('Sexta-feira',pct(aF.prod,aF.den)+'%',`${fmt(aF.den)} OS em ${nSx} sexta${nSx>1?'s':''}`,'sp','data-sxd="5"')}
+    ${kp('Peso da sexta no mês',pct(aF.den,A.den,0)+'%','das OS trabalhadas','')}
+    ${kp('Efeito na meta',ppF(imp),`mês ${pct(A.prod,A.den)}% · sem sexta ${pct(aO.prod,aO.den)}%`,imp<0?'sp':'g')}
+    ${kp('Negociações que pagam',posF.den?pct(posF.prod,posF.den)+'%':'—',posN.den?`na sexta · ${pct(posN.prod,posN.den,0)}% de seg a qui`:`${fmt(posF.den)} negociações na sexta`,'ct','data-sxd="pos"')}
+    ${kp('Imóvel fechado na sexta',pct(fechF,aF.den,0)+'%',fmt(fechF)+' OS sem atendimento','ct','data-sxd="fech"')}</div>
+   <div class="g2">
+    <div class="panel">${weekdayBlock(W)}</div>
+    <div class="panel"><div class="svcb mini"><div class="svct">Para onde vai a sexta <span class="muted">${fmt(aF.den)} OS · toque para ver</span></div>${comp.map(x=>`<button type="button" data-sxc='${x.dr}'><span>${x.l}</span><div class="bar"><i style="width:${x.n/mxc*100}%;background:${x.c}"></i></div><b>${fmt(x.n)}</b><em>${pct(x.n,aF.den,0)}%</em></button>`).join('')}</div></div></div>
+   <div class="panel"><h3>Onde negociar na sexta <small>nota de sexta: conversão das negociações 55% · poder aquisitivo 25% · imóvel fechado 20% · toque para ver as negociações</small></h3>
+    <div class="tl-two"><div><div class="svct">Setores</div>${areaList(S,'notaSx','sf')}</div><div><div class="svct">Bairros <span class="muted">top 12</span></div>${areaList(B,'notaSx','bai',12)}</div></div></div>
+   <div class="g2">
+    <div class="panel"><div class="svcb mini"><div class="svct">Melhor horário para negociar <span class="muted">% das negociações que viram pagamento</span></div>${bands.map(b=>`<button type="button" tabindex="-1"><span>${b.l}</span><div class="bar"><i style="width:${Math.min(100,b.a.pr*2)}%;background:${b.a.pr>=mid.pr-1?'var(--green)':'#7cc7ff'}"></i></div><b>${b.n?pct(b.a.prod,b.a.den,0)+'%':'—'}</b><em>${fmt(b.n)} neg.</em></button>`).join('')}</div>
+     <p class="sx-note">Das 10h às 16h, <b>${pct(mid.prod,mid.den,0)}%</b> das negociações viram pagamento. Fora dessa janela, <b>${pct(fora.prod,fora.den,0)}%</b>.</p></div>
+    <div class="panel sx-sim"><h3>Simulador da meta</h3><p class="note">Arraste para ver o mês se a sexta render mais.</p>
+     <label for="sxR" class="sx-lab">Produtividade da sexta: <b id="sxV">${SX_SIM.x}%</b></label><input type="range" id="sxR" min="0" max="90" step="1" value="${SX_SIM.x}">
+     <div class="sx-pre"><button type="button" class="cptab" data-sxp="${Math.round(cur)}">Hoje ${Math.round(cur)}%</button><button type="button" class="cptab" data-sxp="${Math.round(aN.pr)}">Igual seg–qui ${Math.round(aN.pr)}%</button>${acF.length&&aAc.den>=10?`<button type="button" class="cptab" data-sxp="${Math.round(aAc.pr)}">Ação especial ${Math.round(aAc.pr)}%</button>`:''}<button type="button" class="cptab" data-sxp="${META}">${META}%</button></div>
+     <div class="sx-out"><div><b id="sxM">—</b><span>produtividade do mês</span></div><div><b id="sxG">—</b><span>produtivos a mais por sexta</span></div><div><b>${need==null?'—':need>100?'—':Math.max(0,need).toFixed(0)+'%'}</b><span>${need>100?'só a sexta não fecha a meta':need<=cur?'meta já garantida':'a sexta precisa para o mês bater '+META+'%'}</span></div></div></div></div>
+   <div class="panel"><h3>Plano para a sexta-feira <small>proposta para a diretoria</small></h3><div class="sx-plan">
+    <div><span>1</span><b>Rota pelos setores que pagam</b><p>Negociar primeiro em <b>${best3.map(x=>x.k).join(', ')}</b> (${best3.map(x=>pc0(x.pPr)).join(' · ')} de conversão). ${worst2.length?`Deixar <b>${worst2.map(x=>x.k).join(' e ')}</b> para os dias de corte: lá a negociação rende ${worst2.map(x=>pc0(x.pPr)).join(' e ')} e o imóvel fechado chega a ${pc0(Math.max(...worst2.map(x=>x.fechP)))}.`:''}</p></div>
+    <div><span>2</span><b>Negociar das 10h às 16h</b><p>É a faixa em que a negociação mais vira pagamento: ${pct(mid.prod,mid.den,0)}% de conversão, contra ${pct(fora.prod,fora.den,0)}% fora da janela. Antes das 10h, programar religações, restabelecimentos e vistorias pendentes da semana.</p></div>
+    <div><span>3</span><b>Sexta de ação especial</b><p>${acF.length&&aAc.den>=10?`A ação especial feita em sexta chegou a <b>${pct(aAc.prod,aAc.den,0)}%</b>.`:'A ação de leitura de 02/10 chegou a 69%.'} Reservar parte da equipe para leitura, atualização cadastral e fiscalização, que contam na meta e não dependem de corte.</p></div>
+    <div><span>4</span><b>Negociar quem já foi avisado</b><p>Usar a sexta para voltar às OS de corte da semana com imóvel fechado ou cliente que pediu prazo, em vez de abrir ordens novas. O cliente já foi visitado e conhece o débito.</p></div>
+    <div><span>5</span><b>Indicador próprio para a sexta</b><p>Acompanhar a meta de ${META}% nos dias de corte (hoje ${pct(aN.prod,aN.den,0)}%) e a sexta pela conversão das negociações (hoje ${posF.den?pct(posF.prod,posF.den,0):'—'}%), sem mudar o cálculo oficial. A diretoria passa a ver o que a equipe controla.</p></div>
+   </div></div>`;
+  const upd=x=>{SX_SIM.x=x;const xx=x===Math.round(cur)?cur:x;const m=aF.den?(A.prod-aF.prod+xx/100*aF.den)/A.den*100:A.pr;const g=nSx?(xx-cur)/100*aF.den/nSx:0;
+    $('#sxV').textContent=x+'%';const mm=$('#sxM');mm.textContent=m.toFixed(1).replace('.',',')+'%';mm.className=m>=META?'up':'dn';$('#sxG').textContent=(g>=0?'+':'−')+fmt(Math.abs(Math.round(g)))};
+  $('#sxR').oninput=e=>upd(+e.target.value);upd(SX_SIM.x);
+  v.querySelectorAll('[data-sxp]').forEach(b=>b.onclick=()=>{$('#sxR').value=b.dataset.sxp;upd(+b.dataset.sxp)});
+  v.querySelectorAll('[data-sxc]').forEach(b=>b.onclick=()=>{const o=JSON.parse(b.dataset.sxc);drill(Object.assign({dow:5,label:'Sextas · '+b.querySelector('span').textContent},o.cats?{cats:o.cats}:{},o.prod?{cats:PROD_CATS.filter(c=>c!=='PAG_POS'&&c!=='PAG_FAT')}:{},o.fech?{fech:1}:{},o.motOut?{motOut:1}:{}))});
+  v.querySelectorAll('[data-sxd]').forEach(b=>b.onclick=()=>{const k=b.dataset.sxd;drill(k==='14'?{dows:[1,2,3,4],label:'Segunda a quinta'}:k==='pos'?{dow:5,tipo:'POS',label:'Sextas · negociações'}:k==='fech'?{dow:5,fech:1,label:'Sextas · imóvel fechado'}:{dow:5,label:'Sextas-feiras'})});
+  bindAreas(v,true);
 }
 
 /* ============ início ============ */
