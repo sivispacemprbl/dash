@@ -495,6 +495,7 @@ input.cad{background:#0a1b37;border:1px solid var(--line2);border-radius:4px;pad
 .rk-spk{display:flex;align-items:center;gap:6px}
 .rk-sp{display:block;max-width:100%}
 .rk-score{font-family:var(--cond);font-size:26px;font-weight:700;text-align:right}
+.rk.by-prod .rk-row .rk-score{color:#cfe3ff}@media (max-width:760px){.rk.by-prod .rk-score{display:none}}
 .rk-note{margin:0;padding:10px 14px;font-size:12px;color:#c9d6ea;line-height:1.5}
 @media (max-width:1280px){.rk-lh,.rk-row{grid-template-columns:36px minmax(150px,1.3fr) minmax(120px,1.2fr) 100px 70px 80px}.rk-spk{display:none}.rk-lh span:nth-child(6){display:none}}
 @media (max-width:820px){.rk{padding:12px}.rk-pod{grid-template-columns:1fr}.rk-pod .rk-ouro{order:-1}.rk-hl{grid-template-columns:1fr 1fr}
@@ -1024,6 +1025,14 @@ td .rp,td .rn{font-weight:500;font-size:11.5px;letter-spacing:.01em}
 @container vw (max-width:560px){.rzficha .rzf3{display:flex}}
 .rzr-zm{right:8px;top:8px;gap:5px}.rzr-zm button{width:30px;height:30px;font-size:16px;border-radius:8px}
 .rzmp>*{max-width:1240px;margin-left:auto!important;margin-right:auto!important}.rzsvg{max-height:none}
+
+/* ranking por tipo de equipe */
+.rk-sec{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;padding:4px 8px 10px}.rk-sec b{font-size:15px;color:#e8f0fb}.rk-sec span{font-size:12px;color:#9fbbe0}
+.rk-car{margin-top:14px}.rk-car .rk-pos{color:#fbbf24;display:flex;align-items:center;justify-content:center}
+.rk-row.peq{opacity:.62}.rk-row.peq .rk-pos{color:#7d93b5}
+.rk-q{flex-direction:column;align-items:flex-start;gap:0;line-height:1.1}.rk-q b{font-size:15px}.rk-q small{font-size:11px;color:#9fbbe0;font-weight:500}
+.rk-note{font-size:12px;color:#9fbbe0;margin:12px 4px 0;text-align:center}
+@media (max-width:760px){.rk-q{flex-direction:row;align-items:baseline;gap:4px}}
 </style>
 
 <div class="app">
@@ -2161,7 +2170,8 @@ function vGeral(v,rows){
 const BLUR={eq:false,top:false,prim:false};let PRIM_DAY='';
 const blurBtn=k=>`<button type="button" class="cptab blurbtn ${BLUR[k]?'on':''}" data-blur="${k}" title="Esfumaçar os números deste bloco"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span>${BLUR[k]?'Mostrar':'Esfumaçar'}</span></button>`;
 function bindBlur(root){root.querySelectorAll('[data-blur]').forEach(b=>b.onclick=e=>{e.stopPropagation();const k=b.dataset.blur;BLUR[k]=!BLUR[k];const p=b.closest('.panel');p.classList.toggle('blurred',BLUR[k]);b.classList.toggle('on',BLUR[k]);b.querySelector('span').textContent=BLUR[k]?'Mostrar':'Esfumaçar'})}
-let RK_BY='indice',RK_PRIV=false,RK_SHOW='',RK_NOMES=false;
+let RK_BY='prod',RK_PRIV=false,RK_SHOW='',RK_NOMES=false;
+const RK_MIN_DIAS=5;
 function rankData(rows){
   const days=[...new Set(rows.map(r=>r.day))].sort();const half=days.slice(-7),prev=days.slice(-14,-7);
   const list=[...groupBy(rows,r=>r.eq)].map(([k,rs])=>{const a=agg(rs);
@@ -2172,29 +2182,42 @@ function rankData(rows){
     const spark=days.map(d=>{const x=rs.filter(r=>r.day===d);return x.length?agg(x).pr:null});
     return {k,a,dias:byD.size,ini:starts.length?starts.reduce((s,v)=>s+v,0)/starts.length:null,trend:prP?pr7-prP:null,sus,spark,
       fimP:a.rec?a.FIMDIA/a.rec*100:0,susP:a.trab?sus/a.trab*100:0}}).filter(x=>x.a.rec>=10);
-  const maxProd=Math.max(1,...list.map(x=>x.a.prod));
-  list.forEach(x=>{x.sP=Math.min(100,x.a.pr/META*100);x.sV=x.a.prod/maxProd*100;x.sQ=Math.max(0,100-x.susP);x.idx=0.5*x.sP+0.3*x.sV+0.2*x.sQ;x.peq=x.a.den<100});
+  /* tipo de equipe: cadastro do rodízio (moto/carro); sem cadastro, pelo serviço que mais faz (supressão = carro) */
+  const carro=new Set(),nomeU={};try{if(typeof RZ!=='undefined'&&RZ.cfg)RZ.cfg.unidades.forEach(u=>{const e=rzEqDe(u);if(e&&/\+/.test(u.nome||''))nomeU[e]=u.nome;if(u.tipo==='carro'&&e)carro.add(e)})}catch(e){}
+  list.forEach(x=>{const rs=rows.filter(r=>r.eq===x.k&&!r.man);const sup=rs.filter(r=>r.tipo==='SUPRESSAO').length;x.mod=carro.has(x.k)||(rs.length&&sup/rs.length>=.5)?'carro':'moto';x.osDia=x.dias?x.a.den/x.dias:0;x.nome=nomeU[x.k]||nomeDe(x.k);x.peq=x.dias<RK_MIN_DIAS});
+  for(const m of ['moto','carro']){const g=list.filter(x=>x.mod===m);const mx=Math.max(1,...g.map(x=>x.a.prod));g.forEach(x=>{x.sP=Math.min(100,x.a.pr/META*100);x.sV=x.a.prod/mx*100;x.idx=0.625*x.sP+0.375*x.sV})}
   return list;
 }
 function vRanking(v,rows){
-  const list=rankData(rows);
-  const crit={indice:['Índice geral',x=>x.idx,x=>x.idx.toFixed(0)],prod:['Produtividade',x=>x.a.pr,x=>pct(x.a.prod,x.a.den)+'%'],vol:['Produtivos',x=>x.a.prod,x=>fmt(x.a.prod)],pag:['Pagamentos',x=>x.a.pag,x=>fmt(x.a.pag)],corte:['Cortes e supressões',x=>x.a.CORTE+x.a.SUP,x=>fmt(x.a.CORTE+x.a.SUP)]};
+  const all=rankData(rows);
+  const crit={prod:['Produtividade',x=>x.a.pr,x=>pct(x.a.prod,x.a.den)+'%'],vol:['Produtivos',x=>x.a.prod,x=>fmt(x.a.prod)],pag:['Pagamentos',x=>x.a.pag,x=>fmt(x.a.pag)],corte:['Cortes e supressões',x=>x.a.CORTE+x.a.SUP,x=>fmt(x.a.CORTE+x.a.SUP)],indice:['Índice (produtividade + volume)',x=>x.idx,x=>x.idx.toFixed(0)]};
+  if(!crit[RK_BY])RK_BY='prod';
   const [cLbl,cVal,cFmt]=crit[RK_BY];
-  list.sort((x,y)=>cVal(y)-cVal(x)||y.a.prod-x.a.prod);
-  const A=agg(rows);const top=list.slice(0,3);const per=F.ini&&F.fim?dayBRf(F.ini)+' a '+dayBRf(F.fim):'Todo o período';
-  const best=(f)=>list.reduce((m,x)=>f(x)!=null&&(!m||f(x)>f(m))?x:m,null);
-  const evo=best(x=>x.trend),pag=best(x=>x.a.pag),cor=best(x=>x.a.CORTE+x.a.SUP),cedo=list.filter(x=>x.ini!=null).reduce((m,x)=>!m||x.ini<m.ini?x:m,null);
+  const ord=L=>L.sort((x,y)=>(x.peq-y.peq)||(cVal(y)-cVal(x))||(y.a.prod-x.a.prod));
+  const list=ord(all.filter(x=>x.mod==='moto')),cars=ord(all.filter(x=>x.mod==='carro'));
+  const A=agg(rows);const top=list.filter(x=>!x.peq).slice(0,3);const per=F.ini&&F.fim?dayBRf(F.ini)+' a '+dayBRf(F.fim):'Todo o período';
+  const best=(f)=>list.reduce((m,x)=>!x.peq&&f(x)!=null&&(!m||f(x)>f(m))?x:m,null);
+  const evo=best(x=>x.trend),pag=best(x=>x.a.pag),cor=best(x=>x.a.CORTE),cedo=list.filter(x=>x.ini!=null&&!x.peq).reduce((m,x)=>!m||x.ini<m.ini?x:m,null);
+  const lastCol=RK_BY==='prod'?'OS por dia':cLbl,lastVal=x=>RK_BY==='prod'?x.osDia.toFixed(0):cFmt(x);
   const spark=s=>{const pts=s.map((v,i)=>[i,v]).filter(p=>p[1]!=null);if(pts.length<2)return '';const W=120,H=30,n=s.length-1||1;
     const d=pts.map((p,i)=>(i?'L':'M')+(p[0]/n*W).toFixed(1)+' '+(H-2-Math.min(100,p[1])/100*(H-4)).toFixed(1)).join('');
     return `<svg class="rk-sp" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true"><line x1="0" x2="${W}" y1="${H-2-META/100*(H-4)}" y2="${H-2-META/100*(H-4)}" stroke="rgba(239,68,68,.55)" stroke-dasharray="3 3"/><path d="${d}" fill="none" stroke="#7cc7ff" stroke-width="2" stroke-linejoin="round"/></svg>`};
   const trend=t=>t==null?'<span class="rk-tr">—</span>':`<span class="rk-tr ${t>=0?'up':'dn'}">${t>=0?'▲':'▼'} ${Math.abs(t).toFixed(1).replace('.',',')} p.p.</span>`;
   const medal=['ouro','prata','bronze'];
+  const rkRow=(x,i,car)=>{const meta=x.a.pr>=META;return `<div class="rk-row ${!car&&i<3&&!x.peq?'top':''} ${x.peq?'peq':''} ${x.k===RK_SHOW?'show':''}" data-c="${esc(x.k)}" style="--d:${i*40}ms">
+       <span class="rk-pos">${car?'<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11a2 2 0 0 1 2 2v4h-2a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H3v-4a2 2 0 0 1 2-2zm2.2 0h9.6l-1-3.2a.6.6 0 0 0-.6-.4H8.8a.6.6 0 0 0-.6.4z"/></svg>':x.peq?'–':i+1}</span>
+       <span class="rk-nm"><b class="pvn">${esc(x.nome)}</b>${x.peq?'<em class="rk-tag pv">pouca amostra</em>':''}<small class="pv">${fmt(x.a.den)} OS trabalhadas${car?` · ${meta?'acima':'abaixo'} da meta`:''}</small></span>
+       <span class="rk-bar pv"><i style="width:${Math.min(100,x.a.pr)}%;background:${meta?'linear-gradient(90deg,#16a34a,#4ade80)':'linear-gradient(90deg,#2a72bd,#7cc7ff)'}"></i><s style="left:${META}%"></s><b>${pct(x.a.prod,x.a.den)}%</b></span>
+       <span class="rk-n pv">${fmt(x.a.prod)}<small>${fmt(x.a.pag)} pag · ${fmt(x.a.CORTE+x.a.SUP)} ${car?'supr./cortes':'cortes'}</small></span>
+       <span class="rk-q pv"><b>${x.dias}</b><small>dia${x.dias===1?'':'s'}</small></span>
+       <span class="rk-spk pv">${spark(x.spark)}${trend(x.trend)}</span>
+       <span class="rk-score pv">${lastVal(x)}</span></div>`};
   const podOrder=[1,0,2].filter(i=>top[i]);
-  v.innerHTML=`<section class="rk ${RK_PRIV?'priv privn':''}" id="rk">
+  v.innerHTML=`<section class="rk by-${RK_BY} ${RK_PRIV?'priv privn':''}" id="rk">
    <div class="rk-bg" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
    <div class="rk-in">
     <header class="rk-hero glass">
-     <div><span class="rk-eyb">Primarização · Santo André</span><h2>Ranking de Desempenho</h2><p>${esc(per)} · ${fmt(list.length)} colaboradores · produtividade da equipe <b class="${A.pr>=META?'up':'dn'}">${pct(A.prod,A.den)}%</b> (meta ${META}%)</p></div>
+     <div><span class="rk-eyb">Primarização · Santo André</span><h2>Ranking de Desempenho</h2><p>${esc(per)} · ${fmt(list.length)} na moto${cars.length?` · ${cars.length} no carro`:''} · produtividade da equipe <b class="${A.pr>=META?'up':'dn'}">${pct(A.prod,A.den)}%</b> (meta ${META}%)</p></div>
      <div class="rk-ctl"><label for="rkBy">Classificar por</label><select id="rkBy">${Object.entries(crit).map(([k,c])=>`<option value="${k}" ${k===RK_BY?'selected':''}>${c[0]}</option>`).join('')}</select>
       <button type="button" class="rk-btn ${RK_PRIV?'on':''}" id="rkPriv" aria-pressed="${RK_PRIV}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2">${RK_PRIV?'<path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6 0 10 7 10 7a18 18 0 0 1-3.2 4M6.6 6.6C3.9 8.3 2 12 2 12s4 7 10 7a9.7 9.7 0 0 0 5.4-1.6M9.9 9.9a3 3 0 0 0 4.2 4.2"/>':'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'}</svg>${RK_PRIV?'Modo privado ligado':'Modo privado'}</button>
       <button type="button" class="rk-btn" id="rkFull"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Tela cheia</button></div>
@@ -2202,25 +2225,24 @@ function vRanking(v,rows){
     ${RK_PRIV?`<div class="glass rk-pbar"><span class="rk-lock">🔒</span><span><b>Modo privado:</b> nomes e números protegidos. Toque num quadro para revelar só aquela pessoa; toque de novo para esconder.</span>${RK_SHOW?'<button type="button" class="rk-btn" id="rkHide">Esconder de novo</button>':''}</div>`:''}
     <div class="rk-pod">${podOrder.map(i=>{const x=top[i];return `<article class="glass rk-p rk-${medal[i]} ${x.k===RK_SHOW?'show':''}" data-c="${esc(x.k)}">
       <div class="rk-med">${i+1}º</div><h3 class="pvn">${esc(nomeDe(x.k))}</h3><div class="rk-big"><span class="pv">${cFmt(x)}</span><small>${cLbl}</small></div>
-      <div class="rk-kv pv"><span><b>${pct(x.a.prod,x.a.den)}%</b>produtividade</span><span><b>${fmt(x.a.prod)}</b>produtivos</span><span><b>${fmt(x.a.pag)}</b>pagamentos</span></div>
+      <div class="rk-kv pv">${RK_BY==='prod'?`<span><b>${fmt(x.a.prod)}</b>produtivos</span><span><b>${fmt(x.a.pag)}</b>pagamentos</span><span><b>${x.osDia.toFixed(0)}</b>OS por dia</span>`:`<span><b>${pct(x.a.prod,x.a.den)}%</b>produtividade</span><span><b>${fmt(x.a.prod)}</b>produtivos</span><span><b>${fmt(x.a.pag)}</b>pagamentos</span>`}</div>
       <div class="rk-ft pv">${spark(x.spark)}${trend(x.trend)}</div></article>`}).join('')}</div>
     <div class="rk-hl ${RK_PRIV?'pv':''}">
      ${evo&&evo.trend!=null?`<div class="glass"><span>Maior evolução (7 dias)</span><b>${esc(nomeDe(evo.k))}</b><em class="${evo.trend>=0?'up':'dn'}">${evo.trend>=0?'+':''}${evo.trend.toFixed(1).replace('.',',')} p.p.</em></div>`:''}
      ${pag?`<div class="glass"><span>Mais pagamentos</span><b>${esc(nomeDe(pag.k))}</b><em>${fmt(pag.a.pag)} pagamentos</em></div>`:''}
-     ${cor?`<div class="glass"><span>Mais cortes e supressões</span><b>${esc(nomeDe(cor.k))}</b><em>${fmt(cor.a.CORTE+cor.a.SUP)} executados</em></div>`:''}
+     ${cor?`<div class="glass"><span>Mais cortes</span><b>${esc(nomeDe(cor.k))}</b><em>${fmt(cor.a.CORTE)} executados</em></div>`:''}
      ${cedo?`<div class="glass"><span>Início mais cedo (média)</span><b>${esc(nomeDe(cedo.k))}</b><em>1ª OS às ${minToHM(cedo.ini)}</em></div>`:''}
     </div>
     <div class="glass rk-list">
-     <div class="rk-lh"><span>#</span><span>Colaborador</span><span>Produtividade</span><span>Produtivos</span><span>Qualidade</span><span>Últimos dias</span><span>${cLbl}</span></div>
-     ${list.map((x,i)=>`<div class="rk-row ${i<3?'top':''} ${x.k===RK_SHOW?'show':''}" data-c="${esc(x.k)}" style="--d:${i*40}ms">
-       <span class="rk-pos">${i+1}</span>
-       <span class="rk-nm"><b class="pvn">${esc(nomeDe(x.k))}</b>${x.peq?'<em class="rk-tag pv">amostra pequena</em>':''}<small class="pv">${x.dias} dia${x.dias>1?'s':''} em campo · ${fmt(x.a.den)} OS trabalhadas</small></span>
-       <span class="rk-bar pv"><i style="width:${Math.min(100,x.a.pr)}%;background:${x.a.pr>=META?'linear-gradient(90deg,#16a34a,#4ade80)':'linear-gradient(90deg,#2a72bd,#7cc7ff)'}"></i><s style="left:${META}%"></s><b>${pct(x.a.prod,x.a.den)}%</b></span>
-       <span class="rk-n pv">${fmt(x.a.prod)}<small>${fmt(x.a.pag)} pag · ${fmt(x.a.CORTE+x.a.SUP)} cortes</small></span>
-       <span class="rk-q pv" ${RK_PRIV?'':'title="'}${RK_PRIV?'data-x="':''}Baixas fora do local ${x.susP.toFixed(1).replace('.',',')}%"><i style="--q:${x.sQ.toFixed(0)}"></i>${x.sQ.toFixed(0)}</span>
-       <span class="rk-spk pv">${spark(x.spark)}${trend(x.trend)}</span>
-       <span class="rk-score pv">${cFmt(x)}</span></div>`).join('')}
+     <div class="rk-sec"><b>Moto · corte e negociação</b><span>${CARGA.CORTE} ordens por dia · ordenado por ${cLbl.toLowerCase()}</span></div>
+     <div class="rk-lh"><span>#</span><span>Colaborador</span><span>Produtividade</span><span>Produtivos</span><span>Dias</span><span>Últimos dias</span><span>${lastCol}</span></div>
+     ${list.map((x,i)=>rkRow(x,i)).join('')}
     </div>
+    ${cars.length?`<div class="glass rk-list rk-car">
+     <div class="rk-sec"><b>Carro · supressão</b><span>${CARGA.SUPRESSAO} ordens por dia · comparado só com a própria meta e com o próprio histórico</span></div>
+     ${cars.map((x,i)=>rkRow(x,i,1)).join('')}
+    </div>`:''}
+    <p class="rk-note">Cada equipe é comparada com quem faz o mesmo serviço. Quem trabalhou menos de ${RK_MIN_DIAS} dias no período aparece no fim, como pouca amostra.</p>
     
    </div></section>`;
   $('#rkBy').onchange=e=>{RK_BY=e.target.value;render()};
