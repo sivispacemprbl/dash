@@ -1867,7 +1867,7 @@ function renderPulse(rows){
   ].filter(Boolean);
   const dayRows=rows.filter(r=>r.day===ld);
   const top3=[...groupBy(dayRows,r=>r.eq)].map(([k,rs])=>({k,a:agg(rs)})).filter(c=>c.a.prod>0).sort((x,y)=>y.a.prod-x.a.prod||y.a.pr-x.a.pr).slice(0,3);
-  const fechTop=[...groupBy(dayRows.filter(r=>/^IMOVEL FECHADO/.test(norm(r.res))),r=>r.bai||'(sem bairro)')].map(([k,rs])=>({k,n:rs.length})).sort((x,y)=>y.n-x.n).slice(0,4);
+  const fechTop=[...groupBy(rows.filter(r=>!r.man&&r.sf&&r.cat!=='FIMDIA'),r=>String(r.sf))].map(([k,rs])=>({k,d:rs.length,n:rs.filter(r=>/^IMOVEL FECHADO/.test(norm(r.res))).length})).filter(x=>x.d>=20).map(x=>Object.assign(x,{p:x.n/x.d*100})).sort((x,y)=>y.p-x.p).slice(0,4);
   const ok=A.pr>=META;const falta=Math.max(0,Math.ceil(META/100*A.den-A.prod));
   el.innerHTML=`
    <form class="pq" id="pqForm" role="search"><label for="pq">Busca rápida</label><div class="pqr"><input id="pq" value="${esc(PULSE_Q)}" placeholder="OS, PDE, rua ou nome" autocomplete="off"><button type="submit" aria-label="Buscar"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button></div></form>
@@ -1882,13 +1882,13 @@ function renderPulse(rows){
     <button type="button" data-dr='{"day":"${ld}"}'><b>${fmt(D.trab)}</b><span>trabalhadas</span></button><button type="button" data-dr='{"day":"${ld}","pag":1}'><b>${fmt(D.pag)}</b><span>pagamentos</span></button></div></div>
    <div class="pb"><div class="pt">Destaques · ${dayBR(ld)}</div>${top3.length?`<ol class="ptop">${top3.map((c,i)=>`<li><button type="button" data-top="${esc(c.k)}"><span class="md m${i}">${i+1}</span><span class="nm">${esc(nomeDe(c.k))}</span><b>${c.a.prod}</b></button></li>`).join('')}</ol><p class="ps">produtivos no dia</p>`:'<p class="ps">Sem produtivos no dia.</p>'}</div>
    <div class="pb"><div class="pt">Atenção</div>${al.length?`<ul class="pal">${al.map((x,i)=>`<li><button type="button" class="${x.lv}" data-al="${i}"><i></i>${esc(x.t)}</button></li>`).join('')}</ul>`:'<p class="ps">Nada fora do normal no período.</p>'}</div>
-   ${fechTop.length?`<div class="pb"><div class="pt">Imóvel fechado · ${dayBR(ld)}</div><ul class="pbai">${fechTop.map(b=>`<li><button type="button" data-fb="${esc(b.k)}"><span>${esc(b.k)}</span><b>${b.n}</b></button></li>`).join('')}</ul></div>`:''}
+   ${fechTop.length?`<div class="pb"><div class="pt">Mais imóvel fechado <span class="muted">no período</span></div><ul class="pbai">${fechTop.map(b=>`<li><button type="button" data-fb="${esc(b.k)}"><span>Setor ${esc(b.k)}</span><b>${b.p.toFixed(0)}%</b></button></li>`).join('')}</ul><p class="ps">% das visitas com imóvel fechado</p></div>`:''}
    <div class="pb"><div class="pt">Resumo para a equipe</div><p class="ps">Texto pronto do último dia para colar no WhatsApp ou e-mail.</p><button type="button" class="btn sm presumo" id="pResumo">${CP_ICON} Copiar resumo de ${dayBR(ld)}</button></div>`;
   $('#pqForm').onsubmit=e=>{e.preventDefault();PULSE_Q=$('#pq').value.trim();if(!PULSE_Q)return;drill({q:PULSE_Q,label:'Busca: '+PULSE_Q})};
   el.querySelectorAll('[data-pd]').forEach(r=>r.addEventListener('click',()=>drill({day:r.dataset.pd,label:'Dia '+dayBRf(r.dataset.pd)})));
   el.querySelectorAll('.pg4 button').forEach(b=>b.onclick=()=>{const d=JSON.parse(b.dataset.dr);drill({day:d.day,cats:d.prod?PROD_CATS:d.pag?['PAG_POS','PAG_FAT']:null,label:'Dia '+dayBRf(d.day)+(d.prod?' · produtivos':d.pag?' · pagamentos':'')})});
   el.querySelectorAll('[data-top]').forEach(b=>b.onclick=()=>drill({eqs:[b.dataset.top],day:ld,label:nomeDe(b.dataset.top)+' · '+dayBRf(ld)}));
-  el.querySelectorAll('[data-fb]').forEach(b=>b.onclick=()=>drill({bai:b.dataset.fb,day:ld,fech:1,label:'Imóvel fechado · '+b.dataset.fb+' · '+dayBRf(ld)}));
+  el.querySelectorAll('[data-fb]').forEach(b=>b.onclick=()=>drill({sf:b.dataset.fb,fech:1,label:'Imóvel fechado · setor '+b.dataset.fb}));
   $('#pResumo').onclick=()=>{const rrDay=dayRows.filter(r=>isRR(r)&&r.cat==='RR');const all=[...groupBy(dayRows,r=>r.eq)].map(([k,rs])=>({k,a:agg(rs)})).sort((x,y)=>y.a.pr-x.a.pr);
     const txt=[`*Resumo do dia ${dayBRf(ld)} – Corte, Negociação e Religação*`,``,`Produtividade do dia: *${pct(D.prod,D.den)}%*`,`Produtivos: ${D.prod} de ${D.trab} OS trabalhadas`,
       `Pagamentos: ${D.pag} (${D.PAG_POS} via POS · ${D.PAG_FAT} faturas pagas)`,`Cortes: ${D.CORTE} · Supressões: ${D.SUP}`,`Restabelecimentos: ${rrDay.filter(r=>r.tipo==='RESTAB').length} · Religações: ${rrDay.filter(r=>r.tipo==='RELIG').length}`,`Impedimentos: ${D.IMPED} · Negociação infrutífera: ${D.INFRUT}`,``,
@@ -2415,7 +2415,7 @@ function vGargalos(v,rows){rows=rows.filter(r=>!r.man);
   const semSol=reinc.filter(x=>!x.prod).sort((a,b)=>b.n-a.n);
   const fechHour=(()=>{const b=rows.filter(isBaixa);const it=BANDS.map(([l,h0,h1])=>{const rs=b.filter(r=>{const h=hourOf(r);return h>=h0&&h<h1});const f=rs.filter(r=>/^IMOVEL FECHADO/.test(norm(r.res))).length;const p=rs.length?f/rs.length*100:0;return {l,w:p,v:rs.length?p.toFixed(0)+'%':'—',s:`${fmt(f)} de ${fmt(rs.length)}`,c:'#f87171'}});
     return miniBlock('Imóvel fechado por faixa horária','% das visitas encontradas fechadas',it)})();
-  const fechB=[...groupBy(rows.filter(r=>/^IMOVEL FECHADO/.test(norm(r.res))),r=>r.bai||'(SEM BAIRRO)')].map(([k,rs])=>({k,n:rs.length,sf:[...new Set(rs.map(r=>r.sf))].sort().join(', ')})).sort((a,b)=>b.n-a.n).slice(0,10);
+  const fechB=[...groupBy(rows.filter(r=>r.bai&&r.cat!=='FIMDIA'),r=>r.bai)].map(([k,rs])=>{const n=rs.filter(r=>/^IMOVEL FECHADO/.test(norm(r.res))).length;return {k,n,d:rs.length,p:n/rs.length*100,sf:[...new Set(rs.map(r=>r.sf).filter(Boolean))].sort().join(', ')}}).filter(b=>b.d>=15).sort((a,b)=>b.p-a.p).slice(0,10);
   const fech=rows.filter(r=>/^IMOVEL FECHADO/.test(norm(r.res))).length;
   const K=(lab,val,sub,cls,dk)=>`<button type="button" class="kpi ${cls||''}" data-gk="${dk}" title="Ver a lista dessas OS"><span class="lab">${lab}</span><span class="val">${val}</span><span class="sub">${sub}</span><span class="kgo">Ver lista →</span></button>`;
   v.innerHTML=`<div class="kpis">
@@ -2434,9 +2434,9 @@ function vGargalos(v,rows){rows=rows.filter(r=>!r.man);
    <div class="panel"><h3>OS reincidentes sem solução <small>top 15</small></h3><div class="tw"><table><thead><tr><th>OS</th><th class="n">Visitas</th><th>Bairro</th><th>Último resultado</th><th>Última visita</th></tr></thead><tbody>
    ${semSol.slice(0,15).map(x=>{const l=x.rs[x.rs.length-1];return `<tr data-os="${esc(x.k)}"><td>${osn(x.k)}</td><td class="n">${x.n}</td><td>${esc(l.bai)}</td><td>${resH(l.res,l.cat)}</td><td>${dayBRf(l.day)}</td></tr>`}).join('')||'<tr><td colspan="5" class="muted">Nenhuma</td></tr>'}
    </tbody></table></div></div>
-   <div class="panel fillp"><h3>Imóvel fechado por bairro <small>top 10 · reprogramar + encerrada</small></h3><div class="tw"><table><thead><tr><th>Bairro</th><th>Setor</th><th class="n">Imóvel fechado</th><th></th></tr></thead><tbody>
-   ${fechB.map(b=>`<tr data-b="${esc(b.k)}"><td>${esc(b.k)}</td><td>${esc(b.sf)}</td><td class="n">${b.n}</td><td style="width:35%"><div class="bar"><i style="width:${b.n/fechB[0].n*100}%;background:var(--red)"></i></div></td></tr>`).join('')||'<tr><td colspan="4" class="muted">Nenhum</td></tr>'}
-   </tbody></table></div>${fechHour}<div class="pfoot"><span>Esses 10 bairros concentram <b>${pct(fechB.reduce((s,b)=>s+b.n,0),fech)}%</b> dos imóveis fechados</span></div></div></div>
+   <div class="panel fillp"><h3>Imóvel fechado por bairro <small>10 bairros com mais visitas fechadas · bairros com 15+ OS</small></h3><div class="tw"><table><thead><tr><th>Bairro</th><th>Setor</th><th class="n">Fechado</th><th class="n">% das visitas</th><th></th></tr></thead><tbody>
+   ${fechB.map(b=>`<tr data-b="${esc(b.k)}"><td>${esc(b.k)}</td><td>${esc(b.sf)}</td><td class="n">${b.n} de ${b.d}</td><td class="n rn"><b>${b.p.toFixed(0)}%</b></td><td style="width:28%"><div class="bar"><i style="width:${Math.min(100,b.p)}%;background:var(--red)"></i></div></td></tr>`).join('')||'<tr><td colspan="5" class="muted">Nenhum</td></tr>'}
+   </tbody></table></div>${fechHour}<div class="pfoot"><span>Média da equipe: <b>${pct(fech,rows.filter(r=>r.cat!=='FIMDIA').length,0)}%</b> das visitas com imóvel fechado</span></div></div></div>
   </div>
   <div class="panel" id="pBai"></div>`;
   v.querySelectorAll('[data-gk]').forEach(b=>b.onclick=()=>{const k=b.dataset.gk;
