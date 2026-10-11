@@ -1139,6 +1139,7 @@ body.tv .kpi .val{font-size:clamp(28px,2.6vw,46px)}body.tv .kpi .lab{font-size:1
 @media (max-width:820px){.rk-lh,.rk-row{grid-template-columns:34px 1fr auto!important}}
 .ctab2 td,.ctab2 th{overflow-wrap:anywhere}.ctab2 .pd{overflow-wrap:normal}
 @container vw (max-width:560px){.cvr{grid-template-columns:1fr auto}.cvr .dumb{grid-column:1/-1;grid-row:2}}
+#acDel.arm{background:#7f1d1d;border-color:#f87171;color:#fff}
 </style>
 
 <div class="app">
@@ -1699,6 +1700,8 @@ async function vaultOpen(pw){const v=JSON.parse(localStorage.getItem(VAULT));con
   SEC_KEY=key;SEC_CACHE=cache}
 const LS={get(k,d){if(SECURE&&SEC_KEYS.includes(k))return SEC_CACHE[k]!==undefined?SEC_CACHE[k]:d;try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
   set(k,v){if(SECURE&&SEC_KEYS.includes(k)){SEC_CACHE[k]=v;if(k===PLAN_KEY)PLAN_DIRTY=true;clearTimeout(_sp);_sp=setTimeout(vaultWrite,400);return true}try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
+/* no painel do Claude as janelas de confirmação do navegador são bloqueadas: usa a opção segura */
+const confirmar=(msg,seguro)=>{if(window.claude)return seguro;try{return window.confirm(msg)}catch(e){return seguro}};
 function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,4200)}
 
 function parseDate(v){
@@ -2502,7 +2505,7 @@ function acModal(id,d0){const a=id?ACOES.find(x=>x.id===id):null;const hoje=dayK
   const T=ov.querySelector('#acT');T.onchange=()=>{ov.querySelector('#acOL').hidden=T.value!=='Outra'};
   ov.querySelectorAll('.ac-c input[data-k=real]').forEach(i=>i.oninput=()=>i.parentNode.classList.toggle('on',i.value!==''));
   ov.querySelector('#acAllB').onclick=()=>{const v=ov.querySelector('#acAll').value;if(v==='')return;ov.querySelectorAll('.ac-c input[data-k=real]').forEach(i=>{i.value=v;i.parentNode.classList.add('on')})};
-  if(a)ov.querySelector('#acDel').onclick=async()=>{if(!confirm('Apagar esta ação especial?'))return;ACOES=ACOES.filter(x=>x.id!==a.id);await saveAcoes('Ação apagada.');close();render()};
+  if(a)ov.querySelector('#acDel').onclick=async e=>{const b=e.currentTarget;if(!b.dataset.ok){b.dataset.ok='1';b.textContent='Toque de novo para apagar';b.classList.add('arm');clearTimeout(b._t);b._t=setTimeout(()=>{delete b.dataset.ok;b.textContent='Apagar ação';b.classList.remove('arm')},5000);return}ACOES=ACOES.filter(x=>x.id!==a.id);await saveAcoes('Ação apagada.');close();render()};
   ov.querySelector('#acF').onsubmit=async e=>{e.preventDefault();const E=ov.querySelector('#acE');E.textContent='';
     const data=ov.querySelector('#acD').value;let tipo=T.value;if(tipo==='Outra')tipo=ov.querySelector('#acO').value.trim();
     if(!data){E.textContent='Informe a data.';return}if(!tipo){E.textContent='Escreva o nome da ação.';return}
@@ -2924,7 +2927,7 @@ function bindBackup(v){const d=v.querySelector('#bkDown'),u=v.querySelector('#bk
     const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='copia-painel-'+dayKey(Date.now())+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(url);a.remove()},1500);toast('Cópia baixada. Guarde no seu computador.')};
   u.onclick=()=>{const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=async()=>{const f=i.files[0];if(!f)return;
     try{const p=JSON.parse(await f.text());const vv=p&&p.vault;if(!p||p.tipo!=='backup-painel-santo-andre'||!vv||!vv.salt||!vv.iv||!vv.ct)throw new Error('este arquivo não é uma cópia do painel');
-      if(!confirm('Restaurar a cópia de '+(p.em?dayBRf(dayKey(Date.parse(p.em)))+' ':'')+'? Os dados atuais deste navegador serão trocados pelos da cópia. Depois é só digitar a senha da cópia.'))return;
+      if(!confirmar('Restaurar a cópia de '+(p.em?dayBRf(dayKey(Date.parse(p.em)))+' ':'')+'? Os dados atuais deste navegador serão trocados pelos da cópia. Depois é só digitar a senha da cópia.'))return;
       localStorage.setItem(VAULT,JSON.stringify(vv));if(p.vaultPlan)localStorage.setItem(VAULT_P,JSON.stringify(p.vaultPlan));else localStorage.removeItem(VAULT_P);location.reload()}catch(e){toast('Não foi possível restaurar: '+e.message)}};i.click()}}
 function agRR(k,full){try{if(typeof RZ==='undefined'||!RZ.cfg)return '';const x=rrDoDia(k);if(!x)return '';const n=x.quem.map(rzNome).join(' e ');return full?`<button type="button" class="ag-rrb" id="agRR"><span>↻ Restabelecimento e religação</span><b>${esc(n)}</b></button>`:`<span class="ag-rr">↻ ${esc(n)}</span>`}catch(e){return ''}}
 function vAgenda(v,rows){
@@ -3528,7 +3531,7 @@ function rzBind(v){const root=v.querySelector('.rz');if(!root)return;rzRuasBind(
       else if(a==='religar'){const u=rzUni(b.dataset.u);u.status='ativo';rzSave(rzNome(u.id)+' voltou ao rodízio')}
       else if(a==='feriados'){RZ.cfg.feriados=$('#rzFer').value.split(/\s+/).filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(x)).sort();rzSave(RZ.cfg.feriados.length+' feriados salvos')}
       else if(a==='exportar'){const c=JSON.parse(JSON.stringify(RZ.cfg));c.mapa=rzMapa();c.formas=rzFormas();const blob=new Blob([JSON.stringify({tipo:'rodizio-sabesp',v:1,cfg:c})],{type:'application/json'});const u=URL.createObjectURL(blob);const l=document.createElement('a');l.href=u;l.download='rodizio-sao-mateus.json';document.body.appendChild(l);l.click();setTimeout(()=>{URL.revokeObjectURL(u);l.remove()},1500);toast('Pacote exportado.')}
-      else if(a==='importar'){const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=async()=>{const f=i.files[0];if(!f)return;try{const p=JSON.parse(await f.text());const c=p&&p.cfg;if(!c||!Array.isArray(c.unidades)||!Array.isArray(c.setores))throw new Error('arquivo não é um pacote do rodízio');if(RZ.cfg&&RZ.cfg.unidades&&RZ.cfg.unidades.length){if(confirm('Você já tem um rodízio salvo. Manter a equipe, as faltas e os ajustes que você lançou e atualizar só o mapa?')){if(c.formas)RZ.cfg.formas=c.formas;if(c.mapa)RZ.cfg.mapa=c.mapa;rzSave('Mapa atualizado. Equipe, faltas e ajustes mantidos.');return}if(!confirm('Substituir tudo pelo conteúdo do arquivo?'))return}RZ.cfg=RM.migrar(c);RZ.cfg.feitos=RZ.cfg.feitos||{};RZ.dia=rzDiaInicial();rzSave('Rodízio importado: '+c.unidades.length+' colaboradores, '+c.setores.length+' setores.')}catch(e){toast('Não foi possível importar: '+e.message)}};i.click()}
+      else if(a==='importar'){const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=async()=>{const f=i.files[0];if(!f)return;try{const p=JSON.parse(await f.text());const c=p&&p.cfg;if(!c||!Array.isArray(c.unidades)||!Array.isArray(c.setores))throw new Error('arquivo não é um pacote do rodízio');if(RZ.cfg&&RZ.cfg.unidades&&RZ.cfg.unidades.length){if(confirmar('Você já tem um rodízio salvo. Manter a equipe, as faltas e os ajustes que você lançou e atualizar só o mapa?')){if(c.formas)RZ.cfg.formas=c.formas;if(c.mapa)RZ.cfg.mapa=c.mapa;rzSave('Mapa atualizado. Equipe, faltas e ajustes mantidos.');return}if(!confirmar('Substituir tudo pelo conteúdo do arquivo?',false))return}RZ.cfg=RM.migrar(c);RZ.cfg.feitos=RZ.cfg.feitos||{};RZ.dia=rzDiaInicial();rzSave('Rodízio importado: '+c.unidades.length+' colaboradores, '+c.setores.length+' setores.')}catch(e){toast('Não foi possível importar: '+e.message)}};i.click()}
     }catch(e){toast(e&&e.message||'Não foi possível')}};
   root.onchange=ev=>{const el=ev.target,a=el.dataset&&el.dataset.rz;if(!a)return;try{
     if(a==='focoSet'){const f=rzFoco(),c=+el.value;f.setores=el.checked?[...new Set(f.setores.concat(c))].sort((x,y)=>x-y):f.setores.filter(x=>x!==c);rzSave('Setores em foco: '+f.setores.join(', '))}
