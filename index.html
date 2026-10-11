@@ -1125,6 +1125,20 @@ body.tv .kpi .val{font-size:clamp(28px,2.6vw,46px)}body.tv .kpi .lab{font-size:1
 #tvNome{font-weight:700;padding:0 6px;min-width:120px;text-align:center}.tvdots{display:inline-flex;gap:5px;margin-right:6px}.tvdots i{width:8px;height:8px;border-radius:50%;background:#27497a}.tvdots i.on{background:#7cc7ff;width:20px;border-radius:5px}
 .ja .jl li{grid-template-columns:minmax(0,1fr) auto auto 130px}.colw.blurn .ja .show .pvn{filter:none}
 .reu-tw{overflow-x:auto}@container vw (max-width:620px){.reu-h{flex-wrap:wrap}.reu-t th:nth-child(5),.reu-t td:nth-child(5),.reu-t th:nth-child(7),.reu-t td:nth-child(7),.reu-t th:nth-child(8),.reu-t td:nth-child(8){display:none}}
+.ctab2{width:100%;border-collapse:collapse;font-size:12.5px}.ctab2 th{white-space:normal;font-size:10.5px;line-height:1.2;vertical-align:bottom;padding:6px;min-width:0}.ctab2 th.np{border-bottom:2px solid var(--c);width:74px;max-width:78px;font-size:9.5px;letter-spacing:.02em}.ctab2 td{padding:7px 5px;border-bottom:1px solid rgba(148,163,184,.1)}.ctab2 td.nw{min-width:120px}.ctab2 .rzpb{width:60px}.ctab2 tr[data-c]{cursor:pointer}.ctab2 tr[data-c]:hover{background:rgba(124,199,255,.05)}.ctab2 tr.ap{background:rgba(248,113,113,.06)}
+.ce{background:none;border:0;color:inherit;font:inherit;font-weight:600;cursor:pointer;padding:2px 4px;border-radius:4px}.ce:hover{background:rgba(124,199,255,.15);text-decoration:underline}.ce.p{color:#86efac}
+.pd{display:block;font-size:10.5px;color:#8ea6c6;white-space:normal;max-width:150px;margin-left:auto;line-height:1.3}
+.cbar{display:flex;width:120px;height:12px;border-radius:6px;overflow:hidden;background:#13305a}.cbar i{display:block;height:100%}
+.ctab-leg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11.5px;color:#9fb3cf;margin-top:10px}.ctab-leg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.ctw{overflow-x:auto}
+@container vw (max-width:1300px){.ctab2 .cmpc{display:none}}@container vw (max-width:1120px){.ctab2 .dc,.ctab2 .rc{display:none}.ctab2 td{padding:7px 3px;font-size:12px}.ctab2 td.nw{min-width:100px}.ctab2 .rzpb{width:44px}.ctab2 th.np{width:60px;font-size:9px}}
+/* ranking: detalhe quebra dentro da própria coluna, nunca invade a vizinha */
+.rk-lh,.rk-row{grid-template-columns:40px minmax(170px,1.3fr) minmax(130px,1.2fr) minmax(150px,190px) 64px 160px 80px!important}
+.rk-row>*{min-width:0}.rk-n small{white-space:normal!important;overflow-wrap:anywhere;line-height:1.35;font-weight:500}
+@media (max-width:1280px){.rk-lh,.rk-row{grid-template-columns:36px minmax(140px,1.2fr) minmax(110px,1fr) minmax(130px,170px) 60px 70px!important}}
+@media (max-width:820px){.rk-lh,.rk-row{grid-template-columns:34px 1fr auto!important}}
+.ctab2 td,.ctab2 th{overflow-wrap:anywhere}.ctab2 .pd{overflow-wrap:normal}
+@container vw (max-width:560px){.cvr{grid-template-columns:1fr auto}.cvr .dumb{grid-column:1/-1;grid-row:2}}
 </style>
 
 <div class="app">
@@ -1743,7 +1757,8 @@ function catSub(res){
   if(/NEGOCIACAO INFRUTIFERA/.test(r))return ['INFRUT','INFRUT'];
   if(/IMOVEL FECHADO/.test(r))return ['IMPED','FECH'];
   if(/NAO PERMITIU/.test(r))return ['IMPED','NPERM'];
-  if(/NADA CONSTA|NAO LOCALIZAD|NAO ENCONTRAD/.test(r))return ['IMPED','NLOC'];
+  if(/NADA CONSTA/.test(r))return ['IMPED','NADA'];
+  if(/NAO LOCALIZAD|NAO ENCONTRAD/.test(r))return ['IMPED','NLOC'];
   if(/DIFICULDADE TECNICA/.test(r))return ['IMPED','DTEC'];
   if(!nao){
     if(/PAGAMENTO EFETIVADO|(EFETUOU|REALIZOU|EFETIVOU) (O )?(PGTO|PAGAMENTO)|(PGTO|PAGO|PAGAMENTO) VIA POS/.test(r))return ['PAG_POS','PAG_POS'];
@@ -1777,9 +1792,9 @@ const PROD_CATS=['PAG_POS','PAG_FAT','CORTE','SUP','VIST','ACAO','OUTP'].concat(
 function setRRProd(v){RR_PROD=v;try{localStorage.setItem('sa_dash_rrprod',JSON.stringify(v))}catch(e){}PROD_CATS.length=0;PROD_CATS.push('PAG_POS','PAG_FAT','CORTE','SUP','VIST','ACAO','OUTP');if(v)PROD_CATS.push('RR')}
 const isProd=c=>PROD_CATS.includes(c);
 const CAT_LBL={PAG_POS:'Pagamento via POS',PAG_FAT:'Faturas pagas apresentadas',CORTE:'Corte executado',SUP:'Supressão executada',VIST:'Vistoria produtiva',RR:'Restab./religação executada',FIMDIA:'Fim do dia',IMPED:'Impedimento',INFRUT:'Negociação infrutífera',OUTROS:'Outros',ACAO:'Ação especial (produtiva)',ACAO_NP:'Ação especial (não produtiva)'};
-Object.assign(CAT_LBL,{RESTAB:'Restabelecimento executado',RELIG:'Religação executada',FECH:'Imóvel fechado',NPERM:'Cliente não permitiu',NLOC:'Nada consta / não localizado',DTEC:'Dificuldade técnica',INFO:'Pagamento só informado',NOVO:'Resultado a classificar',CLASN:'Não produtivo (classificado)',OUTP:'Produtivo (classificado)'});
-const SUB_ORD=['PAG_POS','PAG_FAT','CORTE','SUP','RESTAB','RELIG','VIST','ACAO','OUTP','INFRUT','FECH','NPERM','NLOC','DTEC','INFO','CLASN','NOVO','ACAO_NP'];
-const SUB_COL={PAG_POS:'#2f86f6',PAG_FAT:'#38bdf8',CORTE:'#22c55e',SUP:'#f47a2a',RESTAB:'#2dd4bf',RELIG:'#e879f9',VIST:'#818cf8',ACAO:'#a78bfa',OUTP:'#86efac',INFRUT:'#fbbf24',FECH:'#ef4444',NPERM:'#fb7185',NLOC:'#c2410c',DTEC:'#94a3b8',INFO:'#64748b',CLASN:'#64748b',NOVO:'#e2e8f0',ACAO_NP:'#6b7280'};
+Object.assign(CAT_LBL,{RESTAB:'Restabelecimento executado',RELIG:'Religação executada',FECH:'Imóvel fechado',NPERM:'Cliente não permitiu execução',NADA:'Nada consta no local',NLOC:'Nº/imóvel não localizado',DTEC:'Dificuldade técnica de execução',INFO:'Cliente informou pagamento',NOVO:'Resultado a classificar',CLASN:'Não produtivo (classificado)',OUTP:'Produtivo (classificado)'});
+const SUB_ORD=['PAG_POS','PAG_FAT','CORTE','SUP','RESTAB','RELIG','VIST','ACAO','OUTP','INFRUT','FECH','NPERM','NADA','NLOC','DTEC','INFO','CLASN','NOVO','ACAO_NP'];
+const SUB_COL={PAG_POS:'#2f86f6',PAG_FAT:'#38bdf8',CORTE:'#22c55e',SUP:'#f47a2a',RESTAB:'#2dd4bf',RELIG:'#e879f9',VIST:'#818cf8',ACAO:'#a78bfa',OUTP:'#86efac',INFRUT:'#fbbf24',FECH:'#ef4444',NPERM:'#fb7185',NADA:'#d946ef',NLOC:'#c2410c',DTEC:'#94a3b8',INFO:'#64748b',CLASN:'#64748b',NOVO:'#e2e8f0',ACAO_NP:'#6b7280'};
 
 const CAT_ST={OUTP:'p',PAG_POS:'p',PAG_FAT:'p',CORTE:'p',SUP:'p',VIST:'p',RR:'p',FIMDIA:'f',IMPED:'i',INFRUT:'n',OUTROS:'o',ACAO:'p',ACAO_NP:'o'};
 // Baixa real = OS executada ou não executada pelo colaborador em campo.
@@ -1956,7 +1971,7 @@ function prevPeriod(){
   return applyF(scope(),Object.assign({},F,{ini:dayKey(pa),fim:dayKey(pb)}));
 }
 function agg(rows){
-  const a={rec:RR_PROD?rows.length:rows.filter(r=>!isRR(r)).length,trab:0,prod:0,PAG_POS:0,PAG_FAT:0,CORTE:0,SUP:0,VIST:0,RR:0,FIMDIA:0,IMPED:0,INFRUT:0,OUTROS:0,ACAO:0,ACAO_NP:0,OUTP:0,RESTAB:0,RELIG:0,FECH:0,NPERM:0,NLOC:0,DTEC:0,INFO:0,NOVO:0,CLASN:0};
+  const a={rec:RR_PROD?rows.length:rows.filter(r=>!isRR(r)).length,trab:0,prod:0,PAG_POS:0,PAG_FAT:0,CORTE:0,SUP:0,VIST:0,RR:0,FIMDIA:0,IMPED:0,INFRUT:0,OUTROS:0,ACAO:0,ACAO_NP:0,OUTP:0,RESTAB:0,RELIG:0,FECH:0,NPERM:0,NADA:0,NLOC:0,DTEC:0,INFO:0,NOVO:0,CLASN:0};
   for(const r of rows){if(!RR_PROD&&isRR(r))continue;a.rec+=0;a[r.cat]++;if(r.sub&&r.sub!==r.cat)a[r.sub]++;if(r.cat!=='FIMDIA')a.trab++;if(isProd(r.cat))a.prod++}
   a.pag=a.PAG_POS+a.PAG_FAT; a.den=BASE==='rec'?a.rec:a.trab; a.pr=pctN(a.prod,a.den);
   return a;
@@ -2414,7 +2429,7 @@ function bindResProd(root){
   root.querySelectorAll('.svcb [data-pc]').forEach(b=>b.onclick=()=>drill({eqs:[b.dataset.pc],label:'Colaborador: '+nomeDe(b.dataset.pc)}));
 }
 /* gráfico diário moderno: 4 grupos, cores suaves, produtividade do dia no topo */
-const DGRP=[{n:'Produtivos',cs:['PAG_POS','PAG_FAT','CORTE','SUP','RESTAB','RELIG','VIST','ACAO','OUTP'],c:'#34d399'},{n:'Negociação infrutífera',cs:['INFRUT'],c:'#fbbf24'},{n:'Imóvel fechado',cs:['FECH'],c:'#ef4444'},{n:'Impedimentos',cs:['NPERM','NLOC','DTEC'],c:'#fb7185'},{n:'Ação especial não produtiva',cs:['ACAO_NP'],c:'#6b7280'},{n:'Pagamento só informado',cs:['INFO'],c:'#64748b'},{n:'Não produtivo (classificado)',cs:['CLASN'],c:'#475569'},{n:'A classificar',cs:['NOVO'],c:'#e2e8f0'}];
+const DGRP=[{n:'Produtivos',cs:['PAG_POS','PAG_FAT','CORTE','SUP','RESTAB','RELIG','VIST','ACAO','OUTP'],c:'#34d399'},{n:'Negociação infrutífera',cs:['INFRUT'],c:'#fbbf24'},{n:'Imóvel fechado',cs:['FECH'],c:'#ef4444'},{n:'Impedimentos',cs:['NPERM','NADA','NLOC','DTEC'],c:'#fb7185'},{n:'Ação especial não produtiva',cs:['ACAO_NP'],c:'#6b7280'},{n:'Pagamento só informado',cs:['INFO'],c:'#64748b'},{n:'Não produtivo (classificado)',cs:['CLASN'],c:'#475569'},{n:'A classificar',cs:['NOVO'],c:'#e2e8f0'}];
 function drawDaily(el,byDay){
   if(!el)return;
   const paint=()=>{
@@ -2661,9 +2676,7 @@ function vColab(v,rows){
   const names=Object.keys(REG).sort();
   const list=names.map(n=>Object.assign({k:n},agg(g.get(n)||[]),{dias:new Set((g.get(n)||[]).map(r=>r.day)).size})).sort((a,b)=>b.prod-a.prod);
   const showEq=names.some(n=>equipeDe(n)!==nomeDe(n)&&equipeDe(n)!==title(n));
-  v.innerHTML=`<div class="colw ${COL_BLUR?'blurn':''}">${termoHTML(rows)}<div class="panel"><h3>Desempenho dos colaboradores <small>${fmt(names.length)} no cadastro · clique no nome para revelar, na linha para ver as OS</small>${blurNomesBtn()}</h3><div class="tw"><table class="ctab nostack"><thead><tr><th>#</th><th>Colaborador</th>${showEq?'<th>Equipe</th>':''}<th class="n">Dias</th><th class="n">OS trabalhadas</th><th class="n">Produtivos</th><th class="n">Produtividade</th><th class="n">Pagam.</th><th class="n">Cortes</th><th class="n">Supress.</th><th class="n">Restab.</th><th class="n">Relig.</th><th class="n">Neg. infrut.</th><th class="n">Imóvel fechado</th><th class="n" title="Cliente não permitiu, nada consta, não localizado e dificuldade técnica">Demais impedimentos</th></tr></thead><tbody>
-  ${list.map((a,i)=>`<tr data-c="${esc(a.k)}" class="${a.k===COL_SHOW?'show':''}"><td>${i+1}</td><td class="nw"><span class="pvn" data-nm="${esc(a.k)}">${esc(nomeDe(a.k))}</span>${REG[a.k].ativo===false?' <span class="st f">inativo</span>':''}</td>${showEq?`<td>${esc(equipeDe(a.k))}</td>`:''}<td class="n">${a.dias}</td><td class="n">${fmt(a.trab)}</td><td class="n">${fmt(a.prod)}</td><td class="n" style="color:${a.rec?(a.pr>=META?'var(--green)':'#fca5a5'):'inherit'}">${a.rec?pct(a.prod,a.den)+'%':'—'}</td><td class="n">${a.pag}</td><td class="n">${a.CORTE}</td><td class="n">${a.SUP}</td><td class="n">${a.RESTAB}</td><td class="n">${a.RELIG}</td><td class="n">${a.INFRUT}</td><td class="n">${a.FECH}</td><td class="n">${a.NPERM+a.NLOC+a.DTEC}</td></tr>`).join('')}
-  </tbody></table></div></div>
+  v.innerHTML=`<div class="colw ${COL_BLUR?'blurn':''}">${termoHTML(rows)}<div class="panel"><h3>Desempenho dos colaboradores <small>${fmt(names.length)} no cadastro · clique no nome para revelar, na linha para ver as OS</small>${blurNomesBtn()}</h3>${colTabHTML(list.map(x=>({k:x.k,a:x,dias:x.dias})),{rank:true,dias:true,tag:x=>REG[x.k]&&REG[x.k].ativo===false?' <span class="st f">inativo</span>':''})}</div>
   ${APRES?'<div class="panel"><p class="note">Cadastro de colaboradores oculto no modo apresentação.</p></div>':`  <div class="panel"><h3>Cadastro de colaboradores <small>salvo neste navegador · permanece entre importações</small></h3>
   <div class="tw"><table><thead><tr><th>Nome na base (GeoCall)</th><th>Equipe</th><th>Ativo</th><th>Primeira aparição</th></tr></thead><tbody>
   ${names.map((n,i)=>`<tr data-cad="${esc(n)}" class="${n===COL_SHOW?'show':''}"><td><span class="pvn" data-nm="${esc(n)}">${esc(n)}</span></td><td><input class="cad pvn" id="cad-eq-${i}" data-n="${esc(n)}" value="${esc(REG[n].equipe||'')}" aria-label="Equipe de ${esc(n)}"></td><td><input type="checkbox" id="cad-at-${i}" data-n="${esc(n)}" ${REG[n].ativo!==false?'checked':''} aria-label="Ativo"></td><td>${dayBRf(REG[n].desde||'')}</td></tr>`).join('')}
@@ -2671,6 +2684,7 @@ function vColab(v,rows){
   const showN=k=>{COL_SHOW=COL_SHOW===k?'':k;v.querySelectorAll('[data-c],[data-cad]').forEach(r=>r.classList.toggle('show',(r.dataset.c||r.dataset.cad)===COL_SHOW))};
   v.querySelectorAll('.colw .pvn[data-nm]').forEach(el=>el.onclick=e=>{if(!COL_BLUR)return;e.stopPropagation();showN(el.dataset.nm)});
   v.querySelectorAll('[data-blurn]').forEach(b=>b.onclick=()=>{COL_BLUR=!COL_BLUR;COL_SHOW='';render()});
+  bindCe(v);
   v.querySelectorAll('.tm-r[data-c],tr[data-c]').forEach(tr=>tr.onclick=()=>drill({eqs:[tr.dataset.c],label:'Colaborador: '+nomeDe(tr.dataset.c)}));
   if($('#cadSave'))$('#cadSave').onclick=()=>{v.querySelectorAll('input.cad').forEach(i=>{REG[i.dataset.n].equipe=i.value.trim()||title(i.dataset.n)});v.querySelectorAll('input[type=checkbox][data-n]').forEach(i=>REG[i.dataset.n].ativo=i.checked);
     saveReg();toast('Cadastro salvo.');fillSelects();buildNav();renderNotes();render()};
@@ -3615,7 +3629,7 @@ function vSexta(v,rows){
   const mid=agg(posAll.filter(r=>{const h=hourOf(r);return h>=10&&h<16})),fora=agg(posAll.filter(r=>{const h=hourOf(r);return h<10||h>=16}));
   // composição da sexta
   const cnt=f=>F.filter(f).length;
-  const SUBS_SX=['PAG_POS','PAG_FAT','RESTAB','RELIG','VIST','SUP','CORTE','OUTP','INFRUT','FECH','NPERM','NLOC','DTEC','INFO','CLASN','NOVO'];
+  const SUBS_SX=['PAG_POS','PAG_FAT','RESTAB','RELIG','VIST','SUP','CORTE','OUTP','INFRUT','FECH','NPERM','NADA','NLOC','DTEC','INFO','CLASN','NOVO'];
   const comp=SUBS_SX.map(k=>({l:CAT_LBL[k]==='Faturas pagas apresentadas'?'Faturas pagas':CAT_LBL[k],n:F.filter(r=>r.sub===k).length,dr:JSON.stringify({cats:[k]}),c:SUB_COL[k]})).filter(x=>x.n);
   const mxc=Math.max(1,...comp.map(x=>x.n));
   // ações especiais em sextas
@@ -3708,7 +3722,7 @@ function conversaoHTML(rows){const L=conversaoBairros(rows).sort((a,b)=>b.sx-a.s
   const sx=L.filter(x=>x.sx>=x.sq+5).slice(0,5),sq=L.filter(x=>x.sq>=x.sx+8).sort((a,b)=>(b.sq-b.sx)-(a.sq-a.sx)).slice(0,5);
   const li=(arr,a,b)=>arr.map(x=>`<li data-cb="${esc(x.k)}"><span>${esc(x.k)}</span><b>${x[a].toFixed(0)}%</b><small>contra ${x[b].toFixed(0)}%</small></li>`).join('')||'<li class="muted">Nenhum bairro com diferença clara no período.</li>';
   return `<div class="g2 cv-g"><div class="panel"><h3>Conversão da negociação por bairro <small>% das OS que terminaram em pagamento (POS ou faturas pagas) · toque para ver</small></h3>
-   <div class="cvl">${L.slice(0,14).map(x=>`<button type="button" class="cvr" data-cb="${esc(x.k)}"><span>${esc(x.k)}</span><span class="dumb"><i style="left:${Math.min(x.sq,x.sx)/mx*100}%;width:${Math.abs(x.sq-x.sx)/mx*100}%"></i><b class="d1" style="left:${x.sq/mx*100}%"></b><b class="d2" style="left:${x.sx/mx*100}%"></b></span><span class="cvv"><b class="c1">${x.sq.toFixed(0)}%</b><b class="c2">${x.sx.toFixed(0)}%</b></span></button>`).join('')}</div>
+   <div class="cvl">${L.slice(0,14).map(x=>`<button type="button" class="cvr" data-cb="${esc(x.k)}"><span>${esc(x.k)}</span><span class="dumb"><i style="left:calc(6px + (100% - 12px) * ${(Math.min(x.sq,x.sx))/mx});width:calc((100% - 12px) * ${Math.abs(x.sq-x.sx)/mx})"></i><b class="d1" style="left:calc(6px + (100% - 12px) * ${(x.sq)/mx})"></b><b class="d2" style="left:calc(6px + (100% - 12px) * ${(x.sx)/mx})"></b></span><span class="cvv"><b class="c1">${x.sq.toFixed(0)}%</b><b class="c2">${x.sx.toFixed(0)}%</b></span></button>`).join('')}</div>
    <div class="tm-leg"><span><i class="o1"></i>seg a qui · pagou com risco de corte</span><span><i class="o2"></i>sexta · pagou só na negociação</span></div></div>
   <div class="panel"><h3>Realocação da semana <small>sugestão automática a partir da conversão</small></h3><div class="rea">
    <div class="rea-c" style="--c:#c4b5fd"><h4>Sexta · negociar em</h4><p>Pagam mesmo sem risco de corte</p><ul>${li(sx,'sx','sq')}</ul></div>
@@ -3785,11 +3799,10 @@ function vReuniao(v,rows){const g=geoR(rows);const dias=[...new Set(g.map(r=>r.d
     <button type="button" class="kpi" data-rd='{"cats":["CORTE","SUP"]}'><span class="lab">Cortes e supressões</span><span class="val">${fmt(A.CORTE+A.SUP)}</span><span class="sub">executados</span></button>
     <button type="button" class="kpi ct" data-rd='{"cats":["FECH"]}'><span class="lab">Imóvel fechado</span><span class="val">${fmt(A.FECH)}</span><span class="sub">${pct(A.FECH,A.trab,0)}% das visitas</span></button>
     <button type="button" class="kpi ${nA?'sp':'g'}" data-rd='{}'><span class="lab">Precisam de apoio</span><span class="val">${nA}</span><span class="sub">abaixo de 25% no dia</span></button></div></div>
-   <div class="panel"><h3>Por colaborador <small>toque no nome para revelar, na linha para ver as OS do dia</small>${blurNomesBtn()}</h3><div class="tw reu-tw"><table class="nostack reu-t"><thead><tr><th>Colaborador</th><th class="n">OS</th><th class="n">Produtivos</th><th>Produtividade</th><th class="n">Pagam.</th><th class="n">Imóvel fechado</th><th class="n">Fora do local</th><th class="n">Última baixa</th><th></th></tr></thead><tbody>
-   ${L.map(x=>`<tr data-c="${esc(x.k)}" class="${apoio(x)?'ap':''} ${x.k===COL_SHOW?'show':''}"><td><span class="pvn" data-nm="${esc(x.k)}">${esc(nomeDe(x.k))}</span></td><td class="n">${x.a.trab}</td><td class="n">${x.a.prod}</td><td><span class="rzpb"><i style="width:${Math.min(100,x.a.pr)}%;background:${x.a.pr>=META?'var(--green)':x.a.pr>=35?'#7cc7ff':x.a.pr>=25?'#f5b73b':'#f87171'}"></i><s style="left:${META}%"></s></span><b class="rzpv">${pct(x.a.prod,x.a.den,0)}%</b></td><td class="n">${x.a.pag}</td><td class="n">${x.fe}</td><td class="n ${x.sus?'rn':''}">${x.sus}</td><td class="n">${x.last}</td><td>${apoio(x)?'<span class="badge" style="--c:#f87171">precisa de apoio</span>':poucas(x)?'<span class="badge" style="--c:#94a3b8">poucas OS no dia</span>':''}</td></tr>`).join('')}</tbody></table></div></div>${hoje}</div>`;
+   <div class="panel"><h3>Por colaborador <small>toque no nome para revelar, na linha para ver as OS do dia</small>${blurNomesBtn()}</h3>${colTabHTML(L,{extraH:'<th class="n">Fora do local</th><th class="n">Última baixa</th>',extra:x=>`<td class="n ${x.sus?'rn':''}">${x.sus}</td><td class="n">${x.last}</td>`,rowCls:x=>apoio(x)?'ap':'',tag:x=>apoio(x)?' <span class="badge" style="--c:#f87171">precisa de apoio</span>':poucas(x)?' <span class="badge" style="--c:#94a3b8">poucas OS no dia</span>':''})}</div>${hoje}</div>`;
   $('#reuDay').onchange=e=>{REU_DAY=e.target.value;render()};
   v.querySelectorAll('[data-rd]').forEach(b=>b.onclick=()=>{const o=JSON.parse(b.dataset.rd);drill(Object.assign({day:REU_DAY,label:'Dia '+dayBRf(REU_DAY)},o.prod?{cats:PROD_CATS}:{},o.cats?{cats:o.cats}:{}))});
-  bindColBlur(v,k=>drill({day:REU_DAY,eqs:[k],label:nomeDe(k)+' · '+dayBRf(REU_DAY)}));
+  bindColBlur(v,k=>drill({day:REU_DAY,eqs:[k],label:nomeDe(k)+' · '+dayBRf(REU_DAY)}));bindCe(v,{day:REU_DAY});
   v.querySelectorAll('[data-rh]').forEach(b=>b.onclick=()=>{RZ.sel=+b.dataset.rh;RZ.tab='mapa';go('rodizio')})}
 function bindColBlur(v,onRow){const showN=k=>{COL_SHOW=COL_SHOW===k?'':k;v.querySelectorAll('[data-c],[data-cad]').forEach(r=>r.classList.toggle('show',(r.dataset.c||r.dataset.cad)===COL_SHOW))};
   v.querySelectorAll('.colw .pvn[data-nm]').forEach(el=>el.onclick=e=>{if(!COL_BLUR)return;e.stopPropagation();showN(el.dataset.nm)});
@@ -3821,8 +3834,24 @@ document.addEventListener('fullscreenchange',()=>{if(TV.on&&!document.fullscreen
   v.querySelectorAll('[data-hb]').forEach(b=>b.onclick=()=>drill({bai:b.dataset.hb,cats:['FECH'],h0:+b.dataset.h0,h1:+b.dataset.h1,label:'Imóvel fechado · '+b.dataset.hb+' · '+FX.find(f=>f[0]===+b.dataset.h0)[2]}));
   v.querySelectorAll('[data-pde]').forEach(b=>b.onclick=()=>drill({q:b.dataset.pde,label:'Imóvel PDE '+b.dataset.pde}))}}
 {const _vJ=vJornada;vJornada=function(v,rows){_vJ(v,rows);v.insertAdjacentHTML('afterbegin',jornadaAlertaHTML(rows));const ja=v.querySelector('.ja');if(ja){const w=ja.parentElement;const showN=k=>{COL_SHOW=COL_SHOW===k?'':k;w.querySelectorAll('[data-c]').forEach(r=>r.classList.toggle('show',r.dataset.c===COL_SHOW))};w.querySelectorAll('.pvn[data-nm]').forEach(el=>el.onclick=e=>{if(!COL_BLUR)return;e.stopPropagation();showN(el.dataset.nm)});w.querySelectorAll('[data-blurn]').forEach(b=>b.onclick=()=>{COL_BLUR=!COL_BLUR;COL_SHOW='';render()})}v.querySelectorAll('[data-ja]').forEach(b=>b.onclick=()=>drill({eqs:[b.dataset.ja],label:'Colaborador: '+nomeDe(b.dataset.ja)}))}}
-{const _vB=vBairros;vBairros=function(v,rows){_vB(v,rows);if(TL.tab!=='bairros')return;const d=v.querySelector('#tlDet');if(!d)return;d.insertAdjacentHTML('afterend',bolhasHTML(rows));
+{const _vB=vBairros;vBairros=function(v,rows){_vB(v,rows);if(TL.tab!=='areas')return;const d=v.querySelector('#tlDet');if(!d)return;d.insertAdjacentHTML('afterend',bolhasHTML(rows)||'<div class="panel bol"><h3>Mapa de bolhas por bairro</h3><p class="note">O mapa usa o desenho dos setores do Rodízio. Importe o pacote do rodízio em Rodízio / Setores › Equipe e faltas para ver o mapa aqui.</p></div>');
   v.querySelectorAll('[data-bc]').forEach(b=>b.onclick=()=>{BOL_COR=b.dataset.bc;const y=scrollY;render();scrollTo(0,y)});v.querySelectorAll('[data-bb]').forEach(b=>b.onclick=()=>drill({bai:b.dataset.bb,label:'Bairro: '+b.dataset.bb}))}}
+
+/* ---------- Tabelas de colaborador: a conta sempre fecha no total de OS ---------- */
+const NP_SUBS=['INFRUT','FECH','NPERM','NADA','NLOC','DTEC','INFO','CLASN','NOVO','ACAO_NP'];
+function npCols(L){return NP_SUBS.filter(s=>L.some(x=>x.a[s]>0))}
+function prodDet(a){return [[a.PAG_POS+a.PAG_FAT,'pag.'],[a.CORTE,'cortes'],[a.SUP,'supr.'],[a.RESTAB,'restab.'],[a.RELIG,'relig.'],[a.VIST,'vist.'],[a.ACAO,'ação esp.'],[a.OUTP,'outros prod.']].filter(q=>q[0]).map(q=>fmt(q[0])+' '+q[1]).join(' · ')}
+function compBar(a){const t=Math.max(1,a.trab);const seg=[['prod',a.prod,'#34d399','Produtivos']].concat(NP_SUBS.map(s=>[s,a[s],SUB_COL[s]||'#64748b',CAT_LBL[s]]));
+  return `<span class="cbar" data-tip="${esc(seg.filter(x=>x[1]).map(x=>`${x[3]}: <b>${fmt(x[1])}</b> (${Math.round(x[1]/t*100)}%)`).join('<br>')).replace(/"/g,'&quot;')}">${seg.filter(x=>x[1]).map(x=>`<i style="width:${x[1]/t*100}%;background:${x[2]}"></i>`).join('')}</span>`}
+function colTabHTML(L,o){const cols=npCols(L);const ce=(k,cats,n,cls)=>n?`<button type="button" class="ce ${cls||''}" data-ce='${JSON.stringify({k,cats})}'>${fmt(n)}</button>`:'<span class="muted">0</span>';
+  const head=`<tr>${o.rank?'<th class="rc">#</th>':''}<th>Colaborador</th>${o.dias?'<th class="n dc">Dias</th>':''}<th class="n">OS</th><th class="n">Produtivos</th><th>Produtividade</th>${cols.map(s=>`<th class="n np" style="--c:${SUB_COL[s]}">${CAT_LBL[s]}</th>`).join('')}${o.extraH||''}<th class="cmpc">Composição das OS</th></tr>`;
+  const body=L.map((x,i)=>{const a=x.a;return `<tr data-c="${esc(x.k)}" class="${x.k===COL_SHOW?'show':''} ${o.rowCls?o.rowCls(x):''}">${o.rank?`<td class="rc">${i+1}</td>`:''}<td class="nw"><span class="pvn" data-nm="${esc(x.k)}">${esc(nomeDe(x.k))}</span>${o.tag?o.tag(x):''}</td>${o.dias?`<td class="n dc">${x.dias}</td>`:''}<td class="n">${fmt(a.trab)}</td>
+    <td class="n">${ce(x.k,PROD_CATS,a.prod,'p')}<small class="pd">${prodDet(a)}</small></td>
+    <td><span class="rzpb"><i style="width:${Math.min(100,a.pr)}%;background:${a.pr>=META?'var(--green)':a.pr>=35?'#7cc7ff':a.pr>=25?'#f5b73b':'#f87171'}"></i><s style="left:${META}%"></s></span><b class="rzpv">${a.trab?pct(a.prod,a.den,0)+'%':'—'}</b></td>
+    ${cols.map(s=>`<td class="n">${ce(x.k,[s],a[s])}</td>`).join('')}${o.extra?o.extra(x):''}<td class="cmpc">${compBar(a)}</td></tr>`}).join('');
+  return `<div class="tw ctw"><table class="ctab2 nostack"><thead>${head}</thead><tbody>${body}</tbody></table></div>
+   <div class="ctab-leg cmpc"><span><i style="background:#34d399"></i>Produtivos</span>${cols.map(s=>`<span><i style="background:${SUB_COL[s]}"></i>${CAT_LBL[s]}</span>`).join('')}</div>`}
+function bindCe(v,extra){v.querySelectorAll('[data-ce]').forEach(b=>b.onclick=e=>{e.stopPropagation();const o=JSON.parse(b.dataset.ce);drill(Object.assign({eqs:[o.k],cats:o.cats,label:nomeDe(o.k)+' · '+(o.cats.length>1?'produtivos':CAT_LBL[o.cats[0]])},extra||{}))})}
 
 /* ============ início ============ */
 function startApp(){REG=LS.get(REG_KEY,{});RESUMO=LS.get('sa_dash_resumo',{})||{};loadSeed();rebuild();setApres(APRES);{const b=$('#apresBtn');if(b)b.onclick=toggleApres}buildNav();fillSelects();setPeriod();readF();bindFilters();info();tick();setInterval(tick,20000);render();pushHist();initStore();
