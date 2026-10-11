@@ -2522,7 +2522,7 @@ function vProducao(v,rows){
   const byT=[...groupBy(rows,r=>r.tipo)].map(([k,rs])=>Object.assign({k},agg(rs)));
   const byR=[...groupBy(rows.filter(r=>r.cat!=='FIMDIA'),r=>r.res||'(sem resultado)')].map(([k,rs])=>({k,n:rs.length,cat:rs[0].cat,sub:rs[0].sub})).sort((a,b)=>b.n-a.n);
   const A=agg(rows);
-  v.innerHTML=`<div class="panel"><h3>Produção diária por resultado <small>clique numa barra para ver as OS do dia</small></h3><div class="dleg2">${DGRP.filter(g=>rows.some(r=>g.cs.includes(r.sub))).map(g=>`<span><i style="background:${g.c}"></i>${g.n}</span>`).join('')}<span class="dnote">% no topo em <b style="color:#4ade80">verde</b> = dia com produtividade ≥ ${META}%</span></div><div id="cDia" class="dchart"></div><div class="compbox"><div class="svct">Composição do período <span class="muted">todas as OS trabalhadas</span></div><div id="cComp"></div></div></div>
+  v.innerHTML=`<div class="panel"><h3>Produção diária por resultado <small>clique numa barra para ver as OS do dia · ${(()=>{const ds=[...new Set(rows.map(r=>r.day))].sort();const n=typeof agMarcas==='function'&&ds.length?agMarcas(ds[0],ds[ds.length-1]).length:0;return n?`${n} ${n>1?'anotações':'anotação'} da Agenda ${n>1?'marcadas':'marcada'} no gráfico`:'sem anotações da Agenda neste período'})()}</small></h3><div class="dleg2">${DGRP.filter(g=>rows.some(r=>g.cs.includes(r.sub))).map(g=>`<span><i style="background:${g.c}"></i>${g.n}</span>`).join('')}<span class="dnote">% no topo em <b style="color:#4ade80">verde</b> = dia com produtividade ≥ ${META}%</span></div><div id="cDia" class="dchart"></div><div class="compbox"><div class="svct">Composição do período <span class="muted">todas as OS trabalhadas</span></div><div id="cComp"></div></div></div>
   ${acoesHTML()}
   <div class="g2">
    <div class="panel fillp"><h3>Por tipo de serviço</h3><div class="tw"><table><thead><tr><th>Serviço</th><th class="n">OS trabalhadas</th><th class="n">Produtivos</th><th class="n">Produtividade</th><th class="n">Impedim.</th></tr></thead><tbody>
@@ -2905,7 +2905,7 @@ async function loadAgenda(){const l=LS.get('sa_dash_agenda',null);if(l)AG=l;AG_E
   if(DB){try{const d=await DB.doc('config/agenda').get();if(d.exists){const r=d.data()||{};const dd=r.dias||{},de=r.em||'';
     // o mais recente vence; nada é perdido: dias que só existem na outra cópia são mantidos
     AG=de>AG_EM?Object.assign({},AG,dd):Object.assign({},dd,AG);if(de>AG_EM)AG_EM=de}}catch(e){}}
-  if(VIEW==='agenda')render()}
+  if(VIEW==='agenda'||VIEW==='producao'){const y=scrollY;render();scrollTo(0,y)}}
 async function saveAgenda(){AG_PEND=false;AG_EM=new Date().toISOString();LS.set('sa_dash_agenda',AG);LS.set('sa_dash_agenda_em',AG_EM);const s=$('#agSt');
   if(DB){try{await DB.doc('config/agenda').set({dias:AG,em:AG_EM});if(s)s.innerHTML='✓ Salvo às '+hhmm(Date.now())}catch(e){if(s)s.textContent='Salvo neste navegador · sem conexão com o painel agora'}}
   else{let ok=true;if(SECURE){clearTimeout(_sp);ok=await vaultWrite()}else{try{ok=localStorage.getItem('sa_dash_agenda')===JSON.stringify(AG)}catch(e){ok=false}}
