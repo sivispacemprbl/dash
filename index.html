@@ -1084,6 +1084,7 @@ body.apres .bk-btn,body.tv .bk-btn{display:none}
 @media (max-width:700px){.fc-ks{grid-template-columns:1fr 1fr}.fc-sum{grid-template-columns:1fr 1fr}.fc-sel select{min-width:0;width:100%}.fc-sel{flex:1 1 100%}.fc-nav{margin-left:0;flex-wrap:wrap}.fc-p button{grid-template-columns:52px 22px minmax(0,1fr)}.fc-tl:before{left:61px}.fc-gap{padding-left:78px}}
 @media (max-width:480px){nav.side{grid-template-columns:repeat(4,minmax(0,1fr));padding:8px 10px}nav.side button{font-size:10.5px;padding:8px 1px;overflow-wrap:anywhere}}
 .kgeo{display:inline-block;margin-top:3px;font-size:11.5px;color:#cfe3ff}.kgeo b{color:#fff}
+.bk-auto{display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:10px;border:1px solid rgba(124,199,255,.3);background:rgba(47,134,246,.08);font-size:13px}.bk-auto.ok{border-color:rgba(52,211,153,.4);background:rgba(52,211,153,.08)}.bk-auto.ok b{color:#4ade80}.bk-auto.warn{border-color:rgba(251,191,36,.5);background:rgba(251,191,36,.08)}.bk-auto.warn b{color:#fbbf24}.bk-auto u{text-decoration:none;font-weight:700}.bk-auto .btn{align-self:flex-start}.bk-btn.auto i{display:block;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.25)}
 </style>
 
 <div class="app">
@@ -1632,10 +1633,10 @@ async function encBlob(obj){const iv=crypto.getRandomValues(new Uint8Array(12));
 async function vaultWrite(){if(!SEC_KEY)return true;const v=JSON.parse(localStorage.getItem(VAULT)||'{}');
   const pes=Object.assign({},SEC_CACHE);delete pes[PLAN_KEY];let ok=true;
   try{const b=await encBlob(pes);localStorage.setItem(VAULT,JSON.stringify({v:2,split:1,it:v.it||PBKDF2_IT,salt:v.salt,iv:b.iv,ct:b.ct}))}
-  catch(e){ok=false;toast('Não foi possível salvar as anotações neste navegador. Baixe uma cópia de segurança na Agenda.')}
+  catch(e){ok=false;toast('Não foi possível salvar as anotações neste navegador. Use o botão Cópia de segurança para salvar um arquivo.')}
   if(ok&&(PLAN_DIRTY||v.split!==1)){try{const b=await encBlob(SEC_CACHE[PLAN_KEY]);localStorage.setItem(VAULT_P,JSON.stringify({v:2,iv:b.iv,ct:b.ct}));PLAN_DIRTY=false}
     catch(e){toast('O navegador não tem espaço para guardar todas as planilhas. Suas anotações continuam salvas. Remova planilhas antigas na aba Planilhas.')}}
-  VAULT_OK=ok;return ok}
+  VAULT_OK=ok;if(ok&&typeof bkaAgendar==='function')bkaAgendar();return ok}
 async function vaultCreate(pw){const salt=crypto.getRandomValues(new Uint8Array(16));const key=await deriveKey(pw,salt,PBKDF2_IT);
   const iv=crypto.getRandomValues(new Uint8Array(12));const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode('{}'));
   try{localStorage.removeItem(VAULT_P);localStorage.setItem(VAULT,JSON.stringify({v:2,split:1,it:PBKDF2_IT,salt:b64(salt),iv:b64(iv),ct:b64big(ct)}))}catch(e){try{localStorage.removeItem(VAULT)}catch(_){}throw e}
@@ -3797,8 +3798,8 @@ const BK_EM='sa_dash_bkp_em';
 function bkUltima(){try{return localStorage.getItem(BK_EM)||''}catch(e){return ''}}
 function bkTemDados(){return SHEETS.some(s=>!s.builtin)||Object.keys(AG||{}).length>0||ACOES.length>0||(NOTES.itens||[]).length>0}
 function bkDias(){const u=bkUltima();return u?Math.floor((Date.now()-Date.parse(u))/864e5):null}
-function bkStatus(){const b=$('#bkBtn');if(!b)return;const d=bkDias();const atras=bkTemDados()&&(d==null||d>=7);b.classList.toggle('warn',atras);
-  b.title=d==null?'Nenhuma cópia de segurança salva neste aparelho':'Última cópia: '+(d===0?'hoje':d===1?'ontem':'há '+d+' dias')}
+function bkStatus(){const b=$('#bkBtn');if(!b)return;const d=bkDias();const atras=BKA.st==='perm'||(BKA.st!=='ok'&&bkTemDados()&&(d==null||d>=7));b.classList.toggle('warn',atras);b.classList.toggle('auto',BKA.st==='ok');
+  b.title=BKA.st==='perm'?'Toque para autorizar de novo a cópia automática':BKA.st==='ok'?'Cópia automática ligada':d==null?'Nenhuma cópia de segurança salva neste aparelho':'Última cópia: '+(d===0?'hoje':d===1?'ontem':'há '+d+' dias')}
 function bkColetar(){const b=SHEETS.find(s=>s.builtin);return {tipo:'backup-painel-santo-andre',v:2,em:new Date().toISOString(),dados:{
   planilhas:SHEETS.filter(s=>!s.builtin).map(s=>({id:s.id,nome:s.nome,importadaEm:s.importadaEm,ativa:s.ativa!==false,rows:s.recs.map(packRec)})),baseAtiva:b?b.ativa!==false:true,
   agenda:{dias:AG,em:AG_EM},notas:NOTES,acoes:{lista:ACOES,em:AC_EM},resumo:RESUMO,classif:CLASSIF,rodizio:(typeof RZ!=='undefined'&&RZ.cfg)||null,cadastro:REG}}}
@@ -3830,15 +3831,36 @@ async function bkAplicar(d){
   await saveAgenda();await saveNotes();await saveResumo();await saveClassif();await saveReg();
   reclassAll();refreshAll();await saveAcoes();renderNotes();
   if(SECURE){clearTimeout(_sp);await vaultWrite()}render();return novas.length}
+
+/* cópia automática num arquivo do computador (versão protegida, Chrome/Edge) */
+const BKA={h:null,st:'na',em:''};let _bka=0;
+function bkaIDB(){return new Promise((ok,er)=>{const q=indexedDB.open('sa_bk_db',1);q.onupgradeneeded=()=>q.result.createObjectStore('h');q.onsuccess=()=>ok(q.result);q.onerror=()=>er(q.error)})}
+async function bkaIdb(op,v){const db=await bkaIDB();return new Promise((ok,er)=>{const t=db.transaction('h',op==='get'?'readonly':'readwrite');const st=t.objectStore('h');const q=op==='get'?st.get('arq'):st.put(v,'arq');q.onsuccess=()=>ok(q.result);q.onerror=()=>er(q.error)})}
+async function bkaLoad(){if(!SECURE||window.claude||!window.showSaveFilePicker){BKA.st='na';return}BKA.st='off';
+  try{const h=await bkaIdb('get');if(h){BKA.h=h;const p=await h.queryPermission({mode:'readwrite'});BKA.st=p==='granted'?'ok':'perm'}}catch(e){}}
+function bkaTexto(){const raw=localStorage.getItem(VAULT);if(!raw)return null;const rawP=localStorage.getItem(VAULT_P);return JSON.stringify({tipo:'backup-painel-santo-andre',v:1,em:new Date().toISOString(),vault:JSON.parse(raw),vaultPlan:rawP?JSON.parse(rawP):null})}
+async function bkaGravar(){if(BKA.st!=='ok'||!BKA.h)return false;const txt=bkaTexto();if(!txt)return false;
+  try{const w=await BKA.h.createWritable();await w.write(txt);await w.close();BKA.em=new Date().toISOString();try{localStorage.setItem(BK_EM,BKA.em)}catch(e){}bkStatus();return true}
+  catch(e){BKA.st='perm';bkStatus();return false}}
+function bkaAgendar(){if(BKA.st!=='ok')return;clearTimeout(_bka);_bka=setTimeout(bkaGravar,2500)}
+async function bkaEscolher(){try{const h=await window.showSaveFilePicker({suggestedName:'copia-automatica-painel.json',types:[{description:'Cópia do painel',accept:{'application/json':['.json']}}]});
+  BKA.h=h;BKA.st='ok';try{await bkaIdb('put',h)}catch(e){}await flushSaves();return await bkaGravar()}catch(e){return false}}
+async function bkaReativar(){if(!BKA.h)return false;try{const p=await BKA.h.requestPermission({mode:'readwrite'});BKA.st=p==='granted'?'ok':'perm'}catch(e){BKA.st='perm'}if(BKA.st==='ok'){await flushSaves();return await bkaGravar()}return false}
+function bkaHTML(){if(BKA.st==='na')return '';
+  if(BKA.st==='ok')return `<div class="bk-auto ok"><b>✓ Cópia automática ligada</b><span>Arquivo <u>${esc(BKA.h.name)}</u>${BKA.em?' · última gravação às '+hhmm(Date.parse(BKA.em)):''}. Toda alteração é gravada nele sozinha, cifrada com a sua senha.</span><button type="button" class="btn ghost sm" data-bka="trocar">Trocar arquivo</button></div>`;
+  if(BKA.st==='perm')return `<div class="bk-auto warn"><b>Cópia automática pausada</b><span>O navegador pede sua autorização de novo para gravar em <u>${esc(BKA.h.name)}</u>.</span><button type="button" class="btn sm" data-bka="reativar">Autorizar</button></div>`;
+  return `<div class="bk-auto"><b>Cópia automática no computador</b><span>Escolha uma vez onde guardar (de preferência no OneDrive). Depois, toda alteração é gravada sozinha nesse arquivo. Se o navegador for limpo, é só restaurar a partir dele.</span><button type="button" class="btn sm" data-bka="escolher">Ligar cópia automática</button></div>`}
 function bkModal(){
   const d=bkDias(),atual=bkResumo(bkColetar().dados);
   const ov=document.createElement('div');ov.className='ac-ov';ov.innerHTML=`<div class="ac-m bk-m" role="dialog" aria-label="Cópia de segurança"><header><b>Cópia de segurança</b><button type="button" class="ac-x" data-x aria-label="Fechar">×</button></header>
    <p class="bk-st ${bkTemDados()&&(d==null||d>=7)?'warn':''}">${d==null?'Nenhuma cópia salva neste aparelho ainda.':'Última cópia salva '+(d===0?'hoje':d===1?'ontem':'há '+d+' dias')+' ('+dayBRf(dayKey(Date.parse(bkUltima())))+').'}</p>
    <div class="svct">O que vai na cópia</div><ul class="bk-l">${atual.map(x=>`<li>${x}</li>`).join('')}</ul>
    <p class="note">${SECURE?'O arquivo sai <b>cifrado com a sua senha</b>: sem ela ninguém consegue ler. Para restaurar, use a mesma senha.':(window.claude?'No link do Claude os dados também ficam guardados no próprio link. A cópia é uma segunda garantia, para guardar no computador.':'Os dados ficam guardados neste navegador. Se o histórico for limpo, só a cópia traz tudo de volta.')} Faça uma cópia toda sexta-feira.</p>
+   <div id="bkAuto">${bkaHTML()}</div>
    <div id="bkRest" hidden></div>
    <footer><button type="button" class="btn ghost sm" id="bkUp">Restaurar de um arquivo</button><span style="flex:1"></span><button type="button" class="btn" id="bkDown">Salvar cópia agora</button></footer></div>`;
   document.body.appendChild(ov);const close=()=>ov.remove();ov.querySelectorAll('[data-x]').forEach(b=>b.onclick=close);ov.onclick=e=>{if(e.target===ov)close()};
+  const bindA=()=>ov.querySelectorAll('[data-bka]').forEach(b=>b.onclick=async()=>{const a=b.dataset.bka;b.disabled=true;const r=a==='reativar'?await bkaReativar():await bkaEscolher();b.disabled=false;ov.querySelector('#bkAuto').innerHTML=bkaHTML();bindA();bkStatus();if(r)toast('Cópia automática gravada em '+BKA.h.name+'.')});bindA();
   ov.querySelector('#bkDown').onclick=async e=>{e.target.disabled=true;const ok=await bkSalvar();e.target.disabled=false;if(ok)close()};
   ov.querySelector('#bkUp').onclick=()=>{const i=document.createElement('input');i.type='file';i.accept='.json,application/json';i.onchange=async()=>{const f=i.files[0];if(!f)return;const box=ov.querySelector('#bkRest');
     try{const p=JSON.parse(await f.text());if(!p||p.tipo!=='backup-painel-santo-andre')throw new Error('este arquivo não é uma cópia do painel');
@@ -3850,7 +3872,7 @@ function bkModal(){
       box.hidden=false;box.innerHTML=`<div class="bk-conf"><b>Cópia de ${quando}</b><ul class="bk-l">${bkResumo(p.dados).map(x=>`<li>${x}</li>`).join('')}</ul><span>Junta com o que já está aqui. Nada do que já existe é apagado.</span><button type="button" class="btn" id="bkOk">Restaurar agora</button></div>`;
       box.querySelector('#bkOk').onclick=async e=>{e.target.disabled=true;e.target.textContent='Restaurando…';try{const n=await bkAplicar(p.dados);close();toast('Cópia restaurada'+(n?': '+n+' planilha'+(n>1?'s':'')+' de volta.':'.'))}catch(er){console.error(er);toast('Não foi possível restaurar: '+er.message);e.target.disabled=false;e.target.textContent='Restaurar agora'}}}
     catch(e){box.hidden=false;box.innerHTML=`<p class="lk-err">Não foi possível abrir: ${esc(e.message)}</p>`}};i.click()}}
-function bkInit(){const b=$('#bkBtn');if(!b)return;b.onclick=bkModal;bkStatus();setInterval(bkStatus,60000)}
+function bkInit(){const b=$('#bkBtn');if(!b)return;b.onclick=bkModal;bkStatus();setInterval(bkStatus,60000);bkaLoad().then(()=>{bkStatus();if(BKA.st==='perm')setTimeout(()=>toast('Toque em “Cópia de segurança” e autorize para manter a cópia automática ligada.'),1500);if(BKA.st==='ok')bkaAgendar()})}
 
 /* ---------- Ficha do colaborador: tudo de uma pessoa e o passo a passo de cada dia ---------- */
 let FICHA={k:'',dia:''};
