@@ -1061,13 +1061,13 @@ body.apres .bk-btn,body.tv .bk-btn{display:none}
 .fc-d{position:relative;flex:1 0 26px;max-width:56px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px;background:none;border:0;padding:0;color:inherit;font:inherit;cursor:pointer}
 .fc-d i{width:100%;border-radius:5px 5px 0 0;background:#f87171;opacity:.8;min-height:3px}.fc-d.ok i{background:#22c55e}.fc-d em{font-style:normal;font-size:10px;color:#cfe3ff;font-weight:700}
 .fc-d span{position:absolute;bottom:-20px;font-size:10px;color:#8ea6c6;white-space:nowrap}.fc-d.on i{opacity:1;outline:2px solid #fff;outline-offset:1px}.fc-d.on span{color:#fff;font-weight:700}.fc-d:hover i{opacity:1}
-.fc-d u{display:block;flex:none;width:7px;height:7px;border-radius:50%;background:#fbbf24}.fc-d u.r{background:#ef4444}
+.fc-d u{display:block;flex:none;width:7px;height:7px;border-radius:50%;background:#fbbf24}
 .fc-meta-l{position:absolute;left:0;right:0;border-top:1px dashed rgba(239,68,68,.7);pointer-events:none}.fc-meta-l b{position:absolute;right:0;top:-16px;font-size:10px;color:#fca5a5}
 .fc-days .fc-meta-l{bottom:calc(22px + (100% - 22px)*var(--m,0))}
 .fc-res{display:flex;flex-direction:column;gap:4px;margin-top:8px;max-height:236px;overflow:auto}.fc-res button{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 44px;gap:10px;align-items:center;padding:6px 8px;border-radius:8px;background:none;border:0;color:inherit;font:inherit;font-size:13px;text-align:left;cursor:pointer}
 .fc-res button:hover{background:rgba(124,199,255,.07)}.fc-res span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fc-res i{height:9px;border-radius:5px;background:rgba(148,163,184,.12);overflow:hidden}.fc-res i b{display:block;height:100%;border-radius:5px}.fc-res em{font-style:normal;font-weight:700;text-align:right}
 .fc-dia h3{flex-wrap:wrap}.fc-nav{display:flex;gap:6px;margin-left:auto}
-.fc-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0 12px}.fc-s{padding:10px 12px;border-radius:10px;background:rgba(8,20,42,.5);border:1px solid var(--line2);display:flex;flex-direction:column;gap:2px;min-width:0}
+.fc-sum{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:10px 0 12px}.fc-s{padding:10px 12px;border-radius:10px;background:rgba(8,20,42,.5);border:1px solid var(--line2);display:flex;flex-direction:column;gap:2px;min-width:0}
 .fc-s span{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#8ea6c6}.fc-s b{font-size:19px}.fc-s em{font-style:normal;font-size:11px;color:#9fb3cf}.fc-s.bad b,.fc-s.bad em{color:#f87171}.fc-s.ok b{color:#4ade80}
 .fc-ac{margin:0 0 10px;padding:8px 12px;border-radius:9px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.35);font-size:13px}
 .fc-tl{list-style:none;margin:0;padding:0;position:relative}.fc-tl:before{content:"";position:absolute;left:83px;top:6px;bottom:6px;width:2px;background:rgba(148,163,184,.2)}
@@ -1076,7 +1076,7 @@ body.apres .bk-btn,body.tv .bk-btn{display:none}
 .fc-dot{width:14px;height:14px;border-radius:50%;background:var(--c);margin:3px 0 0 1px;box-shadow:0 0 0 4px #0b1d3a;position:relative;z-index:1}
 .fc-b{display:flex;flex-direction:column;gap:2px;min-width:0}.fc-r{font-weight:700;color:var(--c)}.fc-e{font-size:13px;color:#e2ecf8}.fc-m{font-size:11.5px;color:#8ea6c6}
 .fc-w{font-size:12px;color:#f87171;font-weight:600}.fc-n{font-size:12px;color:#b8c7dc;font-style:italic}.fc-p.sus .fc-dot{outline:2px solid #f87171;outline-offset:2px}
-.fc-gap{padding:2px 0 2px 104px;font-size:11.5px;color:#8ea6c6}.fc-gap.alm{color:#86efac}.fc-gap.over span{display:inline-block;margin:3px 0;padding:4px 10px;border-radius:7px;background:rgba(239,68,68,.14);border:1px solid rgba(239,68,68,.5);color:#fecaca;font-size:12px}.fc-gap.over b{color:#f87171}
+.fc-gap{padding:2px 0 2px 104px;font-size:11.5px;color:#8ea6c6}.fc-gap.alm{color:#86efac}.fc-gap.over span{display:inline-block;margin:4px 0;padding:5px 12px;border-radius:8px;background:rgba(251,191,36,.16);border:1px solid rgba(251,191,36,.65);border-left:4px solid #fbbf24;color:#fde68a;font-size:12.5px}.fc-gap.over b{color:#fbbf24}
 .chip.fc-go{cursor:pointer;border-color:rgba(124,199,255,.45);color:#9fd0ff;background:rgba(47,134,246,.12);font:inherit;font-size:12px}
 
 @media (max-width:700px){.fc-ks{grid-template-columns:1fr 1fr}.fc-sum{grid-template-columns:1fr 1fr}.fc-sel select{min-width:0;width:100%}.fc-sel{flex:1 1 100%}.fc-nav{margin-left:0;flex-wrap:wrap}.fc-p button{grid-template-columns:52px 22px minmax(0,1fr)}.fc-tl:before{left:61px}.fc-gap{padding-left:78px}}
@@ -1088,8 +1088,21 @@ body.apres .bk-btn,body.tv .bk-btn{display:none}
 .jn-ks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}.jn-k{display:flex;flex-direction:column;gap:3px;text-align:left;padding:14px 16px;border-radius:12px;border:1px solid var(--line2);background:linear-gradient(160deg,#0f2a52,#0b2043);color:inherit;font:inherit;cursor:pointer;min-width:0}.jn-k:hover{border-color:#7cc7ff}
 .jn-k span{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#9fb3cf}.jn-k b{font-size:28px;line-height:1.15}.jn-k em{font-style:normal;font-size:12px;color:#8ea6c6}.jn-k.bad b{color:#f87171}.jn-k.warn b{color:#fbbf24}.jn-k.ok b{color:#4ade80}
 .jn-t td{vertical-align:middle}.jn-t button.rn{background:none;border:0;padding:0;font:inherit;font-weight:700;color:#f87171;cursor:pointer}.jn-nm{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:left;font-weight:600}.jn-nm:hover{color:#9fd0ff}
-.jn-b{display:flex;align-items:center;gap:8px;width:100%;min-width:150px;background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer}.jn-b i{flex:1;height:9px;border-radius:5px;background:rgba(148,163,184,.12);overflow:hidden}.jn-b i b{display:block;height:100%;background:#ef4444;border-radius:5px}.jn-b em{font-style:normal;font-weight:700;color:#f87171;min-width:52px;text-align:right}
+.jn-b{display:flex;align-items:center;gap:8px;width:100%;min-width:150px;background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer}.jn-b i{flex:1;height:9px;border-radius:5px;background:rgba(148,163,184,.12);overflow:hidden}.jn-b i b{display:block;height:100%;background:#fbbf24;border-radius:5px}.jn-b em{font-style:normal;font-weight:700;color:#fbbf24;min-width:52px;text-align:right}
 @media (max-width:900px){.jn-ks{grid-template-columns:1fr 1fr}}
+.fc-s.warn b,.fc-s.warn em{color:#fbbf24}.fc-s.warn{border-color:rgba(251,191,36,.55);background:rgba(251,191,36,.08)}.fc-k.warn{border-color:rgba(251,191,36,.45)}
+@media (max-width:1100px){.fc-sum{grid-template-columns:repeat(3,minmax(0,1fr))}}@media (max-width:700px){.fc-sum{grid-template-columns:1fr 1fr}}
+#pCarga{display:flex;flex-direction:column}#pCarga .gauges{flex:1;align-content:center;align-items:center}#pCarga .gauges svg{transform:scale(1.25);transform-origin:center bottom;margin-bottom:10px}
+.rl-row{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-top:10px}.rl-d{display:flex;flex-direction:column;gap:4px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#8ea6c6}
+.rl-d input,.rl-d select{background:#0b2043;color:#fff;border:1px solid rgba(124,199,255,.3);border-radius:9px;padding:8px 10px;font:inherit;font-size:13px;text-transform:none;letter-spacing:0;font-weight:600}.rl-q{flex:1 1 220px}.rl-q input{width:100%}
+.rl-ms{position:relative}.rl-ms summary{list-style:none;cursor:pointer;display:flex;flex-direction:column;gap:2px;padding:7px 12px;border-radius:9px;border:1px solid rgba(124,199,255,.3);background:#0b2043;min-width:130px}.rl-ms summary::-webkit-details-marker{display:none}
+.rl-ms summary span{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#8ea6c6}.rl-ms summary b{font-size:13px;max-width:190px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rl-ms.on summary{border-color:#7cc7ff;background:rgba(47,134,246,.18)}
+.rl-op{position:absolute;z-index:40;top:calc(100% + 6px);left:0;min-width:260px;max-width:380px;max-height:320px;overflow:auto;padding:8px;border-radius:12px;background:#0b1d3a;border:1px solid rgba(124,199,255,.35);box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.rl-op label{display:flex;gap:8px;align-items:flex-start;padding:5px 6px;border-radius:7px;font-size:12.5px;cursor:pointer}.rl-op label:hover{background:rgba(124,199,255,.08)}.rl-oh{display:flex;gap:6px;margin-bottom:6px}.rl-oh button{flex:1;background:none;border:1px solid var(--line2);color:#cfe3ff;border-radius:7px;padding:4px;font:inherit;font-size:11.5px;cursor:pointer}
+.rl-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}.rl-sum{font-size:14px;color:#cfe3ff}.rl-sum b{color:#fff;font-size:16px}.rl-sum b.up{color:#4ade80}.rl-sum b.dn{color:#f87171}.rl-act{display:flex;gap:8px}
+.rc-h{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}.rc-h h3{margin:0}.rc-ch{display:flex;flex-wrap:wrap;gap:8px}.rc-c{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border:1px solid rgba(124,199,255,.22);border-radius:999px;background:rgba(255,255,255,.03);color:#9fb6d6;font-size:13px;font-weight:600;cursor:pointer;user-select:none}.rc-c.on{border-color:#3a8bd6;background:rgba(58,139,214,.16);color:#e6f1ff}.rc-c input{accent-color:#3a8bd6;margin:0}@media (max-width:700px){.rc-h .rl-act{width:100%}.rc-h .rl-act .btn{flex:1}}
+.rl-t tbody tr{cursor:pointer}.rl-t td.up{color:#4ade80;font-weight:700}.rl-t td.dn{color:#f87171;font-weight:700}.rl-t tfoot td{font-weight:800;border-top:1px solid rgba(148,163,184,.35)}.rl-bar{display:inline-block;width:110px;height:8px;border-radius:4px;background:rgba(148,163,184,.15);vertical-align:middle;overflow:hidden;margin-right:6px}.rl-bar i{display:block;height:100%;background:#2f86f6}
+.rl-mais{text-align:center;margin-top:10px}
 </style>
 
 <div class="app">
@@ -1931,6 +1944,7 @@ const IC={
  cart:'<path d="M3 4h2l2.6 10.4A2 2 0 0 0 9.5 16H18v-2H9.6l-.4-1.6H18l2-7H6.7L6.2 3.6A2 2 0 0 0 4.3 2H3zm6 14a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>',
  clock:'<path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 10.4 3.6 2.1-1 1.7L11 13.5V6h2z"/>',
  team:'<path d="M8 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zm8 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8 12.5c-3.3 0-6 1.6-6 3.8V19h12v-2.7c0-2.2-2.7-3.8-6-3.8zm8 .3c-.6 0-1.2.1-1.7.2 1 .9 1.7 2 1.7 3.3V19h6v-2.4c0-2-2.7-3.8-6-3.8z"/>',
+ rep:'<path d="M5 3h10l4 4v14H5zm9 1v4h4M8 12h8v2H8zm0 4h8v2H8zm0-8h4v2H8z"/>',
  idc:'<path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm4 4a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zm-4 9h8c0-2-1.8-3-4-3s-4 1-4 3zm10-8h5v2h-5zm0 4h5v2h-5z"/>',
  user:'<path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4.4 0-8 2.2-8 5v2h16v-2c0-2.8-3.6-5-8-5z"/>',
  warn:'<path d="M12 2 1 21h22zm1 15h-2v-2h2zm0-4h-2V8h2z"/>',
@@ -1942,7 +1956,7 @@ IC.route='<path d="M6 3a3 3 0 0 1 3 3c0 2.2-3 5.5-3 5.5S3 8.2 3 6a3 3 0 0 1 3-3z
 IC.fri='<path d="M7 2h2v2h6V2h2v2h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3zm12 8H5v9h14zm-9 1.5h5v1.6h-3.2v1.3h2.8V16h-2.8v2.5H10z"/>';
 IC.meet='<path d="M4 4h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-6l-4 4v-4H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm3 4v2h10V8zm0 3.5v2h6v-2z"/>';
 IC.cal='<path d="M7 2h2v2h6V2h2v2h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3zm12 8H5v9h14zM7 12h3v3H7z"/>';
-const VIEWS=[['geral','Visão Geral','home'],['reuniao','Reunião do Dia','meet'],['ranking','Ranking','trophy'],['producao','Produção','prod'],['pos','Comercial / POS','cart'],['jornada','Jornada','clock'],['equipes','Equipes','team'],['colab','Colaboradores','user'],['ficha','Ficha do colaborador','idc'],['gargalos','Gargalos','warn'],['sexta','Plano Sexta-feira','fri'],['bairros','Telemetria / Bairros','route'],['rodizio','Rodízio / Setores','map'],['agenda','Agenda','cal'],['os','Detalhamento das OS','list'],['planilhas','Planilhas','sheets']];
+const VIEWS=[['geral','Visão Geral','home'],['reuniao','Reunião do Dia','meet'],['ranking','Ranking','trophy'],['producao','Produção','prod'],['pos','Comercial / POS','cart'],['jornada','Jornada','clock'],['equipes','Equipes','team'],['colab','Colaboradores','user'],['ficha','Ficha do colaborador','idc'],['gargalos','Gargalos','warn'],['sexta','Plano Sexta-feira','fri'],['bairros','Telemetria / Bairros','route'],['rodizio','Rodízio / Setores','map'],['agenda','Agenda','cal'],['os','Detalhamento das OS','list'],['relatorios','Relatórios','rep'],['planilhas','Planilhas','sheets']];
 let VIEW=(location.hash||'').slice(1); if(!VIEWS.some(v=>v[0]===VIEW))VIEW=LS.get('sa_dash_view','geral');
 function setApres(v){APRES=!!v;_al=null;try{localStorage.setItem('sa_apres',APRES?'1':'0')}catch(e){}document.body.classList.toggle('apres',APRES);const b=$('#apresBtn');if(b){b.classList.toggle('on',APRES);b.setAttribute('aria-pressed',APRES);b.querySelector('span').textContent=APRES?'Apresentação ligada':'Modo apresentação'}}
 function toggleApres(){setApres(!APRES);const ev=$('#fEq').value,cv=$('#fCol').value;fillSelects();$('#fEq').value=ev;$('#fCol').value=cv;renderNotes();render();if(APRES)tvStart();else tvEnd();toast(APRES?'Apresentação: tela cheia, nomes ocultos e troca automática de telas a cada 20 s.':'Apresentação encerrada.')}
@@ -1994,7 +2008,7 @@ function render(){
   killCharts();
   const rows=applyF(scope());updAtuacao(rows);
   const v=$('#views');
-  const fn={rodizio:vRodizio,bairros:vBairros,agenda:vAgenda,ranking:vRanking,planilhas:vPlanilhas,geral:vGeral,producao:vProducao,pos:vPOS,jornada:vJornada,equipes:vEquipes,colab:vColab,ficha:vFicha,gargalos:vGargalos,sexta:vSexta,reuniao:vReuniao,os:vOS}[VIEW];
+  const fn={rodizio:vRodizio,bairros:vBairros,agenda:vAgenda,ranking:vRanking,planilhas:vPlanilhas,geral:vGeral,producao:vProducao,pos:vPOS,jornada:vJornada,equipes:vEquipes,colab:vColab,ficha:vFicha,relatorios:vRelatorios,gargalos:vGargalos,sexta:vSexta,reuniao:vReuniao,os:vOS}[VIEW];
   if(!ROWS.length&&VIEW!=='planilhas'&&VIEW!=='agenda'&&VIEW!=='rodizio'&&!(VIEW==='os'&&DRILL.all)){v.innerHTML=`<div class="panel empty"><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#7cc7ff" stroke-width="1.6"><path d="M4 3h11l5 5v13H4z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg><h3>Nenhuma planilha carregada</h3><p>Importe o export do GeoCall (Excel ou CSV). As planilhas ficam guardadas${SECURE?' e cifradas neste navegador':''} e são somadas automaticamente.</p><button class="btn" type="button" id="emImp">Importar planilhas</button></div>`;$('#emImp').onclick=()=>$('#file').click();const pl=$('#pulse');if(pl)pl.innerHTML='';const sb=$('#sideBase');if(sb)sb.innerHTML='';return}
   v.innerHTML='';fn(v,rows);drawCharts();enhance(v);renderPulse(rows);requestAnimationFrame(fitSide);updHist();
 }
@@ -2211,11 +2225,6 @@ function vGeral(v,rows){
      <div class="impl"><div class="svct">Principais impedimentos</div>${topImp.map(x=>`<button type="button" data-res="${esc(x.k)}"><span>${esc(x.lbl)}</span><b>${fmt(x.n)}</b></button>`).join('')}</div>
    </div>
   </div>
-  <div class="row2 r2b">
-   <div class="panel fillp ${BLUR.eq?'blurred':''}"><h3>${temEquipes()?'Equipes':'Colaboradores'} (Produtividade) <small>${blurBtn('eq')}</small></h3>${teamTable(rows,false)}${(()=>{const g=[...groupBy(rows,r=>equipeDe(r.eq))].map(([k,rs])=>agg(rs));const ac=g.filter(x=>x.pr>=META).length;const med=g.length?g.reduce((s,x)=>s+x.pr,0)/g.length:0;return `<div class="pfoot"><span>No acumulado do mês: <b class="${ac?'up':'dn'}">${ac} de ${g.length}</b> ${temEquipes()?'equipes':'colaboradores'} acima de ${META}%</span><span>Média entre ${temEquipes()?'equipes':'colaboradores'} <b>${med.toFixed(1).replace('.',',')}%</b></span></div>`})()}</div>
-   <div class="panel ${BLUR.prim?'blurred':''}" id="pPrim"></div>
-  </div>
-  ${bairroTiersHTML(rows)}
   `;
   v.querySelectorAll('.kpi').forEach(b=>b.onclick=()=>{const d=JSON.parse(b.dataset.dr);drill(d.rr?{cats:['RESTAB','RELIG'],label:'Restabelecimentos e religações executados'}:d.prod?{cats:PROD_CATS,label:'Resultados produtivos'}:{cats:d.cats,label:d.cats.map(c=>CAT_LBL[c]).join(' + ')})});
   bindTiers(v);
@@ -2244,21 +2253,13 @@ function vGeral(v,rows){
     for(const [n,rs] of groupBy(dr,r=>r.eq)){const c={};rs.forEach(r=>c[r.tipo]=(c[r.tipo]||0)+1);tt.set(n,Object.entries(c).sort((a,b)=>b[1]-a[1])[0][0])}
     const teams=[...tt].filter(x=>x[1]===t).length;const done=dr.filter(r=>r.tipo===t&&r.cat!=='FIMDIA').length;return {d,teams,done,ref:teams*CARGA[t]}};
   const lc=load('CORTE'),ls=load('SUPRESSAO');const posDay=dayRows.filter(r=>r.tipo==='POS');
-  $('#pCarga').innerHTML=`<h3>Carga Diária (Referência)</h3>
-    <div class="carga"><div class="cbox"><small>Corte</small><b>${CARGA.CORTE} OS/dia</b></div><div class="cbox s"><small>Supressão</small><b>${CARGA.SUPRESSAO} OS/dia</b></div></div>
-    <h3 style="margin-top:12px">Execução da Carga <small>último dia com serviço</small></h3>
+  $('#pCarga').innerHTML=`<h3>Execução da carga <small>último dia com serviço · referência ${CARGA.CORTE} OS/dia no corte e ${CARGA.SUPRESSAO} na supressão</small></h3>
     <div class="gauges">
      <div class="gclick" data-gt="CORTE" data-gd="${lc.d}">${gauge(lc.ref?lc.done/lc.ref*100:0,'#2f86f6')}<div class="gl">Corte · ${dayBR(lc.d)}<br><b>${lc.done} / ${lc.ref}</b><br><span class="muted small">${lc.teams} equipe(s)</span></div></div>
      <div class="gclick" data-gt="SUPRESSAO" data-gd="${ls.d}">${gauge(ls.ref?ls.done/ls.ref*100:0,'#22c55e')}<div class="gl">Supressão · ${dayBR(ls.d)}<br><b>${ls.done} / ${ls.ref}</b><br><span class="muted small">${ls.teams} equipe(s)</span></div></div>
     </div>${posDay.length?``:''}`;
   $('#pCarga').querySelectorAll('.gclick').forEach(g=>g.onclick=()=>drill({tipo:g.dataset.gt,day:g.dataset.gd,label:TIPO_LBL[g.dataset.gt]+' · '+dayBRf(g.dataset.gd)}));
-  $('#pCarga').querySelectorAll('.cbox').forEach((b,i)=>b.onclick=()=>drill({tipo:i?'SUPRESSAO':'CORTE',label:i?'Supressão':'Corte'}));
-  // primeira / última
-  const pdays=[...new Set(rows.filter(isValida).map(r=>r.day))].sort().reverse();if(!pdays.includes(PRIM_DAY))PRIM_DAY=pdays[0]||'';
-  const primRows=rows.filter(r=>r.day===PRIM_DAY);
-  const pl=[...groupBy(primRows.filter(isValida),r=>equipeDe(r.eq))].map(([k,rs])=>{rs.sort((x,y)=>x.fim-y.fim);const l=rs[rs.length-1];return {k,a:Math.min(...rs.map(r=>r.ini||r.fim)),b:l.fim,l,ex:rs.filter(r=>isProd(r.cat)).length,ne:rs.filter(r=>!isProd(r.cat)).length}}).sort((x,y)=>x.k<y.k?-1:1);
-  $('#pPrim').innerHTML=`<h3>Primeira OS e Última Baixa <small><select id="primDay" class="daysel" aria-label="Dia">${pdays.map(d=>`<option value="${d}" ${d===PRIM_DAY?'selected':''}>${dayBRf(d)}</option>`).join('')}</select>${blurBtn('prim')}</small></h3><div class="tw"><table><thead><tr><th>${temEquipes()?'Equipe':'Colaborador'}</th><th class="n">Primeira OS</th><th class="n">Última Baixa</th><th>Última OS</th></tr></thead><tbody>${pl.map(x=>`<tr data-os="${esc(x.l.os)}" title="${esc(x.l.res)} · ${x.ex} executadas / ${x.ne} não executadas no dia"><td class="nm">${esc(x.k)}</td><td class="n">${hhmm(x.a)}</td><td class="n">${hhmm(x.b)}</td><td><span class="st ${isProd(x.l.cat)?'p':'i'}">${execLbl(x.l)}</span></td></tr>`).join('')||'<tr><td colspan="4" class="muted">Sem execuções</td></tr>'}</tbody></table></div>${pl.length?`<div class="pfoot"><span>1ª OS média <b>${minToHM(pl.reduce((s,x)=>{const d=new Date(x.a);return s+d.getHours()*60+d.getMinutes()},0)/pl.length)}</b></span><span>Última baixa média <b>${minToHM(pl.reduce((s,x)=>{const d=new Date(x.b);return s+d.getHours()*60+d.getMinutes()},0)/pl.length)}</b></span></div>`:''}`;
-  bindOsRows($('#pPrim'));$('#primDay').onchange=e=>{PRIM_DAY=e.target.value;render()};bindBlur(v);
+  bindBlur(v);
 }
 
 /* ---------- Ranking (apresentação) ---------- */
@@ -3837,7 +3838,7 @@ function fcDiaHTML(k,dia,rs){
   const tarde=cheg!=null&&mins(cheg)>JA_INI,cedo=ub!=null&&mins(ub)<JA_FIM;const a=agg(geo.concat(ac));
   const chip=(t,v,cls,x)=>`<div class="fc-s ${cls||''}"><span>${t}</span><b>${v}</b>${x?`<em>${x}</em>`:''}</div>`;
   return `<div class="fc-sum">${chip('Chegada na 1ª OS',hhmm(cheg),tarde?'bad':'',tarde?'depois das '+hm(JA_INI):'')}${chip('1ª baixa',hhmm(pb))}${chip('Última baixa',hhmm(ub),cedo?'bad':'',cedo?'antes das '+hm(JA_FIM):'')}
-     ${chip('Tempo nas OS',emOS?fcMin(emOS):'—')}${chip('Entre uma OS e outra',desl?fcMin(desl):'—','',maior>=60*6e4?'maior intervalo '+fcMin(maior):'')}${ac0?chip('Parado além do almoço','—','','dia de ação especial'):chip('Parado além do almoço',IV.exc?fcMin(IV.exc):'nada',IV.exc?'bad':'ok',IV.over.length?IV.over.length+' intervalo'+(IV.over.length>1?'s':'')+' acima de 1h':'almoço dentro de 1h')}${chip('Produtividade do dia',pct(a.prod,a.den,0)+'%',a.pr>=META?'ok':'bad',`${fmt(a.prod)} de ${fmt(a.den)} OS`)}</div>
+     ${chip('Tempo nas OS',emOS?fcMin(emOS):'—','',desl?fcMin(desl)+' entre uma OS e outra':'')}${ac0?chip('Parado além do almoço','—','','dia de ação especial'):chip('Parado além do almoço',IV.exc?fcMin(IV.exc):'nada',IV.exc?'warn':'ok',IV.over.length?IV.over.length+' intervalo'+(IV.over.length>1?'s':'')+' acima de 1h':'almoço dentro de 1h')}${chip('Produtividade do dia',pct(a.prod,a.den,0)+'%',a.pr>=META?'ok':'bad',`${fmt(a.prod)} de ${fmt(a.den)} OS`)}</div>
    ${ac.length?`<div class="fc-ac">★ Ação especial no dia: <b>${fmt(ac.filter(r=>r.cat==='ACAO').length)}</b> produtivas de <b>${fmt(ac.length)}</b> realizadas</div>`:''}
    <ol class="fc-tl">${passos.map(({r,gap},i)=>{const s=r.sub&&r.sub!==r.cat?r.sub:r.cat;const cor=SUB_COL[s]||'#64748b';const y=ivBy.get(r);const t=ac0||!y?'':y.tipo;
      const gl=gap==null||gap<60e3?'':t==='almx'?`<li class="fc-gap over"><span><b>Almoço de ${fcMin(y.gc)}</b> · ${fcMin(y.exc)} além da 1h permitida${y.corte?' · contado até 17h':''}${y.rua?' · mesma rua':''}</span></li>`:t==='x'?`<li class="fc-gap over"><span><b>Parado ${fcMin(y.gc)}</b> · acima de 1h${y.corte?' · contado até 17h':''}${y.rua?' · mesma rua':''}</span></li>`:t==='alm'?`<li class="fc-gap alm"><span>Almoço · ${fcMin(gap)}</span></li>`:`<li class="fc-gap"><span>Deslocamento · ${fcMin(gap)}</span></li>`;
@@ -3869,11 +3870,11 @@ function vFicha(v,rows){
      ${T2('','Cortes e supressões',fmt(A.CORTE+A.SUP),`${fmt(A.CORTE)} cortes · ${fmt(A.SUP)} supressões`,`data-fd='{"cats":["CORTE","SUP"]}' data-fl="cortes e supressões"`)}
      ${T2(A.den-A.prod?'warn':'','Não produtivas',fmt(A.den-A.prod),`${pct(A.den-A.prod,A.den,0)}% das OS`,`data-fd='{"nprod":1}' data-fl="não produtivas"`)}
      ${T2(sus?'bad':'','Fora do local',fmt(sus),sus?'baixas longe do endereço':'nenhuma',`data-fd='{"sus":true}' data-fl="baixas fora do local"`)}
-     ${T2(ivT?'bad':'ok','Parado além do almoço',ivT?fcMin(ivT):'nada',ivT?`em ${ivN} de ${dias.length} dias · maior ${fcMin(ivMx.exc)} em ${dayBRf(ivMx.d).slice(0,5)}`:'almoço sempre dentro de 1h',ivT?`data-fexc="${ivMx.d}"`:'data-fd=\'{}\' data-fl="todas as OS"')}
+     ${T2(ivT?'warn':'ok','Parado além do almoço',ivT?fcMin(ivT):'nada',ivT?`em ${ivN} de ${dias.length} dias · maior ${fcMin(ivMx.exc)} em ${dayBRf(ivMx.d).slice(0,5)}`:'almoço sempre dentro de 1h',ivT?`data-fexc="${ivMx.d}"`:'data-fd=\'{}\' data-fl="todas as OS"')}
      ${T2(alertas.length?'warn':'','Alertas de jornada',`${alertas.length} de ${dias.length}`,`dias chegando depois das ${hm(JA_INI)} ou última antes de ${hm(JA_FIM)}`,alertas.length?`data-fdd="${esc(alertas.map(x=>k+'|'+x.d).join(','))}"`:'data-fd=\'{}\' data-fl="todas as OS"')}</div></div>
   <div class="g2 fc-g">
    <div class="panel"><h3>Dia a dia <small>produtividade de cada dia · toque no dia para ver o passo a passo</small></h3>
-    <div class="fc-days">${porDia.map(x=>{const h=Math.max(3,Math.min(100,x.a.pr))*.85;const dw=DW[new Date(x.d+'T12:00').getDay()];return `<button type="button" class="fc-d ${x.d===dia?'on':''} ${x.a.pr>=META?'ok':''}" data-fdia="${x.d}" data-tip="${dw} ${dayBRf(x.d)}<br>${pct(x.a.prod,x.a.den,0)}% produtivo · ${fmt(x.a.den)} OS${ivM.get(x.d)?'<br>parado além do almoço: '+fcMin(ivM.get(x.d)):''}${x.alerta?'<br>alerta de jornada':''}">${ivM.get(x.d)?'<u class="r" title="parado além do almoço"></u>':x.alerta?'<u title="alerta de jornada"></u>':''}<em>${pct(x.a.prod,x.a.den,0)}%</em><i style="height:${h}%"></i><span>${x.d.slice(8)}/${x.d.slice(5,7)}</span></button>`}).join('')}<span class="fc-meta-l" style="--m:${META/100*.85}"><b>meta ${META}%</b></span></div></div>
+    <div class="fc-days">${porDia.map(x=>{const h=Math.max(3,Math.min(100,x.a.pr))*.85;const dw=DW[new Date(x.d+'T12:00').getDay()];return `<button type="button" class="fc-d ${x.d===dia?'on':''} ${x.a.pr>=META?'ok':''}" data-fdia="${x.d}" data-tip="${dw} ${dayBRf(x.d)}<br>${pct(x.a.prod,x.a.den,0)}% produtivo · ${fmt(x.a.den)} OS${ivM.get(x.d)?'<br>parado além do almoço: '+fcMin(ivM.get(x.d)):''}${x.alerta?'<br>alerta de jornada':''}">${ivM.get(x.d)||x.alerta?'<u></u>':''}<em>${pct(x.a.prod,x.a.den,0)}%</em><i style="height:${h}%"></i><span>${x.d.slice(8)}/${x.d.slice(5,7)}</span></button>`}).join('')}<span class="fc-meta-l" style="--m:${META/100*.85}"><b>meta ${META}%</b></span></div></div>
    <div class="panel"><h3>Resultados no período <small>como o colaborador baixou no GeoCall · toque para ver as OS</small></h3>
     <div class="fc-res">${subs.map(x=>`<button type="button" data-fres="${x.s}"><span>${esc(CAT_LBL[x.s]||x.s)}</span><i><b style="width:${x.n/smx*100}%;background:${SUB_COL[x.s]||'#64748b'}"></b></i><em>${fmt(x.n)}</em></button>`).join('')}</div></div></div>
   <div class="panel fc-dia"><h3>Passo a passo do dia <small>${DW[new Date(dia+'T12:00').getDay()]} ${dayBRf(dia)} · na ordem em que aconteceu · toque na OS para ver o detalhe</small>
@@ -3939,7 +3940,7 @@ function dosModal(k,rows){const eqs=[...new Set(rows.filter(r=>r.eq&&!r.man).map
 
 
 /* ---------- Versão do painel ---------- */
-const VERSAO='1.3';
+const VERSAO='1.6';
 function verInit(){const b=$('#verTag');if(b)b.textContent='v'+VERSAO}
 
 /* ---------- Jornada (versão enxuta): 4 números, uma tabela por colaborador e os horários da equipe ---------- */
@@ -3958,7 +3959,7 @@ function vJornada2(v,rows){JA_SETS=[];const geo=geoR(rows).filter(isBaixa);
   v.innerHTML=`<div class="jn-ks">
     ${K(tarde.length?'warn':'','Chegada na 1ª OS',minToHM(av(d=>d.ch)),`média · ${tarde.length} de ${dias.length} dias chegando depois das ${hm(JA_INI)}`,tarde.length?`data-jx="${set(tarde.map(kd),'chegada na 1ª OS depois das '+hm(JA_INI))}"`:'')}
     ${K(cedo.length?'warn':'','Última baixa',minToHM(av(d=>d.fim)),`média · ${cedo.length} de ${dias.length} dias parando antes das ${hm(JA_FIM)}`,cedo.length?`data-jx="${set(cedo.map(kd),'última baixa antes das '+hm(JA_FIM))}"`:'')}
-    ${K(exc?'bad':'ok','Parado além do almoço',exc?fcMin(exc):'nada',`equipe no período · ${excD.length} dias acima de 1h`,excD.length?`data-jx="${set(excD,'dias com parada acima do permitido')}"`:'')}
+    ${K(exc?'warn':'ok','Parado além do almoço',exc?fcMin(exc):'nada',`equipe no período · ${excD.length} dias acima de 1h`,excD.length?`data-jx="${set(excD,'dias com parada acima do permitido')}"`:'')}
     ${K(sus?'bad':'ok','Baixas fora do local',fmt(sus),'não contam como 1ª OS nem última baixa',sus?'data-jsusall="1"':'')}</div>
   <div class="colw ${COL_BLUR?'blurn':''}"><div class="panel jn-p"><h3>Jornada por colaborador <small>médias do período · vermelho = fora do combinado · toque no nome para abrir a ficha</small>${blurNomesBtn()}</h3>
    <div class="tw"><table class="jn-t"><thead><tr><th>Colaborador</th><th class="n">Dias</th><th class="n">Chegada</th><th class="n">Última baixa</th><th class="n">Chegou depois das ${hm(JA_INI)}</th><th class="n">Parou antes das ${hm(JA_FIM)}</th><th>Parado além do almoço</th><th class="n">Fora do local</th></tr></thead><tbody>
@@ -3976,6 +3977,268 @@ function vJornada2(v,rows){JA_SETS=[];const geo=geoR(rows).filter(isBaixa);
   v.querySelectorAll('[data-jx]').forEach(b=>{const go=()=>{const S=JA_SETS[+b.dataset.jx];if(S)drill({eqd:S.k,label:S.label})};b.onclick=e=>{e.stopPropagation();go()}});
   v.querySelectorAll('[data-jsus]').forEach(b=>b.onclick=e=>{e.stopPropagation();drill({eqs:[b.dataset.jsus],sus:true,label:nomeDe(b.dataset.jsus)+' · baixas fora do local'})});
   v.querySelectorAll('[data-jsusall]').forEach(b=>b.onclick=()=>drill({sus:true,label:'Baixas fora do local'}))}
+
+/* ---------- Relatórios: monte o relatório que quiser, com as datas que quiser ---------- */
+const REL_COLS=[['day','Data'],['ini','Chegada'],['fim','Baixa'],['os','OS'],['pde','PDE'],['end','Endereço'],['bai','Bairro'],['sf','Setor'],['tipo','Serviço'],['res','Resultado'],['cat','Categoria'],['prod','Produtivo'],['st','Status'],['eq','Colaborador'],['nota','Nota de execução'],['dur','Tempo no local']];
+const REL_GRP=[['','Lista de OS'],['res','Resultado'],['cat','Categoria'],['tipo','Serviço'],['eq','Colaborador'],['day','Dia'],['bai','Bairro'],['sf','Setor'],['st','Status'],['rua','Rua'],['pde','PDE'],['nota','Nota de execução']];
+const REL_FIL=[['tipo','Serviço'],['res','Resultado'],['eq','Colaborador'],['st','Status'],['bai','Bairro'],['sf','Setor'],['prod','Produtivo']];
+let REL={ini:'',fim:'',grp:'res',f:{},q:'',cols:['day','fim','os','pde','end','bai','tipo','res','st','eq','nota'],n:100,open:''};
+function relVal(r,k){switch(k){case 'day':return dayBRf(r.day);case 'ini':return r.ini?hhmm(r.ini):'';case 'fim':return hhmm(r.fim);case 'tipo':return TIPO_LBL[r.tipo]||r.tipo;
+  case 'cat':return CAT_LBL[r.sub&&r.sub!==r.cat?r.sub:r.cat]||'';case 'prod':return isProd(r.cat)?'Sim':'Não';case 'eq':return nomeDe(r.eq);case 'nota':return APRES?'':String(r.nota||'').trim();
+  case 'rua':return String(r.end||'').replace(/\s+\d.*$/,'').trim();case 'dur':return r.ini&&r.fim>r.ini?fcMin(r.fim-r.ini):'';default:return String(r[k]==null?'':r[k])}}
+function relBase(){const all=allSheetRows();if(!REL.ini){REL.ini=$('#fIni').value||'';REL.fim=$('#fFim').value||''}
+  return all.filter(r=>(!REL.ini||r.day>=REL.ini)&&(!REL.fim||r.day<=REL.fim))}
+function relFiltra(base,skip){const q=norm(REL.q||'').trim();return base.filter(r=>{for(const [k] of REL_FIL){if(k===skip)continue;const s=REL.f[k];if(s&&s.length&&!s.includes(relVal(r,k)))return false}
+  if(q){const t=norm([r.os,r.pde,r.end,r.bai,APRES?'':r.nota,r.res].join(' '));if(!t.includes(q))return false}return true})}
+function vRelatorios(v){const base=relBase();const rows=relFiltra(base);const cols=REL.cols.filter(c=>!(APRES&&c==='nota'));
+  const ms=(k,lab)=>{const opts=[...new Map(relFiltra(base,k).map(r=>[relVal(r,k),1])).keys()].filter(Boolean).sort((a,b)=>a.localeCompare(b,'pt'));const sel=REL.f[k]||[];
+    return `<details class="rl-ms ${sel.length?'on':''}" ${REL.open===k?'open':''} data-k="${k}"><summary><span>${lab}</span><b>${sel.length?sel.length===1?esc(sel[0]):sel.length+' selecionados':'Todos'}</b></summary>
+     <div class="rl-op"><div class="rl-oh"><button type="button" data-all="${k}">Todos</button><button type="button" data-none="${k}">Limpar</button></div>${opts.map(o=>`<label><input type="checkbox" data-f="${k}" value="${esc(o)}" ${sel.includes(o)?'checked':''}><span>${esc(o)}</span></label>`).join('')||'<p class="muted">Nada neste período</p>'}</div></details>`};
+  const prodN=rows.filter(r=>isProd(r.cat)).length;
+  let corpo='';
+  if(REL.grp){const g=new Map();rows.forEach(r=>{const k=relVal(r,REL.grp)||'(sem informação)';if(!g.has(k))g.set(k,[]);g.get(k).push(r)});
+    const L=[...g].map(([k,rs])=>({k,n:rs.length,p:rs.filter(r=>isProd(r.cat)).length})).sort((a,b)=>REL.grp==='day'?(a.k.split('/').reverse().join()<b.k.split('/').reverse().join()?-1:1):b.n-a.n);const mx=Math.max(1,...L.map(x=>x.n));
+    corpo=`<div class="tw"><table class="rl-t" id="relTab"><thead><tr><th>${REL_GRP.find(x=>x[0]===REL.grp)[1]}</th><th class="n">OS</th><th class="n">Produtivas</th><th class="n">Não produtivas</th><th class="n">Produtividade</th><th>% do total</th></tr></thead><tbody>
+     ${L.map(x=>`<tr data-gk="${esc(x.k)}"><td><b>${esc(x.k)}</b></td><td class="n">${fmt(x.n)}</td><td class="n">${fmt(x.p)}</td><td class="n">${fmt(x.n-x.p)}</td><td class="n ${x.p/x.n*100>=META?'up':'dn'}">${pct(x.p,x.n)}%</td><td><span class="rl-bar"><i style="width:${x.n/mx*100}%"></i></span> ${pct(x.n,rows.length)}%</td></tr>`).join('')}</tbody>
+     <tfoot><tr><td>Total</td><td class="n">${fmt(rows.length)}</td><td class="n">${fmt(prodN)}</td><td class="n">${fmt(rows.length-prodN)}</td><td class="n">${pct(prodN,rows.length)}%</td><td></td></tr></tfoot></table></div>`}
+  else{const L=rows.slice().sort((a,b)=>a.day<b.day?1:a.day>b.day?-1:b.fim-a.fim);
+    corpo=`<div class="tw"><table class="rl-t" id="relTab"><thead><tr>${cols.map(c=>`<th>${REL_COLS.find(x=>x[0]===c)[1]}</th>`).join('')}</tr></thead><tbody>
+     ${L.slice(0,REL.n).map(r=>`<tr data-ros="${esc(r.os)}">${cols.map(c=>`<td>${c==='eq'?`<span class="pvn">${esc(relVal(r,c))}</span>`:esc(relVal(r,c))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+     ${L.length>REL.n?`<div class="rl-mais"><button type="button" class="btn ghost sm" id="relMais">Mostrar mais (${fmt(L.length-REL.n)} restantes)</button></div>`:''}`}
+  v.innerHTML=`<div class="panel rl-f"><h3>Relatórios <small>escolha o período, os filtros e como agrupar</small></h3>
+   <div class="rl-row"><label class="rl-d"><span>Data inicial</span><input type="date" id="relIni" value="${REL.ini}"></label><label class="rl-d"><span>Data final</span><input type="date" id="relFim" value="${REL.fim}"></label>
+    <label class="rl-d rl-g"><span>Agrupar por</span><select id="relGrp">${REL_GRP.map(([k,l])=>`<option value="${k}" ${REL.grp===k?'selected':''}>${l}</option>`).join('')}</select></label>
+    <label class="rl-d rl-q"><span>Buscar</span><input id="relQ" value="${esc(REL.q)}" placeholder="OS, PDE, endereço ou nota"></label></div>
+   <div class="rl-row">${REL_FIL.map(([k,l])=>ms(k,l)).join('')}${!REL.grp?`<details class="rl-ms" ${REL.open==='cols'?'open':''} data-k="cols"><summary><span>Colunas</span><b>${cols.length} de ${REL_COLS.length}</b></summary><div class="rl-op">${REL_COLS.filter(c=>!(APRES&&c[0]==='nota')).map(([k,l])=>`<label><input type="checkbox" data-col="${k}" ${REL.cols.includes(k)?'checked':''}><span>${l}</span></label>`).join('')}</div></details>`:''}
+    <button type="button" class="btn ghost sm" id="relLimpar">Limpar filtros</button></div></div>
+  ${rcPainelHTML()}
+  <div class="panel"><div class="rl-top"><div class="rl-sum"><b>${fmt(rows.length)}</b> OS · <b>${fmt(prodN)}</b> produtivas · <b class="${prodN/Math.max(1,rows.length)*100>=META?'up':'dn'}">${pct(prodN,rows.length)}%</b> de produtividade · ${REL.ini?dayBRf(REL.ini):''} a ${REL.fim?dayBRf(REL.fim):''}</div>
+   <div class="rl-act"><button type="button" class="btn ghost sm" id="relCopy">Copiar para o Excel</button><button type="button" class="btn ghost sm" id="relXls">Baixar Excel</button><button type="button" class="btn sm" id="relPdf">Gerar PDF</button></div></div>${corpo}</div>`;
+  const re=()=>{const y=scrollY;render();scrollTo(0,y)};
+  v.querySelector('#relIni').onchange=e=>{REL.ini=e.target.value;re()};v.querySelector('#relFim').onchange=e=>{REL.fim=e.target.value;re()};
+  v.querySelector('#relGrp').onchange=e=>{REL.grp=e.target.value;REL.n=100;re()};
+  let qt;v.querySelector('#relQ').oninput=e=>{clearTimeout(qt);qt=setTimeout(()=>{REL.q=e.target.value;re();const i=$('#relQ');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}},350)};
+  v.querySelectorAll('details.rl-ms').forEach(d=>d.ontoggle=()=>{if(d.open){REL.open=d.dataset.k;v.querySelectorAll('details.rl-ms').forEach(o=>{if(o!==d)o.open=false})}else if(REL.open===d.dataset.k)REL.open=''});
+  v.querySelectorAll('[data-f]').forEach(c=>c.onchange=()=>{const k=c.dataset.f;const s=new Set(REL.f[k]||[]);c.checked?s.add(c.value):s.delete(c.value);REL.f[k]=[...s];REL.n=100;re()});
+  v.querySelectorAll('[data-all],[data-none]').forEach(b=>b.onclick=()=>{REL.f[b.dataset.all||b.dataset.none]=[];re()});
+  v.querySelectorAll('[data-col]').forEach(c=>c.onchange=()=>{const k=c.dataset.col;REL.cols=c.checked?REL_COLS.map(x=>x[0]).filter(x=>x===k||REL.cols.includes(x)):REL.cols.filter(x=>x!==k);re()});
+  rcBind(v);
+  v.querySelector('#relLimpar').onclick=()=>{REL.f={};REL.q='';REL.open='';re()};
+  v.querySelectorAll('tr[data-gk]').forEach(tr=>tr.onclick=()=>{const k=tr.dataset.gk;const g=REL.grp;if(REL_FIL.some(x=>x[0]===g))REL.f[g]=[k];else if(g==='day'){const [d,m,y]=k.split('/');REL.ini=REL.fim=`${y}-${m}-${d}`}else REL.q=k;REL.grp='';REL.n=100;re();toast('Mostrando as OS de: '+k)});
+  v.querySelectorAll('tr[data-ros]').forEach(tr=>tr.onclick=()=>drill({os:tr.dataset.ros,label:'OS '+tr.dataset.ros}));
+  const m=v.querySelector('#relMais');if(m)m.onclick=()=>{REL.n+=200;re()};
+  v.querySelector('#relCopy').onclick=()=>relCopiar(relModelo(rows));
+  v.querySelector('#relPdf').onclick=()=>relPDF(relModelo(rows),rows);
+  v.querySelector('#relXls').onclick=async()=>{const M=relModelo(rows);const fil=relFiltrosTxt();const blob=relXlsx(M,relTitulo()+' · '+relPeriodo(),'Gestão Operacional · Equipe São Mateus'+(fil.length?' · '+fil.join(' · '):''));
+    const r=await salvarArquivo('relatorio-'+(REL.ini||'')+'-a-'+(REL.fim||'')+'.xlsx',blob,blob.type);if(r==='ok')toast('Relatório em Excel salvo.')}}
+
+/* ---------- Relatórios: saída organizada (Excel de verdade, PDF e cópia formatada) ---------- */
+function relModelo(rows){const cols=REL.cols.filter(c=>!(APRES&&c==='nota'));const prodN=rows.filter(r=>isProd(r.cat)).length;
+  if(REL.grp){const g=new Map();rows.forEach(r=>{const k=relVal(r,REL.grp)||'(sem informação)';if(!g.has(k))g.set(k,[]);g.get(k).push(r)});
+    const L=[...g].map(([k,rs])=>({k,n:rs.length,p:rs.filter(r=>isProd(r.cat)).length})).sort((a,b)=>REL.grp==='day'?(a.k.split('/').reverse().join()<b.k.split('/').reverse().join()?-1:1):b.n-a.n);
+    return {grp:true,head:[[REL_GRP.find(x=>x[0]===REL.grp)[1],'t'],['OS','n'],['Produtivas','n'],['Não produtivas','n'],['Produtividade','p'],['% do total','p']],
+      rows:L.map(x=>[x.k,x.n,x.p,x.n-x.p,x.n?x.p/x.n:0,rows.length?x.n/rows.length:0]),total:['Total',rows.length,prodN,rows.length-prodN,rows.length?prodN/rows.length:0,1]}}
+  const L=rows.slice().sort((a,b)=>a.day<b.day?-1:a.day>b.day?1:a.fim-b.fim);
+  return {grp:false,head:cols.map(c=>[REL_COLS.find(x=>x[0]===c)[1],'t']),rows:L.map(r=>cols.map(c=>relVal(r,c))),total:null}}
+function relFiltrosTxt(){const p=[];for(const [k,l] of REL_FIL){const s=REL.f[k];if(s&&s.length)p.push(l+': '+(s.length>4?s.slice(0,4).join(', ')+' e mais '+(s.length-4):s.join(', ')))}if(REL.q)p.push('Busca: '+REL.q);return p}
+const relPct=x=>(x*100).toFixed(1).replace('.',',')+'%';
+/* gravador de .xlsx simples (sem biblioteca): planilha com título, cabeçalho azul, bordas e totais */
+const CRC=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(u){let c=0xFFFFFFFF;for(let i=0;i<u.length;i++)c=CRC[(c^u[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
+function zipStore(files){const enc=new TextEncoder();const parts=[],cent=[];let off=0;
+  for(const [name,txt] of files){const nb=enc.encode(name),data=enc.encode(txt),crc=crc32(data);const h=new DataView(new ArrayBuffer(30));
+    h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,0,true);h.setUint32(14,crc,true);h.setUint32(18,data.length,true);h.setUint32(22,data.length,true);h.setUint16(26,nb.length,true);
+    parts.push(new Uint8Array(h.buffer),nb,data);const c=new DataView(new ArrayBuffer(46));c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint32(16,crc,true);c.setUint32(20,data.length,true);c.setUint32(24,data.length,true);c.setUint16(28,nb.length,true);c.setUint32(42,off,true);
+    cent.push(new Uint8Array(c.buffer),nb);off+=30+nb.length+data.length}
+  const cs=cent.reduce((s,x)=>s+x.length,0);const e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cs,true);e.setUint32(16,off,true);
+  return new Blob([...parts,...cent,new Uint8Array(e.buffer)],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})}
+function relXlsx(M,titulo,sub){const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const col=i=>{let s='';i++;while(i){const m=(i-1)%26;s=String.fromCharCode(65+m)+s;i=Math.floor((i-1)/26)}return s};
+  const nc=M.head.length;const rowsX=[];let r=1;
+  const cel=(c,v,st,tipo)=>tipo==='n'||tipo==='p'?`<c r="${col(c)}${r}" s="${st}"><v>${+v||0}</v></c>`:`<c r="${col(c)}${r}" s="${st}" t="inlineStr"><is><t xml:space="preserve">${x(v)}</t></is></c>`;
+  rowsX.push(`<row r="${r}" ht="24" customHeight="1">${cel(0,titulo,1,'t')}</row>`);r++;
+  rowsX.push(`<row r="${r}">${cel(0,sub,2,'t')}</row>`);r++;r++;
+  const hr=r;rowsX.push(`<row r="${r}" ht="30" customHeight="1">${M.head.map((h,i)=>cel(i,h[0],3,'t')).join('')}</row>`);r++;
+  M.rows.forEach(v=>{rowsX.push(`<row r="${r}">${v.map((c,i)=>{const t=M.head[i][1];return cel(i,c,t==='n'?5:t==='p'?6:4,t)}).join('')}</row>`);r++});
+  if(M.total){rowsX.push(`<row r="${r}">${M.total.map((c,i)=>{const t=M.head[i][1];return cel(i,c,t==='n'?8:t==='p'?9:7,t)}).join('')}</row>`);r++}
+  const w=M.head.map((h,i)=>Math.min(60,Math.max(h[0].length+2,...M.rows.slice(0,400).map(v=>M.head[i][1]==='t'?String(v[i]).length+1:10))));
+  const sheet=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheetPr><pageSetUpPr fitToPage="1"/></sheetPr><sheetViews><sheetView workbookViewId="0" showGridLines="0"><pane ySplit="${hr}" topLeftCell="A${hr+1}" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="16"/><cols>${w.map((v,i)=>`<col min="${i+1}" max="${i+1}" width="${v}" customWidth="1"/>`).join('')}</cols><sheetData>${rowsX.join('')}</sheetData><autoFilter ref="A${hr}:${col(nc-1)}${hr+M.rows.length}"/><mergeCells count="2"><mergeCell ref="A1:${col(Math.max(nc-1,3))}1"/><mergeCell ref="A2:${col(Math.max(nc-1,3))}2"/></mergeCells><pageMargins left="0.4" right="0.4" top="0.5" bottom="0.5" header="0.3" footer="0.3"/><pageSetup orientation="${M.grp?'portrait':'landscape'}" fitToWidth="1" fitToHeight="0"/></worksheet>`;
+  const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="1"><numFmt numFmtId="164" formatCode="0.0%"/></numFmts>
+   <fonts count="5"><font><sz val="10"/><name val="Arial"/></font><font><b/><sz val="14"/><color rgb="FF0B3A75"/><name val="Arial"/></font><font><i/><sz val="10"/><color rgb="FF475569"/><name val="Arial"/></font><font><b/><sz val="10"/><color rgb="FFFFFFFF"/><name val="Arial"/></font><font><b/><sz val="10"/><name val="Arial"/></font></fonts>
+   <fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF0B3A75"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFEEF2F7"/></patternFill></fill></fills>
+   <borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color rgb="FFD5DDE8"/></left><right style="thin"><color rgb="FFD5DDE8"/></right><top style="thin"><color rgb="FFD5DDE8"/></top><bottom style="thin"><color rgb="FFD5DDE8"/></bottom><diagonal/></border></borders>
+   <cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="10"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/>
+   <xf numFmtId="0" fontId="3" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+   <xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf><xf numFmtId="3" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyBorder="1"/><xf numFmtId="164" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyBorder="1"/>
+   <xf numFmtId="0" fontId="4" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1"/><xf numFmtId="3" fontId="4" fillId="3" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1" applyBorder="1"/><xf numFmtId="164" fontId="4" fillId="3" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1" applyBorder="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+  return zipStore([['[Content_Types].xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>'],
+    ['_rels/.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+    ['xl/workbook.xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Relatório" sheetId="1" r:id="rId1"/></sheets><definedNames><definedName name="_xlnm._FilterDatabase" localSheetId="0" hidden="1">\'Relatório\'!$A$'+hr+':$'+col(nc-1)+'$'+(hr+M.rows.length)+'</definedName></definedNames></workbook>'],
+    ['xl/_rels/workbook.xml.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'],
+    ['xl/styles.xml',styles],['xl/worksheets/sheet1.xml',sheet]])}
+function relHTMLtab(M,inline){const th=inline?' style="background:#0B3A75;color:#ffffff;font-weight:bold;border:1px solid #D5DDE8;padding:4px 8px;font-family:Arial;font-size:10pt"':'';const td=inline?' style="border:1px solid #D5DDE8;padding:3px 8px;font-family:Arial;font-size:10pt;vertical-align:top"':'';
+  const tf=inline?' style="border:1px solid #D5DDE8;padding:3px 8px;font-family:Arial;font-size:10pt;font-weight:bold;background:#EEF2F7"':'';
+  const v=(c,t)=>t==='p'?relPct(c):t==='n'?fmt(c):esc(c);
+  return `<table${inline?' style="border-collapse:collapse"':''}><thead><tr>${M.head.map(h=>`<th${th}>${esc(h[0])}</th>`).join('')}</tr></thead><tbody>${M.rows.map(r=>`<tr>${r.map((c,i)=>`<td${td}${M.head[i][1]!=='t'?' align="right"':''}>${v(c,M.head[i][1])}</td>`).join('')}</tr>`).join('')}</tbody>${M.total?`<tfoot><tr>${M.total.map((c,i)=>`<td${tf}${M.head[i][1]!=='t'?' align="right"':''}>${v(c,M.head[i][1])}</td>`).join('')}</tr></tfoot>`:''}</table>`}
+function relTitulo(){return REL.grp?'Relatório por '+REL_GRP.find(x=>x[0]===REL.grp)[1].toLowerCase():'Relatório de OS'}
+function relPeriodo(){return (REL.ini?dayBRf(REL.ini):'')+' a '+(REL.fim?dayBRf(REL.fim):'')}
+async function relCopiar(M){const html='<html><body>'+relHTMLtab(M,true)+'</body></html>';const txt=[M.head.map(h=>h[0]).join('\t')].concat(M.rows.map(r=>r.map((c,i)=>M.head[i][1]==='p'?relPct(c):c).join('\t'))).join('\n');
+  try{if(navigator.clipboard&&window.ClipboardItem){await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([txt],{type:'text/plain'})})]);toast('Copiado com formatação. Cole no Excel com Ctrl+V.');return}}catch(e){}
+  const d=document.createElement('div');d.style.cssText='position:fixed;left:-9999px;top:0';d.innerHTML=relHTMLtab(M,true);document.body.appendChild(d);const rg=document.createRange();rg.selectNodeContents(d);const s=getSelection();s.removeAllRanges();s.addRange(rg);
+  let ok=false;try{ok=document.execCommand('copy')}catch(e){}s.removeAllRanges();d.remove();toast(ok?'Copiado com formatação. Cole no Excel com Ctrl+V.':'Não foi possível copiar. Use “Baixar Excel”.')}
+function relPDFdoc(M,rows){const prodN=rows.filter(r=>isProd(r.cat)).length;const fil=relFiltrosTxt();
+  const css=`*{box-sizing:border-box}body{margin:0;font:11.5px/1.4 Arial,sans-serif;color:#0f172a}.hd{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #0b3a75;padding-bottom:6px;margin-bottom:10px}h1{margin:0;font-size:20px;color:#0b3a75}.sub{color:#475569;font-weight:600;margin-top:2px}.per{color:#475569;font-weight:700}
+   .ks{display:flex;gap:8px;margin:0 0 10px}.ks div{flex:1;border:1px solid #d5dde8;border-radius:8px;padding:6px 10px;background:#f8fafc}.ks span{display:block;font-size:9.5px;text-transform:uppercase;color:#64748b;font-weight:700}.ks b{font-size:18px;color:#0b3a75}
+   .fl{margin:0 0 10px;color:#334155;font-size:11px}.fl b{color:#0b3a75}table{width:100%;border-collapse:collapse}th{background:#0b3a75;color:#fff;font-size:9.5px;text-transform:uppercase;text-align:left;padding:5px 7px}td{padding:4px 7px;border-bottom:1px solid #e5eaf1;vertical-align:top}tbody tr:nth-child(even) td{background:#f8fafc}
+   tfoot td{font-weight:800;background:#eef2f7;border-top:2px solid #0b3a75}td[align=right]{text-align:right;white-space:nowrap}thead{display:table-header-group}tr{page-break-inside:avoid}@page{size:A4 ${M.grp?'portrait':'landscape'};margin:10mm}`;
+  return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>${esc(relTitulo())}</title><style>${css}</style></head><body>
+   <div class="hd"><div><h1>${esc(relTitulo())}</h1><div class="sub">Gestão Operacional · Equipe São Mateus</div></div><div class="per">${esc(relPeriodo())}</div></div>
+   <div class="ks"><div><span>OS</span><b>${fmt(rows.length)}</b></div><div><span>Produtivas</span><b>${fmt(prodN)}</b></div><div><span>Não produtivas</span><b>${fmt(rows.length-prodN)}</b></div><div><span>Produtividade</span><b>${pct(prodN,rows.length)}%</b></div></div>
+   ${fil.length?`<p class="fl"><b>Filtros:</b> ${esc(fil.join(' · '))}</p>`:''}${relHTMLtab(M,false)}</body></html>`}
+function relPDF(M,rows){const html=relPDFdoc(M,rows);const ov=document.createElement('div');ov.className='ac-ov';ov.innerHTML=`<div class="ac-m dos-m" role="dialog" aria-label="Relatório em PDF"><header><b>${esc(relTitulo())}</b><button type="button" class="ac-x" data-x aria-label="Fechar">×</button></header>
+   <iframe class="dos-f" title="Prévia do relatório"></iframe><footer><button type="button" class="btn ghost sm" id="rlSave">Baixar arquivo</button><span style="flex:1"></span><button type="button" class="btn" id="rlPrint">Imprimir ou salvar em PDF</button></footer></div>`;
+  document.body.appendChild(ov);const close=()=>ov.remove();ov.querySelectorAll('[data-x]').forEach(b=>b.onclick=close);ov.onclick=e=>{if(e.target===ov)close()};const f=ov.querySelector('iframe');f.srcdoc=html;
+  ov.querySelector('#rlPrint').onclick=()=>{try{f.contentWindow.focus();f.contentWindow.print()}catch(e){toast('Use “Baixar arquivo” e imprima pelo navegador.')}};
+  ov.querySelector('#rlSave').onclick=async()=>{const r=await salvarArquivo('relatorio-'+(REL.ini||'')+'-a-'+(REL.fim||'')+'.html',html,'text/html');if(r==='ok')toast('Relatório salvo. Abra e imprima em PDF.')}}
+
+/* ---------- Relatório completo: todas as áreas do painel em um PDF e um Excel ---------- */
+const RC_SEC=[['resumo','Resumo do período'],['dia','Produção por dia'],['ranking','Ranking de colaboradores'],['resultados','Resultados registrados'],['comercial','Comercial / POS'],['jornada','Jornada'],['intervalos','Intervalos além do almoço'],['gargalos','Gargalos'],['bairros','Bairros'],['setores','Setores']];
+let RC_SEL=RC_SEC.map(x=>x[0]);
+const RC_DW=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+function rcRows(){return applyF(scope(),{ini:REL.ini,fim:REL.fim})}
+function rcFechado(r){return /^IMOVEL FECHADO/.test(norm(r.res||''))}
+function rcModelo(rows,sel){sel=sel||RC_SEL;const A=agg(rows);const out=[];const g=geoR(rows);
+  const nd=new Set(rows.map(r=>r.day)).size;const ncol=new Set(rows.map(r=>r.eq)).size;
+  const T=(t,head,L,total,extra)=>Object.assign({t,M:{head,rows:L,total}},extra||{});
+  const has=id=>sel.includes(id);
+  if(has('resumo')){const byT=[...groupBy(rows,r=>r.tipo)].map(([k,rs])=>({k,a:agg(rs)})).sort((x,y)=>y.a.trab-x.a.trab);
+    const porCol=[...groupBy(rows,r=>r.eq)].map(([k,rs])=>agg(rs)).filter(a=>a.trab>=10);const ac=porCol.filter(a=>a.pr>=META).length;
+    out.push({id:'resumo',t:'Resumo do período',kpis:[['OS trabalhadas',A.trab,'n'],['Produtivas',A.prod,'n'],['Não produtivas',A.trab-A.prod,'n'],['Produtividade',A.den?A.prod/A.den:0,'pm'],['Meta de produtividade',META/100,'p'],['Dias com serviço',nd,'n'],['Colaboradores',ncol,'n'],['Acima da meta',ac+' de '+porCol.length,'t'],['Pagamentos (POS + faturas)',A.pag,'n'],['Média de OS por dia (equipe)',nd?A.trab/nd:0,'d']],
+      blocks:[T('Por tipo de serviço',[['Serviço','t'],['OS trabalhadas','n'],['Produtivas','n'],['Produtividade','pm'],['Impedimentos','n'],['% do total','p']],
+        byT.map(x=>[TIPO_LBL[x.k]||x.k,x.a.trab,x.a.prod,x.a.den?x.a.prod/x.a.den:0,x.a.IMPED,A.trab?x.a.trab/A.trab:0]),['Total',A.trab,A.prod,A.den?A.prod/A.den:0,A.IMPED,1])]})}
+  if(has('dia')){const D=[...groupBy(rows,r=>r.day)].sort((a,b)=>a[0]<b[0]?-1:1).map(([d,rs])=>{const a=agg(rs);return {d,a,c:new Set(rs.map(r=>r.eq)).size}});
+    out.push({id:'dia',t:'Produção por dia',chart:{tipo:'dia',D},blocks:[T('Dia a dia',[['Data','t'],['Dia da semana','t'],['Colaboradores','n'],['OS trabalhadas','n'],['Produtivas','n'],['Não produtivas','n'],['Produtividade','pm'],['Pagamentos','n']],
+      D.map(x=>[dayBRf(x.d),RC_DW[new Date(x.d+'T12:00').getDay()],x.c,x.a.trab,x.a.prod,x.a.trab-x.a.prod,x.a.den?x.a.prod/x.a.den:0,x.a.pag]),['Total','',ncol,A.trab,A.prod,A.trab-A.prod,A.den?A.prod/A.den:0,A.pag])]})}
+  if(has('ranking')){const L=rankData(rows).sort((x,y)=>(x.peq-y.peq)||(y.a.pr-x.a.pr)||(y.a.prod-x.a.prod));
+    out.push({id:'ranking',t:'Ranking de colaboradores',chart:{tipo:'rank',L:L.filter(x=>!x.peq)},blocks:[T('Classificação por produtividade',[['Posição','t'],['Colaborador','t'],['Dias','n'],['OS trabalhadas','n'],['Produtivas','n'],['Produtividade','pm'],['OS por dia','d'],['Pagamentos','n'],['Cortes e supressões','n'],['Restab. e religações','n']],
+      L.map((x,i)=>[x.peq?'–':(i+1)+'º',x.nome,x.dias,x.a.den,x.a.prod,x.a.pr/100,x.osDia,x.a.pag,x.a.CORTE+x.a.SUP,x.a.RESTAB+x.a.RELIG]))]})}
+  if(has('resultados')){const R=[...groupBy(rows,r=>r.res||'(sem resultado)')].map(([k,rs])=>({k,n:rs.length,cat:rs[0].cat,sub:rs[0].sub})).sort((a,b)=>b.n-a.n);
+    out.push({id:'resultados',t:'Resultados registrados',blocks:[T('Todos os resultados do período',[['Resultado','t'],['Classificação','t'],['Quantidade','n'],['% do total','p']],
+      R.map(x=>[x.k,(isProd(x.cat)?'Produtivo · ':'Não produtivo · ')+(CAT_LBL[x.sub]||CAT_LBL[x.cat]||x.cat),x.n,rows.length?x.n/rows.length:0]),['Total','',rows.length,1])]})}
+  if(has('comercial')){const pos=rows.filter(r=>r.tipo==='POS');const P=agg(pos);const pc=rows.filter(r=>r.tipo!=='POS'&&(r.cat==='PAG_POS'||r.cat==='PAG_FAT'));
+    const C=[...groupBy(rows,r=>r.eq)].map(([k,rs])=>{const ap=agg(rs.filter(r=>r.tipo==='POS'));const cp=rs.filter(r=>r.tipo!=='POS'&&r.cat==='PAG_POS').length,cf=rs.filter(r=>r.tipo!=='POS'&&r.cat==='PAG_FAT').length;return [nomeDe(k),ap.trab,ap.PAG_POS,ap.PAG_FAT,ap.INFRUT,ap.trab?(ap.PAG_POS+ap.PAG_FAT)/ap.trab:0,cp,cf,ap.PAG_POS+ap.PAG_FAT+cp+cf]}).filter(x=>x[1]||x[8]).sort((a,b)=>b[8]-a[8]);
+    const sm=i=>C.reduce((s,x)=>s+x[i],0);
+    out.push({id:'comercial',t:'Comercial / POS',kpis:[['OS de negociação POS trabalhadas',P.trab,'n'],['Pagamento efetivado',P.PAG_POS,'n'],['Faturas apresentadas',P.PAG_FAT,'n'],['Negociação infrutífera',P.INFRUT,'n'],['Conversão POS',P.trab?(P.PAG_POS+P.PAG_FAT)/P.trab:0,'p'],['Pagamentos em OS de corte',pc.length,'n']],
+      blocks:[T('Comercial por colaborador',[['Colaborador','t'],['OS POS trabalhadas','n'],['Pag. efetivado (POS)','n'],['Faturas (POS)','n'],['Infrutíferas','n'],['Conversão POS','p'],['Pgto via POS no corte','n'],['Faturas no corte','n'],['Total de pagamentos','n']],C,['Total',sm(1),sm(2),sm(3),sm(4),sm(1)?(sm(2)+sm(3))/sm(1):0,sm(6),sm(7),sm(8)])]})}
+  let JL=null;const jn=()=>{if(JL)return JL;const mins=t=>{const d=new Date(t);return d.getHours()*60+d.getMinutes()};const geo=g.filter(isBaixa);
+    const dias=[...groupBy(geo.filter(r=>!r.sus),r=>r.eq+'|'+r.day)].map(([k,rs])=>{const [eq,day]=k.split('|');const ch=Math.min(...rs.map(r=>mins(r.ini||r.fim))),fim=Math.max(...rs.map(r=>mins(r.fim)));return {eq,day,ch,fim,tarde:ch>JA_INI,cedo:fim<JA_FIM}});
+    JL={dias,L:[...new Set(dias.map(d=>d.eq))].map(k=>{const ds=dias.filter(d=>d.eq===k);const D=dosDados(k,rows);const av=f=>ds.reduce((s,d)=>s+f(d),0)/ds.length;
+      return {k,n:ds.length,ch:av(d=>d.ch),fim:av(d=>d.fim),tarde:ds.filter(d=>d.tarde).length,cedo:ds.filter(d=>d.cedo).length,D,sus:geo.filter(r=>r.eq===k&&r.sus).length}}).sort((a,b)=>nomeDe(a.k).localeCompare(nomeDe(b.k),'pt'))};return JL};
+  if(has('jornada')){const {dias,L}=jn();const av=f=>dias.length?dias.reduce((s,d)=>s+f(d),0)/dias.length:null;const exc=L.reduce((s,x)=>s+x.D.exc,0);
+    out.push({id:'jornada',t:'Jornada',kpis:[['Chegada média na 1ª OS',minToHM(av(d=>d.ch)),'t'],['Última baixa média',minToHM(av(d=>d.fim)),'t'],['Dias chegando depois das '+hm(JA_INI),dias.filter(d=>d.tarde).length+' de '+dias.length,'t'],['Dias parando antes das '+hm(JA_FIM),dias.filter(d=>d.cedo).length+' de '+dias.length,'t'],['Parado além do almoço (equipe)',exc?fcMin(exc):'nada','t'],['Baixas fora do local',L.reduce((s,x)=>s+x.sus,0),'n']],
+      blocks:[T('Jornada por colaborador (médias do período)',[['Colaborador','t'],['Dias','n'],['Chegada na 1ª OS','h'],['Última baixa','h'],['Chegou depois das '+hm(JA_INI),'n'],['Parou antes das '+hm(JA_FIM),'n'],['Parado além do almoço','h'],['Baixas fora do local','n']],
+        L.map(x=>[nomeDe(x.k),x.n,minToHM(x.ch),minToHM(x.fim),x.tarde,x.cedo,x.D.exc?fcMin(x.D.exc):'—',x.sus]))]})}
+  if(has('intervalos')){const {L}=jn();const I=L.map(x=>{const D=x.D;const dd=D.dias.filter(y=>y.exc);const top=dd.slice().sort((a,b)=>b.exc-a.exc)[0];return {k:x.k,dias:D.dias.length,dd:dd.length,n:D.n,exc:D.exc,top}}).sort((a,b)=>b.exc-a.exc);
+    out.push({id:'intervalos',t:'Intervalos além do almoço',blocks:[T('Por colaborador · almoço de 1h permitido',[['Colaborador','t'],['Dias trabalhados','n'],['Dias acima de 1h','n'],['Intervalos acima de 1h','n'],['Tempo além do permitido','h'],['Pior dia','t'],['Excesso no pior dia','h']],
+      I.map(x=>[nomeDe(x.k),x.dias,x.dd,x.n,x.exc?fcMin(x.exc):'—',x.top?dayBRf(x.top.d):'—',x.top?fcMin(x.top.exc):'—']))]})}
+  if(has('gargalos')){const r2=rows.filter(r=>!r.man);const A2=agg(r2);const np=r2.filter(r=>!isProd(r.cat));const fech=r2.filter(rcFechado).length;
+    const re=[...groupBy(r2,r=>r.os)].map(([k,rs])=>({k,n:rs.length,p:rs.some(r=>isProd(r.cat))})).filter(x=>x.n>1);
+    const mot=[...groupBy(np,r=>r.res)].map(([k,rs])=>[k,rs.length,np.length?rs.length/np.length:0]).sort((a,b)=>b[1]-a[1]);
+    const fb=[...groupBy(r2.filter(r=>r.bai),r=>r.bai)].map(([k,rs])=>{const n=rs.filter(rcFechado).length;return [k,[...new Set(rs.map(r=>r.sf).filter(Boolean))].sort().join(', '),rs.length,n,n/rs.length]}).filter(x=>x[2]>=15).sort((a,b)=>b[4]-a[4]).slice(0,10);
+    const fh=BANDS.map(([l,h0,h1])=>{const b=r2.filter(isBaixa).filter(r=>{const h=hourOf(r);return h>=h0&&h<h1});const f=b.filter(rcFechado).length;return [l,b.length,f,b.length?f/b.length:0]}).filter(x=>x[1]);
+    out.push({id:'gargalos',t:'Gargalos',kpis:[['Não produtivos',np.length,'n'],['Impedimentos',A2.IMPED,'n'],['Imóvel fechado',fech,'n'],['Negociação infrutífera',A2.INFRUT,'n'],['OS visitadas mais de uma vez',re.length,'n'],['Reincidentes sem solução',re.filter(x=>!x.p).length,'n']],
+      blocks:[T('Motivos de não produtividade',[['Resultado','t'],['Quantidade','n'],['% dos não produtivos','p']],mot,['Total',np.length,1]),
+        T('Imóvel fechado por faixa horária',[['Faixa horária','t'],['Visitas','n'],['Imóvel fechado','n'],['% fechado','p']],fh),
+        T('Bairros com mais imóvel fechado',[['Bairro','t'],['Setor','t'],['OS','n'],['Imóvel fechado','n'],['% fechado','p']],fb)]})}
+  if(has('bairros')){const r2=rows.filter(r=>!r.man);const B=[...groupBy(r2,r=>r.bai||'(sem bairro)')].map(([k,rs])=>{const a=agg(rs);const f=rs.filter(rcFechado).length;return [k,[...new Set(rs.map(r=>r.sf).filter(Boolean))].sort().join(', '),a.trab,a.prod,a.den?a.prod/a.den:0,f,a.trab?f/a.trab:0,new Set(rs.map(r=>r.eq)).size]}).sort((a,b)=>b[2]-a[2]);
+    out.push({id:'bairros',t:'Bairros',blocks:[T('Bairros atendidos',[['Bairro','t'],['Setor','t'],['OS trabalhadas','n'],['Produtivas','n'],['Produtividade','pm'],['Imóvel fechado','n'],['% fechado','p'],['Colaboradores','n']],B,null,{pdfMax:30,pdfT:'30 bairros com mais OS'})]})}
+  if(has('setores')){const r2=rows.filter(r=>!r.man&&r.sf);const S=[...groupBy(r2,r=>String(r.sf))].map(([k,rs])=>{const a=agg(rs);const f=rs.filter(rcFechado).length;return [k,new Set(rs.map(r=>r.bai)).size,new Set(rs.map(r=>r.day)).size,new Set(rs.map(r=>r.eq)).size,a.trab,a.prod,a.den?a.prod/a.den:0,a.trab?f/a.trab:0]}).sort((a,b)=>String(a[0]).localeCompare(String(b[0]),'pt',{numeric:true}));
+    const tA=agg(r2);out.push({id:'setores',t:'Setores',blocks:[T('Produção por setor',[['Setor','t'],['Bairros','n'],['Dias com serviço','n'],['Colaboradores','n'],['OS trabalhadas','n'],['Produtivas','n'],['Produtividade','pm'],['% imóvel fechado','p']],S,['Total','','','',tA.trab,tA.prod,tA.den?tA.prod/tA.den:0,tA.trab?r2.filter(rcFechado).length/tA.trab:0])]})}
+  return {A,nd,ncol,secs:out}}
+
+/* Excel com uma aba por área */
+function rcXlsx(R,titulo,sub){const x=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const col=i=>{let s='';i++;while(i){const m=(i-1)%26;s=String.fromCharCode(65+m)+s;i=Math.floor((i-1)/26)}return s};
+  const NAMES={resumo:'Resumo',dia:'Por dia',ranking:'Ranking',resultados:'Resultados',comercial:'Comercial POS',jornada:'Jornada',intervalos:'Intervalos',gargalos:'Gargalos',bairros:'Bairros',setores:'Setores'};
+  const ST={t:4,n:5,p:6,pm:6,d:11,h:12},STT={t:7,n:8,p:9,pm:9,d:13,h:14},STK={t:17,n:15,p:16,pm:16,d:18,h:17};
+  const sheets=R.secs.map((S,si)=>{let r=1;const X=[];const w=[];const cw=(i,v)=>{w[i]=Math.max(w[i]||10,Math.min(55,String(v==null?'':v).length+2))};
+    const cel=(c,v,st,t)=>{if(t!=='t'&&t!=='h'&&typeof v==='number')return `<c r="${col(c)}${r}" s="${st}"><v>${isFinite(v)?v:0}</v></c>`;return `<c r="${col(c)}${r}" s="${st}" t="inlineStr"><is><t xml:space="preserve">${x(v)}</t></is></c>`};
+    const ncMax=Math.max(4,...S.blocks.map(b=>b.M.head.length));
+    X.push(`<row r="${r}" ht="24" customHeight="1">${cel(0,S.t,1,'t')}</row>`);r++;X.push(`<row r="${r}">${cel(0,titulo+' · '+sub,2,'t')}</row>`);r+=2;
+    let fr=0,af='';
+    if(S.kpis){X.push(`<row r="${r}" ht="20" customHeight="1">${cel(0,'Indicador',3,'t')}${cel(1,'Valor',3,'t')}</row>`);cw(0,'Indicador');r++;
+      S.kpis.forEach(k=>{const pm=k[2]==='pm';X.push(`<row r="${r}">${cel(0,k[0],4,'t')}${cel(1,k[1],pm?(k[1]*100>=META?21:22):STK[k[2]],k[2])}</row>`);cw(0,k[0]);cw(1,k[2]==='p'||k[2]==='pm'?'100,0%':k[1]);r++});r++}
+    S.blocks.forEach(b=>{const M=b.M;if(S.blocks.length>1||S.kpis){X.push(`<row r="${r}" ht="20" customHeight="1">${cel(0,b.t,10,'t')}</row>`);r++}
+      const hr=r;X.push(`<row r="${r}" ht="30" customHeight="1">${M.head.map((h,i)=>{cw(i,h[0].length>14?h[0].slice(0,14):h[0]);return cel(i,h[0],3,'t')}).join('')}</row>`);r++;
+      M.rows.forEach(v=>{X.push(`<row r="${r}">${v.map((c,i)=>{const t=M.head[i][1];cw(i,t==='p'||t==='pm'?'100,0%':t==='n'||t==='d'?fmt(c):c);const st=t==='pm'&&typeof c==='number'?(c*100>=META?19:20):ST[t];return cel(i,c,st,t)}).join('')}</row>`);r++});
+      if(M.total){X.push(`<row r="${r}">${M.total.map((c,i)=>{const t=M.head[i][1];return cel(i,c,STT[t],t)}).join('')}</row>`);r++}
+      if(S.blocks.length===1&&!S.kpis){fr=hr;af=`A${hr}:${col(M.head.length-1)}${hr+M.rows.length}`}r++});
+    const land=ncMax>6;
+    return {name:NAMES[S.id]||('Aba '+(si+1)),af,xml:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheetPr><pageSetUpPr fitToPage="1"/></sheetPr><sheetViews><sheetView workbookViewId="0" showGridLines="0"${si===0?' tabSelected="1"':''}>${fr?`<pane ySplit="${fr}" topLeftCell="A${fr+1}" activePane="bottomLeft" state="frozen"/>`:''}</sheetView></sheetViews><sheetFormatPr defaultRowHeight="16"/><cols>${Array.from({length:ncMax},(_,i)=>`<col min="${i+1}" max="${i+1}" width="${Math.max(11,w[i]||11)}" customWidth="1"/>`).join('')}</cols><sheetData>${X.join('')}</sheetData>${af?`<autoFilter ref="${af}"/>`:''}<mergeCells count="2"><mergeCell ref="A1:${col(ncMax-1)}1"/><mergeCell ref="A2:${col(ncMax-1)}2"/></mergeCells><pageMargins left="0.4" right="0.4" top="0.5" bottom="0.5" header="0.3" footer="0.3"/><pageSetup paperSize="9" orientation="${land?'landscape':'portrait'}" fitToWidth="1" fitToHeight="0"/><headerFooter><oddFooter>&amp;R&amp;P de &amp;N</oddFooter></headerFooter></worksheet>`}});
+  const xf=(n,f,fl,b,extra)=>`<xf numFmtId="${n}" fontId="${f}" fillId="${fl}" borderId="${b}" xfId="0"${n?' applyNumberFormat="1"':''}${f?' applyFont="1"':''}${fl?' applyFill="1"':''}${b?' applyBorder="1"':''}${extra?' applyAlignment="1">'+extra+'</xf>':'/>'}`;
+  const R_=' <alignment horizontal="right"/>';
+  const xfs=[xf(0,0,0,0),xf(0,1,0,0),xf(0,2,0,0),xf(0,3,2,1,'<alignment horizontal="center" vertical="center" wrapText="1"/>'),xf(0,0,0,1,'<alignment vertical="top" wrapText="1"/>'),xf(3,0,0,1),xf(164,0,0,1),
+    xf(0,4,3,1),xf(3,4,3,1),xf(164,4,3,1),xf(0,5,0,0),xf(165,0,0,1),xf(0,0,0,1,R_),xf(165,4,3,1),xf(0,4,3,1,R_),
+    xf(3,5,0,1),xf(164,5,0,1),xf(0,5,0,1,R_),xf(165,5,0,1),xf(164,6,0,1),xf(164,7,0,1),xf(164,8,0,1),xf(164,9,0,1)];
+  const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="2"><numFmt numFmtId="164" formatCode="0.0%"/><numFmt numFmtId="165" formatCode="0.0"/></numFmts>
+   <fonts count="10"><font><sz val="10"/><name val="Arial"/></font><font><b/><sz val="15"/><color rgb="FF0B3A75"/><name val="Arial"/></font><font><i/><sz val="10"/><color rgb="FF475569"/><name val="Arial"/></font><font><b/><sz val="10"/><color rgb="FFFFFFFF"/><name val="Arial"/></font><font><b/><sz val="10"/><name val="Arial"/></font><font><b/><sz val="11"/><color rgb="FF0B3A75"/><name val="Arial"/></font><font><sz val="10"/><color rgb="FF15803D"/><name val="Arial"/></font><font><sz val="10"/><color rgb="FFB91C1C"/><name val="Arial"/></font><font><b/><sz val="11"/><color rgb="FF15803D"/><name val="Arial"/></font><font><b/><sz val="11"/><color rgb="FFB91C1C"/><name val="Arial"/></font></fonts>
+   <fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF0B3A75"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFEEF2F7"/></patternFill></fill></fills>
+   <borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color rgb="FFD5DDE8"/></left><right style="thin"><color rgb="FFD5DDE8"/></right><top style="thin"><color rgb="FFD5DDE8"/></top><bottom style="thin"><color rgb="FFD5DDE8"/></bottom><diagonal/></border></borders>
+   <cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="${xfs.length}">${xfs.join('')}</cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+  const sn=s=>s.name.replace(/'/g,"''");
+  const files=[['[Content_Types].xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>'+sheets.map((s,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')+'<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>'],
+    ['_rels/.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'],
+    ['xl/workbook.xml','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>'+sheets.map((s,i)=>`<sheet name="${x(s.name)}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')+'</sheets>'+(sheets.some(s=>s.af)?'<definedNames>'+sheets.map((s,i)=>s.af?`<definedName name="_xlnm._FilterDatabase" localSheetId="${i}" hidden="1">'${x(sn(s))}'!${s.af.replace(/([A-Z]+)(\d+)/g,'$$$1$$$2')}</definedName>`:'').join('')+'</definedNames>':'')+'</workbook>'],
+    ['xl/_rels/workbook.xml.rels','<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+sheets.map((s,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')+`<Relationship Id="rId${sheets.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`],
+    ['xl/styles.xml',styles]].concat(sheets.map((s,i)=>['xl/worksheets/sheet'+(i+1)+'.xml',s.xml]));
+  return zipStore(files)}
+
+/* PDF: capa, resumo e uma página por área */
+function rcSvgDia(D){const W=760,H=230,pl=34,pb=26,pt=18,n=D.length;if(!n)return '';const bw=(W-pl-8)/n;const y=v=>pt+(H-pt-pb)*(1-v/100);
+  const bars=D.map((x,i)=>{const p=x.a.den?x.a.prod/x.a.den*100:0;const X=pl+i*bw+bw*.15,BW=bw*.7;return `<rect x="${X.toFixed(1)}" y="${y(p).toFixed(1)}" width="${BW.toFixed(1)}" height="${(H-pb-y(p)).toFixed(1)}" rx="2" fill="${p>=META?'#16a34a':'#2a72bd'}"/>${n<=26?`<text x="${(X+BW/2).toFixed(1)}" y="${(y(p)-3).toFixed(1)}" font-size="8.5" text-anchor="middle" fill="#334155">${p.toFixed(0)}%</text>`:''}${n<=31&&(n<=16||i%2===0)?`<text x="${(X+BW/2).toFixed(1)}" y="${H-pb+13}" font-size="8.5" text-anchor="middle" fill="#64748b">${dayBR(x.d)}</text>`:''}`}).join('');
+  const grid=[0,25,50,75,100].map(v=>`<line x1="${pl}" x2="${W-4}" y1="${y(v)}" y2="${y(v)}" stroke="#e5eaf1"/><text x="${pl-5}" y="${y(v)+3}" font-size="8.5" text-anchor="end" fill="#94a3b8">${v}%</text>`).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block">${grid}${bars}<line x1="${pl}" x2="${W-4}" y1="${y(META)}" y2="${y(META)}" stroke="#dc2626" stroke-width="1.4" stroke-dasharray="5 4"/><text x="${W-6}" y="${y(META)-4}" font-size="9" font-weight="700" text-anchor="end" fill="#dc2626">Meta ${META}%</text></svg>`}
+function rcSvgRank(L){if(!L.length)return '';const rh=20,W=760,lw=210,H=L.length*rh+22,x=v=>lw+(W-lw-50)*Math.min(100,v)/100;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block">${L.map((r,i)=>{const p=r.a.pr;const Y=i*rh+4;return `<text x="${lw-8}" y="${Y+13}" font-size="10" text-anchor="end" fill="#0f172a">${esc(r.nome)}</text><rect x="${lw}" y="${Y+3}" width="${(x(p)-lw).toFixed(1)}" height="13" rx="3" fill="${p>=META?'#16a34a':'#2a72bd'}"/><text x="${(x(p)+5).toFixed(1)}" y="${Y+13}" font-size="9.5" font-weight="700" fill="#334155">${p.toFixed(1).replace('.',',')}%</text>`}).join('')}
+   <line x1="${x(META)}" x2="${x(META)}" y1="0" y2="${H-14}" stroke="#dc2626" stroke-width="1.4" stroke-dasharray="5 4"/><text x="${x(META)}" y="${H-3}" font-size="9" font-weight="700" text-anchor="middle" fill="#dc2626">Meta ${META}%</text></svg>`}
+function rcVal(v,t){return t==='p'||t==='pm'?(typeof v==='number'?relPct(v):esc(v)):t==='n'?(typeof v==='number'?fmt(v):esc(v)):t==='d'?(typeof v==='number'?v.toFixed(1).replace('.',','):esc(v)):esc(v)}
+function rcTab(b){const M=b.M;const rows=b.pdfMax?M.rows.slice(0,b.pdfMax):M.rows;const al=t=>t==='t'?'':' class="r"';
+  return `<h3>${esc(b.pdfMax&&M.rows.length>b.pdfMax?b.pdfT:b.t)}</h3><table><thead><tr>${M.head.map(h=>`<th${al(h[1])}>${esc(h[0])}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((c,i)=>{const t=M.head[i][1];const cls=t==='pm'&&typeof c==='number'?(c*100>=META?' up':' dn'):'';return `<td class="${t==='t'?'':'r'}${cls}">${rcVal(c,t)}</td>`}).join('')}</tr>`).join('')||`<tr><td colspan="${M.head.length}" class="mut">Sem dados no período</td></tr>`}</tbody>${M.total?`<tfoot><tr>${M.total.map((c,i)=>`<td${al(M.head[i][1])}>${rcVal(c,M.head[i][1])}</td>`).join('')}</tr></tfoot>`:''}</table>`}
+function rcPDFdoc(R){const per=relPeriodo();const A=R.A;const agora=new Date();const ger=dayBRf(dayKey(agora))+' às '+pad(agora.getHours())+':'+pad(agora.getMinutes());
+  const css=`*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}body{margin:0;font:11px/1.45 Arial,Helvetica,sans-serif;color:#0f172a}
+   @page{size:A4 portrait;margin:12mm 11mm 13mm}@page{@bottom-right{content:counter(page) " / " counter(pages);font:9px Arial;color:#64748b}}
+   .cap{height:268mm;display:flex;flex-direction:column;justify-content:space-between;padding:0}.cap .band{background:#0b3a75;color:#fff;border-radius:10px;padding:34px 30px}.cap .eb{font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.8;font-weight:700}
+   .cap h1{font-size:32px;margin:10px 0 6px;line-height:1.15}.cap .sb{font-size:14px;opacity:.92}.cap .pe{margin-top:22px;font-size:16px;font-weight:700;background:rgba(255,255,255,.12);display:inline-block;padding:8px 14px;border-radius:8px}
+   .kg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:22px 0}.kg div{border:1px solid #d5dde8;border-radius:10px;padding:12px 14px;background:#f8fafc}.kg span{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#64748b;font-weight:700}.kg b{display:block;font-size:22px;color:#0b3a75;margin-top:3px}.kg b.up{color:#15803d}.kg b.dn{color:#b91c1c}
+   .idx{columns:2;column-gap:28px;padding:0;margin:0;list-style:none;counter-reset:s}.idx li{counter-increment:s;padding:7px 0;border-bottom:1px solid #e5eaf1;font-size:12.5px;font-weight:600;break-inside:avoid}.idx li:before{content:counter(s,decimal-leading-zero);color:#2a72bd;font-weight:800;margin-right:10px}
+   .ger{color:#64748b;font-size:10.5px;border-top:2px solid #0b3a75;padding-top:8px;display:flex;justify-content:space-between}
+   .sec{break-before:page}.sh{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #0b3a75;padding-bottom:6px;margin-bottom:12px}.sh h2{margin:0;font-size:19px;color:#0b3a75}.sh h2 i{font-style:normal;color:#2a72bd;margin-right:8px}.sh span{color:#64748b;font-weight:700;font-size:10.5px;text-align:right}
+   .sec .kg{grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 12px}.sec .kg div{padding:8px 11px}.sec .kg b{font-size:17px}
+   h3{font-size:12.5px;color:#0b3a75;margin:14px 0 6px}.ch{border:1px solid #e5eaf1;border-radius:10px;padding:10px 10px 4px;margin:0 0 6px}
+   table{width:100%;border-collapse:collapse;font-size:10px}th{background:#0b3a75;color:#fff;font-size:8.6px;text-transform:uppercase;letter-spacing:.03em;text-align:left;padding:5px 6px;vertical-align:bottom}td{padding:4px 6px;border-bottom:1px solid #e5eaf1;vertical-align:top}
+   tbody tr:nth-child(even) td{background:#f8fafc}tfoot td{font-weight:800;background:#eef2f7;border-top:2px solid #0b3a75}.r{text-align:right;white-space:nowrap}tbody td:first-child{white-space:nowrap}td.up{color:#15803d;font-weight:700}td.dn{color:#b91c1c;font-weight:700}.mut{color:#94a3b8}thead{display:table-header-group}tr{break-inside:avoid}`;
+  const K=(k)=>{const t=k[2];const c=t==='pm'?(k[1]*100>=META?'up':'dn'):'';return `<div><span>${esc(k[0])}</span><b class="${c}">${rcVal(k[1],t)}</b></div>`};
+  const capK=[['OS trabalhadas',A.trab,'n'],['Produtivas',A.prod,'n'],['Produtividade',A.den?A.prod/A.den:0,'pm'],['Meta',META/100,'p'],['Dias com serviço',R.nd,'n'],['Colaboradores',R.ncol,'n'],['Pagamentos',A.pag,'n'],['Média de OS por dia',R.nd?A.trab/R.nd:0,'d']];
+  const cap=`<section class="cap"><div><div class="band"><div class="eb">Gestão Operacional</div><h1>Relatório de Desempenho</h1><div class="sb">Corte, Supressão e Cobrança via POS · Equipe São Mateus</div><div class="pe">${esc(per)}</div></div>
+    <div class="kg">${capK.map(K).join('')}</div><h3 style="margin-top:6px">Conteúdo</h3><ol class="idx">${R.secs.map(s=>`<li>${esc(s.t)}</li>`).join('')}</ol></div><div class="ger"><span>Gestão Operacional · Equipe São Mateus</span><span>Gerado em ${ger}</span></div></section>`;
+  const body=R.secs.map((s,i)=>`<section class="sec"><div class="sh"><h2><i>${String(i+1).padStart(2,'0')}</i>${esc(s.t)}</h2><span>${esc(per)}</span></div>
+    ${s.kpis?`<div class="kg">${s.kpis.map(K).join('')}</div>`:''}
+    ${s.chart&&s.chart.tipo==='dia'?`<h3>Produtividade por dia</h3><div class="ch">${rcSvgDia(s.chart.D)}</div>`:''}
+    ${s.chart&&s.chart.tipo==='rank'?`<h3>Produtividade por colaborador</h3><div class="ch">${rcSvgRank(s.chart.L)}</div>`:''}
+    ${s.blocks.map(rcTab).join('')}</section>`).join('');
+  return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Relatório de Desempenho · ${esc(per)}</title><style>${css}</style></head><body>${cap}${body}</body></html>`}
+function rcPDF(R){const html=rcPDFdoc(R);const ov=document.createElement('div');ov.className='ac-ov';ov.innerHTML=`<div class="ac-m dos-m" role="dialog" aria-label="Relatório completo"><header><b>Relatório completo · ${esc(relPeriodo())}</b><button type="button" class="ac-x" data-x aria-label="Fechar">×</button></header>
+   <iframe class="dos-f" title="Prévia do relatório completo"></iframe><footer><button type="button" class="btn ghost sm" id="rcSave">Baixar arquivo</button><span style="flex:1"></span><button type="button" class="btn" id="rcPrint">Imprimir ou salvar em PDF</button></footer></div>`;
+  document.body.appendChild(ov);const close=()=>ov.remove();ov.querySelectorAll('[data-x]').forEach(b=>b.onclick=close);ov.onclick=e=>{if(e.target===ov)close()};const f=ov.querySelector('iframe');f.srcdoc=html;
+  ov.querySelector('#rcPrint').onclick=()=>{try{f.contentWindow.focus();f.contentWindow.print()}catch(e){toast('Use “Baixar arquivo” e imprima pelo navegador.')}};
+  ov.querySelector('#rcSave').onclick=async()=>{const r=await salvarArquivo('relatorio-completo-'+(REL.ini||'')+'-a-'+(REL.fim||'')+'.html',html,'text/html');if(r==='ok')toast('Relatório salvo. Abra e imprima em PDF.')}}
+function rcPainelHTML(){return `<div class="panel rc-p"><div class="rc-h"><div><h3>Relatório completo <small>todas as áreas do painel no período escolhido acima</small></h3></div>
+   <div class="rl-act"><button type="button" class="btn ghost sm" id="rcXls">Baixar Excel completo</button><button type="button" class="btn sm" id="rcPdf">Gerar PDF completo</button></div></div>
+   <div class="rc-ch">${RC_SEC.map(([k,l])=>`<label class="rc-c ${RC_SEL.includes(k)?'on':''}"><input type="checkbox" data-rc="${k}" ${RC_SEL.includes(k)?'checked':''}><span>${l}</span></label>`).join('')}</div></div>`}
+function rcBind(v){v.querySelectorAll('[data-rc]').forEach(c=>c.onchange=()=>{const k=c.dataset.rc;RC_SEL=c.checked?RC_SEC.map(x=>x[0]).filter(x=>x===k||RC_SEL.includes(x)):RC_SEL.filter(x=>x!==k);c.closest('.rc-c').classList.toggle('on',c.checked)});
+  const pr=()=>{if(!RC_SEL.length){toast('Marque pelo menos uma área.');return null}const rows=rcRows();if(!rows.length){toast('Sem OS no período escolhido.');return null}return rcModelo(rows)};
+  v.querySelector('#rcPdf').onclick=()=>{const R=pr();if(R)rcPDF(R)};
+  v.querySelector('#rcXls').onclick=async()=>{const R=pr();if(!R)return;const blob=rcXlsx(R,'Relatório de Desempenho · '+relPeriodo(),'Gestão Operacional · Equipe São Mateus');const r=await salvarArquivo('relatorio-completo-'+(REL.ini||'')+'-a-'+(REL.fim||'')+'.xlsx',blob,blob.type);if(r==='ok')toast('Relatório completo em Excel salvo.')}}
 
 /* ============ início ============ */
 function startApp(){REG=LS.get(REG_KEY,{});RESUMO=LS.get('sa_dash_resumo',{})||{};loadSeed();rebuild();setApres(APRES);{const b=$('#apresBtn');if(b)b.onclick=toggleApres}buildNav();fillSelects();setPeriod();readF();bindFilters();info();tick();setInterval(tick,20000);render();pushHist();initStore().then(()=>{try{bkStatus()}catch(e){}});bkInit();verInit();
