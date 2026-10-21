@@ -1103,6 +1103,34 @@ body.apres .bk-btn,body.tv .bk-btn{display:none}
 .rc-h{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}.rc-h h3{margin:0}.rc-ch{display:flex;flex-wrap:wrap;gap:8px}.rc-c{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border:1px solid rgba(124,199,255,.22);border-radius:999px;background:rgba(255,255,255,.03);color:#9fb6d6;font-size:13px;font-weight:600;cursor:pointer;user-select:none}.rc-c.on{border-color:#3a8bd6;background:rgba(58,139,214,.16);color:#e6f1ff}.rc-c input{accent-color:#3a8bd6;margin:0}@media (max-width:700px){.rc-h .rl-act{width:100%}.rc-h .rl-act .btn{flex:1}}
 .rl-t tbody tr{cursor:pointer}.rl-t td.up{color:#4ade80;font-weight:700}.rl-t td.dn{color:#f87171;font-weight:700}.rl-t tfoot td{font-weight:800;border-top:1px solid rgba(148,163,184,.35)}.rl-bar{display:inline-block;width:110px;height:8px;border-radius:4px;background:rgba(148,163,184,.15);vertical-align:middle;overflow:hidden;margin-right:6px}.rl-bar i{display:block;height:100%;background:#2f86f6}
 .rl-mais{text-align:center;margin-top:10px}
+
+/* ===== harmonização: mesma altura para todo controle e filtros em grade ===== */
+:root{--ctl-h:38px;--ctl-r:8px}
+main select,main input[type=date],main input[type=text],main input[type=search],main input[type=number],main input:not([type]),main .btn:not(.sm),main .bk-btn,.ac-m select,.ac-m input[type=date],.ac-m input[type=text]{height:var(--ctl-h);min-height:var(--ctl-h);box-sizing:border-box;padding-top:0;padding-bottom:0;line-height:normal;margin-top:0}
+main .btn:not(.sm),main .bk-btn{display:inline-flex;align-items:center;white-space:nowrap}
+main input[type=date]{padding-right:8px}
+section.filters{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px 16px;align-items:end}
+section.filters::before{content:'';grid-column:1/-1;grid-row:2;border-top:1px solid var(--line)}
+section.filters .import{grid-column:1/6;grid-row:1;flex-direction:column;align-items:flex-start;gap:6px;border-right:0;padding:0;min-width:0}
+section.filters .import .implab{margin:0}
+section.filters .import .row{gap:10px;align-items:center}
+section.filters .fgroup{min-width:0;gap:6px}
+section.filters .fgroup label{line-height:14px;height:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+section.filters .fgroup select,section.filters .fgroup input{width:100%;min-width:0}
+section.filters #btnUpd{grid-column:6/7;grid-row:1;justify-self:end;align-self:start;margin:20px 0 0!important;width:auto!important;min-width:140px;justify-content:center}
+section.filters .import .implab{line-height:14px;height:14px}
+@media (max-width:1299px){section.filters{grid-template-columns:repeat(3,minmax(0,1fr))}section.filters .import{grid-column:1/3}section.filters #btnUpd{grid-column:3/4}}
+@media (max-width:600px){section.filters{grid-template-columns:1fr 1fr}section.filters::before{display:none}section.filters .import{grid-column:1/-1;padding-bottom:14px;border-bottom:1px solid var(--line)}section.filters #btnUpd{grid-column:1/-1;grid-row:auto;width:100%!important;justify-self:stretch;margin:0!important}}
+.rl-row{align-items:flex-end}
+.rl-d>span{line-height:14px;height:14px}
+.rl-ms summary{height:52px;box-sizing:border-box;justify-content:center}
+.rl-row>#relLimpar{height:52px}
+main :is(div,span,label,p,td,footer,header,form):has(> select,> input[type=date],> input[type=text],> input[type=number],> input:not([type])) > .btn.sm,.fc-top .btn,.rzedit>.btn.sm{height:var(--ctl-h);min-height:var(--ctl-h);box-sizing:border-box;padding-top:0;padding-bottom:0;display:inline-flex;align-items:center}
+.fc-par{max-width:100%;white-space:normal;overflow-wrap:anywhere;box-sizing:border-box}
+.ag-rr{max-width:100%;box-sizing:border-box}
+.os-act{display:flex;gap:10px;flex-wrap:nowrap;align-self:flex-end}
+.panel:has(>.fc-days){display:flex;flex-direction:column}.fc-days{flex:1 1 auto;min-height:190px;height:auto!important;gap:4px}.fc-d{flex:1 0 20px}
+.rl-t td:last-child{white-space:nowrap}
 </style>
 
 <div class="app">
@@ -2876,10 +2904,10 @@ function vOS(v,rows){
   const results=[...new Set(rows.map(r=>r.res))].sort();
   v.innerHTML=`<div class="panel"><h3>Detalhamento das OS <small>${fmt(list.length+manL.length)} registros${manL.length?` · ${fmt(manL.length)} em ações especiais (resumo abaixo)`:''}</small></h3>${manL.length?acOsResumo(manL):''}
    <div class="filters" style="margin-bottom:10px">
-    <div class="fgroup" style="flex:1 1 220px"><label for="osQ">Buscar (OS, PDE, bairro, endereço, nota)</label><input id="osQ" value="${esc(D.q||'')}" placeholder="ex.: 2635158324 ou Jd Paraguassu"></div>
+    <div class="fgroup" style="flex:1 1 220px"><label for="osQ">Buscar</label><input id="osQ" value="${esc(D.q||'')}" placeholder="OS, PDE, bairro, endereço ou nota"></div>
     <div class="fgroup"><label for="osCat">Classificação</label><select id="osCat"><option value="">Todas</option><option value="PROD">Produtivos</option>${SUB_ORD.filter(c=>rows.some(r=>r.sub===c)||(D.cats&&D.cats.length===1&&D.cats[0]===c)).map(c=>`<option value="${c}">${CAT_LBL[c]}</option>`).join('')}</select></div>
     <div class="fgroup" style="flex:1 1 220px"><label for="osRes">Resultado original</label><select id="osRes"><option value="">Todos</option>${results.map(r=>`<option ${r===D.res?'selected':''}>${esc(r)}</option>`).join('')}</select></div>
-    <button class="btn ghost" type="button" id="osNums">Copiar nº das OS</button><button class="btn ghost" type="button" id="osCsv">Copiar para Excel</button>
+    <div class="os-act"><button class="btn ghost" type="button" id="osNums">Copiar nº das OS</button><button class="btn ghost" type="button" id="osCsv">Copiar para Excel</button></div>
    </div>
    ${D.label||D.eqs||D.eqd||D.day||D.bai?`<div class="chips" style="margin-bottom:8px"><span class="chip x" id="osClr" title="Limpar filtro">${esc(D.label||'Filtro ativo')}</span>${D.eqs&&D.eqs.length===1?`<button type="button" class="chip fc-go" id="osFicha">Ficha de ${esc(nomeDe(D.eqs[0]))} ›</button>`:''}</div>`:''}
    ${osCards(slice,true)}<div class="tw ostable"><table class="det"><thead><tr><th>Data / hora</th><th>OS · PDE</th><th>Endereço · bairro</th><th>Colaborador</th><th>Serviço</th><th>Resultado</th><th>Status · tempo</th><th>Nota de execução</th></tr></thead><tbody>
@@ -3874,7 +3902,7 @@ function vFicha(v,rows){
      ${T2(alertas.length?'warn':'','Alertas de jornada',`${alertas.length} de ${dias.length}`,`dias chegando depois das ${hm(JA_INI)} ou última antes de ${hm(JA_FIM)}`,alertas.length?`data-fdd="${esc(alertas.map(x=>k+'|'+x.d).join(','))}"`:'data-fd=\'{}\' data-fl="todas as OS"')}</div></div>
   <div class="g2 fc-g">
    <div class="panel"><h3>Dia a dia <small>produtividade de cada dia · toque no dia para ver o passo a passo</small></h3>
-    <div class="fc-days">${porDia.map(x=>{const h=Math.max(3,Math.min(100,x.a.pr))*.85;const dw=DW[new Date(x.d+'T12:00').getDay()];return `<button type="button" class="fc-d ${x.d===dia?'on':''} ${x.a.pr>=META?'ok':''}" data-fdia="${x.d}" data-tip="${dw} ${dayBRf(x.d)}<br>${pct(x.a.prod,x.a.den,0)}% produtivo · ${fmt(x.a.den)} OS${ivM.get(x.d)?'<br>parado além do almoço: '+fcMin(ivM.get(x.d)):''}${x.alerta?'<br>alerta de jornada':''}">${ivM.get(x.d)||x.alerta?'<u></u>':''}<em>${pct(x.a.prod,x.a.den,0)}%</em><i style="height:${h}%"></i><span>${x.d.slice(8)}/${x.d.slice(5,7)}</span></button>`}).join('')}<span class="fc-meta-l" style="--m:${META/100*.85}"><b>meta ${META}%</b></span></div></div>
+    <div class="fc-days">${porDia.map(x=>{const h=Math.max(3,Math.min(100,x.a.pr))*.85;const dw=DW[new Date(x.d+'T12:00').getDay()];return `<button type="button" class="fc-d ${x.d===dia?'on':''} ${x.a.pr>=META?'ok':''}" data-fdia="${x.d}" data-tip="${dw} ${dayBRf(x.d)}<br>${pct(x.a.prod,x.a.den,0)}% produtivo · ${fmt(x.a.den)} OS${ivM.get(x.d)?'<br>parado além do almoço: '+fcMin(ivM.get(x.d)):''}${x.alerta?'<br>alerta de jornada':''}">${ivM.get(x.d)||x.alerta?'<u></u>':''}<em>${pct(x.a.prod,x.a.den,0)}%</em><i style="height:${h}%"></i><span>${porDia.length>12?x.d.slice(8):x.d.slice(8)+'/'+x.d.slice(5,7)}</span></button>`}).join('')}<span class="fc-meta-l" style="--m:${META/100*.85}"><b>meta ${META}%</b></span></div></div>
    <div class="panel"><h3>Resultados no período <small>como o colaborador baixou no GeoCall · toque para ver as OS</small></h3>
     <div class="fc-res">${subs.map(x=>`<button type="button" data-fres="${x.s}"><span>${esc(CAT_LBL[x.s]||x.s)}</span><i><b style="width:${x.n/smx*100}%;background:${SUB_COL[x.s]||'#64748b'}"></b></i><em>${fmt(x.n)}</em></button>`).join('')}</div></div></div>
   <div class="panel fc-dia"><h3>Passo a passo do dia <small>${DW[new Date(dia+'T12:00').getDay()]} ${dayBRf(dia)} · na ordem em que aconteceu · toque na OS para ver o detalhe</small>
@@ -3940,7 +3968,7 @@ function dosModal(k,rows){const eqs=[...new Set(rows.filter(r=>r.eq&&!r.man).map
 
 
 /* ---------- Versão do painel ---------- */
-const VERSAO='1.6';
+const VERSAO='1.7';
 function verInit(){const b=$('#verTag');if(b)b.textContent='v'+VERSAO}
 
 /* ---------- Jornada (versão enxuta): 4 números, uma tabela por colaborador e os horários da equipe ---------- */
