@@ -1131,6 +1131,7 @@ main :is(div,span,label,p,td,footer,header,form):has(> select,> input[type=date]
 .os-act{display:flex;gap:10px;flex-wrap:nowrap;align-self:flex-end}
 .panel:has(>.fc-days){display:flex;flex-direction:column}.fc-days{flex:1 1 auto;min-height:190px;height:auto!important;gap:4px}.fc-d{flex:1 0 20px}
 .rl-t td:last-child{white-space:nowrap}
+.fc-ks{grid-template-columns:repeat(3,minmax(0,1fr))}@media (max-width:700px){.fc-ks{grid-template-columns:1fr 1fr}.fc-ks>:last-child:nth-child(odd){grid-column:1/-1}}
 </style>
 
 <div class="app">
@@ -1161,7 +1162,7 @@ main :is(div,span,label,p,td,footer,header,form):has(> select,> input[type=date]
     <div class="fgroup"><label for="fFim">Data Final</label><input type="date" id="fFim"></div>
     <div class="fgroup"><label for="fEq">Equipe</label><select id="fEq"></select></div>
     <div class="fgroup"><label for="fCol">Colaborador</label><select id="fCol"></select></div>
-    <div class="fgroup"><label for="fTipo">Serviço</label><select id="fTipo"><option value="">Todos</option><option value="CORTE">Corte</option><option value="SUPRESSAO">Supressão</option><option value="RESTAB">Restabelecimento</option><option value="RELIG">Religação</option><option value="POS">Negociação via POS</option><option value="ACAO">Ações especiais</option></select></div>
+    <div class="fgroup"><label for="fTipo">Serviço</label><select id="fTipo"><option value="">Todos</option><option value="CORTE">Corte</option><option value="SUPRESSAO">Supressão</option><option value="RESTAB">Restabelecimento</option><option value="RELIG">Religação</option><option value="POS">Negociação via POS</option><option value="VIST">Vistoria</option><option value="ACAO">Ações especiais</option></select></div>
     <button class="btn" id="btnUpd" type="button" style="margin-left:auto"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>Atualizar</button>
   </section>
   <div id="views"></div>
@@ -1729,9 +1730,11 @@ function tipoDe(tss){
   if(/NEGOCIACAO DE DEBITOS VIA POS/.test(t))return 'POS';
   if(/^RESTABELECER/.test(t))return 'RESTAB';
   if(/^RELIGAR/.test(t))return 'RELIG';
+  if(/^REATIVAR/.test(t))return 'RELIG'; // reativação de ligação: mesma família (REATIV/RELIG/RESTAB)
+  if(/^VERIFICAR SERVICO/.test(t))return 'VIST'; // vistoria (verificar serviço solicitado): conta no painel
   return 'FORA'; // demais serviços: fora do escopo deste painel
 }
-const TIPO_LBL={CORTE:'Corte',SUPRESSAO:'Supressão',POS:'Negociação POS',RESTAB:'Restabelecimento',RELIG:'Religação',FORA:'Fora do escopo',ACAO:'Ações especiais'};
+const TIPO_LBL={CORTE:'Corte',SUPRESSAO:'Supressão',POS:'Negociação POS',RESTAB:'Restabelecimento',RELIG:'Religação',VIST:'Vistoria',FORA:'Fora do escopo',ACAO:'Ações especiais'};
 const isRR=r=>r.tipo==='RESTAB'||r.tipo==='RELIG';
 // Lista fechada de resultados produtivos (comparação exata após normalizar acentos/caixa)
 /* Dicionário único de resultados: reconhece pelo sentido (aceita abreviações e variações do GeoCall: LIG/LIGAÇÃO, URGÊNCIA, OP/DIF…).
@@ -1754,6 +1757,7 @@ function catSub(res){
     if(/^(LIGACAO |LIG )?SUPRIMID/.test(r))return ['SUP','SUP'];
     if(/^(LIGACAO |LIG )?RESTABELECID|^FORNECIMENTO RESTABELECIDO/.test(r))return ['RR','RESTAB'];
     if(/^(LIGACAO |LIG )?RELIGAD|^RELIGACAO/.test(r))return ['RR','RELIG'];
+    if(/^(LIGACAO |LIG )?REATIVAD/.test(r))return ['RR','RELIG'];
     if(/^VISTORIAD/.test(r))return ['VIST','VIST'];
   }
   const c=CLASSIF[r];if(c==='P')return ['OUTP','OUTP'];if(c==='N')return ['OUTROS','CLASN'];
@@ -1931,7 +1935,8 @@ async function importFiles(files){
   }
   }finally{btn.disabled=false;btn.textContent='Selecionar arquivos'}
   lsSave();refreshAll(lastMonth||undefined);
-  toast(`${fmt(tn)} execuções novas somadas`+(td?` · ${fmt(td)} já existiam em outra planilha e contam uma vez só`:'')+(same.length?` · Já guardada: ${same.join(', ')}`:'')+(bad.length?` · Sem colunas do GeoCall (Número OS, Equipe, Resultado): ${bad.join(', ')}`:''));
+  const foraN=SHEETS.filter(s=>s.ativa).reduce((n,s)=>n+s.recs.filter(r=>r.tipo==='FORA').length,0);
+  toast(`${fmt(tn)} execuções novas somadas`+(foraN?` · ${fmt(foraN)} de serviço fora do painel (veja em Planilhas)`:'')+(td?` · ${fmt(td)} já existiam em outra planilha e contam uma vez só`:'')+(same.length?` · Já guardada: ${same.join(', ')}`:'')+(bad.length?` · Sem colunas do GeoCall (Número OS, Equipe, Resultado): ${bad.join(', ')}`:''));
 }
 /* ============ cadastro de colaboradores (persistente) ============ */
 const REG_KEY='sa_dash_colab_v1';
@@ -2220,7 +2225,7 @@ function vGeral(v,rows){
   const A=agg(rows), prev=prevPeriod(), P=prev.length?agg(prev):null;
   const RR=rows.filter(isRR),RRx=RR.filter(r=>r.cat==='RR');
   const dAll=[[A.pag,['PAG_POS','PAG_FAT'],'Pagamentos',COL.pag],[A.CORTE,['CORTE'],'Cortes',SUB_COL.CORTE],[A.SUP,['SUP'],'Supressões',SUB_COL.SUP],[A.RESTAB,['RESTAB'],'Restabelecimentos',SUB_COL.RESTAB],[A.RELIG,['RELIG'],'Religações',SUB_COL.RELIG],[A.VIST,['VIST'],'Vistorias',SUB_COL.VIST],[A.ACAO,['ACAO'],'Ações especiais',SUB_COL.ACAO],[A.OUTP,['OUTP'],'Produtivo (classificado)',SUB_COL.OUTP]].filter(x=>x[0]||x[2]==='Pagamentos');
-  const svc=['CORTE','SUPRESSAO','POS','RESTAB','RELIG','ACAO'].map(k=>Object.assign({k},agg(rows.filter(r=>r.tipo===k)))).filter(s=>s.rec);
+  const svc=['CORTE','SUPRESSAO','POS','RESTAB','RELIG','VIST','ACAO'].map(k=>Object.assign({k},agg(rows.filter(r=>r.tipo===k)))).filter(s=>s.rec);
   const IMPL={'IMOVEL FECHADO, REPROGRAMAR ORDEM':'Imóvel fechado · reprogramar','IMOVEL FECHADO, ORDEM ENCERRADA':'Imóvel fechado · encerrada','CLIENTE NAO PERMITIU EXECUCAO DO SERVICO':'Cliente não permitiu','NADA CONSTA NO LOCAL':'Nada consta no local','NUMERO/IMOVEL NAO LOCALIZADO':'Nº/imóvel não localizado','DIFICULDADE TECNICA DE EXECUCAO':'Dificuldade técnica'};
   const topImp=[...groupBy(rows.filter(r=>r.cat==='IMPED'),r=>r.res)].map(([k,rs])=>({k,n:rs.length,lbl:IMPL[norm(k)]||k})).sort((x,y)=>y.n-x.n).slice(0,4);
   const dSeries=[...groupBy(rows,r=>r.day)].sort((x,y)=>x[0]<y[0]?-1:1).map(([d,rs])=>[d,agg(rs)]).filter(x=>x[1].den>=20);
@@ -2733,7 +2738,9 @@ function vPlanilhas(v){
   const tot=SHEETS.reduce((s,x)=>s+x.recs.length,0);
   const st={ok:'Guardadas no painel: abrem em qualquer aparelho, para quem tem acesso a este dashboard.',local:'Guardadas neste navegador (o banco do painel não está disponível nesta visualização).',erro:'Não foi possível abrir as planilhas guardadas no painel agora. As deste navegador continuam disponíveis.',carregando:'Abrindo planilhas guardadas…'}[DBSTATE];
   const list=[...SHEETS].sort((x,y)=>{const a=sheetInfo(x).ini,b=sheetInfo(y).ini;return a<b?1:a>b?-1:0});
-  v.innerHTML=classifHTML()+`<div class="panel"><h3>Planilhas importadas <small>${fmt(SHEETS.length)} guardada${SHEETS.length>1?'s':''} · ${fmt(ROWS.length)} execuções ativas</small></h3>
+  const fora=[...groupBy(SHEETS.filter(s=>s.ativa).flatMap(s=>s.recs.filter(r=>r.tipo==='FORA')),r=>r.tss||'(sem serviço)')].map(([k,rs])=>({k,rs})).sort((a,b)=>b.rs.length-a.rs.length);
+  const foraH=fora.length?`<div class="panel"><h3>Serviços que não entram no painel <small>${fmt(fora.reduce((n,x)=>n+x.rs.length,0))} execuç${fora.reduce((n,x)=>n+x.rs.length,0)>1?'ões':'ão'} nas planilhas ativas</small></h3><div class="tw"><table><thead><tr><th>Serviço (TSS)</th><th class="n">Execuções</th><th>Resultados</th><th>Colaboradores</th></tr></thead><tbody>${fora.map(x=>`<tr><td>${esc(x.k)}</td><td class="n">${fmt(x.rs.length)}</td><td>${esc([...new Set(x.rs.map(r=>r.res))].join(', '))}</td><td><span class="pvn">${esc([...new Set(x.rs.map(r=>nomeDe(r.eq)))].join(', '))}</span></td></tr>`).join('')}</tbody></table></div></div>`:'';
+  v.innerHTML=classifHTML()+foraH+`<div class="panel"><h3>Planilhas importadas <small>${fmt(SHEETS.length)} guardada${SHEETS.length>1?'s':''} · ${fmt(ROWS.length)} execuções ativas</small></h3>
    <div class="plhead"><button class="btn" type="button" id="plImp"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>Importar planilhas</button>
     <button class="btn ghost" type="button" id="plAll">Ativar todas</button><span class="note">${esc(st)}</span></div>
    <div class="plist">${list.map(s=>{const inf=sheetInfo(s);const d=new Date(s.importadaEm);return `<div class="plc ${s.ativa?'on':''}">
@@ -3856,6 +3863,21 @@ function ivDia(x){const gaps=[];for(let i=1;i<x.length;i++){const de=x[i-1],a=x[
   const c=gaps.filter(y=>y.conta&&y.gc>0);let alm=null;for(const y of c)if(!alm||y.gc>alm.gc)alm=y;
   for(const y of c){if(y===alm){if(y.gc>IV_ALM){y.tipo='almx';y.exc=y.gc-IV_ALM}else if(y.gc>=20*6e4)y.tipo='alm'}else if(y.gc>IV_ALM){y.tipo='x';y.exc=y.gc}}
   return {gaps,exc:gaps.reduce((s,y)=>s+y.exc,0),over:gaps.filter(y=>y.exc>0)}}
+/* deslocamento além do esperado: referência = tempo típico (mediana) da própria equipe no período, por tipo de mudança, + 15 min de tolerância.
+   Só entram intervalos que não são almoço nem parada acima de 1h (esses já contam em "parado além do almoço"). */
+const DL_TOL=15*6e4;let DL_REF=null;
+const DL_LBL={rua:'mesma rua',bai:'mesmo bairro',sf:'mesmo setor',out:'outro setor'};
+const dlTipo=(a,b)=>ivRua(a.end)&&ivRua(a.end)===ivRua(b.end)?'rua':a.bai&&a.bai===b.bai?'bai':a.sf&&a.sf===b.sf?'sf':'out';
+const dlConta=y=>y.conta&&!y.tipo&&y.gc>0;
+function dlRef(rows){const ck=rows.length+'|'+(rows[0]&&rows[0].key)+'|'+(rows[rows.length-1]&&rows[rows.length-1].key);if(DL_REF&&DL_REF.ck===ck)return DL_REF;
+  const ac=new Set(rows.filter(r=>r.man).map(r=>r.eq+'|'+r.day));const g={rua:[],bai:[],sf:[],out:[]},all=[];
+  for(const [kd,x] of groupBy(ivSeq(rows),r=>r.eq+'|'+r.day)){if(ac.has(kd))continue;ivDia(x).gaps.forEach(y=>{if(dlConta(y)){g[dlTipo(y.de,y.ate)].push(y.gc);all.push(y.gc)}})}
+  const med=a=>{if(!a.length)return 0;const b=a.slice().sort((x,y)=>x-y);return b[Math.floor(b.length/2)]};const mAll=med(all);
+  const lim={};for(const t in g)lim[t]=(g[t].length>=10?med(g[t]):mAll)+DL_TOL;DL_REF={ck,lim};return DL_REF}
+function dlDia(x,ref){const over=[];if(ref)ivDia(x).gaps.forEach(y=>{if(!dlConta(y))return;const t=dlTipo(y.de,y.ate),l=ref.lim[t];if(y.gc>l)over.push({y,t,lim:l,exc:y.gc-l})});return {over,exc:over.reduce((s,o)=>s+o.exc,0)}}
+function dlColab(k,rows,ref){const rs=rows.filter(r=>r.eq===k);const ac=new Set(rs.filter(r=>r.man).map(r=>r.day));const dias=[];
+  for(const [d,x] of groupBy(ivSeq(rs),r=>r.day)){if(ac.has(d))continue;const D=dlDia(x,ref);if(D.over.length)dias.push({d,n:D.over.length,exc:D.exc})}
+  return {dias,n:dias.reduce((s,x)=>s+x.n,0),exc:dias.reduce((s,x)=>s+x.exc,0)}}
 function fcDiaHTML(k,dia,rs){
   const geo=rs.filter(r=>!r.man&&r.day===dia).sort((a,b)=>(a.ini||a.fim)-(b.ini||b.fim));const ac=rs.filter(r=>r.man&&r.day===dia);
   if(!geo.length&&!ac.length)return '<p class="note">Sem OS neste dia.</p>';
@@ -3869,12 +3891,13 @@ function fcDiaHTML(k,dia,rs){
      ${chip('Tempo nas OS',emOS?fcMin(emOS):'—','',desl?fcMin(desl)+' entre uma OS e outra':'')}${ac0?chip('Parado além do almoço','—','','dia de ação especial'):chip('Parado além do almoço',IV.exc?fcMin(IV.exc):'nada',IV.exc?'warn':'ok',IV.over.length?IV.over.length+' intervalo'+(IV.over.length>1?'s':'')+' acima de 1h':'almoço dentro de 1h')}${chip('Produtividade do dia',pct(a.prod,a.den,0)+'%',a.pr>=META?'ok':'bad',`${fmt(a.prod)} de ${fmt(a.den)} OS`)}</div>
    ${ac.length?`<div class="fc-ac">★ Ação especial no dia: <b>${fmt(ac.filter(r=>r.cat==='ACAO').length)}</b> produtivas de <b>${fmt(ac.length)}</b> realizadas</div>`:''}
    <ol class="fc-tl">${passos.map(({r,gap},i)=>{const s=r.sub&&r.sub!==r.cat?r.sub:r.cat;const cor=SUB_COL[s]||'#64748b';const y=ivBy.get(r);const t=ac0||!y?'':y.tipo;
-     const gl=gap==null||gap<60e3?'':t==='almx'?`<li class="fc-gap over"><span><b>Almoço de ${fcMin(y.gc)}</b> · ${fcMin(y.exc)} além da 1h permitida${y.corte?' · contado até 17h':''}${y.rua?' · mesma rua':''}</span></li>`:t==='x'?`<li class="fc-gap over"><span><b>Parado ${fcMin(y.gc)}</b> · acima de 1h${y.corte?' · contado até 17h':''}${y.rua?' · mesma rua':''}</span></li>`:t==='alm'?`<li class="fc-gap alm"><span>Almoço · ${fcMin(gap)}</span></li>`:`<li class="fc-gap"><span>Deslocamento · ${fcMin(gap)}</span></li>`;
+     const gl=gap==null||gap<60e3?'':t==='almx'?`<li class="fc-gap over"><span><b>Almoço de ${fcMin(y.gc)}</b> · ${fcMin(y.exc)} além da 1h permitida${y.corte?' · contado até 17h':''}${y.rua?' · mesma rua':''}</span></li>`:t==='x'?`<li class="fc-gap over"><span><b>Parado ${fcMin(y.gc)}</b> · acima de 1h${y.corte?' · contado até 17h':''}${y.rua?' · mesma rua':''}</span></li>`:t==='alm'?`<li class="fc-gap alm"><span>Almoço · ${fcMin(gap)}</span></li>`:(()=>{if(!ac0&&y&&dlConta(y)&&DL_REF){const tt=dlTipo(y.de,y.ate),l=DL_REF.lim[tt];if(y.gc>l)return `<li class="fc-gap over"><span><b>Deslocamento de ${fcMin(y.gc)}</b> · esperado até ${fcMin(l)} (${DL_LBL[tt]})</span></li>`}return `<li class="fc-gap"><span>Deslocamento · ${fcMin(gap)}</span></li>`})();
      return `${gl}<li class="fc-p ${r.sus?'sus':''}"><button type="button" data-fos="${esc(r.os)}">
       <span class="fc-h"><b>${hhmm(r.ini||r.fim)}</b><em>${r.ini&&r.fim>r.ini?'até '+hhmm(r.fim):''}</em></span><i class="fc-dot" style="--c:${cor}"></i>
       <span class="fc-b"><span class="fc-r" style="--c:${cor}">${esc(CAT_LBL[s]||r.res)}</span><span class="fc-e pvn">${esc(r.end||'')}${r.bai?' · '+esc(r.bai):''}${r.sf?' · setor '+esc(r.sf):''}</span>
       <span class="fc-m">${esc(title(r.tss||''))} · OS ${esc(r.os)}${r.ini&&r.fim>r.ini?' · '+fcMin(r.fim-r.ini)+' no local':''}</span>${r.sus?`<span class="fc-w">Fora do local: ${esc(r.susWhy)}</span>`:''}${!APRES&&r.nota?`<span class="fc-n pvn">“${esc(String(r.nota).slice(0,160))}”</span>`:''}</span></button></li>`}).join('')}</ol>`}
 function vFicha(v,rows){
+  DL_REF=dlRef(rows);
   const eqs=[...new Set(rows.filter(r=>r.eq).map(r=>r.eq))].sort((a,b)=>nomeDe(a).localeCompare(nomeDe(b)));
   if(!eqs.length){v.innerHTML='<div class="panel"><p class="note">Sem dados no período selecionado.</p></div>';return}
   if(!eqs.includes(FICHA.k)){const g=groupBy(rows,r=>r.eq);FICHA.k=[...g].sort((a,b)=>b[1].length-a[1].length)[0][0];FICHA.dia=''}
@@ -3887,16 +3910,19 @@ function vFicha(v,rows){
   const ivD=dias.map(d=>{const ac=rs.some(r=>r.man&&r.day===d);return {d,exc:ac?0:ivDia(ivSeq(rs.filter(r=>r.day===d))).exc}});const ivT=ivD.reduce((a,x)=>a+x.exc,0),ivN=ivD.filter(x=>x.exc).length,ivMx=ivD.reduce((a,x)=>x.exc>a.exc?x:a,{exc:0});const ivM=new Map(ivD.map(x=>[x.d,x.exc]));
   const mod=geo.length&&geo.filter(r=>r.tipo==='SUPRESSAO').length/geo.length>=.5?'carro':'moto';
   const T2=(cls,lab,val,sub,attr)=>`<button type="button" class="fc-k ${cls}" ${attr}><span>${lab}</span><b>${val}</b><em>${sub}</em></button>`;
-  const subs=SUB_ORD.filter(s=>A[s]>0).map(s=>({s,n:A[s]})).sort((a,b)=>b.n-a.n);const smx=Math.max(1,...subs.map(x=>x.n));
+  /* contagem direta das linhas (não depende da configuração de produtividade): nada some da ficha */
+  const CN=c=>rs.filter(r=>r.cat!=='FIMDIA'&&(r.cat===c||r.sub===c)).length;const nRes=CN('RESTAB'),nRel=CN('RELIG'),nVis=CN('VIST'),nOut=CN('OUTP')+CN('ACAO');
+  const subs=SUB_ORD.map(s=>({s,n:CN(s)})).filter(x=>x.n>0).sort((a,b)=>b.n-a.n);const smx=Math.max(1,...subs.map(x=>x.n));
   const nm=esc(nomeDe(k));const DW=['dom','seg','ter','qua','qui','sex','sáb'];
   v.innerHTML=`<div class="colw ${COL_BLUR?'blurn':''}"><div class="panel fc-top"><div class="fc-id"><label class="fc-sel"><span>Colaborador</span><select id="fcSel" class="pvn">${eqs.map(e=>`<option value="${esc(e)}" ${e===k?'selected':''}>${esc(nomeDe(e))}</option>`).join('')}</select></label>
      <div class="fc-meta"><span>${esc(equipeDe(k))!==nm?'Equipe '+esc(equipeDe(k))+' · ':''}${mod==='carro'?'Carro (supressão)':'Moto'}</span><span>${fmt(dias.length)} dia${dias.length>1?'s':''} com OS · ${dayBRf(dias[0])} a ${dayBRf(dias[dias.length-1])}</span></div>
      <span class="fc-btns">${blurNomesBtn()}<button type="button" class="btn ghost sm" id="fcDos">Relatório de intervalos</button><button type="button" class="btn ghost sm" id="fcAll">Ver todas as OS</button></span></div>
    <div class="fc-ks">${T2(A.pr>=META?'ok':'bad','Produtividade',pct(A.prod,A.den,1)+'%',`meta ${META}% · média da equipe ${pct(T.prod,T.den,0)}%`,`data-fd='{"cats":${JSON.stringify(PROD_CATS)}}' data-fl="produtivas"`)}
      ${T2('','OS trabalhadas',fmt(A.den),`${fmt(A.prod)} produtivas · ${(A.den/Math.max(1,dias.length)).toFixed(1).replace('.',',')} por dia`,`data-fd='{}' data-fl="todas as OS"`)}
+     ${T2(A.den-A.prod?'warn':'','Não produtivas',fmt(A.den-A.prod),`${pct(A.den-A.prod,A.den,0)}% das OS`,`data-fd='{"nprod":1}' data-fl="não produtivas"`)}
      ${T2('','Pagamentos',fmt(A.pag),`${fmt(A.PAG_POS)} POS · ${fmt(A.PAG_FAT)} faturas`,`data-fd='{"cats":["PAG_POS","PAG_FAT"]}' data-fl="pagamentos"`)}
      ${T2('','Cortes e supressões',fmt(A.CORTE+A.SUP),`${fmt(A.CORTE)} cortes · ${fmt(A.SUP)} supressões`,`data-fd='{"cats":["CORTE","SUP"]}' data-fl="cortes e supressões"`)}
-     ${T2(A.den-A.prod?'warn':'','Não produtivas',fmt(A.den-A.prod),`${pct(A.den-A.prod,A.den,0)}% das OS`,`data-fd='{"nprod":1}' data-fl="não produtivas"`)}
+     ${T2('',nVis||nOut?'Restab., religações e outros':'Restab. e religações',fmt(nRes+nRel+nVis+nOut),`${fmt(nRes)} restabelecimento${nRes===1?'':'s'} · ${fmt(nRel)} religaç${nRel===1?'ão':'ões'}${nVis?` · ${fmt(nVis)} vistoria${nVis===1?'':'s'}`:''}${nOut?` · ${fmt(nOut)} outro${nOut===1?'':'s'} produtivo${nOut===1?'':'s'}`:''}${RR_PROD?'':' · fora da produtividade'}`,`data-fd='{"cats":["RESTAB","RELIG"]}' data-fl="restabelecimentos e religações"`)}
      ${T2(sus?'bad':'','Fora do local',fmt(sus),sus?'baixas longe do endereço':'nenhuma',`data-fd='{"sus":true}' data-fl="baixas fora do local"`)}
      ${T2(ivT?'warn':'ok','Parado além do almoço',ivT?fcMin(ivT):'nada',ivT?`em ${ivN} de ${dias.length} dias · maior ${fcMin(ivMx.exc)} em ${dayBRf(ivMx.d).slice(0,5)}`:'almoço sempre dentro de 1h',ivT?`data-fexc="${ivMx.d}"`:'data-fd=\'{}\' data-fl="todas as OS"')}
      ${T2(alertas.length?'warn':'','Alertas de jornada',`${alertas.length} de ${dias.length}`,`dias chegando depois das ${hm(JA_INI)} ou última antes de ${hm(JA_FIM)}`,alertas.length?`data-fdd="${esc(alertas.map(x=>k+'|'+x.d).join(','))}"`:'data-fd=\'{}\' data-fl="todas as OS"')}</div></div>
@@ -3968,20 +3994,20 @@ function dosModal(k,rows){const eqs=[...new Set(rows.filter(r=>r.eq&&!r.man).map
 
 
 /* ---------- Versão do painel ---------- */
-const VERSAO='1.7';
+const VERSAO='1.8';
 function verInit(){const b=$('#verTag');if(b)b.textContent='v'+VERSAO}
 
 /* ---------- Jornada (versão enxuta): 4 números, uma tabela por colaborador e os horários da equipe ---------- */
-function vJornada2(v,rows){JA_SETS=[];const geo=geoR(rows).filter(isBaixa);
+function vJornada2(v,rows){JA_SETS=[];const geo=geoR(rows).filter(isBaixa);const REF=dlRef(rows);
   const mins=t=>{const d=new Date(t);return d.getHours()*60+d.getMinutes()};
   const dias=[...groupBy(geo.filter(r=>!r.sus),r=>r.eq+'|'+r.day)].map(([k,rs])=>{const [eq,day]=k.split('|');return {eq,day,ch:Math.min(...rs.map(r=>mins(r.ini||r.fim))),ini:Math.min(...rs.map(r=>mins(r.fim))),fim:Math.max(...rs.map(r=>mins(r.fim)))}});
   if(!dias.length){v.innerHTML='<div class="panel"><p class="note">Sem OS no período selecionado.</p></div>';return}
   dias.forEach(d=>{d.tarde=d.ch>JA_INI;d.cedo=d.fim<JA_FIM});
   const ks=[...new Set(dias.map(d=>d.eq))];const set=(k,label)=>JA_SETS.push({k,label})-1;const kd=d=>d.eq+'|'+d.day;
   const L=ks.map(k=>{const ds=dias.filter(d=>d.eq===k);const D=dosDados(k,rows);const av=f=>ds.reduce((s,d)=>s+f(d),0)/ds.length;
-    return {k,n:ds.length,ch:av(d=>d.ch),fim:av(d=>d.fim),tarde:ds.filter(d=>d.tarde),cedo:ds.filter(d=>d.cedo),exc:D.exc,excD:D.dias.filter(y=>y.exc).map(y=>k+'|'+y.d),sus:geo.filter(r=>r.eq===k&&r.sus).length}}).sort((a,b)=>b.exc-a.exc||b.tarde.length+b.cedo.length-a.tarde.length-a.cedo.length);
+    return {k,n:ds.length,ch:av(d=>d.ch),fim:av(d=>d.fim),tarde:ds.filter(d=>d.tarde),cedo:ds.filter(d=>d.cedo),exc:D.exc,excD:D.dias.filter(y=>y.exc).map(y=>k+'|'+y.d),dl:dlColab(k,rows,REF),sus:geo.filter(r=>r.eq===k&&r.sus).length}}).sort((a,b)=>b.exc-a.exc||b.tarde.length+b.cedo.length-a.tarde.length-a.cedo.length);
   const av=f=>dias.reduce((s,d)=>s+f(d),0)/dias.length;const tarde=dias.filter(d=>d.tarde),cedo=dias.filter(d=>d.cedo);
-  const exc=L.reduce((s,x)=>s+x.exc,0),excD=L.flatMap(x=>x.excD),sus=L.reduce((s,x)=>s+x.sus,0),mx=Math.max(1,...L.map(x=>x.exc));
+  const exc=L.reduce((s,x)=>s+x.exc,0),excD=L.flatMap(x=>x.excD),sus=L.reduce((s,x)=>s+x.sus,0),mx=Math.max(1,...L.map(x=>x.exc));const mxD=Math.max(1,...L.map(x=>x.dl.exc));
   const K=(cls,lab,val,sub,attr)=>`<button type="button" class="jn-k ${cls}" ${attr}><span>${lab}</span><b>${val}</b><em>${sub}</em></button>`;
   const cel=(ds,n,lb,k)=>ds.length?`<button type="button" class="rn" data-jx="${set(ds.map(kd),nomeDe(k)+' · '+lb)}">${ds.length} de ${n}</button>`:`<span class="muted">0 de ${n}</span>`;
   v.innerHTML=`<div class="jn-ks">
@@ -3990,10 +4016,11 @@ function vJornada2(v,rows){JA_SETS=[];const geo=geoR(rows).filter(isBaixa);
     ${K(exc?'warn':'ok','Parado além do almoço',exc?fcMin(exc):'nada',`equipe no período · ${excD.length} dias acima de 1h`,excD.length?`data-jx="${set(excD,'dias com parada acima do permitido')}"`:'')}
     ${K(sus?'bad':'ok','Baixas fora do local',fmt(sus),'não contam como 1ª OS nem última baixa',sus?'data-jsusall="1"':'')}</div>
   <div class="colw ${COL_BLUR?'blurn':''}"><div class="panel jn-p"><h3>Jornada por colaborador <small>médias do período · vermelho = fora do combinado · toque no nome para abrir a ficha</small>${blurNomesBtn()}</h3>
-   <div class="tw"><table class="jn-t"><thead><tr><th>Colaborador</th><th class="n">Dias</th><th class="n">Chegada</th><th class="n">Última baixa</th><th class="n">Chegou depois das ${hm(JA_INI)}</th><th class="n">Parou antes das ${hm(JA_FIM)}</th><th>Parado além do almoço</th><th class="n">Fora do local</th></tr></thead><tbody>
+   <div class="tw"><table class="jn-t"><thead><tr><th>Colaborador</th><th class="n">Dias</th><th class="n">Chegada</th><th class="n">Última baixa</th><th class="n">Chegou depois das ${hm(JA_INI)}</th><th class="n">Parou antes das ${hm(JA_FIM)}</th><th>Parado além do almoço</th><th>Deslocamento além do esperado</th><th class="n">Fora do local</th></tr></thead><tbody>
    ${L.map(x=>`<tr data-c="${esc(x.k)}" class="${x.k===COL_SHOW?'show':''}"><td><button type="button" class="jn-nm" data-jf="${esc(x.k)}"><span class="pvn" data-nm="${esc(x.k)}">${esc(nomeDe(x.k))}</span></button></td><td class="n">${x.n}</td><td class="n">${minToHM(x.ch)}</td><td class="n">${minToHM(x.fim)}</td>
      <td class="n">${cel(x.tarde,x.n,'chegada na 1ª OS depois das '+hm(JA_INI),x.k)}</td><td class="n">${cel(x.cedo,x.n,'última baixa antes das '+hm(JA_FIM),x.k)}</td>
      <td>${x.exc?`<button type="button" class="jn-b" data-jx="${set(x.excD,nomeDe(x.k)+' · dias acima do permitido')}"><i><b style="width:${x.exc/mx*100}%"></b></i><em>${fcMin(x.exc)}</em></button>`:'<span class="muted">nada</span>'}</td>
+     <td>${x.dl.exc?`<button type="button" class="jn-b" data-jx="${set(x.dl.dias.map(y=>x.k+'|'+y.d),nomeDe(x.k)+' · dias com deslocamento além do esperado')}" title="${x.dl.n} deslocamento${x.dl.n>1?'s':''} acima do tempo típico da equipe + 15 min"><i><b style="width:${x.dl.exc/mxD*100}%"></b></i><em>${fcMin(x.dl.exc)}</em></button>`:'<span class="muted">nada</span>'}</td>
      <td class="n">${x.sus?`<button type="button" class="rn" data-jsus="${esc(x.k)}">${x.sus}</button>`:'<span class="muted">0</span>'}</td></tr>`).join('')}</tbody></table></div></div></div>
   <div class="panel"><h3>Horários da equipe <small>cada barra é um dia de trabalho · toque para ver as OS</small></h3><div class="g2 ja-g">
    ${jaChart('Chegada na 1ª OS',`vermelho depois das ${hm(JA_INI)}`,jaBins(dias,'ch',7*60,10*60+30,15,m=>m>=JA_INI),'Chegada na 1ª OS')}
@@ -4158,14 +4185,14 @@ function rcModelo(rows,sel){sel=sel||RC_SEL;const A=agg(rows);const out=[];const
     const sm=i=>C.reduce((s,x)=>s+x[i],0);
     out.push({id:'comercial',t:'Comercial / POS',kpis:[['OS de negociação POS trabalhadas',P.trab,'n'],['Pagamento efetivado',P.PAG_POS,'n'],['Faturas apresentadas',P.PAG_FAT,'n'],['Negociação infrutífera',P.INFRUT,'n'],['Conversão POS',P.trab?(P.PAG_POS+P.PAG_FAT)/P.trab:0,'p'],['Pagamentos em OS de corte',pc.length,'n']],
       blocks:[T('Comercial por colaborador',[['Colaborador','t'],['OS POS trabalhadas','n'],['Pag. efetivado (POS)','n'],['Faturas (POS)','n'],['Infrutíferas','n'],['Conversão POS','p'],['Pgto via POS no corte','n'],['Faturas no corte','n'],['Total de pagamentos','n']],C,['Total',sm(1),sm(2),sm(3),sm(4),sm(1)?(sm(2)+sm(3))/sm(1):0,sm(6),sm(7),sm(8)])]})}
-  let JL=null;const jn=()=>{if(JL)return JL;const mins=t=>{const d=new Date(t);return d.getHours()*60+d.getMinutes()};const geo=g.filter(isBaixa);
+  let JL=null;const jn=()=>{if(JL)return JL;const REF=dlRef(rows);const mins=t=>{const d=new Date(t);return d.getHours()*60+d.getMinutes()};const geo=g.filter(isBaixa);
     const dias=[...groupBy(geo.filter(r=>!r.sus),r=>r.eq+'|'+r.day)].map(([k,rs])=>{const [eq,day]=k.split('|');const ch=Math.min(...rs.map(r=>mins(r.ini||r.fim))),fim=Math.max(...rs.map(r=>mins(r.fim)));return {eq,day,ch,fim,tarde:ch>JA_INI,cedo:fim<JA_FIM}});
     JL={dias,L:[...new Set(dias.map(d=>d.eq))].map(k=>{const ds=dias.filter(d=>d.eq===k);const D=dosDados(k,rows);const av=f=>ds.reduce((s,d)=>s+f(d),0)/ds.length;
-      return {k,n:ds.length,ch:av(d=>d.ch),fim:av(d=>d.fim),tarde:ds.filter(d=>d.tarde).length,cedo:ds.filter(d=>d.cedo).length,D,sus:geo.filter(r=>r.eq===k&&r.sus).length}}).sort((a,b)=>nomeDe(a.k).localeCompare(nomeDe(b.k),'pt'))};return JL};
+      return {k,n:ds.length,ch:av(d=>d.ch),fim:av(d=>d.fim),tarde:ds.filter(d=>d.tarde).length,cedo:ds.filter(d=>d.cedo).length,D,dl:dlColab(k,rows,REF),sus:geo.filter(r=>r.eq===k&&r.sus).length}}).sort((a,b)=>nomeDe(a.k).localeCompare(nomeDe(b.k),'pt'))};return JL};
   if(has('jornada')){const {dias,L}=jn();const av=f=>dias.length?dias.reduce((s,d)=>s+f(d),0)/dias.length:null;const exc=L.reduce((s,x)=>s+x.D.exc,0);
-    out.push({id:'jornada',t:'Jornada',kpis:[['Chegada média na 1ª OS',minToHM(av(d=>d.ch)),'t'],['Última baixa média',minToHM(av(d=>d.fim)),'t'],['Dias chegando depois das '+hm(JA_INI),dias.filter(d=>d.tarde).length+' de '+dias.length,'t'],['Dias parando antes das '+hm(JA_FIM),dias.filter(d=>d.cedo).length+' de '+dias.length,'t'],['Parado além do almoço (equipe)',exc?fcMin(exc):'nada','t'],['Baixas fora do local',L.reduce((s,x)=>s+x.sus,0),'n']],
-      blocks:[T('Jornada por colaborador (médias do período)',[['Colaborador','t'],['Dias','n'],['Chegada na 1ª OS','h'],['Última baixa','h'],['Chegou depois das '+hm(JA_INI),'n'],['Parou antes das '+hm(JA_FIM),'n'],['Parado além do almoço','h'],['Baixas fora do local','n']],
-        L.map(x=>[nomeDe(x.k),x.n,minToHM(x.ch),minToHM(x.fim),x.tarde,x.cedo,x.D.exc?fcMin(x.D.exc):'—',x.sus]))]})}
+    out.push({id:'jornada',t:'Jornada',kpis:[['Chegada média na 1ª OS',minToHM(av(d=>d.ch)),'t'],['Última baixa média',minToHM(av(d=>d.fim)),'t'],['Dias chegando depois das '+hm(JA_INI),dias.filter(d=>d.tarde).length+' de '+dias.length,'t'],['Dias parando antes das '+hm(JA_FIM),dias.filter(d=>d.cedo).length+' de '+dias.length,'t'],['Parado além do almoço (equipe)',exc?fcMin(exc):'nada','t'],['Deslocamento além do esperado (equipe)',(()=>{const e=L.reduce((s,x)=>s+x.dl.exc,0);return e?fcMin(e):'nada'})(),'t'],['Baixas fora do local',L.reduce((s,x)=>s+x.sus,0),'n']],
+      blocks:[T('Jornada por colaborador (médias do período)',[['Colaborador','t'],['Dias','n'],['Chegada na 1ª OS','h'],['Última baixa','h'],['Chegou depois das '+hm(JA_INI),'n'],['Parou antes das '+hm(JA_FIM),'n'],['Parado além do almoço','h'],['Deslocamento além do esperado','h'],['Baixas fora do local','n']],
+        L.map(x=>[nomeDe(x.k),x.n,minToHM(x.ch),minToHM(x.fim),x.tarde,x.cedo,x.D.exc?fcMin(x.D.exc):'—',x.dl.exc?fcMin(x.dl.exc):'—',x.sus]))]})}
   if(has('intervalos')){const {L}=jn();const I=L.map(x=>{const D=x.D;const dd=D.dias.filter(y=>y.exc);const top=dd.slice().sort((a,b)=>b.exc-a.exc)[0];return {k:x.k,dias:D.dias.length,dd:dd.length,n:D.n,exc:D.exc,top}}).sort((a,b)=>b.exc-a.exc);
     out.push({id:'intervalos',t:'Intervalos além do almoço',blocks:[T('Por colaborador · almoço de 1h permitido',[['Colaborador','t'],['Dias trabalhados','n'],['Dias acima de 1h','n'],['Intervalos acima de 1h','n'],['Tempo além do permitido','h'],['Pior dia','t'],['Excesso no pior dia','h']],
       I.map(x=>[nomeDe(x.k),x.dias,x.dd,x.n,x.exc?fcMin(x.exc):'—',x.top?dayBRf(x.top.d):'—',x.top?fcMin(x.top.exc):'—']))]})}
