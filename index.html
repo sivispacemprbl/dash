@@ -1132,6 +1132,21 @@ main :is(div,span,label,p,td,footer,header,form):has(> select,> input[type=date]
 .panel:has(>.fc-days){display:flex;flex-direction:column}.fc-days{flex:1 1 auto;min-height:190px;height:auto!important;gap:4px}.fc-d{flex:1 0 20px}
 .rl-t td:last-child{white-space:nowrap}
 .fc-ks{grid-template-columns:repeat(3,minmax(0,1fr))}@media (max-width:700px){.fc-ks{grid-template-columns:1fr 1fr}.fc-ks>:last-child:nth-child(odd){grid-column:1/-1}}
+.lid-p h3 small b.dn{color:#fbbf24}.lid-d{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:10px}.lid-d.lp{border-color:rgba(251,191,36,.5)}
+.lid-h{display:flex;align-items:center;gap:8px 16px;flex-wrap:wrap;margin-bottom:6px}.lid-h>span{color:#9fb3cf;font-size:13px}.lid-h em{font-style:normal;color:#fbbf24;font-weight:700}.lid-h label{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:#9fb3cf}.lid-h select{min-width:200px}
+.lid-t td{padding:5px 8px;font-size:13px;vertical-align:middle}.lid-t td:first-child,.lid-t td:nth-child(5){white-space:nowrap;width:1%}.lid-t td:last-child{width:1%}.lid-t select{min-width:200px}.lid-t tr.lp td{background:rgba(251,191,36,.06)}
+.lid-av{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 14px;margin-bottom:14px;border:1px solid rgba(251,191,36,.5);border-left:4px solid #fbbf24;border-radius:10px;background:rgba(251,191,36,.08);color:#fde68a;font-size:13.5px}
+.fc-lid{color:#fbbf24;font-weight:700}
+.lid-p select{background:#0a1b37;border:1px solid #22426f;color:#e6f1ff;border-radius:6px;padding:0 10px}
+@media (max-width:700px){.lid-h label{margin-left:0;flex:1 1 100%;flex-direction:column;align-items:stretch;gap:4px}.lid-h label span{white-space:normal}.lid-h select,.lid-t select{min-width:0;width:100%}.lid-t td:last-child{width:auto}}
+.ctab2 th{overflow-wrap:normal;word-break:normal;hyphens:none}
+@media (max-width:1500px){.g2-prod{grid-template-columns:1fr}}
+.cls-feitos{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}.cls-feitos summary{cursor:pointer;color:#9fb3cf;font-size:12.5px;font-weight:600}.cls-feitos .cls-l{margin-top:8px}
+@media (max-width:700px){.lid-t,.lid-t tbody,.lid-t tr,.lid-t td{display:block;width:auto!important}.lid-t tr{border:1px solid var(--line2);border-radius:8px;padding:8px 10px;margin:0 0 8px;background:#0b1f3f}.lid-t td{padding:3px 0;border:0}.lid-t select{width:100%}}
+#pCarga .gauges>:only-child{grid-column:1/-1}
+.lid-t{table-layout:fixed;width:100%}.lid-t td{overflow-wrap:anywhere}.lid-t .st{white-space:normal;display:inline-block;line-height:1.3}
+.lid-t td:nth-child(1){width:96px}.lid-t td:nth-child(2){width:20%}.lid-t td:nth-child(4){width:14%}.lid-t td:nth-child(5){width:118px}.lid-t td:nth-child(6){width:200px}.lid-t select{min-width:0!important;width:100%}
+@media (max-width:1100px){.lid-t,.lid-t tbody,.lid-t tr,.lid-t td{display:block;width:auto!important}.lid-t tr{border:1px solid var(--line2);border-radius:8px;padding:8px 10px;margin:0 0 8px;background:#0b1f3f}.lid-t td{padding:3px 0;border:0}.lid-h label{margin-left:0;flex:1 1 100%}}
 </style>
 
 <div class="app">
@@ -1168,7 +1183,7 @@ main :is(div,span,label,p,td,footer,header,form):has(> select,> input[type=date]
   <div id="views"></div>
 </main>
 
-<footer class="bot"><span><b>SANTO ANDRÉ</b> &nbsp;|&nbsp; OPERAÇÃO DE CAMPO &nbsp;·&nbsp; <span class="muted" id="srcInfo"></span></span><span class="bot-r">Disciplina hoje, resultados sempre.<span class="ver-tag" id="verTag"></span></span></footer>
+<footer class="bot"><span><b>SANTO ANDRÉ</b> &nbsp;|&nbsp; OPERAÇÃO DE CAMPO<span id="srcInfo" hidden></span></span><span class="bot-r">Disciplina hoje, resultados sempre.<span class="ver-tag" id="verTag"></span></span></footer>
 </div>
 <div class="toast" id="toast" hidden></div>
 
@@ -1666,7 +1681,7 @@ const MESES=['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOS
 const DIAS=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
 /* ============ cofre (versão segura): dados do navegador cifrados com AES-256-GCM ============ */
 const SECURE=!!window.SECURE_BUILD;
-const SEC_KEYS=['sa_dash_classif','sa_dash_planilhas_v2','sa_dash_notas','sa_dash_colab_v1','sa_dash_agenda','sa_dash_agenda_em','sa_rodizio_v1','sa_dash_acoes','sa_dash_resumo'];
+const SEC_KEYS=['sa_dash_classif','sa_dash_atrib','sa_dash_planilhas_v2','sa_dash_notas','sa_dash_colab_v1','sa_dash_agenda','sa_dash_agenda_em','sa_rodizio_v1','sa_dash_acoes','sa_dash_resumo'];
 const VAULT_P='sa_vault_plan_v1',PLAN_KEY='sa_dash_planilhas_v2';let PLAN_DIRTY=false,VAULT_OK=true;
 const VAULT='sa_vault_v1',PBKDF2_IT=600000;
 let SEC_CACHE={},SEC_KEY=null,_sp=0;
@@ -1765,13 +1780,24 @@ function catSub(res){
   return ['OUTROS','NOVO'];
 }
 const classRow=r=>{const x=catSub(r.res);r.cat=x[0];r.sub=x[1];return r};
+/* ---------- login do líder: OS feitas pela equipe no login do líder são direcionadas para quem executou ---------- */
+const LIDER_H=['or7rrl']; // login do líder guardado como código (sem o nome no código publicado)
+const nmHash=x=>{let h=2166136261;for(const c of x){h^=c.charCodeAt(0);h=Math.imul(h,16777619)>>>0}return h.toString(36)};
+const _lidC=new Map();const isLiderEq=e=>{const n=norm(e);if(!_lidC.has(n))_lidC.set(n,LIDER_H.includes(nmHash(n)));return _lidC.get(n)};
+let ATRIB={}; // chave da execução → colaborador
+function atribAplica(r){if(r.eq0===undefined)r.eq0=r.eq;if(isLiderEq(r.eq0)){r.lid=true;r.eq=ATRIB[r.key]||''}return r}
+const lidPend=r=>r.lid&&!r.eq;
+async function loadAtrib(){const l=LS.get('sa_dash_atrib',null);if(l&&typeof l==='object')ATRIB=Object.assign({},l,ATRIB);
+  if(DB){try{const d=await DB.doc('config/atrib').get();if(d.exists){const m=(d.data()||{}).mapa||{};ATRIB=Object.assign({},m,ATRIB)}}catch(e){}}
+  if(SHEETS.some(x=>x.recs.some(r=>r.lid)))refreshAll()}
+async function saveAtrib(){LS.set('sa_dash_atrib',ATRIB);if(DB){try{await DB.doc('config/atrib').set({mapa:ATRIB,em:new Date().toISOString()})}catch(e){}}}
 async function loadClassif(){let c=LS.get('sa_dash_classif',null)||{};
   if(DB){try{const d=await DB.doc('config/classif').get();if(d.exists){const r=d.data()||{};if(r.mapa)c=Object.assign({},c,r.mapa)}}catch(e){}}
   CLASSIF=c&&typeof c==='object'?c:{};reclassAll()}
 function reclassAll(){let mud=0;const f=r=>{const o=r.cat+r.sub;classRow(r);if(o!==r.cat+r.sub)mud++};SHEETS.forEach(s=>s.recs.forEach(f));ROWS.forEach(f);if(mud){refreshAll();render()}return mud}
 async function saveClassif(){LS.set('sa_dash_classif',CLASSIF);if(DB){try{await DB.doc('config/classif').set({mapa:CLASSIF,em:new Date().toISOString()})}catch(e){}}}
 function classifHTML(){const all=allSheetRows();const nv=[...groupBy(all.filter(r=>r.sub==='NOVO'),r=>norm(r.res).replace(/\s+/g,' ').trim())].map(([k,rs])=>({k,res:rs[0].res,n:rs.length,tipos:[...new Set(rs.map(r=>TIPO_LBL[r.tipo]||r.tipo))].join(', ')})).sort((x,y)=>y.n-x.n);
-  const feitos=Object.entries(CLASSIF);if(!nv.length&&!feitos.length)return '';
+  if(!nv.length)return '';const feitos=[];
   return `<div class="panel cls"><h3>Resultados a classificar <small>${nv.length?nv.length+' resultado'+(nv.length>1?'s':'')+' novo'+(nv.length>1?'s':'')+' vindo'+(nv.length>1?'s':'')+' do GeoCall':'todos os resultados estão classificados'}</small></h3>
    ${nv.length?`<p class="note">Estes textos não estão no dicionário do painel. Enquanto não forem classificados, contam como não produtivos. Escolha uma vez: a decisão vale para todas as planilhas.</p><div class="cls-l">${nv.map(x=>`<div><span><b>${esc(x.res)}</b><small>${fmt(x.n)} OS · ${esc(x.tipos)}</small></span><button type="button" class="btn sm" data-clp="${esc(x.k)}">Produtivo</button><button type="button" class="btn ghost sm" data-cln="${esc(x.k)}">Não produtivo</button></div>`).join('')}</div>`:''}
    ${feitos.length?`<div class="svct" style="margin-top:12px">Já classificados por você</div><div class="cls-l">${feitos.map(([k,v])=>`<div><span><b>${esc(k)}</b><small>${v==='P'?'produtivo':'não produtivo'}</small></span><button type="button" class="btn ghost sm" data-clx="${esc(k)}">Desfazer</button></div>`).join('')}</div>`:''}</div>`}
@@ -1783,7 +1809,7 @@ const PROD_CATS=['PAG_POS','PAG_FAT','CORTE','SUP','VIST','ACAO','OUTP'].concat(
 function setRRProd(v){RR_PROD=v;try{localStorage.setItem('sa_dash_rrprod',JSON.stringify(v))}catch(e){}PROD_CATS.length=0;PROD_CATS.push('PAG_POS','PAG_FAT','CORTE','SUP','VIST','ACAO','OUTP');if(v)PROD_CATS.push('RR')}
 const isProd=c=>PROD_CATS.includes(c);
 const CAT_LBL={PAG_POS:'Pagamento via POS',PAG_FAT:'Faturas pagas apresentadas',CORTE:'Corte executado',SUP:'Supressão executada',VIST:'Vistoria produtiva',RR:'Restab./religação executada',FIMDIA:'Fim do dia',IMPED:'Impedimento',INFRUT:'Negociação infrutífera',OUTROS:'Outros',ACAO:'Ação especial (produtiva)',ACAO_NP:'Ação especial (não produtiva)'};
-Object.assign(CAT_LBL,{RESTAB:'Restabelecimento executado',RELIG:'Religação executada',FECH:'Imóvel fechado',NPERM:'Cliente não permitiu execução',NADA:'Nada consta no local',NLOC:'Nº/imóvel não localizado',DTEC:'Dificuldade técnica de execução',INFO:'Cliente informou pagamento',NOVO:'Resultado a classificar',CLASN:'Não produtivo (classificado)',OUTP:'Produtivo (classificado)'});
+Object.assign(CAT_LBL,{RESTAB:'Restabelecimento executado',RELIG:'Religação executada',FECH:'Imóvel fechado',NPERM:'Cliente não permitiu execução',NADA:'Nada consta no local',NLOC:'Nº/imóvel não localizado',DTEC:'Dificuldade técnica de execução',INFO:'Cliente informou pagamento',NOVO:'Resultado a classificar',CLASN:'Outros não produtivos',OUTP:'Outros produtivos'});
 const SUB_ORD=['PAG_POS','PAG_FAT','CORTE','SUP','RESTAB','RELIG','VIST','ACAO','OUTP','INFRUT','FECH','NPERM','NADA','NLOC','DTEC','INFO','CLASN','NOVO','ACAO_NP'];
 const SUB_COL={PAG_POS:'#2f86f6',PAG_FAT:'#38bdf8',CORTE:'#22c55e',SUP:'#f47a2a',RESTAB:'#2dd4bf',RELIG:'#e879f9',VIST:'#818cf8',ACAO:'#a78bfa',OUTP:'#86efac',INFRUT:'#fbbf24',FECH:'#ef4444',NPERM:'#fb7185',NADA:'#d946ef',NLOC:'#c2410c',DTEC:'#94a3b8',INFO:'#64748b',CLASN:'#64748b',NOVO:'#e2e8f0',ACAO_NP:'#6b7280'};
 
@@ -1795,7 +1821,7 @@ const isBaixa=r=>r.cat!=='FIMDIA'&&!r.man;
 // Baixa fora do local: outro bairro até SUS_GAP min após a baixa anterior (sem tempo de deslocamento), e a sequência que segue
 const CFG=window.CONFIG||{};
 const SUS_GAP=CFG.baixaForaDoLocalMinutos!=null?+CFG.baixaForaDoLocalMinutos:1;
-const streetOf=r=>norm(r.end).replace(/\s+\d+\S*$/,'');
+const streetOf=r=>norm(String(r.end||'').replace(/\s+-\s+.*$/,'')).replace(/\s+\d+\S*$/,''); // sem complemento
 function markSuspects(){
   for(const r of ROWS){r.sus=false;r.susPrev=null;r.susAnc=null;r.susGap=null;r.susWhy=''}
   const g=groupBy(ROWS.filter(isBaixa),r=>r.eq+'|'+r.day);
@@ -1812,8 +1838,8 @@ const execLbl=r=>isProd(r.cat)?'Executada':r.cat==='FIMDIA'?'Fim do dia':'Não e
 const META=+CFG.metaProdutividade||60, CARGA={CORTE:+CFG.cargaCorte||30,SUPRESSAO:+CFG.cargaSupressao||12};
 
 /* ============ base de dados ============ */
-const FIELD_ALIASES={os:'NUMERO OS',tss:'DESCRICAO TSS',res:'RESULTADO',st:'STATUS DA OS',pde:'PDE',bai:'BAIRRO',end:'ENDERECO',num:'NUMERO',ini:'DATA INICIO EXECUCAO',fim:'DATA FIM EXECUCAO',efet:'TEMPO DE EXECUCAO EFETIVO',eq:'EQUIPE',nota:'NOTA EXECUCAO/NAO EXECUCAO',comp:'DATA DE COMPETENCIA',mob:'MOBILE',cres:'CODIGO RESULTADO',sf:'SF'};
-let ROWS=[], KEYS=new Set(), SOURCES=[];
+const FIELD_ALIASES={os:'NUMERO OS',tss:'DESCRICAO TSS',res:'RESULTADO',st:'STATUS DA OS',pde:'PDE',bai:'BAIRRO',end:'ENDERECO',num:'NUMERO',ini:'DATA INICIO EXECUCAO',fim:'DATA FIM EXECUCAO',efet:'TEMPO DE EXECUCAO EFETIVO',eq:'EQUIPE',nota:'NOTA EXECUCAO/NAO EXECUCAO',comp:'DATA DE COMPETENCIA',cpl:'COMPLEMENTO',mob:'MOBILE',cres:'CODIGO RESULTADO',sf:'SF'};
+let ROWS=[], KEYS=new Map(), SOURCES=[];
 function mkRec(get,src){
   const fim=parseDate(get('fim')), ini=parseDate(get('ini'));
   const os=String(get('os')||'').replace(/\.0$/,'').trim();
@@ -1821,22 +1847,22 @@ function mkRec(get,src){
   const eq=String(get('eq')||'').trim().replace(/\s+/g,' ');
   const res=String(get('res')||'').trim();
   const r={os,tss:String(get('tss')||'').trim(),res,st:String(get('st')||'').trim(),pde:String(get('pde')||'').replace(/\.0$/,'').trim(),
-    bai:String(get('bai')||'').trim().toUpperCase(),sf:String(get('sf')||'').replace(/\.0$/,'').trim(),end:(String(get('end')||'').trim()+' '+String(get('num')||'').trim()).trim(),ini,fim:fim||ini,
+    bai:String(get('bai')||'').trim().toUpperCase(),sf:String(get('sf')||'').replace(/\.0$/,'').trim(),end:(()=>{const e=(String(get('end')||'').trim()+' '+String(get('num')||'').trim()).trim(),c=String(get('cpl')||'').trim();return c?e+' - '+c:e})(),ini,fim:fim||ini,
     efet:parseDur(get('efet')),eq:norm(eq),nota:String(get('nota')||'').trim(),src};
   r.tipo=tipoDe(r.tss); classRow(r); r.day=dayKey(r.fim); r.auto=isAuto(r);
-  r.key=[r.os,r.ini,r.fim,r.eq,norm(res)].join('|');
+  r.key=[r.os,r.ini,r.fim,r.eq,norm(res)].join('|');atribAplica(r);
   return r;
 }
-function addRows(recs){let n=0,d=0;for(const r of recs){if(!r)continue;if(KEYS.has(r.key)){d++;continue}KEYS.add(r.key);ROWS.push(r);n++}return {n,d}}
+function addRows(recs){let n=0,d=0;for(const r of recs){if(!r)continue;if(KEYS.has(r.key)){d++;const i=KEYS.get(r.key);if(String(r.end||'').length>String(ROWS[i].end||'').length)ROWS[i]=r;continue}KEYS.set(r.key,ROWS.length);ROWS.push(r);n++}return {n,d}} // a mesma execução em duas planilhas conta uma vez; fica a versão com endereço mais completo
 /* ============ planilhas guardadas ============ */
 // Cada planilha importada fica guardada (no painel, via banco do artefato; sem ele, neste navegador).
 // Os indicadores somam as planilhas ATIVAS. A mesma execução presente em duas planilhas conta uma vez só.
 const BASE_ID='base-2026-09';
 let SHEETS=[]; // {id,nome,importadaEm,ativa,recs,builtin}
 let DB=null, DBSTATE='carregando';
-const packRec=r=>[r.os,r.tss,r.res,r.st,r.pde,r.bai,r.end,r.ini,r.fim,r.efet,r.eq,r.nota,r.sf];
+const packRec=r=>[r.os,r.tss,r.res,r.st,r.pde,r.bai,r.end,r.ini,r.fim,r.efet,r.eq0!==undefined?r.eq0:r.eq,r.nota,r.sf]; // guarda sempre o login original
 function unpackRec(a,src){const r={os:a[0],tss:a[1],res:a[2],st:a[3],pde:a[4],bai:a[5],end:a[6],ini:a[7],fim:a[8],efet:a[9],eq:a[10],nota:a[11],sf:a[12]||'',src};
-  r.tipo=tipoDe(r.tss);classRow(r);r.day=dayKey(r.fim);r.auto=false;r.key=[r.os,r.ini,r.fim,r.eq,norm(r.res)].join('|');return r}
+  r.tipo=tipoDe(r.tss);classRow(r);r.day=dayKey(r.fim);r.auto=false;r.key=[r.os,r.ini,r.fim,r.eq,norm(r.res)].join('|');atribAplica(r);return r}
 function sheetInfo(s){let a='',b='';for(const r of s.recs){if(!a||r.day<a)a=r.day;if(r.day>b)b=r.day}return {ini:a,fim:b}}
 function loadSeed(){
   if(!SEED_ROWS.length)return;
@@ -1847,7 +1873,7 @@ function loadSeed(){
 }
 /* ---------- resumo diário permanente (alimenta a Agenda; não depende das planilhas selecionadas) ---------- */
 let RESUMO={},_rs=0;
-function allSheetRows(){const seen=new Set(),out=[];for(const s of SHEETS)for(const r of s.recs){if(!r||seen.has(r.key))continue;seen.add(r.key);if(r.tipo!=='FORA'&&r.cat!=='FIMDIA')out.push(r)}return out}
+function allSheetRows(){const seen=new Set(),out=[];for(const s of SHEETS)for(const r of s.recs){if(!r||seen.has(r.key))continue;seen.add(r.key);if(r.tipo!=='FORA'&&r.cat!=='FIMDIA'&&!lidPend(r))out.push(r)}return out}
 function resumoAtualiza(){let mud=false;for(const [d,rs] of groupBy(allSheetRows(),r=>r.day)){const a=agg(rs);const x={t:a.trab,p:a.prod,pg:a.pag,im:a.IMPED};const o=RESUMO[d];
     if(!o||o.t!==x.t||o.p!==x.p||o.pg!==x.pg||o.im!==x.im){RESUMO[d]=x;mud=true}}
   if(mud){clearTimeout(_rs);_rs=setTimeout(saveResumo,800)}}
@@ -1857,8 +1883,8 @@ async function loadResumo(){const l=LS.get('sa_dash_resumo',null);if(l)RESUMO=Ob
 function diaAgenda(k){const x=RESUMO[k];const ac=AC_ROWS.filter(r=>r.day===k);if(!x&&!ac.length)return null;
   const t=(x?x.t:0)+ac.length,p=(x?x.p:0)+ac.filter(r=>r.cat==='ACAO').length;return {trab:t,prod:p,den:t,pr:t?p/t*100:0,pag:x?x.pg:0,IMPED:x?x.im:0,ac:ac.length}}
 function rebuild(){
-  ROWS=[];KEYS=new Set();SOURCES=[];
-  for(const s of SHEETS){if(!s.ativa)continue;addRows(s.recs);SOURCES.push(s.nome)}
+  ROWS=[];KEYS=new Map();SOURCES=[];
+  for(const s of SHEETS){s.recs.forEach(atribAplica);if(!s.ativa)continue;addRows(s.recs.filter(r=>!lidPend(r)));SOURCES.push(s.nome)}
   markSuspects();syncReg();resumoAtualiza();
 }
 let PER_USER=false; // o período só fica fixo quando o usuário escolhe; senão acompanha o mês mais recente
@@ -1904,7 +1930,7 @@ async function saveReg(){LS.set(REG_KEY,REG);if(DB){try{await DB.doc('config/cad
 async function initStore(){
   lsLoad();refreshAll();
   let db=null;try{db=window.claude&&window.claude.use?await window.claude.use('db'):null}catch(e){db=null}
-  if(!db){DBSTATE='local';info();loadClassif();loadNotes();loadAgenda();loadRodizio();loadAcoes();loadResumo();if(VIEW==='planilhas')render();return}
+  if(!db){DBSTATE='local';info();loadClassif();loadAtrib();loadNotes();loadAgenda();loadRodizio();loadAcoes();loadResumo();if(VIEW==='planilhas')render();return}
   DB=db;
   try{
     // leva para o banco o que estava só neste navegador
@@ -1912,7 +1938,7 @@ async function initStore(){
     await dbLoad();DBSTATE='ok';
   }catch(e){console.error(e);DBSTATE='erro'}
   SHEETS.sort((x,y)=>(x.builtin?-1:0)-(y.builtin?-1:0)||String(x.importadaEm).localeCompare(String(y.importadaEm)));
-  lsSave();refreshAll();loadClassif();loadNotes();loadAgenda();loadRodizio();loadAcoes();loadResumo();
+  lsSave();refreshAll();loadClassif();loadAtrib();loadNotes();loadAgenda();loadRodizio();loadAcoes();loadResumo();
 }
 async function importFiles(files){
   let tn=0,td=0,bad=[],same=[],lastMonth='';const btn=$('#btnFile');btn.disabled=true;btn.textContent='Importando…';
@@ -1925,7 +1951,8 @@ async function importFiles(files){
       const seen=new Set();recs=recs.filter(r=>seen.has(r.key)?false:(seen.add(r.key),true));
       // mesma planilha já guardada?
       const dup=SHEETS.find(s=>s.recs.length===recs.length&&s.recs.every((r,i)=>seen.has(r.key)));
-      if(dup){same.push(f.name+' (igual a '+dup.nome+')');if(!dup.ativa){dup.ativa=true;dbSetAtiva(dup)}continue}
+      if(dup){same.push(f.name+' (igual a '+dup.nome+')');if(!dup.ativa){dup.ativa=true;dbSetAtiva(dup)}
+        const nv=new Map(recs.map(r=>[r.key,r]));let up=0;dup.recs.forEach(r=>{const x=nv.get(r.key);if(x&&x.end&&x.end!==r.end){r.end=x.end;up++}});if(up){try{await dbSaveSheet(dup)}catch(e){}}continue}
       const allKeys=new Set();SHEETS.forEach(s=>s.recs.forEach(r=>allKeys.add(r.key)));
       const nNew=recs.filter(r=>!allKeys.has(r.key)).length;tn+=nNew;td+=recs.length-nNew;
       const s={id:'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),nome:f.name,importadaEm:new Date().toISOString(),ativa:true,recs};
@@ -1936,7 +1963,8 @@ async function importFiles(files){
   }finally{btn.disabled=false;btn.textContent='Selecionar arquivos'}
   lsSave();refreshAll(lastMonth||undefined);
   const foraN=SHEETS.filter(s=>s.ativa).reduce((n,s)=>n+s.recs.filter(r=>r.tipo==='FORA').length,0);
-  toast(`${fmt(tn)} execuções novas somadas`+(foraN?` · ${fmt(foraN)} de serviço fora do painel (veja em Planilhas)`:'')+(td?` · ${fmt(td)} já existiam em outra planilha e contam uma vez só`:'')+(same.length?` · Já guardada: ${same.join(', ')}`:'')+(bad.length?` · Sem colunas do GeoCall (Número OS, Equipe, Resultado): ${bad.join(', ')}`:''));
+  const lidN=SHEETS.filter(s=>s.ativa).reduce((n,s)=>n+s.recs.filter(lidPend).length,0);
+  toast(`${fmt(tn)} execuções novas somadas`+(lidN?` · ${fmt(lidN)} no login do líder para direcionar (aba Planilhas)`:'')+(foraN?` · ${fmt(foraN)} de serviço fora do painel (veja em Planilhas)`:'')+(td?` · ${fmt(td)} já existiam em outra planilha e contam uma vez só`:'')+(same.length?` · Já guardada: ${same.join(', ')}`:'')+(bad.length?` · Sem colunas do GeoCall (Número OS, Equipe, Resultado): ${bad.join(', ')}`:''));
 }
 /* ============ cadastro de colaboradores (persistente) ============ */
 const REG_KEY='sa_dash_colab_v1';
@@ -1996,7 +2024,7 @@ function toggleApres(){setApres(!APRES);const ev=$('#fEq').value,cv=$('#fCol').v
 function buildNav(){
   if(VIEW==='equipes'&&!temEquipes())VIEW='colab';
   $('#nav').innerHTML=`<div class="sidein" id="sidein">`+VIEWS.filter(v=>v[0]!=='equipes'||temEquipes()).map(v=>`<button type="button" data-v="${v[0]}" class="${v[0]===VIEW?'on':''}"><svg viewBox="0 0 24 24">${IC[v[2]]}</svg>${v[1]}</button>`).join('')+
-  `<div class="pulse" id="pulse" aria-label="Painel rápido"></div><div class="pulse" id="notes" aria-label="Pendências e anotações"></div><div class="pulse" id="sideBase" aria-label="Base de dados"></div></div>`;
+  `<div class="pulse" id="pulse" aria-label="Painel rápido"></div><div class="pulse" id="notes" aria-label="Pendências e anotações"></div></div>`;
   $('#nav').querySelectorAll('button[data-v]').forEach(b=>b.onclick=()=>go(b.dataset.v));
 }
 const HIST=[];let HI=-1;
@@ -2060,8 +2088,7 @@ function renderNotes(){
   el.innerHTML=`<div class="pb"><div class="pt">Pendências <span class="muted">${abertas} aberta${abertas===1?'':'s'}</span></div>
     <ul class="pend">${it.map((x,i)=>`<li class="${x.ok?'ok':''}"><label><input type="checkbox" data-pi="${i}" ${x.ok?'checked':''}><span>${esc(x.t)}</span></label><button type="button" class="px" data-px="${i}" aria-label="Apagar pendência">×</button></li>`).join('')||'<li class="ps">Nenhuma pendência.</li>'}</ul>
     <form id="pendF" class="pqr"><input id="pendI" placeholder="Nova pendência" maxlength="160" autocomplete="off"><button type="submit" aria-label="Adicionar">+</button></form></div>
-   <div class="pb"><div class="pt">Anotações do líder</div><textarea id="ntT" rows="6" placeholder="Recados, combinados do dia, observações de campo…">${esc(NOTES.texto||'')}</textarea><p class="ps" id="ntSt">${NOTES.em?'Atualizado '+dayBRf(dayKey(Date.parse(NOTES.em)))+' '+hhmm(Date.parse(NOTES.em)):(DB?'Salvo no painel':'Salvo neste navegador')}</p></div>
-   <div class="pb"><div class="pt">Referências</div><dl class="pref"><dt>Meta mensal</dt><dd>${META}% produtivos</dd><dt>Carga corte</dt><dd>${CARGA.CORTE} OS/dia por equipe</dd><dt>Carga supressão</dt><dd>${CARGA.SUPRESSAO} OS/dia por equipe</dd><dt>Baixa fora do local</dt><dd>outro bairro em até ${SUS_GAP} min</dd></dl></div>`;
+   <div class="pb"><div class="pt">Anotações do líder</div><textarea id="ntT" rows="6" placeholder="Recados, combinados do dia, observações de campo…">${esc(NOTES.texto||'')}</textarea><p class="ps" id="ntSt">${NOTES.em?'Atualizado '+dayBRf(dayKey(Date.parse(NOTES.em)))+' '+hhmm(Date.parse(NOTES.em)):(DB?'Salvo no painel':'Salvo neste navegador')}</p></div>`;
   setTimeout(paintTitles,0);
   $('#ntT').oninput=e=>{NOTES.texto=e.target.value;$('#ntSt').textContent='Salvando…';clearTimeout(_nt);_nt=setTimeout(saveNotes,900)};
   $('#pendF').onsubmit=e=>{e.preventDefault();const t=$('#pendI').value.trim();if(!t)return;(NOTES.itens=NOTES.itens||[]).unshift({t,ok:false});saveNotes();renderNotes();$('#pendI').focus()};
@@ -2180,7 +2207,7 @@ function paintTitles(){document.querySelectorAll('#views .panel').forEach((p,i)=
 function enhance(root){paintTitles();
   const names=new Set(Object.keys(REG).map(n=>nomeDe(n)));Object.keys(REG).forEach(n=>names.add(equipeDe(n)));
   root.querySelectorAll('.cpt').forEach(s=>{if(s.nextElementSibling&&s.nextElementSibling.classList.contains('cp'))return;s.insertAdjacentHTML('afterend',cpBtn(s.textContent,(s.dataset.lab?s.dataset.lab+' ':'')+s.textContent))});
-  root.querySelectorAll('.panel').forEach(pn=>{const tw=pn.querySelector(':scope > .tw, :scope > div > .tw');const h=pn.querySelector(':scope > h3');if(!tw||!h||h.querySelector('.cptab:not(.blurbtn)'))return;
+  root.querySelectorAll('.panel:not(.nocp)').forEach(pn=>{const tw=pn.querySelector(':scope > .tw, :scope > div > .tw');const h=pn.querySelector(':scope > h3');if(!tw||!h||h.querySelector('.cptab:not(.blurbtn)'))return;
     const b=document.createElement('button');b.type='button';b.className='cptab';b.innerHTML=CP_ICON+'<span>Copiar tabela</span>';b.title='Copiar a tabela inteira (cola no Excel ou no WhatsApp)';
     b.onclick=e=>{e.stopPropagation();const tb=tw.querySelector('table');const n=tb.querySelectorAll('tbody tr').length;copyText(tableText(tb),`tabela (${n} linha${n>1?'s':''})`)};
     let sm=h.querySelector('small');if(!sm){sm=document.createElement('small');h.appendChild(sm)}sm.appendChild(b)});
@@ -2221,10 +2248,11 @@ function bairroTiersHTML(rows,opt={}){const min=opt.min||20;
      <div class="btl">${l.map(x=>`<button type="button" data-tb="${esc(x.k)}"><span><b>${esc(x.k)}</b><small>${x.sf?'setor '+esc(x.sf)+' · ':''}${fmt(x.a.den)} OS · ${pct(x.f,x.a.den,0)}% fechado</small></span><i class="btb"><i style="width:${Math.min(100,x.a.pr)}%;background:${col(x.a.pr)}"></i></i><em style="color:${col(x.a.pr)}">${pct(x.a.prod,x.a.den,0)}%</em></button>`).join('')}</div></div>`).join('')}</div>
    </div>`}
 function bindTiers(v){v.querySelectorAll('[data-tb]').forEach(b=>b.onclick=()=>drill({bai:b.dataset.tb,label:'Bairro: '+b.dataset.tb}))}
-function vGeral(v,rows){
+function vGeral(v,rows){vGeral0(v,rows);lidAviso(v)}
+function vGeral0(v,rows){
   const A=agg(rows), prev=prevPeriod(), P=prev.length?agg(prev):null;
   const RR=rows.filter(isRR),RRx=RR.filter(r=>r.cat==='RR');
-  const dAll=[[A.pag,['PAG_POS','PAG_FAT'],'Pagamentos',COL.pag],[A.CORTE,['CORTE'],'Cortes',SUB_COL.CORTE],[A.SUP,['SUP'],'Supressões',SUB_COL.SUP],[A.RESTAB,['RESTAB'],'Restabelecimentos',SUB_COL.RESTAB],[A.RELIG,['RELIG'],'Religações',SUB_COL.RELIG],[A.VIST,['VIST'],'Vistorias',SUB_COL.VIST],[A.ACAO,['ACAO'],'Ações especiais',SUB_COL.ACAO],[A.OUTP,['OUTP'],'Produtivo (classificado)',SUB_COL.OUTP]].filter(x=>x[0]||x[2]==='Pagamentos');
+  const dAll=[[A.pag,['PAG_POS','PAG_FAT'],'Pagamentos',COL.pag],[A.CORTE,['CORTE'],'Cortes',SUB_COL.CORTE],[A.SUP,['SUP'],'Supressões',SUB_COL.SUP],[A.RESTAB,['RESTAB'],'Restabelecimentos',SUB_COL.RESTAB],[A.RELIG,['RELIG'],'Religações',SUB_COL.RELIG],[A.VIST,['VIST'],'Vistorias',SUB_COL.VIST],[A.ACAO,['ACAO'],'Ações especiais',SUB_COL.ACAO],[A.OUTP,['OUTP'],'Outros produtivos',SUB_COL.OUTP]].filter(x=>x[0]||x[2]==='Pagamentos');
   const svc=['CORTE','SUPRESSAO','POS','RESTAB','RELIG','VIST','ACAO'].map(k=>Object.assign({k},agg(rows.filter(r=>r.tipo===k)))).filter(s=>s.rec);
   const IMPL={'IMOVEL FECHADO, REPROGRAMAR ORDEM':'Imóvel fechado · reprogramar','IMOVEL FECHADO, ORDEM ENCERRADA':'Imóvel fechado · encerrada','CLIENTE NAO PERMITIU EXECUCAO DO SERVICO':'Cliente não permitiu','NADA CONSTA NO LOCAL':'Nada consta no local','NUMERO/IMOVEL NAO LOCALIZADO':'Nº/imóvel não localizado','DIFICULDADE TECNICA DE EXECUCAO':'Dificuldade técnica'};
   const topImp=[...groupBy(rows.filter(r=>r.cat==='IMPED'),r=>r.res)].map(([k,rs])=>({k,n:rs.length,lbl:IMPL[norm(k)]||k})).sort((x,y)=>y.n-x.n).slice(0,4);
@@ -2286,10 +2314,10 @@ function vGeral(v,rows){
     for(const [n,rs] of groupBy(dr,r=>r.eq)){const c={};rs.forEach(r=>c[r.tipo]=(c[r.tipo]||0)+1);tt.set(n,Object.entries(c).sort((a,b)=>b[1]-a[1])[0][0])}
     const teams=[...tt].filter(x=>x[1]===t).length;const done=dr.filter(r=>r.tipo===t&&r.cat!=='FIMDIA').length;return {d,teams,done,ref:teams*CARGA[t]}};
   const lc=load('CORTE'),ls=load('SUPRESSAO');const posDay=dayRows.filter(r=>r.tipo==='POS');
-  $('#pCarga').innerHTML=`<h3>Execução da carga <small>último dia com serviço · referência ${CARGA.CORTE} OS/dia no corte e ${CARGA.SUPRESSAO} na supressão</small></h3>
+  $('#pCarga').innerHTML=`<h3>Execução da carga <small>último dia com serviço · referência ${CARGA.CORTE} OS/dia no corte${ls.teams?` e ${CARGA.SUPRESSAO} na supressão`:''}</small></h3>
     <div class="gauges">
      <div class="gclick" data-gt="CORTE" data-gd="${lc.d}">${gauge(lc.ref?lc.done/lc.ref*100:0,'#2f86f6')}<div class="gl">Corte · ${dayBR(lc.d)}<br><b>${lc.done} / ${lc.ref}</b><br><span class="muted small">${lc.teams} equipe(s)</span></div></div>
-     <div class="gclick" data-gt="SUPRESSAO" data-gd="${ls.d}">${gauge(ls.ref?ls.done/ls.ref*100:0,'#22c55e')}<div class="gl">Supressão · ${dayBR(ls.d)}<br><b>${ls.done} / ${ls.ref}</b><br><span class="muted small">${ls.teams} equipe(s)</span></div></div>
+     ${ls.teams?'':'<!--'}<div class="gclick" data-gt="SUPRESSAO" data-gd="${ls.d}">${gauge(ls.ref?ls.done/ls.ref*100:0,'#22c55e')}<div class="gl">Supressão · ${dayBR(ls.d)}<br><b>${ls.done} / ${ls.ref}</b><br><span class="muted small">${ls.teams} equipe(s)</span></div></div>${ls.teams?'':'-->'}
     </div>${posDay.length?``:''}`;
   $('#pCarga').querySelectorAll('.gclick').forEach(g=>g.onclick=()=>drill({tipo:g.dataset.gt,day:g.dataset.gd,label:TIPO_LBL[g.dataset.gt]+' · '+dayBRf(g.dataset.gd)}));
   bindBlur(v);
@@ -2359,7 +2387,6 @@ function vRanking(v,rows){
       <div class="rk-ft pv">${spark(x.spark)}${trend(x.trend)}</div></article>`}).join('')}</div>
     ${selosHTML(DST)}
     <div class="rk-hl ${RK_PRIV?'pv':''}">
-     ${evo&&evo.trend!=null?`<div class="glass"><span>Maior evolução (7 dias)</span><b>${esc(nomeDe(evo.k))}</b><em class="${evo.trend>=0?'up':'dn'}">${evo.trend>=0?'+':''}${evo.trend.toFixed(1).replace('.',',')} p.p.</em></div>`:''}
      ${pag?`<div class="glass"><span>Mais pagamentos</span><b>${esc(nomeDe(pag.k))}</b><em>${fmt(pag.a.pag)} pagamentos</em></div>`:''}
      ${cor?`<div class="glass"><span>Mais cortes</span><b>${esc(nomeDe(cor.k))}</b><em>${fmt(cor.a.CORTE)} executados</em></div>`:''}
      ${cedo?`<div class="glass"><span>Início mais cedo (média)</span><b>${esc(nomeDe(cedo.k))}</b><em>1ª OS às ${minToHM(cedo.ini)}</em></div>`:''}
@@ -2390,7 +2417,7 @@ function vRanking(v,rows){
 const BANDS=[['Antes das 10h',0,10],['10h às 12h',10,12],['12h às 14h',12,14],['14h às 16h',14,16],['16h ou mais',16,24]];
 const hourOf=r=>new Date(r.fim).getHours();
 function miniBlock(title,sub,items,opt={}){
-  return `<div class="svcb mini ${opt.cls||''}"><div class="svct">${title} <span class="muted">${sub||''}</span></div>${items.map(x=>`<button type="button" ${x.attr||''}><span>${x.l}</span><div class="bar"><i style="width:${Math.min(100,x.w)}%;background:${x.c||'var(--blue)'}"></i>${opt.meta?`<s style="left:${META}%"></s>`:''}</div><b>${x.v}</b><em>${x.s||''}</em></button>`).join('')}</div>`}
+  return `<div class="svcb mini ${opt.cls||''}">${title?`<div class="svct">${title} <span class="muted">${sub||''}</span></div>`:''}${items.map(x=>`<button type="button" ${x.attr||''}><span>${x.l}</span><div class="bar"><i style="width:${Math.min(100,x.w)}%;background:${x.c||'var(--blue)'}"></i>${opt.meta?`<s style="left:${META}%"></s>`:''}</div><b>${x.v}</b><em>${x.s||''}</em></button>`).join('')}</div>`}
 function weekdayBlock(rows){rows=rows.filter(r=>!r.man);const DW=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];const g=groupBy(rows,r=>new Date(r.day+'T12:00').getDay());
   const it=[1,2,3,4,5,6,0].filter(d=>g.has(d)&&agg(g.get(d)).den>=30).map(d=>{const rs=g.get(d),a=agg(rs),nd=new Set(rs.map(r=>r.day)).size;return {l:DW[d],w:a.pr,v:pct(a.prod,a.den,0)+'%',s:`${fmt(Math.round(a.den/nd))} OS/dia`,c:a.pr>=META?'var(--green)':'var(--blue)',attr:''}});
   return miniBlock('Produtividade por dia da semana','média do período',it,{meta:true})}
@@ -2402,7 +2429,7 @@ function bindResProd(root){
   root.querySelectorAll('.svcb [data-pc]').forEach(b=>b.onclick=()=>abrirFicha(b.dataset.pc));
 }
 /* gráfico diário moderno: 4 grupos, cores suaves, produtividade do dia no topo */
-const DGRP=[{n:'Produtivos',cs:['PAG_POS','PAG_FAT','CORTE','SUP','RESTAB','RELIG','VIST','ACAO','OUTP'],c:'#34d399'},{n:'Negociação infrutífera',cs:['INFRUT'],c:'#fbbf24'},{n:'Imóvel fechado',cs:['FECH'],c:'#ef4444'},{n:'Impedimentos',cs:['NPERM','NADA','NLOC','DTEC'],c:'#fb7185'},{n:'Ação especial não produtiva',cs:['ACAO_NP'],c:'#6b7280'},{n:'Pagamento só informado',cs:['INFO'],c:'#64748b'},{n:'Não produtivo (classificado)',cs:['CLASN'],c:'#475569'},{n:'A classificar',cs:['NOVO'],c:'#e2e8f0'}];
+const DGRP=[{n:'Produtivos',cs:['PAG_POS','PAG_FAT','CORTE','SUP','RESTAB','RELIG','VIST','ACAO','OUTP'],c:'#34d399'},{n:'Negociação infrutífera',cs:['INFRUT'],c:'#fbbf24'},{n:'Imóvel fechado',cs:['FECH'],c:'#ef4444'},{n:'Impedimentos',cs:['NPERM','NADA','NLOC','DTEC'],c:'#fb7185'},{n:'Ação especial não produtiva',cs:['ACAO_NP'],c:'#6b7280'},{n:'Pagamento só informado',cs:['INFO'],c:'#64748b'},{n:'Outros não produtivos',cs:['CLASN'],c:'#475569'},{n:'A classificar',cs:['NOVO'],c:'#e2e8f0'}];
 function drawDaily(el,byDay){
   if(!el)return;
   const paint=()=>{
@@ -2497,17 +2524,17 @@ function vProducao(v,rows){
   const A=agg(rows);
   v.innerHTML=`<div class="panel"><h3>Produção diária por resultado <small>clique numa barra para ver as OS do dia · ${(()=>{const ds=[...new Set(rows.map(r=>r.day))].sort();const n=typeof agMarcas==='function'&&ds.length?agMarcas(ds[0],ds[ds.length-1]).length:0;return n?`${n} ${n>1?'anotações':'anotação'} da Agenda ${n>1?'marcadas':'marcada'} no gráfico`:'sem anotações da Agenda neste período'})()}</small></h3><div class="dleg2">${DGRP.filter(g=>rows.some(r=>g.cs.includes(r.sub))).map(g=>`<span><i style="background:${g.c}"></i>${g.n}</span>`).join('')}<span class="dnote">% no topo em <b style="color:#4ade80">verde</b> = dia com produtividade ≥ ${META}%</span></div><div id="cDia" class="dchart"></div><div class="compbox"><div class="svct">Composição do período <span class="muted">todas as OS trabalhadas</span></div><div id="cComp"></div></div></div>
   ${acoesHTML()}
-  <div class="g2">
+  <div class="g2 g2-prod">
    <div class="panel fillp"><h3>Por tipo de serviço</h3><div class="tw"><table><thead><tr><th>Serviço</th><th class="n">OS trabalhadas</th><th class="n">Produtivos</th><th class="n">Produtividade</th><th class="n">Impedim.</th></tr></thead><tbody>
    ${byT.map(a=>`<tr data-t="${a.k}"><td>${TIPO_LBL[a.k]}</td><td class="n">${fmt(a.trab)}</td><td class="n">${fmt(a.prod)}</td><td class="n">${pct(a.prod,a.den)}%</td><td class="n">${fmt(a.IMPED)}</td></tr>`).join('')}
-   </tbody><tfoot><tr><td>Total</td><td class="n">${fmt(A.trab)}</td><td class="n">${fmt(A.prod)}</td><td class="n">${pct(A.prod,A.den)}%</td><td class="n">${fmt(A.IMPED)}</td></tr></tfoot></table></div>${weekdayBlock(rows)}${hourBlock(rows)}${(()=>{const bt=[...byT].filter(x=>x.den>=10).sort((x,y)=>y.pr-x.pr)[0],bv=[...byT].sort((x,y)=>y.rec-x.rec)[0];return `<div class="pfoot"><span>Melhor produtividade <b>${bt?TIPO_LBL[bt.k]+' · '+pct(bt.prod,bt.den,0)+'%':'—'}</b></span><span>Maior volume <b>${bv?TIPO_LBL[bv.k]+' · '+fmt(bv.trab):'—'}</b></span></div>`})()}</div>
+   </tbody><tfoot><tr><td>Total</td><td class="n">${fmt(A.trab)}</td><td class="n">${fmt(A.prod)}</td><td class="n">${pct(A.prod,A.den)}%</td><td class="n">${fmt(A.IMPED)}</td></tr></tfoot></table></div>${hourBlock(rows)}${(()=>{const bt=[...byT].filter(x=>x.den>=10).sort((x,y)=>y.pr-x.pr)[0],bv=[...byT].sort((x,y)=>y.rec-x.rec)[0];return `<div class="pfoot"><span>Melhor produtividade <b>${bt?TIPO_LBL[bt.k]+' · '+pct(bt.prod,bt.den,0)+'%':'—'}</b></span><span>Maior volume <b>${bv?TIPO_LBL[bv.k]+' · '+fmt(bv.trab):'—'}</b></span></div>`})()}</div>
    <div class="panel fillp"><h3>Resultados registrados <small>classificação usada no cálculo</small></h3><div class="tw"><table><thead><tr><th>Resultado original</th><th class="n">Qtd</th><th class="n">%</th><th>Classificação</th></tr></thead><tbody>
    ${byR.map(x=>`<tr data-r="${esc(x.k)}"><td>${resH(x.k,x.cat)}</td><td class="n">${fmt(x.n)}</td><td class="n">${pct(x.n,A.trab)}%</td><td><span class="st ${x.sub==='NOVO'?'n0':CAT_ST[x.cat]}">${x.sub==='NOVO'?'A classificar (aba Planilhas)':(isProd(x.cat)?'Produtivo · ':'Não produtivo · ')+(CAT_LBL[x.sub]||CAT_LBL[x.cat])}</span></td></tr>`).join('')}
    </tbody></table></div><div class="pfoot"><span><b>${byR.length}</b> resultados diferentes</span><span>Produtivos <b>${pct(A.prod,A.trab)}%</b> das trabalhadas</span><span>Impedimentos <b>${pct(A.IMPED,A.trab)}%</b></span></div></div>
   </div>
   <details class="panel rulesd"><summary><h3>Regras de cálculo</h3><span class="muted">toque para ver</span></summary><ul class="note rules">
-   <li><b>Escopo:</b> Corte, Supressão, Negociação de débitos via POS, Restabelecimento e Religação.</li><li><b>Restabelecimento e religação na produtividade:</b> <label><input type="checkbox" id="rrProd" ${RR_PROD?'checked':''}> contar como produtivos (“Restabelecida ligação de água OP”, “Religação de água deb OP”, “Religação de água impedimento de leitura”)</label>. Desmarcado, esses serviços ficam fora da produtividade e da meta, mas continuam nas listas e no detalhamento.</li>
-   <li><b>Produtivos (lista fechada):</b>  Cliente efetuou pgto via POS · Pagamento efetivado via POS · Cliente apresentou as faturas pagas · Cortada ligação de água por débito DIF/OP · Suprimida ligação de água por débito OP · Vistoriado local e identificada situação · Restabelecida ligação de água OP · Religação de água deb OP · Religação de água impedimento de leitura. “Cliente informou pagamento das faturas” não é produtivo.</li>
+   <li><b>Escopo:</b> Corte, Supressão, Negociação de débitos via POS, Restabelecimento, Religação (inclui reativação de ligação) e Vistoria (verificar serviço solicitado). OS feitas no login do líder contam para o colaborador escolhido na aba Planilhas; enquanto não forem direcionadas, ficam fora dos números.</li><li><b>Restabelecimento e religação na produtividade:</b> <label><input type="checkbox" id="rrProd" ${RR_PROD?'checked':''}> contar como produtivos (“Restabelecida ligação de água OP”, “Religação de água deb OP”, “Religação de água impedimento de leitura”)</label>. Desmarcado, esses serviços ficam fora da produtividade e da meta, mas continuam nas listas e no detalhamento.</li>
+   <li><b>Produtivos (lista fechada):</b>  Cliente efetuou pgto via POS · Pagamento efetivado via POS · Cliente apresentou as faturas pagas · Cortada ligação de água por débito DIF/OP · Suprimida ligação de água por débito OP · Vistoriado local e identificada situação · Restabelecida ligação de água (OP, urgência ou com serviço adicional) · Religação de água (deb OP, com serviço adicional ou impedimento de leitura) · Reativada ligação de água. “Cliente informou pagamento das faturas” não é produtivo.</li>
    <li><b>Cada linha da planilha é uma execução.</b> Uma OS reprogramada aparece mais de uma vez; cada visita conta como OS recebida no dia em que foi baixada.</li>
    <li><b>Produtividade:</b> produtivos ÷ OS trabalhadas (inclui as ações especiais lançadas manualmente). Meta mensal: ${META}% por colaborador, apurada no acumulado do mês (não é meta diária).</li>
    <li><b>Carga diária:</b> ${CARGA.CORTE} OS/dia por equipe de corte e ${CARGA.SUPRESSAO} OS/dia por equipe de supressão (referência, não meta). O tipo da equipe no dia é o serviço que ela mais executou.</li>
@@ -2634,7 +2661,7 @@ function vGargalos(v,rows){rows=rows.filter(r=>!r.man);
   const reinc=[...groupBy(rows,r=>r.os)].map(([k,rs])=>({k,n:rs.length,prod:rs.some(r=>isProd(r.cat)),rs:rs.sort((a,b)=>a.fim-b.fim)})).filter(x=>x.n>1);
   const semSol=reinc.filter(x=>!x.prod).sort((a,b)=>b.n-a.n);
   const fechHour=(()=>{const b=rows.filter(isBaixa);const it=BANDS.map(([l,h0,h1])=>{const rs=b.filter(r=>{const h=hourOf(r);return h>=h0&&h<h1});const f=rs.filter(r=>/^IMOVEL FECHADO/.test(norm(r.res))).length;const p=rs.length?f/rs.length*100:0;return {l,w:p,v:rs.length?p.toFixed(0)+'%':'—',s:`${fmt(f)} de ${fmt(rs.length)}`,c:'#f87171'}});
-    return miniBlock('Imóvel fechado por faixa horária','% das visitas encontradas fechadas',it)})();
+    return miniBlock('','',it)})();
   const fechB=[...groupBy(rows.filter(r=>r.bai&&r.cat!=='FIMDIA'),r=>r.bai)].map(([k,rs])=>{const n=rs.filter(r=>/^IMOVEL FECHADO/.test(norm(r.res))).length;return {k,n,d:rs.length,p:n/rs.length*100,sf:[...new Set(rs.map(r=>r.sf).filter(Boolean))].sort().join(', ')}}).filter(b=>b.d>=15).sort((a,b)=>b.p-a.p).slice(0,10);
   const fech=rows.filter(r=>/^IMOVEL FECHADO/.test(norm(r.res))).length;
   const K=(lab,val,sub,cls,dk)=>`<button type="button" class="kpi ${cls||''}" data-gk="${dk}" title="Ver a lista dessas OS"><span class="lab">${lab}</span><span class="val">${val}</span><span class="sub">${sub}</span><span class="kgo">Ver lista →</span></button>`;
@@ -2651,9 +2678,7 @@ function vGargalos(v,rows){rows=rows.filter(r=>!r.man);
    <div class="panel"><h3>Não produtivos por colaborador <small>% das OS trabalhadas de cada um</small></h3><div class="chartbox tall"><div id="cFim" class="svgc"></div></div></div>
   </div>
   <div class="g1">
-   <div class="panel fillp"><h3>Imóvel fechado por bairro <small>10 bairros com mais visitas fechadas · bairros com 15+ OS</small></h3><div class="tw"><table><thead><tr><th>Bairro</th><th>Setor</th><th class="n">Fechado</th><th class="n">% das visitas</th><th></th></tr></thead><tbody>
-   ${fechB.map(b=>`<tr data-b="${esc(b.k)}"><td>${esc(b.k)}</td><td>${esc(b.sf)}</td><td class="n">${b.n} de ${b.d}</td><td class="n rn"><b>${b.p.toFixed(0)}%</b></td><td style="width:28%"><div class="bar"><i style="width:${Math.min(100,b.p)}%;background:var(--red)"></i></div></td></tr>`).join('')||'<tr><td colspan="5" class="muted">Nenhum</td></tr>'}
-   </tbody></table></div>${fechHour}<div class="pfoot"><span>Média da equipe: <b>${pct(fech,rows.filter(r=>r.cat!=='FIMDIA').length,0)}%</b> das visitas com imóvel fechado</span></div></div></div>
+   <div class="panel fillp"><h3>Imóvel fechado por horário <small>% das visitas encontradas fechadas em cada faixa</small></h3>${fechHour}<div class="pfoot"><span>Média da equipe: <b>${pct(fech,rows.filter(r=>r.cat!=='FIMDIA').length,0)}%</b> das visitas com imóvel fechado</span></div></div></div>
   </div>
   ${heatHTML(rows)}${reincHTML(rows)}
   <div class="panel" id="pBai"></div>`;
@@ -2734,21 +2759,36 @@ function bairroPanel(rows){
 
 /* ---------- Planilhas ---------- */
 let PL_DEL=null;
+function lidLista(){return SHEETS.filter(x=>x.ativa).flatMap(x=>x.recs.filter(r=>r.lid&&r.tipo!=='FORA'&&r.cat!=='FIMDIA'))}
+function lidEquipe(){return [...new Set(allSheetRows().filter(r=>!r.lid&&r.eq).map(r=>r.eq))].sort((a,b)=>nomeDe(a).localeCompare(nomeDe(b),'pt'))}
+function lidHTML(){const L=lidLista();if(!L.length)return '';const pend=L.filter(lidPend).length;const eqs=lidEquipe();const DW=['dom','seg','ter','qua','qui','sex','sáb'];
+  const opt=(sel,vazio)=>`<option value="">${vazio}</option>`+eqs.map(e=>`<option value="${esc(e)}" ${e===sel?'selected':''}>${esc(nomeDe(e))}</option>`).join('');
+  const dias=[...groupBy(L,r=>r.day)].sort((a,b)=>a[0]<b[0]?1:-1);
+  return `<div class="panel lid-p nocp" id="lidP"><h3>OS feitas no login do líder <small>${pend?`<b class="dn">${fmt(pend)} a direcionar</b> · `:''}${fmt(L.length-pend)} direcionada${L.length-pend===1?'':'s'} · escolha quem executou: a OS passa a contar para essa pessoa</small></h3>
+   ${dias.map(([d,rs])=>{rs.sort((a,b)=>(a.ini||a.fim)-(b.ini||b.fim));const um=[...new Set(rs.map(r=>r.eq))];const todos=um.length===1?um[0]:'';const np=rs.filter(lidPend).length;
+     return `<div class="lid-d ${np?'lp':''}"><div class="lid-h"><b>${DW[new Date(d+'T12:00').getDay()]} ${dayBRf(d)}</b><span>${fmt(rs.length)} OS${np?` · <em>${np} a direcionar</em>`:''}</span><label><span>Direcionar o dia todo para</span><select data-lidia="${d}" class="pvn">${opt(todos,um.length>1?'(vários)':'— escolher —')}</select></label></div>
+      <div class="tw"><table class="lid-t nostack"><tbody>${rs.map(r=>`<tr class="${lidPend(r)?'lp':''}"><td class="n">${hhmm(r.ini||r.fim)}–${hhmm(r.fim)}</td><td>${esc(title(r.tss||''))}</td><td><span class="st ${isProd(r.cat)?'p':'i'}">${esc(r.res)}</span></td><td>${esc(r.bai||'')}</td><td>OS ${esc(r.os)}</td><td><select data-lid="${esc(r.key)}" class="pvn">${opt(r.eq,'— a direcionar —')}</select></td></tr>`).join('')}</tbody></table></div></div>`}).join('')}</div>`}
+function bindLid(v){const keep=()=>{const y=scrollY;refreshAll();scrollTo(0,y)};
+  v.querySelectorAll('select[data-lid]').forEach(s=>s.onchange=()=>{if(s.value)ATRIB[s.dataset.lid]=s.value;else delete ATRIB[s.dataset.lid];saveAtrib();keep();toast(s.value?'OS direcionada para '+nomeDe(s.value)+'.':'OS voltou para "a direcionar".')});
+  v.querySelectorAll('select[data-lidia]').forEach(s=>s.onchange=()=>{if(!s.value)return;const d=s.dataset.lidia;let n=0;lidLista().filter(r=>r.day===d).forEach(r=>{ATRIB[r.key]=s.value;n++});saveAtrib();keep();toast(n+' OS de '+dayBRf(d)+' direcionadas para '+nomeDe(s.value)+'.')})}
+function lidAviso(v){if(APRES)return;const n=lidLista().filter(lidPend).length;if(!n)return;
+  v.insertAdjacentHTML('afterbegin',`<div class="lid-av"><span><b>${fmt(n)} OS feitas no login do líder</b> ainda não foram direcionadas e estão fora dos números.</span><button type="button" class="btn sm" id="lidGo">Direcionar agora</button></div>`);
+  v.querySelector('#lidGo').onclick=()=>{go('planilhas');setTimeout(()=>{const e=$('#lidP');if(e)e.scrollIntoView({behavior:'smooth'})},250)}}
 function vPlanilhas(v){
   const tot=SHEETS.reduce((s,x)=>s+x.recs.length,0);
   const st={ok:'Guardadas no painel: abrem em qualquer aparelho, para quem tem acesso a este dashboard.',local:'Guardadas neste navegador (o banco do painel não está disponível nesta visualização).',erro:'Não foi possível abrir as planilhas guardadas no painel agora. As deste navegador continuam disponíveis.',carregando:'Abrindo planilhas guardadas…'}[DBSTATE];
   const list=[...SHEETS].sort((x,y)=>{const a=sheetInfo(x).ini,b=sheetInfo(y).ini;return a<b?1:a>b?-1:0});
   const fora=[...groupBy(SHEETS.filter(s=>s.ativa).flatMap(s=>s.recs.filter(r=>r.tipo==='FORA')),r=>r.tss||'(sem serviço)')].map(([k,rs])=>({k,rs})).sort((a,b)=>b.rs.length-a.rs.length);
   const foraH=fora.length?`<div class="panel"><h3>Serviços que não entram no painel <small>${fmt(fora.reduce((n,x)=>n+x.rs.length,0))} execuç${fora.reduce((n,x)=>n+x.rs.length,0)>1?'ões':'ão'} nas planilhas ativas</small></h3><div class="tw"><table><thead><tr><th>Serviço (TSS)</th><th class="n">Execuções</th><th>Resultados</th><th>Colaboradores</th></tr></thead><tbody>${fora.map(x=>`<tr><td>${esc(x.k)}</td><td class="n">${fmt(x.rs.length)}</td><td>${esc([...new Set(x.rs.map(r=>r.res))].join(', '))}</td><td><span class="pvn">${esc([...new Set(x.rs.map(r=>nomeDe(r.eq)))].join(', '))}</span></td></tr>`).join('')}</tbody></table></div></div>`:'';
-  v.innerHTML=classifHTML()+foraH+`<div class="panel"><h3>Planilhas importadas <small>${fmt(SHEETS.length)} guardada${SHEETS.length>1?'s':''} · ${fmt(ROWS.length)} execuções ativas</small></h3>
+  v.innerHTML=classifHTML()+lidHTML()+foraH+`<div class="panel"><h3>Planilhas importadas <small>${fmt(SHEETS.length)} guardada${SHEETS.length>1?'s':''} · ${fmt(ROWS.length)} execuções ativas</small></h3>
    <div class="plhead"><button class="btn" type="button" id="plImp"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>Importar planilhas</button>
     <button class="btn ghost" type="button" id="plAll">Ativar todas</button><span class="note">${esc(st)}</span></div>
    <div class="plist">${list.map(s=>{const inf=sheetInfo(s);const d=new Date(s.importadaEm);return `<div class="plc ${s.ativa?'on':''}">
      <label class="plt"><input type="checkbox" data-pl="${esc(s.id)}" ${s.ativa?'checked':''}><span><b>${esc(s.nome)}</b><small>${s.builtin?'planilha inicial':'importada em '+pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear()+' '+pad(d.getHours())+':'+pad(d.getMinutes())}</small></span></label>
-     <div class="plm"><span><b>${fmt(s.recs.length)}</b> execuções</span><span>${inf.ini?dayBRf(inf.ini)+' a '+dayBRf(inf.fim):'—'}</span><span>${fmt(new Set(s.recs.map(r=>r.eq)).size)} colaboradores</span></div>
+     <div class="plm"><span><b>${fmt(s.recs.length)}</b> execuções</span><span>${inf.ini?dayBRf(inf.ini)+' a '+dayBRf(inf.fim):'—'}</span><span>${s.recs.length&&s.recs.every(r=>r.lid)?'login do líder':fmt(new Set(s.recs.map(r=>r.lid?'':r.eq).filter(Boolean)).size)+' colaboradores'}</span></div>
      <div class="pla"><button class="btn ghost sm" type="button" data-only="${esc(s.id)}">Ver só esta</button>${s.builtin?'':(PL_DEL===s.id?`<span class="small">Remover de vez?</span><button class="btn sm danger" type="button" data-del="${esc(s.id)}">Sim, remover</button><button class="btn ghost sm" type="button" data-nodel="1">Cancelar</button>`:`<button class="btn ghost sm" type="button" data-ask="${esc(s.id)}">Remover</button>`)}</div></div>`}).join('')}</div>
-   <p class="note">Marque as planilhas que entram nos indicadores. Execuções repetidas contam uma vez só.</p></div>`;
-  $('#plImp').onclick=()=>$('#file').click();bindClassif(v);
+   <p class="note">Marque as planilhas que entram nos indicadores. Execuções repetidas contam uma vez só.</p>${(()=>{const f=Object.entries(CLASSIF);return f.length?`<details class="cls-feitos"><summary>Resultados que você classificou (${f.length})</summary><div class="cls-l">${f.map(([k,v])=>`<div><span><b>${esc(k)}</b><small>${v==='P'?'produtivo':'não produtivo'}</small></span><button type="button" class="btn ghost sm" data-clx="${esc(k)}">Desfazer</button></div>`).join('')}</div></details>`:''})()}</div>`;
+  $('#plImp').onclick=()=>$('#file').click();bindClassif(v);bindLid(v);
   $('#plAll').onclick=()=>{SHEETS.forEach(s=>{if(!s.ativa){s.ativa=true;dbSetAtiva(s)}});lsSave();refreshAll()};
   v.querySelectorAll('[data-pl]').forEach(c=>c.onchange=()=>{const s=SHEETS.find(x=>x.id===c.dataset.pl);s.ativa=c.checked;dbSetAtiva(s);lsSave();refreshAll();toast(c.checked?'Planilha incluída nos indicadores.':'Planilha fora dos indicadores (continua guardada).')});
   v.querySelectorAll('[data-only]').forEach(b=>b.onclick=()=>{SHEETS.forEach(s=>{const on=s.id===b.dataset.only;if(s.ativa!==on){s.ativa=on;dbSetAtiva(s)}});lsSave();$('#fPer').value='ALL';refreshAll();toast('Mostrando só esta planilha.')});
@@ -2962,7 +3002,7 @@ function info(){
   const at=SHEETS.filter(s=>s.ativa).length;
   $('#fileInfo').textContent=!SHEETS.length?'Nenhuma planilha importada':`${at} de ${SHEETS.length} planilha${SHEETS.length>1?'s':''} ativa${at>1?'s':''} · ${fmt(ROWS.length)} execuções`+(DBSTATE==='carregando'?' · abrindo planilhas guardadas…':'');
   $('#fileInfo').title=SOURCES.join('\n');
-  $('#srcInfo').textContent='Fonte: GeoCall WFM · '+(SOURCES.length?SOURCES.join(', '):'nenhuma planilha ativa');
+  $('#srcInfo').textContent='';
 }
 function bindFilters(){
   $('#fPer').onchange=()=>{PER_USER=true;setPeriod();readF();render()};
@@ -3778,7 +3818,7 @@ function bkStatus(){const b=$('#bkBtn');if(!b)return;const d=bkDias();const atra
   b.title=BKA.st==='perm'?'Toque para autorizar de novo a cópia automática':BKA.st==='ok'?'Cópia automática ligada':d==null?'Nenhuma cópia de segurança salva neste aparelho':'Última cópia: '+(d===0?'hoje':d===1?'ontem':'há '+d+' dias')}
 function bkColetar(){const b=SHEETS.find(s=>s.builtin);return {tipo:'backup-painel-santo-andre',v:2,em:new Date().toISOString(),dados:{
   planilhas:SHEETS.filter(s=>!s.builtin).map(s=>({id:s.id,nome:s.nome,importadaEm:s.importadaEm,ativa:s.ativa!==false,rows:s.recs.map(packRec)})),baseAtiva:b?b.ativa!==false:true,
-  agenda:{dias:AG,em:AG_EM},notas:NOTES,acoes:{lista:ACOES,em:AC_EM},resumo:RESUMO,classif:CLASSIF,rodizio:(typeof RZ!=='undefined'&&RZ.cfg)||null,cadastro:REG}}}
+  agenda:{dias:AG,em:AG_EM},notas:NOTES,acoes:{lista:ACOES,em:AC_EM},resumo:RESUMO,classif:CLASSIF,atrib:ATRIB,rodizio:(typeof RZ!=='undefined'&&RZ.cfg)||null,cadastro:REG}}}
 function bkResumo(d){const ag=Object.keys((d.agenda&&d.agenda.dias)||{}).filter(k=>String(d.agenda.dias[k]||'').trim()).length;const pl=d.planilhas||[];
   const L=[`${pl.length} planilha${pl.length===1?'':'s'} importada${pl.length===1?'':'s'} (${fmt(pl.reduce((s,x)=>s+(x.rows||[]).length,0))} OS)`,`${ag} anotaç${ag===1?'ão':'ões'} na agenda`,(n=>`${n} ${n===1?'ação especial':'ações especiais'}`)(((d.acoes&&d.acoes.lista)||[]).length),(n=>`${n} ${n===1?'item':'itens'} no bloco de notas`)(((d.notas&&d.notas.itens)||[]).length)];
   if(d.rodizio)L.push('rodízio da equipe');if(d.cadastro&&Object.keys(d.cadastro).length)L.push('cadastro dos colaboradores');return L}
@@ -3801,6 +3841,7 @@ async function bkAplicar(d){
   if(d.acoes&&Array.isArray(d.acoes.lista)){const ids=new Set(ACOES.map(a=>a.id));ACOES=ACOES.concat(d.acoes.lista.filter(a=>!ids.has(a.id)))}
   if(d.resumo)RESUMO=Object.assign({},d.resumo,RESUMO);
   if(d.classif)CLASSIF=Object.assign({},d.classif,CLASSIF);
+  if(d.atrib){ATRIB=Object.assign({},d.atrib,ATRIB);LS.set('sa_dash_atrib',ATRIB)}
   if(d.cadastro)REG=Object.assign({},d.cadastro,REG);
   if(d.rodizio&&d.rodizio.unidades&&typeof RZ!=='undefined'&&(!RZ.cfg||String(d.rodizio.atualizadoEm||'')>String(RZ.cfg.atualizadoEm||''))){RZ.cfg=RM.migrar(d.rodizio);rzSave('')}
   lsSave();for(const s of novas){try{await dbSaveSheet(s)}catch(e){}}
@@ -3857,7 +3898,7 @@ const fcMin=ms=>{const m=Math.round(ms/6e4);return m<60?m+' min':Math.floor(m/60
 /* intervalos do dia: o maior intervalo antes das 17h conta como almoço (1h); o que passar de 1h é destacado */
 const IV_ALM=60*6e4,IV_FIM=17*60;
 const ivSeq=rs=>rs.filter(r=>!r.man&&r.cat!=='FIMDIA'&&!(new Date(r.fim).getHours()===23&&new Date(r.fim).getMinutes()===59)).sort((a,b)=>(a.ini||a.fim)-(b.ini||b.fim));
-const ivRua=e=>String(e||'').toUpperCase().replace(/\s+\d.*$/,'').trim();
+const ivRua=e=>String(e||'').toUpperCase().replace(/\s+-\s+.*$/,'').replace(/\s+\d.*$/,'').trim(); // rua sem número e sem complemento
 function ivDia(x){const gaps=[];for(let i=1;i<x.length;i++){const de=x[i-1],a=x[i].ini||x[i].fim;const fe=new Date(de.fim);const m=fe.getHours()*60+fe.getMinutes();fe.setHours(17,0,0,0);
     const conta=m<IV_FIM;const gc=conta?Math.max(0,Math.min(a,+fe)-de.fim):0;gaps.push({de,ate:x[i],g:Math.max(0,a-de.fim),gc,conta,corte:conta&&a>+fe,tipo:'',exc:0,rua:!!ivRua(de.end)&&ivRua(de.end)===ivRua(x[i].end)})}
   const c=gaps.filter(y=>y.conta&&y.gc>0);let alm=null;for(const y of c)if(!alm||y.gc>alm.gc)alm=y;
@@ -3868,7 +3909,7 @@ function ivDia(x){const gaps=[];for(let i=1;i<x.length;i++){const de=x[i-1],a=x[
 const DL_TOL=15*6e4;let DL_REF=null;
 const DL_LBL={rua:'mesma rua',bai:'mesmo bairro',sf:'mesmo setor',out:'outro setor'};
 const dlTipo=(a,b)=>ivRua(a.end)&&ivRua(a.end)===ivRua(b.end)?'rua':a.bai&&a.bai===b.bai?'bai':a.sf&&a.sf===b.sf?'sf':'out';
-const dlConta=y=>y.conta&&!y.tipo&&y.gc>0;
+const dlConta=y=>y.conta&&!y.tipo&&y.gc>0&&!!y.de.lid===!!y.ate.lid;
 function dlRef(rows){const ck=rows.length+'|'+(rows[0]&&rows[0].key)+'|'+(rows[rows.length-1]&&rows[rows.length-1].key);if(DL_REF&&DL_REF.ck===ck)return DL_REF;
   const ac=new Set(rows.filter(r=>r.man).map(r=>r.eq+'|'+r.day));const g={rua:[],bai:[],sf:[],out:[]},all=[];
   for(const [kd,x] of groupBy(ivSeq(rows),r=>r.eq+'|'+r.day)){if(ac.has(kd))continue;ivDia(x).gaps.forEach(y=>{if(dlConta(y)){g[dlTipo(y.de,y.ate)].push(y.gc);all.push(y.gc)}})}
@@ -3895,7 +3936,7 @@ function fcDiaHTML(k,dia,rs){
      return `${gl}<li class="fc-p ${r.sus?'sus':''}"><button type="button" data-fos="${esc(r.os)}">
       <span class="fc-h"><b>${hhmm(r.ini||r.fim)}</b><em>${r.ini&&r.fim>r.ini?'até '+hhmm(r.fim):''}</em></span><i class="fc-dot" style="--c:${cor}"></i>
       <span class="fc-b"><span class="fc-r" style="--c:${cor}">${esc(CAT_LBL[s]||r.res)}</span><span class="fc-e pvn">${esc(r.end||'')}${r.bai?' · '+esc(r.bai):''}${r.sf?' · setor '+esc(r.sf):''}</span>
-      <span class="fc-m">${esc(title(r.tss||''))} · OS ${esc(r.os)}${r.ini&&r.fim>r.ini?' · '+fcMin(r.fim-r.ini)+' no local':''}</span>${r.sus?`<span class="fc-w">Fora do local: ${esc(r.susWhy)}</span>`:''}${!APRES&&r.nota?`<span class="fc-n pvn">“${esc(String(r.nota).slice(0,160))}”</span>`:''}</span></button></li>`}).join('')}</ol>`}
+      <span class="fc-m">${r.lid?'<b class="fc-lid">login do líder</b> · ':''}${esc(title(r.tss||''))} · OS ${esc(r.os)}${r.ini&&r.fim>r.ini?' · '+fcMin(r.fim-r.ini)+' no local':''}</span>${r.sus?`<span class="fc-w">Fora do local: ${esc(r.susWhy)}</span>`:''}${!APRES&&r.nota?`<span class="fc-n pvn">“${esc(String(r.nota).slice(0,160))}”</span>`:''}</span></button></li>`}).join('')}</ol>`}
 function vFicha(v,rows){
   DL_REF=dlRef(rows);
   const eqs=[...new Set(rows.filter(r=>r.eq).map(r=>r.eq))].sort((a,b)=>nomeDe(a).localeCompare(nomeDe(b)));
@@ -3994,7 +4035,7 @@ function dosModal(k,rows){const eqs=[...new Set(rows.filter(r=>r.eq&&!r.man).map
 
 
 /* ---------- Versão do painel ---------- */
-const VERSAO='1.8';
+const VERSAO='1.10';
 function verInit(){const b=$('#verTag');if(b)b.textContent='v'+VERSAO}
 
 /* ---------- Jornada (versão enxuta): 4 números, uma tabela por colaborador e os horários da equipe ---------- */
@@ -4040,7 +4081,7 @@ const REL_FIL=[['tipo','Serviço'],['res','Resultado'],['eq','Colaborador'],['st
 let REL={ini:'',fim:'',grp:'res',f:{},q:'',cols:['day','fim','os','pde','end','bai','tipo','res','st','eq','nota'],n:100,open:''};
 function relVal(r,k){switch(k){case 'day':return dayBRf(r.day);case 'ini':return r.ini?hhmm(r.ini):'';case 'fim':return hhmm(r.fim);case 'tipo':return TIPO_LBL[r.tipo]||r.tipo;
   case 'cat':return CAT_LBL[r.sub&&r.sub!==r.cat?r.sub:r.cat]||'';case 'prod':return isProd(r.cat)?'Sim':'Não';case 'eq':return nomeDe(r.eq);case 'nota':return APRES?'':String(r.nota||'').trim();
-  case 'rua':return String(r.end||'').replace(/\s+\d.*$/,'').trim();case 'dur':return r.ini&&r.fim>r.ini?fcMin(r.fim-r.ini):'';default:return String(r[k]==null?'':r[k])}}
+  case 'rua':return String(r.end||'').replace(/\s+-\s+.*$/,'').replace(/\s+\d.*$/,'').trim();case 'dur':return r.ini&&r.fim>r.ini?fcMin(r.fim-r.ini):'';default:return String(r[k]==null?'':r[k])}}
 function relBase(){const all=allSheetRows();if(!REL.ini){REL.ini=$('#fIni').value||'';REL.fim=$('#fFim').value||''}
   return all.filter(r=>(!REL.ini||r.day>=REL.ini)&&(!REL.fim||r.day<=REL.fim))}
 function relFiltra(base,skip){const q=norm(REL.q||'').trim();return base.filter(r=>{for(const [k] of REL_FIL){if(k===skip)continue;const s=REL.f[k];if(s&&s.length&&!s.includes(relVal(r,k)))return false}
