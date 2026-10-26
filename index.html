@@ -1,5 +1,8 @@
 <!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'"><meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow,noarchive"><style>*{box-sizing:border-box}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style></head><body>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'"><meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow,noarchive"><style>*{box-sizing:border-box}body{margin:0}[hidden]{display:none!important}img{max-width:100%}.rzcomp{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:6px;border:1px solid rgba(251,191,36,.5);background:rgba(251,191,36,.12);color:#fde68a;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer}.rzcomp b{color:#fff}
+@media (min-width:761px) and (max-width:900px){header.top{grid-template-columns:minmax(0,auto) minmax(0,1fr) auto auto!important}header.top .title h1,header.top .title h2{white-space:normal!important}}
+.rzedit2{display:flex;flex-direction:column;align-items:stretch;gap:8px;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:10px;max-width:100%}.rzedit2 label{display:flex;flex-direction:column;gap:4px;min-width:0}.rzedit2 select{width:100%;min-width:0;max-width:100%}.rzedit2 .btn{align-self:flex-start}
+</style></head><body>
 <title>Acesso restrito</title>
 <!--
   =====================================================================
@@ -3092,6 +3095,15 @@ function rzAusencia(id,de,ate,motivo){RZ.cfg.ausencias=RZ.cfg.ausencias||[];let 
 function rzTroca(d,id,novo){const dia=rzDia(d);if(!dia)throw new Error('Sem escala nesse dia');const it=dia.itens.map(x=>({unidade:x.unidade,setor:x.setor}));
   const meu=it.find(x=>x.unidade===id);if(!meu)throw new Error(rzNome(id)+' não está escalado nesse dia');const outro=it.find(x=>+x.setor===+novo&&x.unidade!==id);
   if(outro)outro.setor=meu.setor;meu.setor=+novo;RZ.cfg.ajustes=RZ.cfg.ajustes||{};RZ.cfg.ajustes[d]=it;return outro?rzNome(outro.unidade):null}
+/* sem ordens no setor: a pessoa vai para outro setor só neste dia; o setor original continua pendente no giro dela */
+function rzCompl(d){RZ.cfg.compl=RZ.cfg.compl||{};return RZ.cfg.compl[d]=RZ.cfg.compl[d]||{}}
+function rzSemOrdens(d,id){const dia=rzDia(d);if(!dia)throw new Error('Sem escala nesse dia');const it=dia.itens.map(x=>({unidade:x.unidade,setor:x.setor}));
+  const meu=it.find(x=>x.unidade===id);if(!meu)throw new Error(rzNome(id)+' não está escalado nesse dia');const atual=+meu.setor;
+  const rank=(focoOn()?focoRanking().map(x=>+x.c):rzOrdem().filter(z=>z.peso>0).map(z=>+z.codigo));
+  const hist=rzEscalaAte(d).filter(x=>x.data<d&&(!focoOn()||x.data>=rzFoco().inicio));const feito=(focoCiclos(hist).cic[id])||new Set();
+  const ocup={};it.forEach(x=>{if(x.unidade!==id)ocup[+x.setor]=(ocup[+x.setor]||0)+1});
+  const cand=rank.filter(c=>c!==atual).sort((a,b)=>(feito.has(a)-feito.has(b))||((ocup[a]||0)-(ocup[b]||0))||(rank.indexOf(a)-rank.indexOf(b)));
+  if(!cand.length)throw new Error('Não há outro setor disponível');meu.setor=cand[0];RZ.cfg.ajustes=RZ.cfg.ajustes||{};RZ.cfg.ajustes[d]=it;delete rzCompl(d)[id];return cand[0]}
 function rzEqDe(u){if(!u)return null;const base=rzNorm(String(u.nome).split('+')[0]);const ks=Object.keys(REG);const b=base.split(' ');
   return ks.find(k=>rzNorm(k)===base)||ks.find(k=>{const a=rzNorm(k).split(' ');return a[0]===b[0]&&a[1]===b[1]})||ks.find(k=>rzNorm(k).split(' ')[0]===b[0]&&b.length<3)||null}
 /* estatísticas de produção por setor (SF) e por colaborador × setor, no período filtrado */
@@ -3368,8 +3380,8 @@ function rzTelaHoje(rows,ST){const d=RZ.dia;const se=rzSemExp();if(se)return rzD
      const eq=rzEqDe(u),a=eq&&ST.cx[eq+'|'+x.setor];const hist=a&&a.den?`<button type="button" class="rzhist" data-rz="drill" data-sf="${x.setor}" data-eq="${esc(eq)}" title="Histórico dessa pessoa neste setor no GeoCall">neste setor: <b class="${a.prod/a.den*100>=META?'up':'dn'}">${pct(a.prod,a.den,0)}%</b> em ${fmt(a.den)} OS</button>`:(eq?'<span class="rzhist muted">primeira vez neste setor no período</span>':'');
      return `<article class="rzcard ${ok?'done':''}" style="--t:${rzCol(s.potencial)}"><span class="rzn0">${i+1}</span><button type="button" class="rzcode rzs" data-rz="setor" data-c="${s.codigo}" title="Ver no mapa">${esc(s.codigo)}</button>
       <div class="rzbody"><div class="rzwho"><b class="rzn">${esc(rzNome(x.unidade))}</b>${u.tipo==='carro'?'<span class="st n0">carro</span>':''}${rrSet.has(x.unidade)?'<span class="rrtag">↻ religação</span>':''}</div><div class="rzwhere rzs">${esc(s.bairros)}</div>
-       <div class="rzmeta">${rzTier(s.potencial)}<span class="rzm">meta ${rzMeta(u)}</span>${(()=>{const par=it.filter(y=>+y.setor===+x.setor&&y.unidade!==x.unidade);return par.length?`<span class="fc-par">dividir com <b class="rzn">${par.map(y=>esc(rzNome(y.unidade))).join(', ')}</b></span>`:''})()}${(comp[x.unidade]||[]).length?'<span class="muted">se faltar:</span>'+comp[x.unidade].map(c=>`<button type="button" data-rz="setor" data-c="${c}" class="rzplus"><span class="rzchip rzs" style="--t:${rzCol((rzSetor(c)||{}).potencial)}">+${c}</span></button>`).join(''):''}</div>${hist}
-       <details class="rzmore"><summary>Trocar setor ou marcar falta</summary><div class="rzedit"><label>Mandar para o setor<select data-rz="troca" data-u="${esc(x.unidade)}">${rzOrdem().filter(z=>z.peso>0).map(z=>`<option value="${z.codigo}" ${+z.codigo===+x.setor?'selected':''}>${z.codigo} · ${esc(z.potencial)}</option>`).join('')}</select></label><button type="button" class="btn sm ghost" data-rz="falta" data-u="${esc(x.unidade)}">Faltou hoje</button></div></details></div>
+       <div class="rzmeta">${rzTier(s.potencial)}<span class="rzm">meta ${rzMeta(u)}</span>${rzCompl(d)[x.unidade]?`<button type="button" class="rzcomp" data-rz="setor" data-c="${rzCompl(d)[x.unidade]}">completa no <b class="rzs">${rzCompl(d)[x.unidade]}</b></button>`:''}${(()=>{const par=it.filter(y=>+y.setor===+x.setor&&y.unidade!==x.unidade);return par.length?`<span class="fc-par">dividir com <b class="rzn">${par.map(y=>esc(rzNome(y.unidade))).join(', ')}</b></span>`:''})()}${(comp[x.unidade]||[]).length?'<span class="muted">se faltar:</span>'+comp[x.unidade].map(c=>`<button type="button" data-rz="setor" data-c="${c}" class="rzplus"><span class="rzchip rzs" style="--t:${rzCol((rzSetor(c)||{}).potencial)}">+${c}</span></button>`).join(''):''}</div>${hist}
+       <details class="rzmore"><summary>Ajustar o dia</summary><div class="rzedit rzedit2"><button type="button" class="btn sm ghost" data-rz="semord" data-u="${esc(x.unidade)}" title="Vai para outro setor só hoje; este setor continua pendente para a pessoa">Setor sem ordens hoje</button><label>Completar com o setor<select data-rz="compl" data-u="${esc(x.unidade)}"><option value="">não completar</option>${(focoOn()?focoRanking().map(z=>rzSetor(z.c)).filter(Boolean):rzOrdem().filter(z=>z.peso>0)).filter(z=>+z.codigo!==+x.setor).map(z=>`<option value="${z.codigo}" ${+rzCompl(d)[x.unidade]===+z.codigo?'selected':''}>${z.codigo} · ${esc(z.bairros||z.potencial||'').split(' / ')[0]}</option>`).join('')}</select></label></div><div class="rzedit"><label>Mandar para o setor<select data-rz="troca" data-u="${esc(x.unidade)}">${rzOrdem().filter(z=>z.peso>0).map(z=>`<option value="${z.codigo}" ${+z.codigo===+x.setor?'selected':''}>${z.codigo} · ${esc(z.potencial)}</option>`).join('')}</select></label><button type="button" class="btn sm ghost" data-rz="falta" data-u="${esc(x.unidade)}">Faltou hoje</button></div></details></div>
       <button type="button" class="rzchk" data-rz="feito" data-u="${esc(x.unidade)}" aria-pressed="${ok}" aria-label="Marcar como programado">${ok?'✓':''}</button></article>`}).join('')}</div>
    ${sem.length?`<div class="rzfora"><span>Sem equipe hoje:</span>${sem.map(s=>`<button type="button" data-rz="setor" data-c="${s.codigo}">${rzChip(s.codigo)}</button>`).join('')}</div>`:''}
    ${fora.length?`<div class="rzfora"><span>Fora de campo:</span>${fora.map(x=>`<span class="rzpill"><span class="rzn">${esc(rzNome(x.u.id))}</span>${x.a?' · '+esc(x.a.motivo||'')+' até '+rzBR(x.a.ate):''}</span>`).join('')}</div>`:''}
@@ -3495,9 +3507,10 @@ function rzBind(v){const root=v.querySelector('.rz');if(!root)return;rzRuasBind(
       else if(a==='view'){go(b.dataset.v)}
       else if(a==='drill'){const o={label:''};if(b.dataset.sf)o.sf=b.dataset.sf;if(b.dataset.eq)o.eqs=[b.dataset.eq];o.label=(b.dataset.eq?nomeDe(b.dataset.eq)+' · ':'')+(b.dataset.sf?'Setor '+b.dataset.sf:'');drill(o)}
       else if(a==='feito'){RZ.cfg.feitos=RZ.cfg.feitos||{};const f=RZ.cfg.feitos[d]=RZ.cfg.feitos[d]||{};if(f[b.dataset.u])delete f[b.dataset.u];else f[b.dataset.u]=1;rzSave()}
+      else if(a==='semord'){const n=rzSemOrdens(d,b.dataset.u);rzSave(rzNome(b.dataset.u)+' vai para o setor '+n+' hoje. O setor anterior continua na vez dele.')}
       else if(a==='falta'){rzAusencia(b.dataset.u,d,d,'Falta');rzSave(rzNome(b.dataset.u)+' marcado com falta')}
       else if(a==='desfazer'){RZ.confirm='desfazer';rzRerender()}
-      else if(a==='desfazerOk'){RZ.confirm=null;const pa=window.RZ_SEED&&RZ_SEED.ajustes&&RZ_SEED.ajustes[d];if(RZ.cfg.ajustes){if(pa)RZ.cfg.ajustes[d]=JSON.parse(JSON.stringify(pa));else delete RZ.cfg.ajustes[d]}rzSave('Dia voltou ao automático')}
+      else if(a==='desfazerOk'){RZ.confirm=null;const pa=window.RZ_SEED&&RZ_SEED.ajustes&&RZ_SEED.ajustes[d];if(RZ.cfg.ajustes){if(pa)RZ.cfg.ajustes[d]=JSON.parse(JSON.stringify(pa));else delete RZ.cfg.ajustes[d]}if(RZ.cfg.compl)delete RZ.cfg.compl[d];rzSave('Dia voltou ao automático')}
       else if(a==='cancelar'){RZ.confirm=null;rzRerender()}
       else if(a==='ausDel'){RZ.confirm='aus'+b.dataset.i;rzRerender()}
       else if(a==='ausDelOk'){RZ.confirm=null;RZ.cfg.ausencias.splice(+b.dataset.i,1);rzSave('Ausência apagada')}
@@ -3515,6 +3528,7 @@ function rzBind(v){const root=v.querySelector('.rz');if(!root)return;rzRuasBind(
     else if(a==='rrDia'){const c=rrCfg(),k=el.dataset.s==='A'?'semA':'semB',w=+el.value;c[k]=el.checked?[...new Set(c[k].concat(w))].sort():c[k].filter(x=>x!==w);rzSave()}
     else if(a==='rrPor'){rrCfg().porDia=+el.value;rzSave()}
     else if(a==='rrAt'){const c=rrCfg();const seg=rrSegunda(RZ.dia);c.ancora=el.value==='A'?seg:RM.addDias(seg,-7);rzSave('Semana ajustada')}
+    else if(a==='compl'){const cp=rzCompl(RZ.dia);if(el.value)cp[el.dataset.u]=+el.value;else delete cp[el.dataset.u];rzSave(el.value?rzNome(el.dataset.u)+' completa no setor '+el.value+' hoje':'Complemento retirado')}
     else if(a==='troca'){const o=rzTroca(RZ.dia,el.dataset.u,+el.value);rzSave(o?'Trocado com '+o:'Setor alterado')}
     else if(a==='peso'){const s=rzSetor(el.dataset.c);s.peso=+el.value;rzSave('Peso do setor '+s.codigo+' salvo')}}catch(e){toast(e.message)}};
   const bq=root.querySelector('#rzBusca');if(bq){const f=()=>{RZ.q=bq.value;const t=rzNorm(bq.value);let n=0;root.querySelectorAll('.rzidx [data-b]').forEach(r=>{const ok=!t||r.dataset.b.includes(t);r.hidden=!ok;if(ok)n++});$('#rzBv').hidden=n>0};bq.oninput=f;if(RZ.q)f()}
@@ -4045,7 +4059,7 @@ function dosModal(k,rows){const eqs=[...new Set(rows.filter(r=>r.eq&&!r.man).map
 
 
 /* ---------- Versão do painel ---------- */
-const VERSAO='1.11';
+const VERSAO='1.12';
 function verInit(){const b=$('#verTag');if(b)b.textContent='v'+VERSAO}
 
 /* ---------- Jornada (versão enxuta): 4 números, uma tabela por colaborador e os horários da equipe ---------- */
