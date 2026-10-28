@@ -2,6 +2,12 @@
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'"><meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow,noarchive"><style>*{box-sizing:border-box}body{margin:0}[hidden]{display:none!important}img{max-width:100%}.rzcomp{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:6px;border:1px solid rgba(251,191,36,.5);background:rgba(251,191,36,.12);color:#fde68a;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer}.rzcomp b{color:#fff}
 @media (min-width:761px) and (max-width:900px){header.top{grid-template-columns:minmax(0,auto) minmax(0,1fr) auto auto!important}header.top .title h1,header.top .title h2{white-space:normal!important}}
 .rzedit2{display:flex;flex-direction:column;align-items:stretch;gap:8px;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:10px;max-width:100%}.rzedit2 label{display:flex;flex-direction:column;gap:4px;min-width:0}.rzedit2 select{width:100%;min-width:0;max-width:100%}.rzedit2 .btn{align-self:flex-start}
+.lid-ok{margin-top:12px;border:1px solid var(--line);border-radius:10px;background:rgba(10,27,55,.5)}
+.lid-ok>summary{list-style:none;cursor:pointer;display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;padding:10px 14px;font-size:13px;color:#9fb3cf}
+.lid-ok>summary::-webkit-details-marker{display:none}.lid-ok>summary>span{font-weight:600;color:#c9d6ea}.lid-ok>summary>b{color:#4ade80;font-size:14px}
+.lid-ok>summary>em{font-style:normal;font-size:12px;color:#8aa0bf;flex:1;min-width:0}.lid-ok>summary>i{font-style:normal;font-size:12px;color:#7cc7ff;margin-left:auto}
+.lid-ok[open]>summary>i::after{content:" ▲"}.lid-ok:not([open])>summary>i::after{content:" ▼"}.lid-ok .tw{padding:0 10px 10px}
+.lid-fim>h3{margin-bottom:0}.lid-fim .lid-ok{margin-top:10px}
 </style></head><body>
 <title>Acesso restrito</title>
 <!--
@@ -2775,15 +2781,19 @@ function lidTemId(nota,eqs){const t=norm(nota||'');if(!t)return false;if(/\b\d{5
 function lidMatriculas(L){const m={};L.forEach(r=>{if(!r.eq)return;(norm(r.nota||'').match(/\b\d{5,7}\b/g)||[]).forEach(n=>{if(!m[n])m[n]=r.eq})});return m}
 function lidHTML(){const L=lidLista();if(!L.length)return '';const pend=L.filter(lidPend).length;const eqs=lidEquipe();const MAT=lidMatriculas(L);const DW=['dom','seg','ter','qua','qui','sex','sáb'];
   const opt=(sel,vazio)=>`<option value="">${vazio}</option>`+eqs.map(e=>`<option value="${esc(e)}" ${e===sel?'selected':''}>${esc(nomeDe(e))}</option>`).join('');
-  const dias=[...groupBy(L,r=>r.day)].sort((a,b)=>a[0]<b[0]?1:-1);
-  return `<div class="panel lid-p nocp" id="lidP"><h3>OS feitas no login do líder <small>${pend?`<b class="dn">${fmt(pend)} a direcionar</b> · `:''}${fmt(L.length-pend)} direcionada${L.length-pend===1?'':'s'} · escolha quem executou: a OS passa a contar para essa pessoa</small></h3>
-   ${dias.map(([d,rs])=>{rs.sort((a,b)=>(a.ini||a.fim)-(b.ini||b.fim));const um=[...new Set(rs.map(r=>r.eq))];const todos=um.length===1?um[0]:'';const np=rs.filter(lidPend).length;
-     return `<div class="lid-d ${np?'lp':''}"><div class="lid-h"><b>${DW[new Date(d+'T12:00').getDay()]} ${dayBRf(d)}</b><span>${fmt(rs.length)} OS${np?` · <em>${np} a direcionar</em>`:''}</span><label><span>Direcionar o dia todo para</span><select data-lidia="${d}" class="pvn">${opt(todos,um.length>1?'(vários)':'— escolher —')}</select></label></div>
-      <div class="tw"><table class="lid-t nostack"><tbody>${rs.map(r=>`<tr class="${lidPend(r)?'lp':''}"><td class="n">${hhmm(r.ini||r.fim)}–${hhmm(r.fim)}</td><td>${esc(title(r.tss||''))}</td><td><span class="st ${isProd(r.cat)?'p':'i'}">${esc(r.res)}</span>${APRES||!lidTemId(r.nota,eqs)?'':`<span class="lid-nota">“${esc(String(r.nota).replace(/\s+/g,' ').trim())}”</span>`}${(()=>{if(APRES||!lidPend(r))return '';const sg=lidSugere(r,eqs,MAT);return sg?`<button type="button" class="lid-sg" data-lsg="${esc(r.key)}" data-eq="${esc(sg)}">Usar <b class="pvn">${esc(nomeDe(sg).split(' ')[0])}</b><span class="lid-sgx">(sugestão pela nota)</span></button>`:''})()}</td><td>${esc(r.bai||'')}</td><td>OS ${esc(r.os)}</td><td><select data-lid="${esc(r.key)}" class="pvn">${opt(r.eq,'— a direcionar —')}</select></td></tr>`).join('')}</tbody></table></div></div>`}).join('')}</div>`}
-function bindLid(v){const keep=()=>{const y=scrollY;refreshAll();scrollTo(0,y)};
+  const P=L.filter(lidPend),F=L.filter(r=>!lidPend(r));const dias=[...groupBy(P,r=>r.day)].sort((a,b)=>a[0]<b[0]?1:-1);
+  const feitas=F.length?`<details class="lid-ok" ${LID_OPEN?'open':''}><summary><span>Já direcionadas</span><b>${fmt(F.length)}</b><em>${[...groupBy(F,r=>r.eq)].sort((a,b)=>b[1].length-a[1].length).map(([e,rs])=>`<span class="pvn">${esc(nomeDe(e).split(' ')[0])}</span> ${rs.length}`).join(' · ')}</em><i>ver ou corrigir</i></summary>
+     <div class="tw"><table class="lid-t lid-tok nostack"><tbody>${F.slice().sort((a,b)=>b.fim-a.fim).map(r=>`<tr><td class="n">${dayBR(r.day)} ${hhmm(r.fim)}</td><td>${esc(title(r.tss||''))}</td><td><span class="st ${isProd(r.cat)?'p':'i'}">${esc(r.res)}</span></td><td>${esc(r.bai||'')}</td><td>OS ${esc(r.os)}</td><td><select data-lid="${esc(r.key)}" class="pvn">${opt(r.eq,'— a direcionar —')}</select></td></tr>`).join('')}</tbody></table></div></details>`:'';
+  if(!P.length)return `<div class="panel lid-p lid-fim nocp" id="lidP"><h3>OS feitas no login do líder <small>todas direcionadas</small></h3>${feitas}</div>`;
+  return `<div class="panel lid-p nocp" id="lidP"><h3>OS feitas no login do líder <small><b class="dn">${fmt(P.length)} a direcionar</b> · escolha quem executou: a OS passa a contar para essa pessoa e sai desta lista</small></h3>
+   ${dias.map(([d,rs])=>{rs.sort((a,b)=>(a.ini||a.fim)-(b.ini||b.fim));const todos='';const um=[];const np=rs.length;
+     return `<div class="lid-d ${np?'lp':''}"><div class="lid-h"><b>${DW[new Date(d+'T12:00').getDay()]} ${dayBRf(d)}</b><span><em>${np} a direcionar</em></span><label><span>Direcionar o dia todo para</span><select data-lidia="${d}" class="pvn">${opt('','— escolher —')}</select></label></div>
+      <div class="tw"><table class="lid-t nostack"><tbody>${rs.map(r=>`<tr class="${lidPend(r)?'lp':''}"><td class="n">${hhmm(r.ini||r.fim)}–${hhmm(r.fim)}</td><td>${esc(title(r.tss||''))}</td><td><span class="st ${isProd(r.cat)?'p':'i'}">${esc(r.res)}</span>${APRES||!lidTemId(r.nota,eqs)?'':`<span class="lid-nota">“${esc(String(r.nota).replace(/\s+/g,' ').trim())}”</span>`}${(()=>{if(APRES||!lidPend(r))return '';const sg=lidSugere(r,eqs,MAT);return sg?`<button type="button" class="lid-sg" data-lsg="${esc(r.key)}" data-eq="${esc(sg)}">Usar <b class="pvn">${esc(nomeDe(sg).split(' ')[0])}</b><span class="lid-sgx">(sugestão pela nota)</span></button>`:''})()}</td><td>${esc(r.bai||'')}</td><td>OS ${esc(r.os)}</td><td><select data-lid="${esc(r.key)}" class="pvn">${opt(r.eq,'— a direcionar —')}</select></td></tr>`).join('')}</tbody></table></div></div>`}).join('')}${feitas}</div>`}
+let LID_OPEN=false;
+function bindLid(v){const dt=v.querySelector('.lid-ok');if(dt)dt.ontoggle=()=>{LID_OPEN=dt.open};const keep=()=>{const y=scrollY;refreshAll();scrollTo(0,y)};
   v.querySelectorAll('[data-lsg]').forEach(b=>b.onclick=()=>{ATRIB[b.dataset.lsg]=b.dataset.eq;saveAtrib();keep();toast('OS direcionada para '+nomeDe(b.dataset.eq)+'.')});
-  v.querySelectorAll('select[data-lid]').forEach(s=>s.onchange=()=>{if(s.value)ATRIB[s.dataset.lid]=s.value;else delete ATRIB[s.dataset.lid];saveAtrib();keep();toast(s.value?'OS direcionada para '+nomeDe(s.value)+'.':'OS voltou para "a direcionar".')});
-  v.querySelectorAll('select[data-lidia]').forEach(s=>s.onchange=()=>{if(!s.value)return;const d=s.dataset.lidia;let n=0;lidLista().filter(r=>r.day===d).forEach(r=>{ATRIB[r.key]=s.value;n++});saveAtrib();keep();toast(n+' OS de '+dayBRf(d)+' direcionadas para '+nomeDe(s.value)+'.')})}
+  v.querySelectorAll('select[data-lid]').forEach(s=>s.onchange=()=>{if(s.value)ATRIB[s.dataset.lid]=s.value;else delete ATRIB[s.dataset.lid];saveAtrib();keep();toast(s.value?'OS direcionada para '+nomeDe(s.value)+'.':'OS voltou para a lista "a direcionar".')});
+  v.querySelectorAll('select[data-lidia]').forEach(s=>s.onchange=()=>{if(!s.value)return;const d=s.dataset.lidia;let n=0;lidLista().filter(r=>r.day===d&&lidPend(r)).forEach(r=>{ATRIB[r.key]=s.value;n++});saveAtrib();keep();toast(n+' OS de '+dayBRf(d)+' direcionadas para '+nomeDe(s.value)+'.')})}
 function lidAviso(v){if(APRES)return;const n=lidLista().filter(lidPend).length;if(!n)return;
   v.insertAdjacentHTML('afterbegin',`<div class="lid-av"><span><b>${fmt(n)} OS feitas no login do líder</b> ainda não foram direcionadas e estão fora dos números.</span><button type="button" class="btn sm" id="lidGo">Direcionar agora</button></div>`);
   v.querySelector('#lidGo').onclick=()=>{go('planilhas');setTimeout(()=>{const e=$('#lidP');if(e)e.scrollIntoView({behavior:'smooth'})},250)}}
@@ -4059,7 +4069,7 @@ function dosModal(k,rows){const eqs=[...new Set(rows.filter(r=>r.eq&&!r.man).map
 
 
 /* ---------- Versão do painel ---------- */
-const VERSAO='1.12';
+const VERSAO='1.13';
 function verInit(){const b=$('#verTag');if(b)b.textContent='v'+VERSAO}
 
 /* ---------- Jornada (versão enxuta): 4 números, uma tabela por colaborador e os horários da equipe ---------- */
