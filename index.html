@@ -4042,7 +4042,7 @@ function dosDoc(ks,rows,op){op=op||{};const NM=k=>op.id==='cod'?aliasDe(k):nomeD
   const pag=x=>{const dd=x.dias.filter(y=>y.gaps.length);return `<section class="pg"><h1><span${bn}>${esc(NM(x.k))}</span></h1><p class="sub">Intervalos entre atendimentos · ${esc(P)}</p><p class="crit">${crit}</p>
     <div class="ks"><div><span>Dias com OS</span><b>${x.dias.length}</b></div><div><span>Dias acima de 1h</span><b>${dd.length}</b></div><div><span>Intervalos acima de 1h</span><b>${x.n}</b></div><div class="hl"><span>Tempo além do permitido</span><b>${x.exc?hmin(x.exc):'—'}</b></div><div><span>Maior excesso</span><b>${x.top?hmin(x.top.exc):'—'}</b><em>${x.top?dayBRf(x.top.de.day):''}</em></div><div><span>Baixas após 17h</span><b>${x.tarde||'—'}</b></div></div>
     ${dd.length?`<h2>Intervalos acima de 1 hora</h2><table class="iv"><thead><tr><th>Dia</th><th>Última baixa antes do intervalo</th><th>Chegada depois do intervalo</th><th class="n">Intervalo</th><th class="n">Além do permitido</th></tr></thead><tbody>
-    ${dd.map(y=>y.gaps.map((g,i)=>`<tr${i===0?' class="d0"':''}>${i===0?`<td rowspan="${y.gaps.length}"><b>${dayBRf(y.d)}</b><br><small>${dw(y.d)}</small>${y.nota?`<div class="ag">Agenda: ${esc(y.nota.split('\n')[0].slice(0,90))}</div>`:''}</td>`:''}
+    ${dd.map(y=>y.gaps.map((g,i)=>`<tr${i===0?' class="d0"':''}>${i===0?`<td rowspan="${y.gaps.length}"><b>${dayBRf(y.d)}</b><br><small>${dw(y.d)}</small>${y.nota&&op.ag?`<div class="ag">Agenda: ${esc(y.nota.split('\n')[0].slice(0,90))}</div>`:''}</td>`:''}
       <td><b>${hhmm(g.de.fim)}</b> · OS ${esc(g.de.os)}<br><small><span${ba}>${esc(g.de.end||'')}</span>${g.de.bai?' · '+esc(g.de.bai):''}<br>${esc(CAT_LBL[g.de.sub&&g.de.sub!==g.de.cat?g.de.sub:g.de.cat]||g.de.res)}</small></td>
       <td><b>${hhmm(g.ate.ini||g.ate.fim)}</b> · OS ${esc(g.ate.os)}<br><small><span${ba}>${esc(g.ate.end||'')}</span>${g.ate.bai?' · '+esc(g.ate.bai):''}<br>${esc(CAT_LBL[g.ate.sub&&g.ate.sub!==g.ate.cat?g.ate.sub:g.ate.cat]||g.ate.res)}</small></td>
       <td class="n">${hmin(g.gc)}<br><small>${g.tipo==='almx'?'almoço':'fora do almoço'}</small>${g.corte?'<br><small>contado até 17h</small>':''}</td><td class="n"><b class="r">${hmin(g.exc)}</b>${g.rua?'<br><span class="tg">mesma rua</span>':''}</td></tr>`).join('')).join('')}</tbody></table>`:'<p class="ok">Nenhum intervalo acima de 1 hora no período.</p>'}
@@ -4058,18 +4058,18 @@ function dosDoc(ks,rows,op){op=op||{};const NM=k=>op.id==='cod'?aliasDe(k):nomeD
 function dosModal(k,rows){const eqs=[...new Set(rows.filter(r=>r.eq&&!r.man).map(r=>r.eq))].sort((a,b)=>nomeDe(a).localeCompare(nomeDe(b)));
   const ov=document.createElement('div');ov.className='ac-ov';ov.innerHTML=`<div class="ac-m dos-m" role="dialog" aria-label="Relatório de intervalos"><header><b>Relatório de intervalos</b><button type="button" class="ac-x" data-x aria-label="Fechar">×</button></header>
    <div class="dos-op"><label><input type="radio" name="dosq" value="um" checked> Só ${esc(nomeDe(k))}</label><label><input type="radio" name="dosq" value="todos"> Todos os colaboradores (${eqs.length})</label><span class="muted">Período: o mesmo dos filtros do painel</span></div>
-   <div class="dos-op"><b>Identificação</b><label><input type="radio" name="dosi" value="nome" ${APRES?'':'checked'}> Nomes</label><label><input type="radio" name="dosi" value="cod" ${APRES?'checked':''}> Colaborador 01, 02…</label><label><input type="radio" name="dosi" value="blur"> Nomes esfumaçados</label><label><input type="checkbox" id="dosEnd"> Esfumaçar endereços</label></div>
+   <div class="dos-op"><b>Identificação</b><label><input type="radio" name="dosi" value="nome" ${APRES?'':'checked'}> Nomes</label><label><input type="radio" name="dosi" value="cod" ${APRES?'checked':''}> Colaborador 01, 02…</label><label><input type="radio" name="dosi" value="blur"> Nomes esfumaçados</label><label><input type="checkbox" id="dosEnd"> Esfumaçar endereços</label><label><input type="checkbox" id="dosAg"> Mostrar anotações da agenda</label></div>
    <iframe class="dos-f" title="Prévia do relatório"></iframe>
    <footer><button type="button" class="btn ghost sm" id="dosSave">Baixar arquivo</button><span style="flex:1"></span><button type="button" class="btn" id="dosPrint">Imprimir ou salvar em PDF</button></footer></div>`;
   document.body.appendChild(ov);const close=()=>ov.remove();ov.querySelectorAll('[data-x]').forEach(b=>b.onclick=close);ov.onclick=e=>{if(e.target===ov)close()};
-  const f=ov.querySelector('.dos-f');let html='';const gerar=()=>{const q=ov.querySelector('input[name=dosq]:checked').value;html=dosDoc(q==='um'?[k]:eqs,rows,{id:ov.querySelector('input[name=dosi]:checked').value,end:ov.querySelector('#dosEnd').checked});f.srcdoc=html};gerar();
-  ov.querySelectorAll('input[name=dosq],input[name=dosi],#dosEnd').forEach(i=>i.onchange=gerar);
+  const f=ov.querySelector('.dos-f');let html='';const gerar=()=>{const q=ov.querySelector('input[name=dosq]:checked').value;html=dosDoc(q==='um'?[k]:eqs,rows,{id:ov.querySelector('input[name=dosi]:checked').value,end:ov.querySelector('#dosEnd').checked,ag:ov.querySelector('#dosAg').checked});f.srcdoc=html};gerar();
+  ov.querySelectorAll('input[name=dosq],input[name=dosi],#dosEnd,#dosAg').forEach(i=>i.onchange=gerar);
   ov.querySelector('#dosPrint').onclick=()=>{try{f.contentWindow.focus();f.contentWindow.print()}catch(e){toast('Use “Baixar arquivo” e imprima pelo navegador.')}};
   ov.querySelector('#dosSave').onclick=async()=>{const q=ov.querySelector('input[name=dosq]:checked').value;const r=await salvarArquivo('intervalos-'+(q==='um'?String(ov.querySelector('input[name=dosi]:checked').value==='cod'?aliasDe(k):nomeDe(k)).toLowerCase().replace(/[^a-z0-9]+/gi,'-'):'equipe')+'.html',html,'text/html');if(r==='ok')toast('Relatório salvo. Abra o arquivo e imprima em PDF.')}}
 
 
 /* ---------- Versão do painel ---------- */
-const VERSAO='1.13';
+const VERSAO='1.14';
 function verInit(){const b=$('#verTag');if(b)b.textContent='v'+VERSAO}
 
 /* ---------- Jornada (versão enxuta): 4 números, uma tabela por colaborador e os horários da equipe ---------- */
