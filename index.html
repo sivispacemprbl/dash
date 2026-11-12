@@ -1191,15 +1191,70 @@ main :is(div,span,label,p,td,footer,header,form):has(> select,> input[type=date]
 .at-l button:hover{border-color:#3987e5;background:#12305a}.at-l i{width:9px;height:9px;border-radius:50%}.at-l i.r{background:#f87171;box-shadow:0 0 0 3px rgba(248,113,113,.18)}.at-l i.a{background:#fbbf24;box-shadow:0 0 0 3px rgba(251,191,36,.18)}
 .at-l em{font-style:normal;font-size:12px;color:#7cc7ff;white-space:nowrap}.at-l b{color:#fff}.at-l b.up{color:#4ade80}.at-l b.dn{color:#f87171}.at-l b.at{color:#fbbf24}
 .at-ok{margin:0;color:#4ade80;font-size:13.5px}
+
+/* v1.20 · cabeçalho (barra de comando) */
+header.top.hx{display:grid!important;grid-template-columns:minmax(0,1fr) auto auto auto!important;gap:14px!important;align-items:center;padding:12px 24px!important;background:linear-gradient(180deg,#0b2042 0%,#081a36 100%);border-bottom:1px solid rgba(120,170,230,.16);position:relative}
+header.top.hx::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,#2f7bff 0%,#22d3ee 35%,rgba(34,211,238,0) 75%);opacity:.85}
+.hx-id{display:flex;align-items:center;gap:14px;min-width:0}
+.hx-mk{flex:none;width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,#2f7bff,#14b8d6);box-shadow:0 6px 18px -6px rgba(47,123,255,.7),inset 0 1px 0 rgba(255,255,255,.25)}
+header.top.hx .title{min-width:0}
+header.top.hx .title h1{font-family:var(--cond)!important;font-size:24px!important;font-weight:700;letter-spacing:.3px!important;line-height:1.05;white-space:nowrap!important;color:#f2f7ff;text-transform:none}
+.hx-ctx{margin:3px 0 0;display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:12.5px;color:#9fb6d6;line-height:1.3}
+.hx-ctx b{color:#d7e6fa;font-weight:600}
+.hx-ctx i{font-style:normal;color:#5b7aa3}
+.hx-ctx em{font-style:normal;margin-left:6px;padding-left:12px;border-left:1px solid rgba(120,170,230,.25);color:#7cc7ff;letter-spacing:.2px}
+.hx-st{display:inline-flex;align-items:center;gap:8px;background:rgba(10,30,60,.6);border:1px solid rgba(120,170,230,.2);color:#cfe0f5;border-radius:999px;padding:7px 14px;font:inherit;font-size:12.5px;cursor:pointer;white-space:nowrap}
+.hx-st:hover{border-color:rgba(124,199,255,.5)}
+.hx-st i{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.18)}
+.hx-st.old i{background:#fbbf24;box-shadow:0 0 0 3px rgba(251,191,36,.18)}
+.hx-st b{color:#fff;font-weight:600}
+header.top.hx .apres-btn{justify-self:auto}
+header.top.hx .clock{display:block;text-align:right;padding-left:14px;border-left:1px solid rgba(120,170,230,.18)}
+header.top.hx #clock{font-size:12px;color:#8fa6c6;line-height:1.35;font-variant-numeric:tabular-nums}
+header.top.hx #clock b{display:block;color:#e6efff;font-size:13px;font-weight:600}
+@media (min-width:761px) and (max-width:1180px){.hx-ctx em{display:none}header.top.hx .apres-btn span{display:none}header.top.hx .apres-btn{padding:8px 10px}}
+@media (max-width:760px){header.top.hx{grid-template-columns:minmax(0,1fr) auto!important;row-gap:10px!important;padding:12px 16px!important}
+ .hx-id{grid-column:1/-1}.hx-mk{width:36px;height:36px;border-radius:10px}header.top.hx .title h1{font-size:21px!important}.hx-ctx em{display:none}
+ .hx-st{grid-column:1;justify-self:start;padding:6px 12px;font-size:12px}header.top.hx .apres-btn{grid-column:2;grid-row:2;justify-self:end}header.top.hx .apres-btn span{display:none}header.top.hx .clock{display:none}}
+
+/* v1.21 · mapa de calor e ritmo */
+.hm-w{overflow-x:auto;margin-top:4px;-webkit-overflow-scrolling:touch}
+.hm{border-collapse:separate;border-spacing:2px;width:auto;font-variant-numeric:tabular-nums}
+.hm th,.hm td{vertical-align:middle;border:0!important;text-transform:none!important;letter-spacing:0}
+.hm th{font-weight:500;color:#8ea6c6;font-size:11px;padding:0 0 4px;text-align:center;min-width:34px}
+.hm thead th b{display:block;color:#d7e6fa;font-size:12px;font-weight:600}
+.hm thead th span{display:block;font-size:10px}
+.hm thead th.sx b,.hm thead th.sx span{color:#7cc7ff}
+.hm th.hm-n{text-align:left;padding:0 14px 0 0;min-width:0;white-space:nowrap;position:sticky;left:0;background:var(--panel,#0c2142);z-index:1}
+.hm th.hm-n b{color:#dbe7f7;font-size:12.5px;font-weight:500;display:inline-block;max-width:170px;overflow:hidden;text-overflow:ellipsis;vertical-align:middle}
+.hm td{padding:0;height:30px;min-width:34px;border-radius:5px;text-align:center}
+.hm td button{width:100%;height:100%;min-height:30px;border:0;background:none;color:inherit;font:inherit;font-size:11.5px;font-weight:600;cursor:pointer;border-radius:5px}
+.hm td button:hover{outline:2px solid #fff;outline-offset:-2px}
+.hm td.h0{background:rgba(23,52,95,.35);color:#3d5a82}
+.hm td.h1{background:#7f1d1d;color:#fecaca}.hm td.h2{background:#b4433f;color:#fff}.hm td.h3{background:#b88a1c;color:#fff7e0}.hm td.h4{background:#1f8a4c;color:#eafff2}.hm td.h5{background:#15c063;color:#05210f}
+.hm td.hm-t{background:none;padding-left:8px;text-align:right;white-space:nowrap}.hm td.hm-t b{font-size:13px}
+.hm thead th.hm-t{text-align:right;padding-left:8px}
+.hm tr.hm-eq th,.hm tr.hm-eq td{border-top:6px solid transparent}
+.hm tr.hm-eq th.hm-n b{color:#9fd0ff;font-weight:700}
+.hm-leg{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:10px;font-size:11.5px;color:#8ea6c6}
+.hm-leg span{display:inline-flex;align-items:center;gap:6px}.hm-leg i{width:14px;height:10px;border-radius:3px;display:inline-block}
+.hm-leg i.h0{background:rgba(23,52,95,.6)}.hm-leg i.h1{background:#7f1d1d}.hm-leg i.h2{background:#b4433f}.hm-leg i.h3{background:#b88a1c}.hm-leg i.h4{background:#1f8a4c}.hm-leg i.h5{background:#15c063}
+.colw.blurn .hm .pvn{filter:blur(5px)}
+.fc-rt{margin-top:10px;display:grid;grid-template-columns:auto 1fr auto;gap:6px 16px;align-items:center;padding:11px 14px;border:1px solid var(--line);border-left:3px solid #22c55e;border-radius:10px;background:rgba(10,27,55,.45)}
+.fc-rt-at{border-left-color:#fbbf24}.fc-rt-bad{border-left-color:#f87171}
+.fc-rt-h{font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:#9fd0ff;font-weight:700;white-space:nowrap}
+.fc-rt p{margin:0;font-size:13px;color:#c9d6ea;line-height:1.45}.fc-rt p small{color:#7f97bb;white-space:nowrap}
+.fc-rt em{font-style:normal;font-size:11.5px;font-weight:700;color:var(--c);border:1px solid var(--c);border-radius:999px;padding:3px 10px;white-space:nowrap}
+@media (max-width:700px){.fc-rt{grid-template-columns:1fr}.fc-rt em{justify-self:start}.hm th.hm-n b{font-size:11.5px;max-width:110px;display:inline-block;overflow:hidden;text-overflow:ellipsis;vertical-align:middle}}
 </style>
 
 <div class="app">
-<header class="top">
-  
-
-  <div class="title"><h1>GESTÃO OPERACIONAL</h1><h2 hidden></h2></div>
+<header class="top hx">
+  <div class="hx-id"><span class="hx-mk" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V13M10 20V9M16 20v-5M22 20H2"/><path d="M4 9l6-4 6 5 5-6"/></svg></span>
+   <div class="title"><h1>Gestão Operacional</h1><p class="hx-ctx"><b>Santo André</b><i>›</i>Operação de campo<em>Corte · Negociação · Religação</em></p><h2 hidden></h2></div></div>
+  <button type="button" class="hx-st" id="hxSt" hidden title="Ver as planilhas atualizadas"><i></i><span id="hxStT"></span></button>
   <button type="button" class="apres-btn" id="apresBtn" aria-pressed="false" title="Esconde nomes e observações de campo para apresentar em telão ou Teams"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/></svg><span>Modo apresentação</span></button>
-  <div class="clock"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#c9d6ea" stroke-width="1.6" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2"/></svg><div id="clock"><b>—</b>—</div></div>
+  <div class="clock"><div id="clock"><b>—</b>—</div></div>
 </header>
 
 <nav class="side" id="nav"></nav>
@@ -2116,9 +2171,12 @@ window.__drill=drill;
 const ATUACAO=[{nome:'São Mateus',atc:'947',reg:'Zona Leste',teste:sf=>typeof distDe==='function'&&!!distDe(sf)}];
 function updAtuacao(rows){const el=$('#atuaChip');if(!el)return;const sfs=rows.filter(r=>r.sf&&!r.man);let best=null,bn=0;for(const A of ATUACAO){const n=sfs.filter(r=>A.teste(r.sf)).length;if(n>bn){bn=n;best=A}}
   if(best&&bn>=sfs.length*.5){el.hidden=false;el.title='Área de atuação do período';el.innerHTML=`<i></i><b>${best.nome} · ATC ${best.atc}</b><u>${best.reg}</u>`}else el.hidden=true}
+function updHdr(){const el=$('#hxSt');if(!el)return;try{const ds=ROWS.filter(r=>r.day&&!r.man).map(r=>r.day);if(!ds.length){el.hidden=true;return}
+  const ld=ds.reduce((a,b)=>b>a?b:a);const hj=dayKey(Date.now());const dif=Math.round((Date.parse(hj)-Date.parse(ld))/864e5);const DW=['dom','seg','ter','qua','qui','sex','sáb'];const dd=new Date(ld+'T12:00:00');
+  el.hidden=false;el.classList.toggle('old',dif>3);$('#hxStT').innerHTML=`Dados até <b>${DW[dd.getDay()]}, ${ld.slice(8,10)}/${ld.slice(5,7)}</b>`;el.title=dif>3?`Última atualização das planilhas há ${dif} dias · toque para atualizar`:'Planilhas em dia · toque para ver'}catch(e){el.hidden=true}}
 function render(){
   killCharts();
-  const rows=applyF(scope());updAtuacao(rows);
+  const rows=applyF(scope());updAtuacao(rows);updHdr();
   const v=$('#views');
   const fn={rodizio:vRodizio,bairros:vBairros,agenda:vAgenda,ranking:vRanking,planilhas:vPlanilhas,geral:vGeral,producao:vProducao,pos:vPOS,jornada:vJornada,equipes:vEquipes,colab:vColab,ficha:vFicha,relatorios:vRelatorios,gargalos:vGargalos,sexta:vSexta,reuniao:vReuniao,os:vOS}[VIEW];
   if(!ROWS.length&&VIEW!=='planilhas'&&VIEW!=='agenda'&&VIEW!=='rodizio'&&!(VIEW==='os'&&DRILL.all)){v.innerHTML=`<div class="panel empty"><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="#7cc7ff" stroke-width="1.6"><path d="M4 3h11l5 5v13H4z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg><h3>Nenhuma planilha carregada</h3><p>Importe o export do GeoCall (Excel ou CSV). As planilhas ficam guardadas${SECURE?' e cifradas neste navegador':''} e são somadas automaticamente.</p><button class="btn" type="button" id="emImp">Importar planilhas</button></div>`;$('#emImp').onclick=()=>$('#file').click();const pl=$('#pulse');if(pl)pl.innerHTML='';const sb=$('#sideBase');if(sb)sb.innerHTML='';return}
@@ -2687,7 +2745,7 @@ function termoData(rows){
     const g=agg(geo);const dpd=dias.length?g.den/dias.length:0;const u5=new Set(dias.slice(-5));const p5=agg(geo.filter(r=>u5.has(r.day)));const rit=p5.den?p5.prod/p5.den:0;
     const denF=a.den+dpd*rest,prodF=a.prod+rit*dpd*rest;const proj=denF?prodF/denF*100:0;const need=rest?Math.max(0,(META/100*denF-a.prod)/rest):0;
     let st;if(dias.length<3)st='peq';else if(!rest)st=a.pr>=META?'ok':'fim';else if(proj>=META)st='ok';else if(need<=dpd)st='ex';else st='fora';
-    return {k,a,dias:dias.length,dpd,proj,need,st}}).filter(x=>x.a.den>=10).sort((x,y)=>(x.st==='peq')-(y.st==='peq')||y.proj-x.proj);
+    return {k,a,dias:dias.length,dpd,proj,need,st,faz:rit*dpd}}).filter(x=>x.a.den>=10).sort((x,y)=>(x.st==='peq')-(y.st==='peq')||y.proj-x.proj);
   return {ym,fim,rest,L,ld}}
 const TERMO_ST={ok:['No ritmo da meta','#22c55e'],ex:['Possível, mas exigente','#f5b73b'],fora:['Fora de alcance','#f87171'],fim:['Abaixo da meta','#f87171'],peq:['Pouca amostra','#94a3b8']};
 function termoHTML(rows){const T=termoData(rows);if(!T||!T.L.length)return '';const[Y,M]=T.ym.split('-').map(Number);const mes=MESES[M-1].charAt(0)+MESES[M-1].slice(1).toLowerCase();
@@ -2699,16 +2757,32 @@ function termoHTML(rows){const T=termoData(rows);if(!T||!T.L.length)return '';co
      <span class="tm-bar"><i style="width:${Math.min(100,x.a.pr)}%"></i>${fechado?'':`<em style="left:${Math.min(100,x.proj)}%"></em>`}<s style="left:${META}%"></s></span>
      <span class="tm-v"><b class="${fxTxt(x.a.pr)}">${pct(x.a.prod,x.a.den)}%</b><small>${fechado?'fechamento':'hoje'}</small></span>
      ${fechado?`<span class="tm-v"><b>${fmt(x.a.prod)}</b><small>produtivos</small></span><span class="tm-v"><b>${fmt(x.a.den)}</b><small>OS trabalhadas</small></span>`:`<span class="tm-v"><b style="color:${sc}">${x.proj.toFixed(1).replace('.',',')}%</b><small>projeção ${dayBR(T.fim)}</small></span>
-     <span class="tm-v"><b>${fmt(Math.ceil(x.need))} <em>de ${fmt(Math.round(x.dpd))}</em></b><small>produtivas/dia p/ ${META}%</small></span>`}
+     <span class="tm-v"><b>${fmt(Math.ceil(x.need))} <em>de ${fmt(Math.round(x.dpd))}</em></b><small>por dia p/ ${META}% · faz ${fmt(Math.round(x.faz))}</small></span>`}
      <span class="tm-st" style="--c:${sc}">${sl}</span></div>`}).join('')}</div>
    <div class="tm-leg"><span><i class="a"></i>${fechado?'resultado do mês':'acumulado hoje'}</span>${fechado?'':'<span><i class="p"></i>projeção</span>'}<span><i class="m"></i>meta ${META}%</span></div></div>`}
 function blurNomesBtn(){return `<button type="button" class="cptab blurn-btn ${COL_BLUR?'on':''}" data-blurn="1"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span>${COL_BLUR?'Nomes esfumaçados':'Esfumaçar nomes'}</span></button>`}
+/* mapa de calor: colaborador × dia, cor pela produtividade do dia */
+function hmapHTML(rows){try{const g=geoR(rows).filter(r=>r.cat!=='FIMDIA');const dias=[...new Set(g.map(r=>r.day))].sort();if(dias.length<2)return '';
+  const P=[...groupBy(g,r=>r.eq)].map(([k,rs])=>({k,a:agg(rs),m:new Map([...groupBy(rs,r=>r.day)].map(([d,x])=>[d,agg(x)]))})).filter(x=>x.a.den>=10).sort((x,y)=>y.a.pr-x.a.pr);if(!P.length)return '';
+  const T=new Map(dias.map(d=>[d,agg(g.filter(r=>r.day===d))]));const DW=['dom','seg','ter','qua','qui','sex','sáb'];
+  const cl=a=>!a||a.den<3?'':a.pr>=META+10?'h5':a.pr>=META?'h4':a.pr>=META-FAIXA_AT?'h3':a.pr>=META-20?'h2':'h1';
+  const cel=(k,d,a)=>a&&a.den?`<td class="${cl(a)}"><button type="button" data-hm='${JSON.stringify({eqs:k?[k]:null,day:d,label:(k?nomeDe(k)+' · ':'Equipe · ')+dayBRf(d)}).replace(/'/g,'&#39;')}' title="${esc(k?nomeDe(k):'Equipe')} · ${dayBRf(d)} · ${pct(a.prod,a.den,0)}% (${a.prod} de ${a.den})">${pct(a.prod,a.den,0)}</button></td>`:'<td class="h0"><span>·</span></td>';
+  return `<div class="panel hm-p"><h3>Mapa de calor da equipe <small>produtividade de cada dia · toque numa casa para ver as OS</small>${blurNomesBtn()}</h3>
+   <div class="hm-w"><table class="hm"><thead><tr><th class="hm-n"></th>${dias.map(d=>{const w=new Date(d+'T12:00').getDay();return `<th class="${w===5?'sx':''}"><b>${d.slice(8,10)}</b><span>${DW[w]}</span></th>`}).join('')}<th class="hm-t">Período</th></tr></thead>
+   <tbody>${P.map(x=>`<tr><th class="hm-n"><b class="pvn" data-nm="${esc(x.k)}">${esc(nomeDe(x.k))}</b></th>${dias.map(d=>cel(x.k,d,x.m.get(d))).join('')}<td class="hm-t"><b class="${fxTxt(x.a.pr)}">${pct(x.a.prod,x.a.den,0)}%</b></td></tr>`).join('')}
+   <tr class="hm-eq"><th class="hm-n"><b>Equipe</b></th>${dias.map(d=>cel(null,d,T.get(d))).join('')}<td class="hm-t"><b class="${fxTxt(agg(g).pr)}">${pct(agg(g).prod,agg(g).den,0)}%</b></td></tr></tbody></table></div>
+   <div class="hm-leg"><span><i class="h1"></i>abaixo de ${META-20}%</span><span><i class="h2"></i>${META-20}–${META-FAIXA_AT}%</span><span><i class="h3"></i>${META-FAIXA_AT}–${META}%</span><span><i class="h4"></i>${META}–${META+10}%</span><span><i class="h5"></i>${META+10}% ou mais</span><span><i class="h0"></i>sem OS</span></div></div>`}catch(e){return ''}}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-hm]');if(b){try{drill(JSON.parse(b.dataset.hm))}catch(_){}}});
+/* ritmo para a meta na ficha */
+function fcRitmoHTML(rows,k){try{const T=termoData(rows);if(!T||!T.rest)return '';const x=T.L.find(y=>y.k===k);if(!x||x.st==='peq')return '';const mes=mesNome(T.ym).toLowerCase();
+  const nd=Math.ceil(x.need),fz=Math.round(x.faz),ok=x.a.pr>=META&&x.proj>=META;const c=x.st==='ok'?'ok':x.st==='ex'?'at':'bad';
+  return `<div class="fc-rt fc-rt-${c}"><span class="fc-rt-h">Ritmo para a meta</span><p>${x.need<=0?`Já garantiu ${META}% em ${mes} mesmo sem novos produtivos.`:`Para fechar ${mes} em <b>${META}%</b>, precisa de <b>${nd} produtiva${nd===1?'':'s'} por dia</b> nos ${T.rest} dia${T.rest>1?'s':''} út${T.rest>1?'eis':'il'} restante${T.rest>1?'s':''}.`} Ritmo atual: <b class="${fz>=nd?'up':'dn'}">${fz} por dia</b> <small>(últimos 5 dias)</small>.</p><em style="--c:${TERMO_ST[x.st][1]}">${TERMO_ST[x.st][0]}</em></div>`}catch(e){return ''}}
 function vColab(v,rows){
   const g=new Map([...groupBy(rows,r=>r.eq)]);
   const names=Object.keys(REG).sort();
   const list=names.map(n=>Object.assign({k:n},agg(g.get(n)||[]),{dias:new Set((g.get(n)||[]).map(r=>r.day)).size})).sort((a,b)=>b.prod-a.prod);
   const showEq=names.some(n=>equipeDe(n)!==nomeDe(n)&&equipeDe(n)!==title(n));
-  v.innerHTML=`<div class="colw ${COL_BLUR?'blurn':''}">${termoHTML(rows)}<div class="panel"><h3>Desempenho dos colaboradores <small>${fmt(list.filter(x=>x.trab).length)} com OS no período${list.some(x=>!x.trab)?' · '+fmt(list.filter(x=>!x.trab).length)+' sem OS':''} · clique no nome para revelar, na linha para ver as OS</small>${blurNomesBtn()}</h3>${colTabHTML(list.filter(x=>x.trab).map(x=>({k:x.k,a:x,dias:x.dias})),{rank:true,dias:true,tag:x=>REG[x.k]&&REG[x.k].ativo===false?' <span class="st f">inativo</span>':''})}</div>
+  v.innerHTML=`<div class="colw ${COL_BLUR?'blurn':''}">${termoHTML(rows)}${hmapHTML(rows)}<div class="panel"><h3>Desempenho dos colaboradores <small>${fmt(list.filter(x=>x.trab).length)} com OS no período${list.some(x=>!x.trab)?' · '+fmt(list.filter(x=>!x.trab).length)+' sem OS':''} · clique no nome para revelar, na linha para ver as OS</small>${blurNomesBtn()}</h3>${colTabHTML(list.filter(x=>x.trab).map(x=>({k:x.k,a:x,dias:x.dias})),{rank:true,dias:true,tag:x=>REG[x.k]&&REG[x.k].ativo===false?' <span class="st f">inativo</span>':''})}</div>
   ${APRES?'<div class="panel"><p class="note">Cadastro de colaboradores oculto no modo apresentação.</p></div>':`  <div class="panel"><h3>Cadastro de colaboradores <small>salvo neste navegador · permanece entre importações</small></h3>
   <div class="tw"><table><thead><tr><th>Nome na base (GeoCall)</th><th>Equipe</th><th>Ativo</th><th>Primeira aparição</th></tr></thead><tbody>
   ${names.map((n,i)=>`<tr data-cad="${esc(n)}" class="${n===COL_SHOW?'show':''}"><td><span class="pvn" data-nm="${esc(n)}">${esc(n)}</span></td><td><input class="cad pvn" id="cad-eq-${i}" data-n="${esc(n)}" value="${esc(REG[n].equipe||'')}" aria-label="Equipe de ${esc(n)}"></td><td><input type="checkbox" id="cad-at-${i}" data-n="${esc(n)}" ${REG[n].ativo!==false?'checked':''} aria-label="Ativo"></td><td>${dayBRf(REG[n].desde||'')}</td></tr>`).join('')}
@@ -3096,7 +3170,7 @@ function bindFilters(){
 }
 function applyCfgText(){try{if(CFG.titulo)document.querySelector('.title h1').textContent=CFG.titulo;if(CFG.subtitulo){const h2=document.querySelector('.title h2');h2.textContent=CFG.subtitulo;h2.hidden=false}}catch(e){}}
 applyCfgText();
-function tick(){const d=new Date();$('#clock').innerHTML=`<b>${DIAS[d.getDay()]}, ${d.getDate()} de ${MESES[d.getMonth()].charAt(0)+MESES[d.getMonth()].slice(1).toLowerCase()} de ${d.getFullYear()}</b>${pad(d.getHours())}:${pad(d.getMinutes())}`}
+function tick(){const d=new Date();$('#clock').innerHTML=`<b>${DIAS[d.getDay()]}</b>${d.getDate()} de ${MESES[d.getMonth()].charAt(0)+MESES[d.getMonth()].slice(1).toLowerCase()} · ${pad(d.getHours())}:${pad(d.getMinutes())}`}
 
 var MAPA_POS={148:[330,52],149:[440,165],150:[690,250],117:[178,206],118:[98,292],156:[48,374],155:[232,300],154:[350,372],153:[545,486],
   151:[790,372],242:[852,258],194:[1030,288],247:[1350,350],248:[1082,462],249:[1422,526],250:[1322,652],251:[1135,652],195:[1038,626],252:[922,596],152:[790,544],253:[737,688]};
@@ -3876,6 +3950,8 @@ function atencaoHTML(rows,dia){try{const it=[];const g=geoR(rows);const dd=g.fil
   // longe da meta no período
   const lon=[...groupBy(g,r=>r.eq)].map(([k,rs])=>({k,a:agg(rs)})).filter(x=>x.a.den>=40&&x.a.pr<META-FAIXA_AT).sort((x,y)=>x.a.pr-y.a.pr);
   if(lon.length)it.push({n:2,t:`${lon.length===1?'1 colaborador está':lon.length+' colaboradores estão'} abaixo de ${META-FAIXA_AT}% no período: ${lon.slice(0,3).map(x=>N(x.k)+' '+pct(x.a.prod,x.a.den,0)+'%').join(', ')}${lon.length>3?' e mais '+(lon.length-3):''}.`,a:{go:'colab'}});
+  // ritmo abaixo do necessário para fechar o mês na meta
+  {const T=termoData(rows);if(T&&T.rest){const L=T.L.filter(x=>x.st!=='peq'&&x.st!=='ok'&&x.need>0&&x.faz<x.need&&!lon.some(y=>y.k===x.k)).sort((x,y)=>(y.need-y.faz)-(x.need-x.faz));if(L.length)it.push({n:1,t:`Ritmo abaixo do necessário para fechar ${mesNome(T.ym).toLowerCase()} em ${META}%: ${L.slice(0,3).map(x=>N(x.k)+' (precisa '+Math.ceil(x.need)+'/dia, faz '+Math.round(x.faz)+')').join(', ')}${L.length>3?' e mais '+(L.length-3):''}.`,a:{go:'colab'}})}}
   // no dia: baixas fora do local
   const sus=[...groupBy(dd.filter(r=>r.sus),r=>r.eq)];if(sus.length)it.push({n:2,t:`Baixas fora do local no dia: ${sus.map(([k,rs])=>N(k)+' ('+rs.length+')').join(', ')}.`,a:{day:dia,sus:true,label:'Baixas fora do local · '+dayBRf(dia)}});
   // no dia: parado além do almoço e deslocamento além do esperado
@@ -4110,7 +4186,7 @@ function vFicha(v,rows){
      ${T2('',nVis||nOut?'Restab., religações e outros':'Restab. e religações',fmt(nRes+nRel+nVis+nOut),`${fmt(nRes)} restabelecimento${nRes===1?'':'s'} · ${fmt(nRel)} religaç${nRel===1?'ão':'ões'}${nVis?` · ${fmt(nVis)} vistoria${nVis===1?'':'s'}`:''}${nOut?` · ${fmt(nOut)} outro${nOut===1?'':'s'} produtivo${nOut===1?'':'s'}`:''}${RR_PROD?'':' · fora da produtividade'}`,`data-fd='{"cats":["RESTAB","RELIG"]}' data-fl="restabelecimentos e religações"`)}
      ${T2(sus?'bad':'','Fora do local',fmt(sus),sus?'baixas longe do endereço':'nenhuma',`data-fd='{"sus":true}' data-fl="baixas fora do local"`)}
      ${T2(ivT?'warn':'ok','Parado além do almoço',ivT?fcMin(ivT):'nada',ivT?`em ${ivN} de ${dias.length} dias · maior ${fcMin(ivMx.exc)} em ${dayBRf(ivMx.d).slice(0,5)}`:'almoço sempre dentro de 1h',ivT?`data-fexc="${ivMx.d}"`:'data-fd=\'{}\' data-fl="todas as OS"')}
-     ${T2(alertas.length?'warn':'','Alertas de jornada',`${alertas.length} de ${dias.length}`,`dias chegando depois das ${hm(JA_INI)} ou última antes de ${hm(JA_FIM)}`,alertas.length?`data-fdd="${esc(alertas.map(x=>k+'|'+x.d).join(','))}"`:'data-fd=\'{}\' data-fl="todas as OS"')}</div>${fcTriHTML(k,dias[dias.length-1])}</div>
+     ${T2(alertas.length?'warn':'','Alertas de jornada',`${alertas.length} de ${dias.length}`,`dias chegando depois das ${hm(JA_INI)} ou última antes de ${hm(JA_FIM)}`,alertas.length?`data-fdd="${esc(alertas.map(x=>k+'|'+x.d).join(','))}"`:'data-fd=\'{}\' data-fl="todas as OS"')}</div>${fcTriHTML(k,dias[dias.length-1])}${fcRitmoHTML(rows,k)}</div>
   <div class="g2 fc-g">
    <div class="panel"><h3>Dia a dia <small>produtividade de cada dia · toque no dia para ver o passo a passo</small></h3>
     <div class="fc-days">${porDia.map(x=>{const h=Math.max(3,Math.min(100,x.a.pr))*.85;const dw=DW[new Date(x.d+'T12:00').getDay()];return `<button type="button" class="fc-d ${x.d===dia?'on':''} ${x.a.pr>=META?'ok':''}" data-fdia="${x.d}" data-tip="${dw} ${dayBRf(x.d)}<br>${pct(x.a.prod,x.a.den,0)}% produtivo · ${fmt(x.a.den)} OS${ivM.get(x.d)?'<br>parado além do almoço: '+fcMin(ivM.get(x.d)):''}${x.alerta?'<br>alerta de jornada':''}">${ivM.get(x.d)||x.alerta?'<u></u>':''}<em>${pct(x.a.prod,x.a.den,0)}%</em><i style="height:${h}%"></i><span>${porDia.length>12?x.d.slice(8):x.d.slice(8)+'/'+x.d.slice(5,7)}</span></button>`}).join('')}<span class="fc-meta-l" style="--m:${META/100*.85}"><b>meta ${META}%</b></span></div></div>
@@ -4179,7 +4255,7 @@ function dosModal(k,rows){const eqs=[...new Set(rows.filter(r=>r.eq&&!r.man).map
 
 
 /* ---------- Versão do painel ---------- */
-const VERSAO='1.19';
+const VERSAO='1.21';
 function verInit(){const b=$('#verTag');if(b)b.textContent='v'+VERSAO}
 
 /* ---------- Jornada (versão enxuta): 4 números, uma tabela por colaborador e os horários da equipe ---------- */
@@ -4481,7 +4557,7 @@ function rcBind(v){v.querySelectorAll('[data-rc]').forEach(c=>c.onchange=()=>{co
   v.querySelector('#rcXls').onclick=async()=>{const R=pr();if(!R)return;const blob=rcXlsx(R,'Relatório de Desempenho · '+relPeriodo(),'Gestão Operacional');const r=await salvarArquivo('relatorio-completo-'+(REL.ini||'')+'-a-'+(REL.fim||'')+'.xlsx',blob,blob.type);if(r==='ok')toast('Relatório completo em Excel salvo.')}}
 
 /* ============ início ============ */
-function startApp(){REG=LS.get(REG_KEY,{});RESUMO=LS.get('sa_dash_resumo',{})||{};loadSeed();rebuild();setApres(APRES);{const b=$('#apresBtn');if(b)b.onclick=toggleApres}buildNav();fillSelects();setPeriod();readF();bindFilters();info();tick();setInterval(tick,20000);render();pushHist();initStore().then(()=>{try{bkStatus()}catch(e){}});bkInit();verInit();
+function startApp(){REG=LS.get(REG_KEY,{});RESUMO=LS.get('sa_dash_resumo',{})||{};loadSeed();rebuild();setApres(APRES);{const b=$('#apresBtn');if(b)b.onclick=toggleApres}{const h=$('#hxSt');if(h)h.onclick=()=>go('planilhas')}buildNav();fillSelects();setPeriod();readF();bindFilters();info();tick();setInterval(tick,20000);render();pushHist();initStore().then(()=>{try{bkStatus()}catch(e){}});bkInit();verInit();
   $('#hBack').onclick=()=>histGo(HI-1);$('#hFwd').onclick=()=>histGo(HI+1);addEventListener('keydown',e=>{if(e.altKey&&e.key==='ArrowLeft'){e.preventDefault();histGo(HI-1)}if(e.altKey&&e.key==='ArrowRight'){e.preventDefault();histGo(HI+1)}});
   if(SECURE){const b=document.createElement('button');b.type='button';b.className='btn ghost sm lockbtn';b.innerHTML='<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Bloquear';b.onclick=async()=>{await flushSaves();location.reload()};const c=$('.clock');if(c)c.appendChild(b);
     let idle=0;const reset=()=>{clearTimeout(idle);idle=setTimeout(async()=>{await flushSaves();location.reload()},(+CFG.bloquearAposMinutos||15)*60000)};['pointerdown','keydown','scroll','touchstart'].forEach(ev=>addEventListener(ev,reset,{passive:true}));reset()}}
