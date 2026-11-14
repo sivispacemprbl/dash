@@ -1675,6 +1675,10 @@ body.tv .rk-grp{display:grid!important}
 #views .blurn-btn:hover{background:rgba(167,139,250,.2)!important}
 #views .blurn-btn.on{background:linear-gradient(135deg,#a78bfa,#6d28d9)!important;border-color:transparent!important;color:#fff!important;box-shadow:0 8px 22px -8px rgba(167,139,250,.95)}
 .fc-btns .blurn-btn{justify-content:center}
+
+.fc-mat{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:999px;border:1px solid rgba(125,170,235,.25);background:rgba(6,16,34,.5);font-size:12px;color:#cfe0f5;font-variant-numeric:tabular-nums}
+.fc-mat b{color:#fff}.fc-mat.vz{color:#fbbf24;border-color:rgba(251,191,36,.45);cursor:pointer;background:rgba(251,191,36,.08);font:inherit;font-size:12px}
+input.cad-mat{width:110px;font-variant-numeric:tabular-nums}
 </style>
 
 <div class="app">
@@ -2277,6 +2281,7 @@ function tipoDe(tss){
   if(/^SUPRIMIR LIGACAO/.test(t))return 'SUPRESSAO';
   if(/NEGOCIACAO DE DEBITOS VIA POS/.test(t))return 'POS';
   if(/^RESTABELECER/.test(t))return 'RESTAB';
+  if(/^RELIGAR AGUA MUDANCA (DE )?TITULARIDADE/.test(t))return 'FORA'; // não é serviço da equipe (programado por engano)
   if(/^RELIGAR/.test(t))return 'RELIG';
   if(/^REATIVAR/.test(t))return 'RELIG'; // reativação de ligação: mesma família (REATIV/RELIG/RESTAB)
   if(/^VERIFICAR SERVICO/.test(t))return 'VIST'; // vistoria (verificar serviço solicitado): conta no painel
@@ -2626,6 +2631,7 @@ function updHdr(){const el=$('#hxSt');if(!el)return;try{const ds=ROWS.filter(r=>
   el.hidden=false;el.classList.toggle('old',dif>3);$('#hxStT').innerHTML=`Dados até <b>${DW[dd.getDay()]}, ${ld.slice(8,10)}/${ld.slice(5,7)}</b>`;el.title=dif>3?`Última atualização das planilhas há ${dif} dias · toque para atualizar`:'Planilhas em dia · toque para ver'}catch(e){el.hidden=true}}
 function render(){
   killCharts();
+  try{if(typeof RZ!=='undefined'&&!RZ.loaded&&typeof rzLoadLocal==='function'){RZ.cfg=rzLoadLocal();RZ.loaded=true}}catch(e){}rzSyncEquipe();matAprende();
   const rows=applyF(scope());updAtuacao(rows);updHdr();updMes(rows);updBadges(rows);
   const v=$('#views');
   const fn={rodizio:vRodizio,sup60:vSup60,bairros:vBairros,agenda:vAgenda,ranking:vRanking,planilhas:vPlanilhas,geral:vGeral,producao:vProducao,pos:vPOS,jornada:vJornada,equipes:vEquipes,colab:vColab,ficha:vFicha,relatorios:vRelatorios,gargalos:vGargalos,sexta:vSexta,reuniao:vReuniao,os:vOS}[VIEW];
@@ -3308,16 +3314,16 @@ function vColab(v,rows){
   const list=names.map(n=>Object.assign({k:n},agg(g.get(n)||[]),{dias:new Set((g.get(n)||[]).map(r=>r.day)).size})).sort((a,b)=>b.prod-a.prod);
   const showEq=names.some(n=>equipeDe(n)!==nomeDe(n)&&equipeDe(n)!==title(n));
   v.innerHTML=`<div class="colw ${COL_BLUR?'blurn':''}">${termoHTML(rows)}${hmapHTML(rows)}<div class="panel"><h3>Desempenho dos colaboradores <small>${fmt(list.filter(x=>x.trab).length)} com OS no período${list.some(x=>!x.trab)?' · '+fmt(list.filter(x=>!x.trab).length)+' sem OS':''} · clique no nome para revelar, na linha para ver as OS</small>${blurNomesBtn()}</h3>${colTabHTML(list.filter(x=>x.trab).map(x=>({k:x.k,a:x,dias:x.dias})),{rank:true,dias:true,tag:x=>REG[x.k]&&REG[x.k].ativo===false?' <span class="st f">inativo</span>':''})}</div>
-  ${APRES?'<div class="panel"><p class="note">Cadastro de colaboradores oculto no modo apresentação.</p></div>':`  <div class="panel"><h3>Cadastro de colaboradores <small>salvo neste navegador · permanece entre importações</small></h3>
-  <div class="tw"><table><thead><tr><th>Nome na base (GeoCall)</th><th>Equipe</th><th>Ativo</th><th>Primeira aparição</th></tr></thead><tbody>
-  ${names.map((n,i)=>`<tr data-cad="${esc(n)}" class="${n===COL_SHOW?'show':''}"><td><span class="pvn" data-nm="${esc(n)}">${esc(n)}</span></td><td><input class="cad pvn" id="cad-eq-${i}" data-n="${esc(n)}" value="${esc(REG[n].equipe||'')}" aria-label="Equipe de ${esc(n)}"></td><td><input type="checkbox" id="cad-at-${i}" data-n="${esc(n)}" ${REG[n].ativo!==false?'checked':''} aria-label="Ativo"></td><td>${dayBRf(REG[n].desde||'')}</td></tr>`).join('')}
+  ${APRES?'<div class="panel"><p class="note">Cadastro de colaboradores oculto no modo apresentação.</p></div>':`  <div class="panel"><h3 id="cadH">Cadastro de colaboradores <small>nome completo como no GeoCall · matrícula · salvo no painel</small></h3>
+  <div class="tw"><table><thead><tr><th>Nome completo (GeoCall)</th><th>Matrícula</th><th>Equipe</th><th>Ativo</th><th>Primeira aparição</th></tr></thead><tbody>
+  ${names.map((n,i)=>`<tr data-cad="${esc(n)}" class="${n===COL_SHOW?'show':''}"><td><span class="pvn" data-nm="${esc(n)}">${esc(title(n))}</span></td><td><input class="cad-mat" id="cad-mt-${i}" data-n="${esc(n)}" value="${esc(REG[n].mat||'')}" inputmode="numeric" maxlength="10" placeholder="—" aria-label="Matrícula de ${esc(n)}"></td><td><input class="cad pvn" id="cad-eq-${i}" data-n="${esc(n)}" value="${esc(REG[n].equipe||'')}" aria-label="Equipe de ${esc(n)}"></td><td><input type="checkbox" id="cad-at-${i}" data-n="${esc(n)}" ${REG[n].ativo!==false?'checked':''} aria-label="Ativo"></td><td>${dayBRf(REG[n].desde||'')}</td></tr>`).join('')}
   </tbody></table></div><div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="button" id="cadSave">Salvar cadastro</button></div></div>`}</div>`;
   const showN=k=>{COL_SHOW=COL_SHOW===k?'':k;v.querySelectorAll('[data-c],[data-cad]').forEach(r=>r.classList.toggle('show',(r.dataset.c||r.dataset.cad)===COL_SHOW))};
   v.querySelectorAll('.colw .pvn[data-nm]').forEach(el=>el.onclick=e=>{if(!COL_BLUR)return;e.stopPropagation();showN(el.dataset.nm)});
   v.querySelectorAll('[data-blurn]').forEach(b=>b.onclick=()=>{COL_BLUR=!COL_BLUR;COL_SHOW='';render()});
   bindCe(v);
   v.querySelectorAll('.tm-r[data-c],tr[data-c]').forEach(tr=>tr.onclick=()=>abrirFicha(tr.dataset.c));
-  if($('#cadSave'))$('#cadSave').onclick=()=>{v.querySelectorAll('input.cad').forEach(i=>{REG[i.dataset.n].equipe=i.value.trim()||title(i.dataset.n)});v.querySelectorAll('input[type=checkbox][data-n]').forEach(i=>REG[i.dataset.n].ativo=i.checked);
+  if($('#cadSave'))$('#cadSave').onclick=()=>{v.querySelectorAll('input.cad').forEach(i=>{REG[i.dataset.n].equipe=i.value.trim()||title(i.dataset.n)});v.querySelectorAll('input[type=checkbox][data-n]').forEach(i=>REG[i.dataset.n].ativo=i.checked);v.querySelectorAll('input.cad-mat').forEach(i=>{const m=i.value.replace(/\D/g,'');if(m)REG[i.dataset.n].mat=m;else delete REG[i.dataset.n].mat});
     saveReg();toast('Cadastro salvo.');fillSelects();buildNav();renderNotes();render()};
 }
 
@@ -3789,8 +3795,8 @@ const rzFuncao=u=>{const d=rzDupla();return d&&d.tit===u.id?'tit':d&&d.parc===u.
 function rzSetFuncao(id,f){rzCarroPrep();const u=rzUni(id),d=rzDupla(),h=rzHoje();if(!u)throw new Error('Colaborador não encontrado');if(!d&&f!=='moto')throw new Error('Não há carro cadastrado no rodízio');
   const volta=x=>{if(x)rzFechaPer(x,'carro')},entra=x=>{if(!rzNoCarro(x,h))x.carro=(x.carro||[]).concat({de:h})};const atual=rzFuncao(u);if(atual===f)return;
   if(f==='moto'){volta(u);if(d.tit===id)d.tit=null;if(d.parc===id)d.parc=null}
-  else if(f==='tit'){if(d.tit&&d.tit!==id)volta(rzUni(d.tit));if(d.parc===id)d.parc=null;else entra(u);d.tit=id}
-  else if(f==='parc'){if(d.parc&&d.parc!==id)volta(rzUni(d.parc));if(d.tit===id)d.tit=null;else entra(u);d.parc=id;d.parcTxt=''}
+  else if(f==='tit'){if(d.tit&&d.tit!==id)volta(rzUni(d.tit));if(d.parc===id)d.parc=null;entra(u);d.tit=id;if(d.parcTxt&&rzNorm(d.parcTxt).split(' ')[0]===rzNorm(u.nome).split(' ')[0])d.parcTxt=''}
+  else if(f==='parc'){if(d.parc&&d.parc!==id)volta(rzUni(d.parc));if(d.tit===id)d.tit=null;entra(u);d.parc=id;d.parcTxt=''}
   rzCarroNome()}
 function rzEqDe(u){if(!u)return null;const base=rzNorm(String(u.nome).split('+')[0]);const ks=Object.keys(REG);const b=base.split(' ');
   return ks.find(k=>rzNorm(k)===base)||ks.find(k=>{const a=rzNorm(k).split(' ');return a[0]===b[0]&&a[1]===b[1]})||ks.find(k=>rzNorm(k).split(' ')[0]===b[0]&&b.length<3)||null}
@@ -4148,8 +4154,8 @@ function rzTelaEquipe(){const hoje=rzHoje();if(rzCarroPrep()){rzCarroNome();try{
    <label>De<input type="date" id="rzAd" value="${RZ.dia}"></label><label>Até<input type="date" id="rzAa" value="${RZ.dia}"></label><button type="submit" class="btn">Lançar</button></form></div>
    <div class="panel"><h3>Ausências lançadas</h3>${lst.length?`<div class="rzlist">${lst.map(x=>`<div><span><b class="rzn">${esc(rzNome(x.a.id))}</b><small>${esc(x.a.motivo||'')} · ${x.a.de===x.a.ate?rzFmt(x.a.de,true):rzBR(x.a.de)+' a '+rzBR(x.a.ate)}</small></span>${RZ.confirm==='aus'+x.i?`<button type="button" class="btn danger sm" data-rz="ausDelOk" data-i="${x.i}">Confirmar</button><button type="button" class="btn ghost sm" data-rz="cancelar">Cancelar</button>`:`<button type="button" class="btn ghost sm" data-rz="ausDel" data-i="${x.i}">Apagar</button>`}</div>`).join('')}</div>`:'<p class="note">Nenhuma ausência lançada.</p>'}</div></div>
   <div class="g2"><div class="panel"><h3>Equipe do rodízio <small>troque a função quando precisar · vale a partir de hoje · “Desligar” tira a pessoa da escala</small></h3><div class="rzlist">${RZ.cfg.unidades.slice().sort((a,b)=>(a.ordem||0)-(b.ordem||0)).map(u=>{const off=u.status==='inativo';const eq=rzEqDe(u);
-     const fn=rzFuncao(u),dp=rzDupla();if(u.tipo==='carro')return `<div class="rzcar"><span><b>Carro · supressão no passeio</b><small>Titular (login no GeoCall): <b class="rzn">${u.tit?esc(rzNome(u.tit)):'<span style="color:#f5b73b">ninguém — o carro está fora da escala</span>'}</b> · Parceiro: <b class="rzn">${u.parc?esc(rzNome(u.parc)):esc(u.parcTxt||'ninguém')}</b></small></span></div>`;
-     return `<div><span><b class="rzn">${esc(APRES?rzNome(u.id):u.nome)}</b><small>${fn==='tit'?'Titular do carro · supressão':fn==='parc'?'Parceiro no carro':'Moto · corte / negociação'} · ${eq?'ligado ao GeoCall':'<span style="color:#f5b73b">sem OS no GeoCall</span>'}${off?' · desligado':''}</small></span>${!off&&dp?`<select class="rzfn" data-rz="funcao" data-u="${esc(u.id)}" aria-label="Função"><option value="moto" ${fn==='moto'?'selected':''}>Moto</option><option value="tit" ${fn==='tit'?'selected':''}>Titular do carro</option><option value="parc" ${fn==='parc'?'selected':''}>Parceiro no carro</option></select>`:''}${off?`<button type="button" class="btn ghost sm" data-rz="religar" data-u="${esc(u.id)}">Voltar ao rodízio</button>`:RZ.confirm==='desl'+u.id?`<button type="button" class="btn danger sm" data-rz="desligarOk" data-u="${esc(u.id)}">Confirmar</button><button type="button" class="btn ghost sm" data-rz="cancelar">Cancelar</button>`:`<button type="button" class="btn ghost sm" data-rz="desligar" data-u="${esc(u.id)}">Desligar</button>`}</div>`}).join('')}</div>
+     const fn=rzFuncao(u),dp=rzDupla();if(u.tipo==='carro')return `<div class="rzcar"><span><b>Carro · supressão no passeio</b><small>Titular (login no GeoCall): <b class="rzn">${u.tit?esc(rzNomeFull(u.tit)):'<span style="color:#f5b73b">ninguém — o carro está fora da escala</span>'}</b> · Parceiro: <b class="rzn">${u.parc?esc(rzNomeFull(u.parc)):esc(u.parcTxt||'ninguém')}</b></small></span></div>`;
+     return `<div><span><b class="rzn">${esc(APRES?rzNome(u.id):u.nome)}</b><small>${!APRES&&eq&&matDe(eq)?'Matrícula '+esc(matDe(eq))+' · ':''}${fn==='tit'?'Titular do carro · supressão':fn==='parc'?'Parceiro no carro':'Moto · corte / negociação'} · ${eq?'ligado ao GeoCall':'<span style="color:#f5b73b">sem OS no GeoCall</span>'}${off?' · desligado':''}</small></span>${!off&&dp?`<select class="rzfn" data-rz="funcao" data-u="${esc(u.id)}" aria-label="Função"><option value="moto" ${fn==='moto'?'selected':''}>Moto</option><option value="tit" ${fn==='tit'?'selected':''}>Titular do carro</option><option value="parc" ${fn==='parc'?'selected':''}>Parceiro no carro</option></select>`:''}${off?`<button type="button" class="btn ghost sm" data-rz="religar" data-u="${esc(u.id)}">Voltar ao rodízio</button>`:RZ.confirm==='desl'+u.id?`<button type="button" class="btn danger sm" data-rz="desligarOk" data-u="${esc(u.id)}">Confirmar</button><button type="button" class="btn ghost sm" data-rz="cancelar">Cancelar</button>`:`<button type="button" class="btn ghost sm" data-rz="desligar" data-u="${esc(u.id)}">Desligar</button>`}</div>`}).join('')}</div>
    <form class="rzform" id="rzAdd"><label>Novo colaborador<input id="rzNn" placeholder="Nome completo" autocomplete="off"></label><button type="submit" class="btn">Adicionar</button></form></div>
    <div class="panel"><h3>Metas diárias e feriados</h3><form class="rzform" id="rzMetas"><label>Meta moto (ordens/dia)<input type="number" min="1" id="rzMm" value="${(RZ.cfg.metas||{}).moto||CARGA.CORTE}"></label><label>Meta carro (supressão)<input type="number" min="1" id="rzMc" value="${(RZ.cfg.metas||{}).carro||CARGA.SUPRESSAO}"></label><button type="submit" class="btn">Salvar metas</button></form>
    <label class="rzl" for="rzFer">Feriados (um por linha, AAAA-MM-DD)</label><textarea id="rzFer" rows="5" class="rzin">${esc(rzFer().join('\n'))}</textarea><div class="rzact"><button type="button" class="btn ghost sm" data-rz="feriados">Salvar feriados</button></div>
@@ -4234,10 +4240,23 @@ function vSup60(v){const C=supCfg();const {L,X,hoje}=supData();const CNT={lib:0,
   v.querySelectorAll('tr[data-sos]').forEach(t=>t.onclick=()=>drill({os:t.dataset.sos,label:'OS '+t.dataset.sos}));
 }
 function cap1(s){s=String(s||'');return s.charAt(0).toUpperCase()+s.slice(1)}
+/* v1.34 · equipe sempre com o nome completo do GeoCall; matrícula */
+function matDe(k){const r=REG[k];return r&&r.mat?String(r.mat):''}
+function matAprende(){try{const L=typeof lidLista==='function'?lidLista():[];const m=lidMatriculas(L);let ch=false;for(const [n,k] of Object.entries(m)){if(REG[k]&&!REG[k].mat&&!Object.values(REG).some(x=>x.mat===n)){REG[k].mat=n;ch=true}}if(ch)saveReg()}catch(e){}}
+function rzSyncEquipe(){try{if(typeof RZ==='undefined'||!RZ.cfg||!RZ.cfg.unidades)return;if(typeof rzCarroPrep==='function'&&rzCarroPrep()){RZ.cache=null;LS.set(RZ_KEY,RZ.cfg)}const eqs=[...new Set(allSheetRows().filter(r=>!r.lid&&r.eq&&!r.man).map(r=>r.eq))];if(!eqs.length)return;let ch=false;
+  for(const k of eqs){if(REG[k]&&REG[k].ativo===false)continue;const u=RZ.cfg.unidades.find(x=>x.tipo!=='carro'&&rzEqDe(x)===k);const full=title(k);
+    if(!u){const id=rzNorm(full).toLowerCase().replace(/[^a-z]/g,'').slice(0,12)+Math.random().toString(36).slice(2,5);RZ.cfg.unidades.push({id,nome:full,curto:full.split(' ')[0],tipo:'moto',ordem:RZ.cfg.unidades.length+1,inicio:rzHoje()});ch=true}
+    else if(u.nome!==full){u.nome=full;ch=true}}
+  const d=RZ.cfg.unidades.find(x=>x.tipo==='carro');
+  if(d&&d.parcTxt){const p=rzNorm(d.parcTxt).split(' ')[0];if(RZ.cfg.unidades.some(x=>x.tipo!=='carro'&&rzNorm(x.nome).split(' ')[0]===p)){d.parcTxt='';ch=true}}
+  if(d&&typeof rzCarroNome==='function'){const a=d.nome;if(d.tit!==undefined)rzCarroNome();if(d.nome!==a)ch=true}
+  if(ch){RZ.cache=null;LS.set(RZ_KEY,RZ.cfg)}}catch(e){console.error(e)}}
+const rzNomeFull=id=>{const u=rzUni(id);if(!u)return id;return APRES?rzNome(id):(u.nome||u.curto)};
 function vRodizio(v,rows){
   if(!RZ.loaded){RZ.cfg=rzLoadLocal();RZ.loaded=true;RZ.dia=rzDiaInicial()}
   if(!RZ.cfg){v.innerHTML=`<div class="rz">${rzTelaImport()}</div>`;rzBind(v);return}
   if(!RZ.dia)RZ.dia=rzDiaInicial();
+  rzSyncEquipe();
   const ST=rzStats(rows);
   const T={foco:rzTelaFoco,rr:rzTelaRR,hoje:rzTelaHoje,analise:rzTelaAnalise,mapa:rzTelaMapa,semana:rzTelaSemana,equipe:rzTelaEquipe,setores:rzTelaSetores}[RZ.tab]||rzTelaHoje;
   let body='';try{body=T(rows,ST)}catch(e){console.error(e);body=`<div class="panel"><p class="note">Algo deu errado ao montar esta tela: ${esc(e.message)}</p></div>`}
@@ -4808,7 +4827,7 @@ function vFicha(v,rows){
   const subs=SUB_ORD.map(s=>({s,n:CN(s)})).filter(x=>x.n>0).sort((a,b)=>b.n-a.n);const smx=Math.max(1,...subs.map(x=>x.n));
   const nm=esc(nomeDe(k));const DW=['dom','seg','ter','qua','qui','sex','sáb'];
   v.innerHTML=`<div class="colw ${COL_BLUR?'blurn':''}"><div class="panel fc-top"><div class="fc-id">${fcRing(A)}<label class="fc-sel" data-v="${esc(nomeDe(k))}"><span>Colaborador</span><select id="fcSel" class="pvn">${eqs.map(e=>`<option value="${esc(e)}" ${e===k?'selected':''}>${esc(nomeDe(e))}</option>`).join('')}</select></label>
-     <div class="fc-meta"><span>${esc(equipeDe(k))!==nm?'Equipe '+esc(equipeDe(k))+' · ':''}${mod==='carro'?'Carro (supressão)':'Moto'}</span><span>${fmt(dias.length)} dia${dias.length>1?'s':''} com OS · ${dayBRf(dias[0])} a ${dayBRf(dias[dias.length-1])}</span>${fcChips(rows,k,A,T)}</div>
+     <div class="fc-meta">${APRES?'':matDe(k)?`<span class="fc-mat">Matrícula <b>${esc(matDe(k))}</b></span>`:'<button type="button" class="fc-mat vz" data-fgo="colab" title="Cadastrar a matrícula em Colaboradores › Cadastro">+ cadastrar matrícula</button>'}<span>${esc(equipeDe(k))!==nm?'Equipe '+esc(equipeDe(k))+' · ':''}${mod==='carro'?'Carro (supressão)':'Moto'}</span><span>${fmt(dias.length)} dia${dias.length>1?'s':''} com OS · ${dayBRf(dias[0])} a ${dayBRf(dias[dias.length-1])}</span>${fcChips(rows,k,A,T)}</div>
      <span class="fc-btns">${blurNomesBtn()}<button type="button" class="btn ghost sm" id="fcDos">Relatório de intervalos</button><button type="button" class="btn ghost sm" id="fcAll">Ver todas as OS</button></span></div>
    <div class="fc-ks">${(R=>T2(R&&R.pos?(R.pos<=3?'ok':''):'','Posição no ranking',R&&R.pos?R.pos+'º':'—',R&&R.pos?`de ${R.n} na ${R.mod} · por produtividade`:'poucos dias no período','data-fgo="ranking"'))(fcRank(rows,k))}
      ${T2('','OS trabalhadas',fmt(A.den),`${fmt(A.prod)} produtivas · ${(A.den/Math.max(1,dias.length)).toFixed(1).replace('.',',')} por dia`,`data-fd='{}' data-fl="todas as OS"`)}
@@ -4887,7 +4906,7 @@ function dosModal(k,rows){const eqs=[...new Set(rows.filter(r=>r.eq&&!r.man).map
 
 
 /* ---------- Versão do painel ---------- */
-const VERSAO='1.32';
+const VERSAO='1.35';
 function verInit(){const b=$('#verTag');if(b)b.textContent='v'+VERSAO}
 
 /* ---------- Jornada (versão enxuta): 4 números, uma tabela por colaborador e os horários da equipe ---------- */
