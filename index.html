@@ -1650,6 +1650,31 @@ body.tv #views>*{animation:tvIn .55s ease both}
 @keyframes tvRun{from{width:0}to{width:100%}}
 body.tv .hx-st{display:inline-flex!important}
 @media (prefers-reduced-motion:reduce){body.tv #views>*{animation:none}}
+
+/* v1.32 · Ranking: escolha do grupo */
+.rk-grp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 14px}
+.rk-grp button{position:relative;display:grid;grid-template-columns:auto 1fr auto;gap:4px 14px;align-items:center;text-align:left;padding:14px 18px;border-radius:16px;border:1px solid rgba(125,170,235,.18);background:linear-gradient(180deg,rgba(20,44,84,.85),rgba(10,24,50,.85));color:inherit;font:inherit;cursor:pointer;transition:all .15s;overflow:hidden}
+.rk-grp button:hover{border-color:rgba(124,199,255,.45)}
+.rk-grp button.on{border-color:var(--gc);box-shadow:0 0 0 1px var(--gc),0 16px 36px -18px var(--gc);background:linear-gradient(135deg,color-mix(in srgb,var(--gc) 22%,rgba(10,24,50,.9)),rgba(10,24,50,.9))}
+.rk-grp .gi{grid-row:1/3;width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:color-mix(in srgb,var(--gc) 20%,transparent);color:var(--gc)}
+.rk-grp button.on .gi{background:linear-gradient(135deg,var(--gc),color-mix(in srgb,var(--gc) 40%,#06142b));color:#fff}
+.rk-grp .gt{font-family:var(--cond);font-size:22px;font-weight:700;line-height:1.05;color:#f2f7ff}
+.rk-grp .gs{font-size:12.5px;color:#9fb6d6}
+.rk-grp .gl{grid-row:1/3;grid-column:3;text-align:right}
+.rk-grp .gl small{display:block;font-size:10px;letter-spacing:1.1px;text-transform:uppercase;color:#6f88ad}
+.rk-grp .gl b{display:block;font-family:var(--cond);font-size:26px;font-weight:700}
+.rk-grp .gl em{display:block;font-style:normal;font-size:12px;color:#cfe0f5;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rk.privn .rk-grp .gl em{filter:blur(6px)}
+body.tv .rk-grp{display:grid!important}
+@media (max-width:760px){.rk-grp{grid-template-columns:1fr}.rk-grp .gl em{max-width:110px}}
+#rk .rk-pod:has(> .rk-p:only-child){grid-template-columns:minmax(0,460px)!important;justify-content:center}
+#rk .rk-pod:has(> .rk-p:nth-child(2):last-child){grid-template-columns:repeat(2,minmax(0,420px))!important;justify-content:center}
+/* v1.32 · botão de esfumaçar nomes em destaque */
+#views .blurn-btn{margin-left:auto;display:inline-flex!important;align-items:center;gap:8px;padding:7px 14px!important;border-radius:999px!important;font-size:12.5px!important;font-weight:700!important;border:1.5px solid rgba(167,139,250,.55)!important;background:rgba(167,139,250,.10)!important;color:#ddd6fe!important;box-shadow:0 6px 18px -10px rgba(167,139,250,.9)}
+#views .blurn-btn svg{width:15px;height:15px}
+#views .blurn-btn:hover{background:rgba(167,139,250,.2)!important}
+#views .blurn-btn.on{background:linear-gradient(135deg,#a78bfa,#6d28d9)!important;border-color:transparent!important;color:#fff!important;box-shadow:0 8px 22px -8px rgba(167,139,250,.95)}
+.fc-btns .blurn-btn{justify-content:center}
 </style>
 
 <div class="app">
@@ -2946,7 +2971,7 @@ function vGeral0(v,rows){
 const BLUR={eq:false,top:false,prim:false};let PRIM_DAY='';
 const blurBtn=k=>`<button type="button" class="cptab blurbtn ${BLUR[k]?'on':''}" data-blur="${k}" title="Esfumaçar os números deste bloco"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span>${BLUR[k]?'Mostrar':'Esfumaçar'}</span></button>`;
 function bindBlur(root){root.querySelectorAll('[data-blur]').forEach(b=>b.onclick=e=>{e.stopPropagation();const k=b.dataset.blur;BLUR[k]=!BLUR[k];const p=b.closest('.panel');p.classList.toggle('blurred',BLUR[k]);b.classList.toggle('on',BLUR[k]);b.querySelector('span').textContent=BLUR[k]?'Mostrar':'Esfumaçar'})}
-let RK_BY='prod',RK_PRIV=false,RK_SHOW='',RK_NOMES=false;
+let RK_BY='prod',RK_PRIV=false,RK_SHOW='',RK_NOMES=false,RK_GRP='moto';
 const RK_MIN_DIAS=5;
 function rankData(rows){
   const days=[...new Set(rows.map(r=>r.day))].sort();const half=days.slice(-7),prev=days.slice(-14,-7);
@@ -2970,7 +2995,9 @@ function vRanking(v,rows){
   if(!crit[RK_BY])RK_BY='prod';
   const [cLbl,cVal,cFmt]=crit[RK_BY];
   const ord=L=>L.sort((x,y)=>(x.peq-y.peq)||(cVal(y)-cVal(x))||(y.a.prod-x.a.prod));
-  const list=ord(all.filter(x=>x.mod==='moto')),cars=ord(all.filter(x=>x.mod==='carro'));
+  const motoL=ord(all.filter(x=>x.mod==='moto')),carL=ord(all.filter(x=>x.mod==='carro'));if(!carL.length)RK_GRP='moto';if(!motoL.length&&carL.length)RK_GRP='carro';const list=RK_GRP==='carro'?carL:motoL,cars=[];
+  const grpBtn=(g,L,tit,sub,ic,cor)=>{const t=L.filter(x=>!x.peq)[0];return `<button type="button" class="${RK_GRP===g?'on':''}" data-rkg="${g}" style="--gc:${cor}"><span class="gi"><svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">${ic}</svg></span><span class="gt">${tit}</span><span class="gs">${sub} · ${L.length} ${g==='carro'?'equipe'+(L.length===1?'':'s'):'colaborador'+(L.length===1?'':'es')}</span>${t?`<span class="gl"><small>Líder</small><b class="${fxTxt(t.a.pr)}">${pct(t.a.prod,t.a.den,1)}%</b><em class="pvn">${esc(t.nome)}</em></span>`:''}</button>`};
+  const GRP=carL.length&&motoL.length?`<div class="rk-grp">${grpBtn('moto',motoL,'Moto','corte e negociação','<path d="M5 17a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm14 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM9 7h3l2 4h3l-2-5h3V4h-4l-1 2H9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>','#3b82f6')}${grpBtn('carro',carL,'Carro','supressão','<path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11a2 2 0 0 1 2 2v4h-2a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H3v-4a2 2 0 0 1 2-2zm2.2 0h9.6l-1-3.2a.6.6 0 0 0-.6-.4H8.8a.6.6 0 0 0-.6.4z"/>','#a78bfa')}</div>`:'';
   const A=agg(rows);const top=list.filter(x=>!x.peq).slice(0,3);const per=F.ini&&F.fim?dayBRf(F.ini)+' a '+dayBRf(F.fim):'Todo o período';
   const best=(f)=>list.reduce((m,x)=>!x.peq&&f(x)!=null&&(!m||f(x)>f(m))?x:m,null);
   const evo=best(x=>x.trend),pag=best(x=>x.a.pag),cor=best(x=>x.a.CORTE),cedo=list.filter(x=>x.ini!=null&&!x.peq).reduce((m,x)=>!m||x.ini<m.ini?x:m,null);
@@ -3000,12 +3027,12 @@ function vRanking(v,rows){
    <div class="rk-bg" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
    <div class="rk-in">
     <header class="rk-hero glass">
-     <div>${CFG.unidade?`<span class="rk-eyb">${esc(CFG.unidade)}</span>`:""}<h2>Ranking de Desempenho</h2><p>${esc(per)} · ${fmt(list.length)} na moto${cars.length?` · ${cars.length} no carro`:''} · produtividade da equipe <b class="${A.pr>=META?'up':'dn'}">${pct(A.prod,A.den)}%</b> (meta ${META}%)</p></div>
+     <div>${CFG.unidade?`<span class="rk-eyb">${esc(CFG.unidade)}</span>`:""}<h2>Ranking de Desempenho</h2><p>${esc(per)} · ${fmt(motoL.length)} na moto${carL.length?` · ${carL.length} no carro`:''} · produtividade da equipe <b class="${A.pr>=META?'up':'dn'}">${pct(A.prod,A.den)}%</b> (meta ${META}%)</p></div>
      <div class="rk-ctl"><label for="rkBy">Classificar por</label><select id="rkBy">${Object.entries(crit).map(([k,c])=>`<option value="${k}" ${k===RK_BY?'selected':''}>${c[0]}</option>`).join('')}</select>
       <button type="button" class="rk-btn ${RK_PRIV?'on':''}" id="rkPriv" aria-pressed="${RK_PRIV}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2">${RK_PRIV?'<path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6 0 10 7 10 7a18 18 0 0 1-3.2 4M6.6 6.6C3.9 8.3 2 12 2 12s4 7 10 7a9.7 9.7 0 0 0 5.4-1.6M9.9 9.9a3 3 0 0 0 4.2 4.2"/>':'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'}</svg>${RK_PRIV?'Modo privado ligado':'Modo privado'}</button>
       <button type="button" class="rk-btn" id="rkFull"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Tela cheia</button></div>
     </header>
-    ${RK_PRIV?`<div class="glass rk-pbar"><span class="rk-lock">🔒</span><span><b>Modo privado:</b> nomes e números protegidos. Toque num quadro para revelar só aquela pessoa; toque de novo para esconder.</span>${RK_SHOW?'<button type="button" class="rk-btn" id="rkHide">Esconder de novo</button>':''}</div>`:''}
+    ${GRP}${RK_PRIV?`<div class="glass rk-pbar"><span class="rk-lock">🔒</span><span><b>Modo privado:</b> nomes e números protegidos. Toque num quadro para revelar só aquela pessoa; toque de novo para esconder.</span>${RK_SHOW?'<button type="button" class="rk-btn" id="rkHide">Esconder de novo</button>':''}</div>`:''}
     <div class="rk-pod">${podOrder.map(i=>{const x=top[i];return `<article class="glass rk-p rk-${medal[i]} ${x.k===RK_SHOW?'show':''}" data-c="${esc(x.k)}">
       <div class="rk-med">${i+1}º</div>${ring(x,i)}<h3 class="pvn">${esc(nomeDe(x.k))}</h3><div class="rk-big"><span class="pv">${cFmt(x)}</span><small>${cLbl}</small></div>
       <div class="rk-kv pv">${RK_BY==='prod'?`<span><b>${fmt(x.a.prod)}</b>produtivos</span><span><b>${fmt(x.a.pag)}</b>pagamentos</span><span><b>${x.osDia.toFixed(0)}</b>OS por dia</span>`:`<span><b>${pct(x.a.prod,x.a.den)}%</b>produtividade</span><span><b>${fmt(x.a.prod)}</b>produtivos</span><span><b>${fmt(x.a.pag)}</b>pagamentos</span>`}</div>
@@ -3018,7 +3045,7 @@ function vRanking(v,rows){
     </div>
     ${evolucaoHTML(DST)}
     <div class="glass rk-list">
-     <div class="rk-sec"><b>Moto · corte e negociação</b><span>meta ${metaMoto()} ordens por dia · ordenado por ${cLbl.toLowerCase()}</span></div>
+     <div class="rk-sec"><b>${RK_GRP==='carro'?'Carro · supressão':'Moto · corte e negociação'}</b><span>meta ${RK_GRP==='carro'?metaCarro():metaMoto()} ordens por dia · ordenado por ${cLbl.toLowerCase()}</span></div>
      <div class="rk-lh"><span>#</span><span>Colaborador</span><span>Produtividade</span><span>Produtivos</span><span>Vs. meta</span><span>Últimos dias</span><span>${lastCol}</span></div>
      ${list.map((x,i)=>rkRow(x,i)).join('')}
     </div>
@@ -3029,8 +3056,9 @@ function vRanking(v,rows){
     
    </div></section>`;
   $('#rkBy').onchange=e=>{RK_BY=e.target.value;render()};
+  v.querySelectorAll('[data-rkg]').forEach(b=>b.onclick=()=>{RK_GRP=b.dataset.rkg;RK_SHOW='';render()});
   $('#rkFull').onclick=()=>{const el=$('#rk');try{if(document.fullscreenElement)document.exitFullscreen();else if(el.requestFullscreen)el.requestFullscreen().catch(()=>{el.classList.toggle('rk-max')});else el.classList.toggle('rk-max')}catch(e){el.classList.toggle('rk-max')}};
-  v.querySelectorAll('[data-c]').forEach(r=>r.onclick=()=>{if(RK_PRIV){RK_SHOW=RK_SHOW===r.dataset.c?'':r.dataset.c;applyPriv();hb();return}abrirFicha(r.dataset.c)});
+  v.querySelectorAll('[data-c]:not([data-rkg])').forEach(r=>r.onclick=()=>{if(RK_PRIV){RK_SHOW=RK_SHOW===r.dataset.c?'':r.dataset.c;applyPriv();hb();return}abrirFicha(r.dataset.c)});
   const applyPriv=()=>v.querySelectorAll('[data-c]').forEach(r=>r.classList.toggle('show',r.dataset.c===RK_SHOW));
   $('#rkPriv').onclick=()=>{RK_PRIV=!RK_PRIV;if(!RK_PRIV)RK_SHOW='';render()};
   const hb=()=>{const pb=v.querySelector('.rk-pbar');if(!pb)return;let b=$('#rkHide');if(RK_SHOW&&!b){pb.insertAdjacentHTML('beforeend','<button type="button" class="rk-btn" id="rkHide">Esconder de novo</button>');b=$('#rkHide')}else if(!RK_SHOW&&b){b.remove();b=null}if(b)b.onclick=()=>{RK_SHOW='';applyPriv();hb()}};hb();
@@ -3257,7 +3285,7 @@ function termoHTML(rows){const T=termoData(rows);if(!T||!T.L.length)return '';co
      <span class="tm-v"><b>${fmt(Math.ceil(x.need))} <em>de ${fmt(Math.round(x.dpd))}</em></b><small>por dia p/ ${META}% · faz ${fmt(Math.round(x.faz))}</small></span>`}
      <span class="tm-st" style="--c:${sc}">${sl}</span></div>`}).join('')}</div>
    <div class="tm-leg"><span><i class="a"></i>${fechado?'resultado do mês':'acumulado hoje'}</span>${fechado?'':'<span><i class="p"></i>projeção</span>'}<span><i class="m"></i>meta ${META}%</span></div></div>`}
-function blurNomesBtn(){return `<button type="button" class="cptab blurn-btn ${COL_BLUR?'on':''}" data-blurn="1"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span>${COL_BLUR?'Nomes esfumaçados':'Esfumaçar nomes'}</span></button>`}
+function blurNomesBtn(){return `<button type="button" class="cptab blurn-btn ${COL_BLUR?'on':''}" data-blurn="1"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span>${COL_BLUR?'Nomes esfumaçados · mostrar':'Esfumaçar nomes'}</span></button>`}
 /* mapa de calor: colaborador × dia, cor pela produtividade do dia */
 function hmapHTML(rows){try{const g=geoR(rows).filter(r=>r.cat!=='FIMDIA');const dias=[...new Set(g.map(r=>r.day))].sort();if(dias.length<2)return '';
   const P=[...groupBy(g,r=>r.eq)].map(([k,rs])=>({k,a:agg(rs),m:new Map([...groupBy(rs,r=>r.day)].map(([d,x])=>[d,agg(x)]))})).filter(x=>x.a.den>=10).sort((x,y)=>y.a.pr-x.a.pr);if(!P.length)return '';
@@ -4859,7 +4887,7 @@ function dosModal(k,rows){const eqs=[...new Set(rows.filter(r=>r.eq&&!r.man).map
 
 
 /* ---------- Versão do painel ---------- */
-const VERSAO='1.31';
+const VERSAO='1.32';
 function verInit(){const b=$('#verTag');if(b)b.textContent='v'+VERSAO}
 
 /* ---------- Jornada (versão enxuta): 4 números, uma tabela por colaborador e os horários da equipe ---------- */
